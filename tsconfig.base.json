@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@wellness/admin-ui": ["libs/admin-ui/src/index.ts"],
+      "@wellness/common": ["libs/common/src/index.ts"],
       "@wellness/core": ["libs/core/src/index.ts"]
     }
   },
