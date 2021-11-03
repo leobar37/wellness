@@ -3,7 +3,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { coreEntitiesMap } from '@wellness/core';
 import { GraphQLModule } from '@nestjs/graphql';
-import { PingModule } from '@wellness/core/modules/ping';
+import { PingModule } from './modules/ping';
+import { RequestContextService } from './common/context';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -24,6 +25,6 @@ import { PingModule } from '@wellness/core/modules/ping';
     }),
   ],
   controllers: [],
-  providers: [],
+  providers: [RequestContextService],
 })
 export class AppModule {}
