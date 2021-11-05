@@ -1,10 +1,17 @@
 import { Module } from '@nestjs/common';
-
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { coreEntitiesMap } from '@wellness/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { PingModule } from './modules/ping';
 import { RequestContextService } from './common/context';
+import { UserModule } from './modules/users';
+import { SharedModule } from '@wellness/core';
+import { EventBusModule } from '@wellness/core/event-bus';
+import { AsistenceModule } from './modules/asistence';
+import { LoggerWellneesModule } from '@wellness/core/logger';
+import { ModuleRef } from '@nestjs/core';
+const BUSINESS_MODULES = [PingModule, UserModule, AsistenceModule];
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -17,14 +24,22 @@ import { RequestContextService } from './common/context';
       entities: [...Object.values(coreEntitiesMap)],
       synchronize: true,
     }),
-    PingModule,
     GraphQLModule.forRoot({
       playground: true,
       debug: true,
       autoSchemaFile: true,
     }),
+    SharedModule,
+    EventBusModule,
+    LoggerWellneesModule,
+    ...BUSINESS_MODULES,
   ],
   controllers: [],
   providers: [RequestContextService],
 })
-export class AppModule {}
+export class AppModule {
+  public static injector: ModuleRef;
+  constructor(private moduleRef: ModuleRef) {
+    AppModule.injector = moduleRef;
+  }
+}

@@ -15,3 +15,20 @@ export type DeepPartial<T> = {
         ? ReadonlyArray<DeepPartial<U>>
         : DeepPartial<T[P]>);
 };
+
+/**
+ * A type representing the type rather than instance of a class.
+ */
+export interface Type<T> extends Function {
+  // tslint:disable-next-line:callable-types
+  new (...args: SafeAny[]): T;
+}
+
+// CRUD OPERATION
+
+export enum CRUD {
+  UPDATE = 'UPDATE',
+  DELETE = 'DELET',
+  READ = 'READ',
+  CREATE = 'CREATE',
+}

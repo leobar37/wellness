@@ -5,14 +5,11 @@ import { IsEmail } from 'class-validator';
 
 @InputType()
 export class ClientInput implements Partial<Client> {
-  @Field()
+  @Field({ nullable: true })
   code: string;
 
   @Field()
   dni: string;
-
-  @Field()
-  price: number;
 
   @Field()
   name: string;
@@ -20,7 +17,7 @@ export class ClientInput implements Partial<Client> {
   @Field()
   lastName: string;
 
-  @Field()
+  @Field({ nullable: true })
   birthday: Date;
 
   @Field()
@@ -36,6 +33,6 @@ export class ClientInput implements Partial<Client> {
   @Field((type) => Sex)
   sex: Sex;
 
-  @Field((type) => Sex)
+  @Field((type) => ModeRegiser)
   modeRegister: ModeRegiser;
 }
