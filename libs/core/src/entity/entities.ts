@@ -11,7 +11,7 @@ import { Plan } from './plan/plan.entity';
 import { Suscription } from './suscription/suscription.entity';
 import { User } from './user/user.entity';
 
-export const entitiesMap = {
+export const coreEntitiesMap = {
   Activity,
   Administrator,
   Asistence,

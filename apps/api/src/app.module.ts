@@ -5,10 +5,9 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { PingModule } from './modules/ping';
 import { RequestContextService } from './common/context';
 import { UserModule } from './modules/users';
-import { SharedModule } from '@wellness/core';
 import { EventBusModule } from '@wellness/core/event-bus';
 import { AsistenceModule } from './modules/asistence';
-import { LoggerWellneesModule } from '@wellness/core/logger';
+// import { LoggerWellneesModule } from '@wellness/core/logger';
 import { ModuleRef } from '@nestjs/core';
 const BUSINESS_MODULES = [PingModule, UserModule, AsistenceModule];
 
@@ -29,9 +28,9 @@ const BUSINESS_MODULES = [PingModule, UserModule, AsistenceModule];
       debug: true,
       autoSchemaFile: true,
     }),
-    SharedModule,
+
     EventBusModule,
-    LoggerWellneesModule,
+    // LoggerWellneesModule,
     ...BUSINESS_MODULES,
   ],
   controllers: [],
