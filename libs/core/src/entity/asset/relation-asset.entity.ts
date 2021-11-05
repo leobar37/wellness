@@ -14,10 +14,6 @@ export abstract class AssetBoot extends WellnessEntity {
   constructor(input: DeepPartial<AssetBoot>) {
     super(input);
   }
-
-  @Column()
-  assetId: number;
-
   @OneToMany((type) => Asset, (asset) => asset.boot)
   assets: Promise<Asset[]>;
 }

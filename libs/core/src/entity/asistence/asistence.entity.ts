@@ -1,6 +1,6 @@
 import { WellnessEntity } from '../base/base.entity';
 import { Entity, Column, ManyToOne } from 'typeorm';
-import { ObjectType } from '@nestjs/graphql';
+import { ObjectType, Field } from '@nestjs/graphql';
 import { DeepPartial } from '@wellness/common';
 import { Client } from '../client/client.entity';
 /**
@@ -14,11 +14,13 @@ export class Asistence extends WellnessEntity {
   }
 
   @Column()
+  @Field()
   note: string;
 
   @Column()
   clientId: number;
 
   @ManyToOne((type) => Client, (client) => client.asistences)
+  @Field((type) => Client)
   client: Promise<Client>;
 }

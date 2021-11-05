@@ -22,6 +22,6 @@ export class Asset extends WellnessEntity {
   @Column('simple-json')
   metadata: SafeAny;
 
-  @ManyToOne((type) => AssetBoot, (boot) => boot.asset)
+  @ManyToOne((type) => AssetBoot, (boot) => boot.assets, { nullable: true })
   boot: AssetBoot;
 }

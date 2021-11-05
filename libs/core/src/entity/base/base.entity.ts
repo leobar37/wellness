@@ -6,9 +6,12 @@ import {
 import { Field, ID } from '@nestjs/graphql';
 import { DeepPartial, SafeAny } from '@wellness/common';
 export class WellnessEntity {
-  constructor(input: DeepPartial<WellnessEntity>) {
-    for (const [key, value] of Object.entries(input)) {
-      (this as SafeAny)[key] = value;
+  constructor(input?: DeepPartial<WellnessEntity>) {
+    if (input) {
+      for (const [key, value] of Object.entries(input)) {
+        (this as SafeAny)[key] = value;
+      }
+      
     }
   }
 

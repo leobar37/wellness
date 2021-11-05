@@ -1,0 +1,125 @@
+<mxfile host="65bd71144e">
+    <diagram id="91_jrhTFRzui3s4H7qEg" name="FLow plan">
+        <mxGraphModel dx="549" dy="410" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="2" target="6">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="Registra plan" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+                    <mxGeometry x="60" y="120" width="70" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="&lt;font style=&quot;font-size: 9px&quot;&gt;Sistema agrega un suscripcion&lt;/font&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="250" y="160" width="90" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.001;entryY=0.658;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="7" target="6">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="Registra&amp;nbsp;&lt;br&gt;Actividad" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+                    <mxGeometry x="60" y="220" width="70" height="70" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="cG6VWANUanoBGrEcjVqn" name="Flow User">
+        <mxGraphModel dx="1592" dy="1188" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-0"/>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-1" parent="uEvM3ZzFmSPRWc72CBa_-0"/>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="uEvM3ZzFmSPRWc72CBa_-1" source="uEvM3ZzFmSPRWc72CBa_-2" target="uEvM3ZzFmSPRWc72CBa_-5">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-2" value="Solicita registrar un cliente a&amp;nbsp; un plan" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="uEvM3ZzFmSPRWc72CBa_-1">
+                    <mxGeometry x="60" y="550" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="uEvM3ZzFmSPRWc72CBa_-1" source="uEvM3ZzFmSPRWc72CBa_-5" target="uEvM3ZzFmSPRWc72CBa_-11">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="510" y="410" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-8" value="Si" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="uEvM3ZzFmSPRWc72CBa_-7">
+                    <mxGeometry x="0.2574" y="-1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="uEvM3ZzFmSPRWc72CBa_-1" source="uEvM3ZzFmSPRWc72CBa_-5" target="uEvM3ZzFmSPRWc72CBa_-17">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="371.9999999999998" y="770" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-16" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="uEvM3ZzFmSPRWc72CBa_-15">
+                    <mxGeometry x="-0.15" y="3" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-5" value="¿Tiene un plan?" style="rhombus;whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="uEvM3ZzFmSPRWc72CBa_-1">
+                    <mxGeometry x="314" y="510" width="116" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-9" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;rounded=0;" vertex="1" parent="uEvM3ZzFmSPRWc72CBa_-1">
+                    <mxGeometry x="600" y="360" width="40" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="uEvM3ZzFmSPRWc72CBa_-1" source="uEvM3ZzFmSPRWc72CBa_-11" target="uEvM3ZzFmSPRWc72CBa_-9">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-11" value="Un&amp;nbsp; usuario no puede tener mas de un plan activo" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="uEvM3ZzFmSPRWc72CBa_-1">
+                    <mxGeometry x="550" y="460" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="uEvM3ZzFmSPRWc72CBa_-1" source="uEvM3ZzFmSPRWc72CBa_-17" target="uEvM3ZzFmSPRWc72CBa_-18">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-17" value="Se crea un nuevo contrato entre el usuario y la suscripcion" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="uEvM3ZzFmSPRWc72CBa_-1">
+                    <mxGeometry x="309" y="720" width="126" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="uEvM3ZzFmSPRWc72CBa_-1" source="uEvM3ZzFmSPRWc72CBa_-18" target="uEvM3ZzFmSPRWc72CBa_-20">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="uEvM3ZzFmSPRWc72CBa_-1" source="uEvM3ZzFmSPRWc72CBa_-18" target="uEvM3ZzFmSPRWc72CBa_-25">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="200" y="935" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-18" value="¿Suscripcion es fija?" style="rhombus;whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="uEvM3ZzFmSPRWc72CBa_-1">
+                    <mxGeometry x="316.5" y="880" width="111" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="uEvM3ZzFmSPRWc72CBa_-1" source="uEvM3ZzFmSPRWc72CBa_-20" target="uEvM3ZzFmSPRWc72CBa_-27">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="600" y="1070" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-20" value="Se le agregan los dias restantes de la suscripcion a su cuenta" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="uEvM3ZzFmSPRWc72CBa_-1">
+                    <mxGeometry x="540" y="905" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-22" value="Si la suscripcion es fija y ya ha empezado hace 5 dias y en total debe durar 30 dias, a este usuario le quedan 25 dias de este plan" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="uEvM3ZzFmSPRWc72CBa_-1">
+                    <mxGeometry x="623" y="810" width="170" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-23" value="SI" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="uEvM3ZzFmSPRWc72CBa_-1">
+                    <mxGeometry x="455" y="920" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="uEvM3ZzFmSPRWc72CBa_-1" source="uEvM3ZzFmSPRWc72CBa_-25" target="uEvM3ZzFmSPRWc72CBa_-29">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="125" y="1050" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-25" value="Se le agregan los dias de la suscripcion a su cuenta" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="uEvM3ZzFmSPRWc72CBa_-1">
+                    <mxGeometry x="60" y="902.5" width="130" height="65" as="geometry"/>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-27" value="Su proceso se agrega a un tarea actual" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="uEvM3ZzFmSPRWc72CBa_-1">
+                    <mxGeometry x="530" y="1050" width="140" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-29" value="Su proceso crea una nueva tarea&amp;nbsp;&amp;nbsp;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="uEvM3ZzFmSPRWc72CBa_-1">
+                    <mxGeometry x="65" y="1040" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-33" value="SI la suscripcion esta programada con 30 dias cada contrato crea un nueva tarea la cual terminara en 30 dias" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="uEvM3ZzFmSPRWc72CBa_-1">
+                    <mxGeometry x="240" y="1025" width="140" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-35" value="SI la suscripcion esta programada con 30 dias cada contrato se une a una tarea que creo la suscripcion" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="uEvM3ZzFmSPRWc72CBa_-1">
+                    <mxGeometry x="710" y="1010" width="140" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="uEvM3ZzFmSPRWc72CBa_-37" value="&lt;h1&gt;&lt;font style=&quot;font-size: 14px&quot;&gt;Diferencia entre fijo y dinamico&lt;/font&gt;&lt;/h1&gt;&lt;p&gt;La diferencia principla se basa en el contrato cuando es fija no se crea una tarea solo escucha una existente y cuando es dinamica , este crea su propia tarea&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="uEvM3ZzFmSPRWc72CBa_-1">
+                    <mxGeometry x="530" y="600" width="190" height="160" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

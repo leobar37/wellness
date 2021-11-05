@@ -1,14 +1,16 @@
 import { Module } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
+import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { coreEntitiesMap } from '@wellness/core';
-import { GraphQLModule } from '@nestjs/graphql';
-import { PingModule } from './modules/ping';
-import { RequestContextService } from './common/context';
-import { UserModule } from './modules/users';
 import { EventBusModule } from '@wellness/core/event-bus';
+import { LoggerWellnessModule } from '@wellness/core/logger';
+import { resolve } from 'path';
+import { RequestContextService } from './common/context';
 import { AsistenceModule } from './modules/asistence';
-// import { LoggerWellneesModule } from '@wellness/core/logger';
-import { ModuleRef } from '@nestjs/core';
+import { PingModule } from './modules/ping';
+import { UserModule } from './modules/users';
+
 const BUSINESS_MODULES = [PingModule, UserModule, AsistenceModule];
 
 @Module({
@@ -26,11 +28,11 @@ const BUSINESS_MODULES = [PingModule, UserModule, AsistenceModule];
     GraphQLModule.forRoot({
       playground: true,
       debug: true,
-      autoSchemaFile: true,
+      autoSchemaFile: resolve('../../../', 'schema'),
     }),
 
     EventBusModule,
-    // LoggerWellneesModule,
+    LoggerWellnessModule,
     ...BUSINESS_MODULES,
   ],
   controllers: [],

@@ -58,15 +58,13 @@ export class ClientService {
   public async update(id: ID, input: ClientInput) {
     const user = await this.existCLient(id);
     const client = this.repository.merge(user, input);
-    const deleteResult = await this.repository.update(id, client);
-
+    await this.repository.update(id, client);
     this.eventBus.publish(
       new ClientEvent({
         source: client,
         operation: CRUD.UPDATE,
       })
     );
-
     return client;
   }
 }

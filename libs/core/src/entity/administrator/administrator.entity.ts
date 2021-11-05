@@ -20,14 +20,14 @@ export class Administrator extends WellnessEntity {
   lastName: string;
 
   @Column({
-    unique : true
+    unique: true,
   })
-  email : string
+  email: string;
 
   @Column()
   description: string;
 
-  @OneToOne((type) => User, { eager: true, cascade : true, , onDelete: 'CASCADE' })
+  @OneToOne((type) => User, { eager: true, cascade: true, onDelete: 'CASCADE' })
   @JoinColumn()
   user: User;
 }
