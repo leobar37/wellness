@@ -4,6 +4,8 @@ import { ObjectType, Field, registerEnumType } from '@nestjs/graphql';
 import { DeepPartial, Sex, ModeRegiser } from '@wellness/common';
 import { User } from '../user/user.entity';
 import { Asistence } from '../asistence/asistence.entity';
+import { Asset } from '../asset/asset.entity';
+import { Contract } from '../contract/contract.entity';
 registerEnumType(Sex, {
   name: 'Sex',
 });
@@ -20,6 +22,11 @@ export class Client extends WellnessEntity {
   constructor(input: DeepPartial<Client>) {
     super(input);
   }
+
+  @OneToOne((type) => Asset, { eager: true, onDelete: 'CASCADE' })
+  @JoinColumn()
+  photo: Asset;
+
   @Column()
   @Field()
   code: string;
@@ -63,11 +70,14 @@ export class Client extends WellnessEntity {
   @Field((type) => ModeRegiser)
   mode: ModeRegiser;
 
-  @OneToOne((type) => User, { eager: true })
+  @OneToOne((type) => User, { eager: true, onDelete: 'CASCADE' })
   @JoinColumn()
   user: User;
 
   // asistences
   @OneToMany((type) => Asistence, (asistence) => asistence.client)
   asistences: Promise<Asistence[]>;
+
+  @OneToMany((type) => Contract, (contract) => contract.client)
+  contracts: Promise<Contract[]>;
 }

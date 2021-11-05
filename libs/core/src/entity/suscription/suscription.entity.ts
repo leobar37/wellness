@@ -1,8 +1,8 @@
 import { WellnessEntity } from '../base/base.entity';
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { ObjectType, Field, registerEnumType } from '@nestjs/graphql';
-import { DeepPartial, ModeRegiser, ModeSuscription } from '@wellness/common';
-
+import { DeepPartial, ModeSuscription } from '@wellness/common';
+import { Contract } from '../contract/contract.entity';
 registerEnumType(ModeSuscription, {
   name: 'ModeSuscription',
   description: 'This enum determine the mode of a suscription',
@@ -39,4 +39,7 @@ export class Suscription extends WellnessEntity {
     default: ModeSuscription.DINAMIC,
   })
   mode: ModeSuscription;
+
+  @OneToMany((type) => Contract, (contract) => contract.suscription)
+  contracts: Promise<Contract[]>;
 }
