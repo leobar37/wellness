@@ -36,7 +36,7 @@ export class AsitenceService {
   private async existAsistence(id: number) {
     const asistence = await this.repository.findOne(id);
     if (!asistence) {
-      new EntityNotFoundError('Asistence');
+      new EntityNotFoundError('Asistence', asistence.id);
     }
     return asistence;
   }

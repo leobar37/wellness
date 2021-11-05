@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { ClientInput } from '../dto/client.input';
 import { CRUD, ID, normalizeEmailAddress } from '@wellness/common';
 import { EntityNotFoundError } from '@wellness/core/common/error';
-import { parseDeleteResult } from '@wellness/core/utils';
 import { EventBus, ClientEvent } from '@wellness/core/event-bus';
 @Injectable()
 export class ClientService {
@@ -51,7 +50,7 @@ export class ClientService {
   private async existCLient(id: ID) {
     const clientFound = await this.repository.findOne(id);
     if (!clientFound) {
-      throw new EntityNotFoundError('Client');
+      throw new EntityNotFoundError('Client', clientFound.id);
     }
     return clientFound;
   }
