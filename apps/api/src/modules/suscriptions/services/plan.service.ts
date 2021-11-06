@@ -5,8 +5,12 @@ import { EventBus, SuscriptionEvent } from '@wellness/core/event-bus';
 import { PlanInput } from '../dto/plan.input';
 import { EntityManager, Repository } from 'typeorm';
 import { CRUD, ModeSuscription, omit } from '@wellness/common';
-import { Suscription } from '@wellness/core';
-import { EntityNotFoundError } from '@wellness/core/common/error';
+import { Suscription, Contract } from '@wellness/core';
+import {
+  BussinessError,
+  EntityNotFoundError,
+} from '@wellness/core/common/error';
+import { ContractInput } from '../dto/contract.input';
 @Injectable()
 export class PlanService {
   constructor(
@@ -54,5 +58,46 @@ export class PlanService {
       })
     );
     return plan;
+  }
+
+  async test() {
+    return this.repository.find({});
+  }
+
+  public async clientHaveAPlanActive(clientId: number) {
+    const result = await this.manager
+      .createQueryBuilder(Plan, 'plan')
+      .innerJoin('plan.suscription', 'sub')
+      .innerJoin('sub.contracts', 'contract')
+      .where('contract.clientId = :clientId', {
+        clientId: clientId,
+      })
+      .andWhere('contract.finished = :finish', {
+        finish: false,
+      })
+      .printSql()
+      .getCount();
+
+    return result > 0;
+  }
+
+  async afiliatePLan(contractInput: ContractInput) {
+    // verify if client have a active plan
+    const haveAPLan = await this.clientHaveAPlanActive(contractInput.clientId);
+
+    if (haveAPLan) {
+      throw new BussinessError('El cliente ya esta afiliado a un plan');
+    }
+    const contract = await this.manager.save(
+      Contract,
+      new Contract({
+        clientId: contractInput.clientId,
+        suscriptionId: contractInput.suscriptionId,
+        paid: contractInput.paid,
+        note: contractInput.note,
+        price: contractInput.price,
+      })
+    );
+    return contract;
   }
 }

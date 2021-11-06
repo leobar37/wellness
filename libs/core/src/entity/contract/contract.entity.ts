@@ -5,15 +5,19 @@ import { DeepPartial } from '@wellness/common';
 import { Suscription } from '../suscription/suscription.entity';
 import { Subscription } from 'rxjs';
 import { Client } from '../client/client.entity';
+import { HasNote } from '@wellness/common';
 /**
  * @description
  */
 @Entity()
 @ObjectType()
-export class Contract extends WellnessEntity {
+export class Contract extends WellnessEntity implements HasNote {
   constructor(input: DeepPartial<Contract>) {
     super(input);
   }
+
+  @Column('text', { nullable: true })
+  note: string;
 
   @Column('boolean', { default: false })
   @Field((type) => Boolean)
@@ -25,6 +29,9 @@ export class Contract extends WellnessEntity {
 
   @Column('date', { nullable: true })
   finishedAt: Date | null;
+
+  @Column('boolean', { default: false })
+  finished: boolean;
 
   @Column()
   suscriptionId: number;

@@ -17,8 +17,9 @@
     "paths": {
       "@wellness/admin-ui": ["libs/admin-ui/src/index.ts"],
       "@wellness/common": ["libs/common/src/index.ts"],
+      "@wellness/core": ["libs/core/src/index.ts"],
       "@wellness/core/*": ["libs/core/src/*"],
-      "@wellness/core": ["libs/core/src/index.ts"]
+      "@wellness/testing": ["libs/testing/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

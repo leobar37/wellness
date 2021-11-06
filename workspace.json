@@ -6,6 +6,7 @@
     "admin-ui": "libs/admin-ui",
     "api": "apps/api",
     "common": "libs/common",
-    "core": "libs/core"
+    "core": "libs/core",
+    "testing": "libs/testing"
   }
 }

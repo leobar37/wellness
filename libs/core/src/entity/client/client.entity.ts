@@ -6,6 +6,7 @@ import { User } from '../user/user.entity';
 import { Asistence } from '../asistence/asistence.entity';
 import { Asset } from '../asset/asset.entity';
 import { Contract } from '../contract/contract.entity';
+import { HasNote } from '@wellness/common';
 registerEnumType(Sex, {
   name: 'Sex',
 });
@@ -18,7 +19,7 @@ registerEnumType(ModeRegiser, {
  */
 @Entity()
 @ObjectType()
-export class Client extends WellnessEntity {
+export class Client extends WellnessEntity implements HasNote {
   constructor(input: DeepPartial<Client>) {
     super(input);
   }
@@ -51,26 +52,33 @@ export class Client extends WellnessEntity {
   @Field((type) => Date)
   birth: Date;
 
-  @Column()
+  @Column({ nullable: true })
   @Field((type) => Date)
   phone: string;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   direction: string;
 
-  @Column()
+  @Column('text', { nullable: true })
   note: string;
 
   @Column('varchar')
   @Field((type) => Sex)
   sex: Sex;
 
-  @Column('varchar')
+  @Column({
+    enum: ModeRegiser,
+    default: ModeRegiser.ADMIN,
+  })
   @Field((type) => ModeRegiser)
   mode: ModeRegiser;
 
-  @OneToOne((type) => User, { eager: true, onDelete: 'CASCADE' })
+  @OneToOne((type) => User, {
+    eager: true,
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
   @JoinColumn()
   user: User;
 

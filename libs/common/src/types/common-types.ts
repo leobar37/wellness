@@ -36,3 +36,7 @@ export enum ModeSuscription {
   FIXED = 'FIXED',
   DINAMIC = 'DINAMIC',
 }
+
+export interface HasNote {
+  note: string;
+}
