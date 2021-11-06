@@ -3,6 +3,7 @@ import { Plan } from '@wellness/core/entity';
 import { PlanInput } from '../dto/plan.input';
 import { PlanService } from '../services/plan.service';
 import { ContractInput } from '../dto/contract.input';
+
 @Resolver()
 export class PlanResolver {
   constructor(private planService: PlanService) {}
@@ -17,5 +18,9 @@ export class PlanResolver {
   }
 
   @Mutation((type) => Boolean)
-  afiliatePLan() {}
+  joinPlan(
+    @Args('contract', { type: () => ContractInput }) input: ContractInput
+  ) {
+    return this.planService.joinPlan(input);
+  }
 }

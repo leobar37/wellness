@@ -11,6 +11,7 @@ import { ModeSuscription, Sex } from '@wellness/common';
 import { EntityManager, getManager } from 'typeorm';
 import { parseDeleteResult } from '@wellness/core';
 import { BussinessError } from '@wellness/core/common/error';
+import { PlanHelper } from '../helpers/plan.helper';
 const createUser = () => {
   return new Client({
     name: faker.name.firstName(0),
@@ -39,6 +40,7 @@ const createPLan = () => {
 describe('test plan service', () => {
   let app: INestApplication;
   let planService: PlanService;
+  let planHelper: PlanHelper;
   let module: TestingModule;
   let manager: EntityManager;
   beforeAll(async () => {
@@ -62,6 +64,7 @@ describe('test plan service', () => {
 
     app = _module.createNestApplication();
     planService = _module.get<PlanService>(PlanService);
+    planHelper = _module.get<PlanHelper>(PlanHelper);
     await app.init();
     module = _module;
   });
@@ -110,18 +113,30 @@ describe('test plan service', () => {
     });
 
     test('client is not afiliate to a plan', async () => {
-      const res = await planService.clientHaveAPlanActive(client.id);
+      const res = await planHelper.clientHaveAPlanActive(client.id);
       expect(res).not.toBeTruthy();
     });
     test('contract is register for a user', async () => {
-      const contract = await planService.afiliatePLan({
+      const contract = await planService.joinPlan({
         clientId: client.id,
-        suscriptionId: suscription.id,
+        planId: plan.id,
         note: faker.lorem.words(2),
         paid: false,
         price: 50,
       });
       expect(contract).not.toBeNull();
+    });
+
+    test('The user cannot register for a plan', async () => {
+      await expect(
+        planService.joinPlan({
+          clientId: client.id,
+          planId: plan.id,
+          note: faker.lorem.words(2),
+          paid: false,
+          price: 50,
+        })
+      ).rejects.toThrow(BussinessError);
     });
   });
 

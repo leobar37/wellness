@@ -1,14 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Activity, Suscription } from '@wellness/core/entity';
-import { EntityNotFoundError } from '@wellness/core/common/error';
+import { Activity, Contract, Suscription } from '@wellness/core/entity';
+import {
+  BussinessError,
+  EntityNotFoundError,
+} from '@wellness/core/common/error';
 import { Repository } from 'typeorm';
 import { ActivityInput } from '../dto/activity.input';
 import { CRUD, ModeSuscription, Omit, omit } from '@wellness/common';
 import { add } from 'date-fns';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
-import { EventBus, SuscriptionEvent } from '@wellness/core/event-bus';
+import {
+  ContractEvent,
+  EventBus,
+  SuscriptionEvent,
+} from '@wellness/core/event-bus';
+import { ContractInput } from '../dto/contract.input';
 @Injectable()
 export class ActivityService {
   constructor(
@@ -67,5 +75,32 @@ export class ActivityService {
       })
     );
     return Activity;
+  }
+  async joinActivity(contractInput: ContractInput) {
+    // verify if client have a active plan
+
+    const activity = await this.repository.findOne({
+      where: {
+        id: contractInput.activityId,
+      },
+    });
+    const contract = await this.manager.save(
+      Contract,
+      new Contract({
+        clientId: contractInput.clientId,
+        suscriptionId: activity.suscription.id,
+        paid: contractInput.paid,
+        note: contractInput.note,
+        price: contractInput.price,
+      })
+    );
+    this.eventBus.publish(
+      new ContractEvent({
+        source: contract,
+        operation: CRUD.CREATE,
+        planOrActivity: activity,
+      })
+    );
+    return contract;
   }
 }

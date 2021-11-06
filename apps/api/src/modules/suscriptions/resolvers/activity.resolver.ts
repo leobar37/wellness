@@ -1,6 +1,7 @@
 import { Resolver, Mutation, Args, ID } from '@nestjs/graphql';
-import { Activity } from '@wellness/core/entity';
+import { Activity, Contract } from '@wellness/core/entity';
 import { ActivityInput } from '../dto/activity.input';
+import { ContractInput } from '../dto/contract.input';
 import { ActivityService } from '../services/activity.service';
 @Resolver()
 export class ActivityResolver {
@@ -15,5 +16,11 @@ export class ActivityResolver {
   @Mutation((type) => Activity)
   deleteActivity(@Args('id', { type: () => ID }) id: number) {
     return this.activityService.deleteActivity(id);
+  }
+  @Mutation((type) => Contract)
+  joinActivity(
+    @Args('contract', { type: () => ContractInput }) contract: ContractInput
+  ) {
+    return this.activityService.joinActivity(contract);
   }
 }

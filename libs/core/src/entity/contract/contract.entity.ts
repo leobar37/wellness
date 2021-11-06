@@ -30,6 +30,7 @@ export class Contract extends WellnessEntity implements HasNote {
   @Column('date', { nullable: true })
   finishedAt: Date | null;
 
+  @Column('boolean', { default: true })
   @Column('boolean', { default: false })
   finished: boolean;
 

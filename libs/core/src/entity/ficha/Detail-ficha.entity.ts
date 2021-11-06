@@ -8,11 +8,10 @@ export class DetailFicha extends WellnessEntity {
   constructor(input: DeepPartial<DetailFicha>) {
     super(input);
   }
-
   @Column('float', { nullable: true })
   weight: number;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   objective: string;
 
   @Column('text', { nullable: true })

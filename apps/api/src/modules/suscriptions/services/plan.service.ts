@@ -1,11 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository, InjectEntityManager } from '@nestjs/typeorm';
 import { Plan } from '@wellness/core/entity';
-import { EventBus, SuscriptionEvent } from '@wellness/core/event-bus';
+import {
+  ContractEvent,
+  EventBus,
+  SuscriptionEvent,
+} from '@wellness/core/event-bus';
 import { PlanInput } from '../dto/plan.input';
 import { EntityManager, Repository } from 'typeorm';
 import { CRUD, ModeSuscription, omit } from '@wellness/common';
 import { Suscription, Contract } from '@wellness/core';
+import { PlanHelper } from '../helpers/plan.helper';
 import {
   BussinessError,
   EntityNotFoundError,
@@ -16,7 +21,8 @@ export class PlanService {
   constructor(
     @InjectRepository(Plan) private repository: Repository<Plan>,
     @InjectEntityManager() private manager: EntityManager,
-    private eventBus: EventBus
+    private eventBus: EventBus,
+    private planHelper: PlanHelper
   ) {}
   async createPlan(input: PlanInput) {
     const plan = new Plan(omit(input, ['duration']));
@@ -60,42 +66,36 @@ export class PlanService {
     return plan;
   }
 
-  async test() {
-    return this.repository.find({});
-  }
-
-  public async clientHaveAPlanActive(clientId: number) {
-    const result = await this.manager
-      .createQueryBuilder(Plan, 'plan')
-      .innerJoin('plan.suscription', 'sub')
-      .innerJoin('sub.contracts', 'contract')
-      .where('contract.clientId = :clientId', {
-        clientId: clientId,
-      })
-      .andWhere('contract.finished = :finish', {
-        finish: false,
-      })
-      .printSql()
-      .getCount();
-
-    return result > 0;
-  }
-
-  async afiliatePLan(contractInput: ContractInput) {
+  async joinPlan(contractInput: ContractInput) {
     // verify if client have a active plan
-    const haveAPLan = await this.clientHaveAPlanActive(contractInput.clientId);
-
+    const haveAPLan = await this.planHelper.clientHaveAPlanActive(
+      contractInput.clientId
+    );
     if (haveAPLan) {
       throw new BussinessError('El cliente ya esta afiliado a un plan');
     }
+
+    const plan = await this.repository.findOne({
+      where: {
+        id: contractInput.planId,
+      },
+    });
+
     const contract = await this.manager.save(
       Contract,
       new Contract({
         clientId: contractInput.clientId,
-        suscriptionId: contractInput.suscriptionId,
+        suscriptionId: plan.suscription.id,
         paid: contractInput.paid,
         note: contractInput.note,
         price: contractInput.price,
+      })
+    );
+    this.eventBus.publish(
+      new ContractEvent({
+        source: contract,
+        operation: CRUD.CREATE,
+        planOrActivity: plan,
       })
     );
     return contract;
