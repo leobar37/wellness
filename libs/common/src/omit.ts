@@ -1,20 +1,22 @@
+import { SafeAny } from '.';
+import { TObject as SafeAny } from './shared-types';
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
-declare const File: any;
+declare const File: SafeAny;
 
 /**
  * Type-safe omit function - returns a new object which omits the specified keys.
  */
-export function omit<T extends object, K extends keyof T>(
+export function omit<T extends SafeAny, K extends keyof T>(
   obj: T,
   keysToOmit: K[]
 ): Omit<T, K>;
-export function omit<T extends object | any[], K extends keyof T>(
+export function omit<T extends SafeAny | SafeAny[], K extends keyof T>(
   obj: T,
   keysToOmit: string[],
   recursive: boolean
 ): T;
-export function omit<T extends any, K extends keyof T>(
+export function omit<T extends SafeAny, K extends keyof T>(
   obj: T,
   keysToOmit: string[],
   recursive = false
@@ -24,28 +26,33 @@ export function omit<T extends any, K extends keyof T>(
   }
 
   if (recursive && Array.isArray(obj)) {
-    return obj.map((item: any) => omit(item, keysToOmit, true)) as T;
+    return obj.map((item: SafeAny) =>
+      omit(item, keysToOmit, true)
+    ) as SafeAny as T;
   }
 
-  return Object.keys(obj as object).reduce((output: any, key) => {
+  return Object.keys(obj as SafeAny).reduce((output: SafeAny, key) => {
     if (keysToOmit.includes(key)) {
       return output;
     }
     if (recursive) {
-      return { ...output, [key]: omit((obj as any)[key], keysToOmit, true) };
+      return {
+        ...output,
+        [key]: omit((obj as SafeAny)[key], keysToOmit, true),
+      };
     }
-    return { ...output, [key]: (obj as any)[key] };
+    return { ...output, [key]: (obj as SafeAny)[key] };
   }, {} as Omit<T, K>);
 }
 
-function isObject(input: any): input is object {
+function isObject(input: SafeAny): input is SafeAny {
   return typeof input === 'object' && input !== null;
 }
 
 /**
  * When running in the Node environment, there is no native File object.
  */
-function isFileObject(input: any): boolean {
+function isFileObject(input: SafeAny): boolean {
   if (typeof File === 'undefined') {
     return false;
   } else {

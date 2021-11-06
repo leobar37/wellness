@@ -32,3 +32,5 @@ export enum CRUD {
   READ = 'READ',
   CREATE = 'CREATE',
 }
+
+export type SafeAny = Record<string, unknown>;

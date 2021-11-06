@@ -1,7 +1,8 @@
 import { WellnessEntity } from '../base/base.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
-import { ObjectType, Field, registerEnumType } from '@nestjs/graphql';
+import { ObjectType, Field, registerEnumType, Int } from '@nestjs/graphql';
 import { DeepPartial, ModeSuscription } from '@wellness/common';
+
 import { Contract } from '../contract/contract.entity';
 registerEnumType(ModeSuscription, {
   name: 'ModeSuscription',
@@ -26,11 +27,11 @@ export class Suscription extends WellnessEntity {
   }
 
   @Column()
-  @Field()
+  @Field((type) => Int)
   duration: number;
 
   @Column()
-  @Field()
+  @Field((type) => Boolean)
   active: boolean;
 
   @Column({
@@ -38,8 +39,18 @@ export class Suscription extends WellnessEntity {
     enum: ModeSuscription,
     default: ModeSuscription.DINAMIC,
   })
+  @Field((type) => ModeSuscription)
   mode: ModeSuscription;
 
+  @Column('date', { nullable: true })
+  @Field((type) => Date)
+  finishedAt: Date;
+
+  @Column('date', { nullable: true })
+  @Field((type) => Date, { nullable: true })
+  startAt: Date | null;
+
   @OneToMany((type) => Contract, (contract) => contract.suscription)
+  @Field((type) => [Contract], { nullable: 'items' })
   contracts: Promise<Contract[]>;
 }
