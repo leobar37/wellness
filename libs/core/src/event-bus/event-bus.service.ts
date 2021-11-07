@@ -30,5 +30,6 @@ export class EventBus implements OnModuleDestroy {
 
   onModuleDestroy(): SafeAny {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 }
