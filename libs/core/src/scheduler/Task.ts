@@ -1,19 +1,13 @@
 import { SafeAny } from '@wellness/common';
+import { CronJob } from 'cron';
 
 export enum STATETASK {
   FINISHED,
   PENNDING,
   STARTED,
 }
-export abstract class Task {
-  constructor(input: Partial<Task>) {
-    for (const [key, value] of Object.entries(input)) {
-      (this as SafeAny)[key] = value;
-    }
-  }
-
-  endDate: Date;
-
+export abstract class Task extends CronJob {
+  cronTimer: Date;
   state: STATETASK;
 
   // when a task is completed this method is called

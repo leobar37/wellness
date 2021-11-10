@@ -8,10 +8,17 @@ import { LoggerWellnessModule } from '@wellness/core/logger';
 import { resolve } from 'path';
 import { RequestContextService } from './common/context';
 import { AsistenceModule } from './modules/asistence';
+import { SuscriptionModule } from './modules/suscriptions';
 import { PingModule } from './modules/ping';
 import { UserModule } from './modules/users';
+import { ContractsSchedulerModule } from '@wellness/core/scheduler';
 
-const BUSINESS_MODULES = [PingModule, UserModule, AsistenceModule];
+const BUSINESS_MODULES = [
+  PingModule,
+  UserModule,
+  AsistenceModule,
+  SuscriptionModule,
+];
 
 @Module({
   imports: [
@@ -33,6 +40,7 @@ const BUSINESS_MODULES = [PingModule, UserModule, AsistenceModule];
 
     EventBusModule,
     LoggerWellnessModule,
+    ContractsSchedulerModule,
     ...BUSINESS_MODULES,
   ],
   controllers: [],

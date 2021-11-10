@@ -6,6 +6,7 @@ import { Suscription } from '../suscription/suscription.entity';
 import { Subscription } from 'rxjs';
 import { Client } from '../client/client.entity';
 import { HasNote } from '@wellness/common';
+import { differenceInDays } from 'date-fns';
 /**
  * @description
  */
@@ -30,7 +31,6 @@ export class Contract extends WellnessEntity implements HasNote {
   @Column('date', { nullable: true })
   finishedAt: Date | null;
 
-  @Column('boolean', { default: true })
   @Column('boolean', { default: false })
   finished: boolean;
 
@@ -45,4 +45,8 @@ export class Contract extends WellnessEntity implements HasNote {
 
   @ManyToOne((type) => Client, (cl) => cl.contracts)
   client: Promise<Client>;
+
+  getDaysToFinish() {
+    return differenceInDays(new Date(), this.finishedAt);
+  }
 }

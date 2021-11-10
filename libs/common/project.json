@@ -3,6 +3,17 @@
   "sourceRoot": "libs/common/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/common",
+        "tsConfig": "libs/common/tsconfig.lib.json",
+        "packageJson": "libs/common/package.json",
+        "main": "libs/common/src/index.ts",
+        "assets": ["libs/common/*.md"]
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

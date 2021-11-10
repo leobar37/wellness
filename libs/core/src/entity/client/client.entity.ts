@@ -68,6 +68,7 @@ export class Client extends WellnessEntity implements HasNote {
   sex: Sex;
 
   @Column({
+    type: 'enum',
     enum: ModeRegiser,
     default: ModeRegiser.ADMIN,
   })

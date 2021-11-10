@@ -17,6 +17,7 @@ import {
   SuscriptionEvent,
 } from '@wellness/core/event-bus';
 import { ContractInput } from '../dto/contract.input';
+import { SuscriptionsScheduler } from '@wellness/core/scheduler';
 @Injectable()
 export class ActivityService {
   constructor(

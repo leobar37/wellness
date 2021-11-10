@@ -2,6 +2,7 @@ import { WellnessEntity } from '../base/base.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
 import { ObjectType, Field, registerEnumType, Int } from '@nestjs/graphql';
 import { DeepPartial, ModeSuscription } from '@wellness/common';
+import { differenceInDays } from 'date-fns';
 
 import { Contract } from '../contract/contract.entity';
 registerEnumType(ModeSuscription, {
@@ -44,7 +45,7 @@ export class Suscription extends WellnessEntity {
 
   @Column('date', { nullable: true })
   @Field((type) => Date)
-  finishedAt: Date;
+  finishedAt: Date | null;
 
   @Column('date', { nullable: true })
   @Field((type) => Date, { nullable: true })
@@ -53,4 +54,15 @@ export class Suscription extends WellnessEntity {
   @OneToMany((type) => Contract, (contract) => contract.suscription)
   @Field((type) => [Contract], { nullable: 'items' })
   contracts: Promise<Contract[]>;
+
+  /**
+   *
+   * @returns -1 when a suscription si DINAMIC
+   */
+  getDaysToFinish() {
+    if (this.finishedAt == null) {
+      return -1;
+    }
+    return differenceInDays(new Date(), this.finishedAt);
+  }
 }

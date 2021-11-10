@@ -6,7 +6,7 @@ import { PlanResolver } from './resolvers/plan.resolver';
 import { PlanService } from './services/plan.service';
 import { ActivityService } from './services/activity.service';
 import { PlanHelper } from './helpers/plan.helper';
-
+import { ContractsSchedulerModule } from '@wellness/core/scheduler';
 @Module({
   providers: [
     ActivityService,
@@ -15,6 +15,9 @@ import { PlanHelper } from './helpers/plan.helper';
     ActivityResolver,
     PlanHelper,
   ],
-  imports: [TypeOrmModule.forFeature([Activity, Plan])],
+  imports: [
+    TypeOrmModule.forFeature([Activity, Plan]),
+    ContractsSchedulerModule,
+  ],
 })
-export class PlanModule {}
+export class SuscriptionModule {}

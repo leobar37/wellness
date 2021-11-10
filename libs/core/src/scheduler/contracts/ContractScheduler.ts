@@ -1,85 +1,77 @@
 import { Scheduler } from '../Scheduler';
 import { Contract, Suscription } from '@wellness/core/entity';
-import { DinamicTask, FixedTask } from './task';
 import { STATETASK } from '../Task';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
 import { ModeSuscription } from '@wellness/common';
-import { takeUntil } from 'rxjs/operators';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import { from } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { asyncObservable } from '../../utils';
+import { WelnessLogger } from '@wellness/core/logger';
 @Injectable()
-export class ContractsScheduler extends Scheduler implements OnModuleInit {
-  constructor(@InjectEntityManager() private manager: EntityManager) {
-    super();
-  }
-  onModuleInit() {
-    this.initializeTasks();
-    this.initListenEvents();
-  }
-
-  private initListenEvents() {
-    this.ofType(DinamicTask)
-      .pipe(takeUntil(super.destroy$))
-      .subscribe(async (task) => {
-        await this.manager.update(Contract, task.contractId, {
-          finished: true,
-        });
-      });
-    this.ofType(FixedTask)
-      .pipe(takeUntil(super.destroy$))
-      .subscribe(async (task) => {
-        // TODO: Use a transaction here ->
-        const sub = await this.manager.findOne(Suscription, {
-          where: {
-            id: task.suscriptionId,
-          },
-        });
-        // desactive subscription
-        this.manager.update(Suscription, sub.id, {
-          active: false,
-        });
-
-        const contracts = await sub.contracts;
-        for (const contract of contracts) {
-          await this.manager.update(Contract, contract.id, {
-            finished: true,
-          });
-          // TODO:
-          // - lauch a notification here
-        }
-      });
+export class SuscriptionsScheduler {
+  constructor(
+    @InjectEntityManager() private manager: EntityManager,
+    private logger: WelnessLogger
+  ) {
+    console.log('Has been initialized');
   }
 
-  private async initializeTasks() {
-    const suscriptions = await this.manager.find(Suscription, {});
-    suscriptions.forEach(async (sub) => {
-      const isFixed = sub.mode == ModeSuscription.FIXED;
-      if (isFixed) {
-        this.addFixedTask(sub);
-      } else {
-        const contracts = await sub.contracts;
-        for (const contract of contracts) {
-          if (!contract.finished) {
-            this.addDinamicTask(contract);
-          }
-        }
-      }
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  async verifyContracts() {
+    const subs = await this.manager.find(Suscription, {
+      where: {
+        active: true,
+      },
     });
-  }
-
-  // this dinamic
-  addDinamicTask(contract: Contract) {
-    this.onTask(
-      new DinamicTask({
-        contractId: contract.id,
-        endDate: contract.finishedAt,
-        state: STATETASK.STARTED,
-      })
-    );
-  }
-  addFixedTask(suscription: Suscription) {
-    this.onTask(
-      new FixedTask({ state: STATETASK.STARTED, suscriptionId: suscription.id })
-    );
+    from(subs)
+      .pipe(
+        // modify suscription if is necesary
+        switchMap((sub) =>
+          asyncObservable(async (observer) => {
+            if (sub.mode == ModeSuscription.DINAMIC) {
+              return sub;
+            }
+            // the suscription is finished
+            if (sub.getDaysToFinish() == 0) {
+              await this.manager.update(Suscription, sub.id, {
+                active: false,
+              });
+              sub.active = false;
+            }
+            return sub;
+          })
+        ),
+        switchMap((sub: Suscription) =>
+          asyncObservable(async (observer) => {
+            const contracts = await sub.contracts;
+            const affectedContracts: Contract[] = [];
+            for (const contract of contracts) {
+              const days = contract.getDaysToFinish();
+              if (days == 0) {
+                contract.finished = true;
+                affectedContracts.push(contract);
+              }
+            }
+            this.manager.transaction((manager) => {
+              return Promise.all(
+                affectedContracts.map(async (contract) => {
+                  await manager.update(Contract, contract.id, {
+                    finished: true,
+                  });
+                })
+              );
+            });
+            return affectedContracts;
+          })
+        )
+      )
+      .subscribe((contracts) => {
+        this.logger.info(`Contracts have been verified`, {
+          affected: contracts,
+        });
+      });
   }
 }
