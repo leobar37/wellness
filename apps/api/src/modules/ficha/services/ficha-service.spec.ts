@@ -82,8 +82,8 @@ describe('test ficha service', () => {
         weight: faker.datatype.number(100),
       });
       expect(fichaUpdated).not.toBeNull();
-      //   expect(fichaUpdated.details.length).toBe(2);
-      //   expect(fichaUpdated.closed).toBeTruthy();
+      expect(fichaUpdated.details.length).toBe(2);
+      expect(fichaUpdated.closed).toBeTruthy();
     });
   });
 

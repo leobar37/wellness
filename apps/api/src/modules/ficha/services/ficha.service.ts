@@ -39,7 +39,7 @@ export class FichaService {
       open: false,
       ...inputFicha,
     });
-
+    ficha.closed = true;
     ficha.details.push(closeDetail);
     ficha = await this.manager.save(Ficha, ficha);
 
