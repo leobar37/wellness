@@ -8,8 +8,7 @@ import { EntityManager, Repository } from 'typeorm';
 export class PlanHelper {
   constructor(
     @InjectRepository(Plan) private repository: Repository<Plan>,
-    @InjectEntityManager() private manager: EntityManager,
-    private eventBus: EventBus
+    @InjectEntityManager() private manager: EntityManager
   ) {}
   public async clientHaveAPlanActive(clientId: number) {
     const result = await this.manager

@@ -16,6 +16,8 @@ export class Ficha extends WellnessEntity {
   @Column('bool', { default: false })
   closed: boolean;
 
-  @OneToMany((type) => DetailFicha, (detail) => detail.ficha)
+  @OneToMany((type) => DetailFicha, (detail) => detail.ficha, {
+    cascade: ['update', 'insert'],
+  })
   details: DetailFicha[];
 }

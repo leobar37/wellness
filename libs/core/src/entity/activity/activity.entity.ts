@@ -1,9 +1,10 @@
 import { WellnessEntity } from '../base/base.entity';
-import { Entity, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { DeepPartial } from '@wellness/common';
 import { Detail } from '../detail-plan';
 import { Suscription } from '../suscription/suscription.entity';
+import { Contract } from '@wellness/core';
 /**
  * @description
  */

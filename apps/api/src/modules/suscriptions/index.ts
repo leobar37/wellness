@@ -1,1 +1,1 @@
-export * from './plan.module';
+export * from './suscriptions.module';

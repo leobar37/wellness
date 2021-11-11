@@ -11,7 +11,6 @@ import { AsistenceModule } from './modules/asistence';
 import { SuscriptionModule } from './modules/suscriptions';
 import { PingModule } from './modules/ping';
 import { UserModule } from './modules/users';
-import { ContractsSchedulerModule } from '@wellness/core/scheduler';
 
 const BUSINESS_MODULES = [
   PingModule,
@@ -40,7 +39,6 @@ const BUSINESS_MODULES = [
 
     EventBusModule,
     LoggerWellnessModule,
-    ContractsSchedulerModule,
     ...BUSINESS_MODULES,
   ],
   controllers: [],

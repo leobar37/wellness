@@ -17,7 +17,7 @@ export class DetailFicha extends WellnessEntity {
   @Column('text', { nullable: true })
   note: string;
 
-  @Column('boolean', { default: false })
+  @Column('boolean', { default: true })
   open: boolean;
 
   @OneToOne((type) => AssetBoot, { eager: true, cascade: true })
@@ -28,5 +28,5 @@ export class DetailFicha extends WellnessEntity {
   fichaId: number;
 
   @ManyToOne((type) => Ficha, (ficha) => ficha.details)
-  ficha: Promise<Ficha>;
+  ficha: Ficha;
 }

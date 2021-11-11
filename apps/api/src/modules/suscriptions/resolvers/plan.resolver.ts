@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Args, ID } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, ID, Query } from '@nestjs/graphql';
 import { Plan } from '@wellness/core/entity';
 import { PlanInput } from '../dto/plan.input';
 import { PlanService } from '../services/plan.service';
@@ -22,5 +22,10 @@ export class PlanResolver {
     @Args('contract', { type: () => ContractInput }) input: ContractInput
   ) {
     return this.planService.joinPlan(input);
+  }
+  // find activities
+  @Query((type) => [Plan])
+  public activities(@Args('id', { type: () => ID }) id: number) {
+    return this.planService.findActivities(id);
   }
 }

@@ -7,7 +7,7 @@ import {
 } from '@wellness/core/common/error';
 import { Repository } from 'typeorm';
 import { ActivityInput } from '../dto/activity.input';
-import { CRUD, ModeSuscription, Omit, omit } from '@wellness/common';
+import { CRUD, ModeSuscription, omit } from '@wellness/common';
 import { add } from 'date-fns';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
@@ -17,7 +17,6 @@ import {
   SuscriptionEvent,
 } from '@wellness/core/event-bus';
 import { ContractInput } from '../dto/contract.input';
-import { SuscriptionsScheduler } from '@wellness/core/scheduler';
 @Injectable()
 export class ActivityService {
   constructor(
@@ -103,5 +102,19 @@ export class ActivityService {
       })
     );
     return contract;
+  }
+
+  // find activities by client and date
+
+  async findActivities(idClient: number) {
+    const activities = await this.repository
+      .createQueryBuilder('act')
+      .innerJoin('act.suscription', 'sub')
+      .innerJoin('sub.contracts', 'contract')
+      .where('contract.clientId = :clientId', {
+        clientId: idClient,
+      })
+      .getMany();
+    return activities;
   }
 }

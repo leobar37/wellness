@@ -100,4 +100,18 @@ export class PlanService {
     );
     return contract;
   }
+  // find plans
+  // TODO: add date filter
+  public async findPlans(idClient: number) {
+    const plans = await this.repository
+      .createQueryBuilder('plan')
+      .innerJoin('plan.suscription', 'sub')
+      .innerJoin('sub.contracts', 'contract')
+      .where('contract.clientId = :clientId', {
+        clientId: idClient,
+      })
+      .printSql()
+      .getMany();
+    return plans;
+  }
 }

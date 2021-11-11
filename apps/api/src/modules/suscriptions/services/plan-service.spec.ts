@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { coreEntitiesMap } from '@wellness/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import { EventBusModule } from '@wellness/core/event-bus';
-import { PlanModule } from '../plan.module';
+import { SuscriptionModule } from '../suscriptions.module';
 import { Client, Plan, Suscription } from '@wellness/core/entity';
 import * as faker from 'faker';
 import { ModeSuscription, Sex } from '@wellness/common';
@@ -46,7 +46,7 @@ describe('test plan service', () => {
   beforeAll(async () => {
     const _module = await Test.createTestingModule({
       imports: [
-        PlanModule,
+        SuscriptionModule,
         TypeOrmModule.forRoot({
           password: 'alfk3458',
           username: 'leobar37',
