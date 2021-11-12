@@ -7,14 +7,12 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  Text,
   VStack,
-  Wrap,
-  WrapItem,
 } from '@chakra-ui/react';
-import { Logo } from '@wellness/admin-ui/components';
-import { Left, Search } from '@wellness/admin-ui/icons';
-import { PropsWithChildren, ReactNode } from 'react';
+import { Logo } from '../../components';
+import { Left, Search } from '../../icons';
+
+import { PropsWithChildren, ReactNode, FunctionComponent } from 'react';
 import { config } from './internal';
 
 export const SidebarHeader = () => {
@@ -47,15 +45,15 @@ export const SidebarHeader = () => {
 };
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-type SidebarProps = {
-  open: boolean;
-  onClose: () => void;
-};
+type SidebarProps = PropsWithChildren<{
+  open?: boolean;
+  onClose?: () => void;
+}>;
 
-export const Sidebar = ({ children }: PropsWithChildren<SidebarProps>) => {
+export const Sidebar: FunctionComponent<SidebarProps> = ({ children }) => {
   return (
     // wrapper
-    <Box position="fixed" left="0" top="0">
+    <Box>
       {/* content */}
       <Box
         overflow="hidden"
@@ -70,4 +68,8 @@ export const Sidebar = ({ children }: PropsWithChildren<SidebarProps>) => {
       </Box>
     </Box>
   );
+};
+
+Sidebar.defaultProps = {
+  open: false,
 };
