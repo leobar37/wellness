@@ -14,8 +14,8 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenu,
-} from '@wellness/admin-ui/components';
-import { Left, UsersIcon } from '@wellness/admin-ui/icons';
+} from '../../components';
+import { Left, UsersIcon } from '../../icons';
 import * as React from 'react';
 import { PropsWithChildren } from 'react';
 
@@ -38,16 +38,62 @@ const contentLayoutGrid: SystemStyleObject = {
   gridTemplateRows: '100px minmax(600px, 1fr)',
 };
 
-type BaseLayoutProps = PropsWithChildren<{
-  sidebar?: React.ReactNode;
-  footer?: React.ReactNode;
-}>;
+type BaseLayoutProps = PropsWithChildren<
+  {
+    /**
+     * layout optional Sidebar
+     */
+    sidebar?: React.ReactNode;
+    footer?: React.ReactNode;
+    header?: React.ReactNode;
+  } & HeaderlayoutProps
+>;
+
+type HeaderlayoutProps = {
+  /**
+   * Text of hero
+   */
+  backText?: string;
+  /**
+   * Actions to go in the header
+   */
+  actions?: React.ReactNode;
+};
+const Headerlayout = ({ backText, actions }: HeaderlayoutProps) => {
+  return (
+    <HStack
+      gridRow="1"
+      gridColumn="1 / 5"
+      justify="space-between"
+      px={10}
+      pt={5}
+      align="center"
+    >
+      {/* Back Button */}
+      <HStack spacing={5}>
+        <Button width="45px" height="45px" bg="brown.500">
+          <Box fontSize="18px">
+            <Left color="white" fontSize="xl" />
+          </Box>
+        </Button>
+        <Heading size="lg">{backText}</Heading>
+      </HStack>
+      {/* Actions */}
+      {actions && <HStack pr="20px">{actions}</HStack>}
+    </HStack>
+  );
+};
 
 const BaseLayout: React.FunctionComponent<BaseLayoutProps> = ({
   sidebar,
   footer,
   children,
+  header,
+  backText,
+  actions,
 }) => {
+  const showHeader = backText || actions;
+
   return (
     <Grid sx={layoutGrid}>
       <GridItem gridArea="sidebar">{sidebar}</GridItem>
@@ -67,28 +113,13 @@ const BaseLayout: React.FunctionComponent<BaseLayoutProps> = ({
           borderRadius="10px"
           sx={contentLayoutGrid}
         >
-          {/* Header of the layout */}
-          <HStack
-            gridRow="1"
+          {showHeader && <Headerlayout backText={backText} actions={actions} />}
+          <Box
             gridColumn="1 / 5"
-            justify="space-between"
-            px={10}
-            pt={5}
-            align="center"
+            gridRow={`${showHeader ? '2 / 4' : '1 /4'}  `}
+            my={2}
+            p={4}
           >
-            <HStack spacing={5}>
-              <Button width="45px" height="45px" bg="brown.500">
-                <Box fontSize="18px">
-                  <Left color="white" fontSize="xl" />
-                </Box>
-              </Button>
-              <Heading size="lg">Administradores</Heading>
-            </HStack>
-            <HStack pr="20px">
-              <Button>Nuevo</Button>
-            </HStack>
-          </HStack>
-          <Box gridColumn="1 / 5" gridRow="1 / 4">
             {children}
           </Box>
         </Box>
