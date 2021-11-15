@@ -1,0 +1,21 @@
+schema: ./schema.gql
+documents: "./apps/admin/src/**/*.graphql.{ts,tsx}"
+generates:
+  ./apps/admin/src/common/generated-types.ts:
+    plugins:
+      - add:
+          content : "// tslint:disable"
+      - add:
+          content : "import { SafeAny} from '@wellness/common'"
+      - add:
+          content: "// this file is generate pls not edit manually :)" 
+      - "typescript"
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      typesPrefix: "I"
+      namingConvention:
+        enumValues: "keep"
+      maybeValue: "T"
+      strict: true 
+      defaultScalarType: "SafeAny"

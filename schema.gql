@@ -1,0 +1,134 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Detail {
+  name: String!
+  description: String!
+  price: Float!
+}
+
+type Asistence {
+  note: String!
+  client: Client!
+}
+
+type Client {
+  code: String!
+  dni: String!
+  email: String!
+  name: String!
+  lastName: String!
+  birth: DateTime!
+  phone: DateTime!
+  direction: String
+  sex: Sex!
+  mode: ModeRegiser!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+enum Sex {
+  WOMEN
+  MEN
+  OTHER
+}
+
+enum ModeRegiser {
+  SELF
+  ADMIN
+}
+
+type Contract {
+  paid: Boolean!
+  price: Float!
+}
+
+type Activity {
+  detail: Detail!
+}
+
+type Plan {
+  detail: Detail!
+  visible: Boolean!
+}
+
+type Query {
+  ping: String!
+  clients: [Client!]!
+  activities(id: ID!): [Activity!]!
+}
+
+type Mutation {
+  registerClient(client: ClientInput!): Client!
+  updateCLient(input: ClientInput!, id: ID!): Client!
+  deleteCLient(id: ID!): Client!
+  createAsistence(asistence: InputAsistence!): Asistence!
+  deleteAsistence(id: ID!): Boolean!
+  updateAsistence(input: InputAsistence!, id: ID!): Asistence!
+  createPlan(input: PlanInput!): Plan!
+  deletePlan(id: ID!): Plan!
+  joinPlan(contract: ContractInput!): Boolean!
+  createActivity(input: ActivityInput!): Activity!
+  deleteActivity(id: ID!): Activity!
+  joinActivity(contract: ContractInput!): Contract!
+}
+
+input ClientInput {
+  code: String
+  dni: String!
+  name: String!
+  lastName: String!
+  birthday: DateTime
+  direction: String!
+  email: String!
+  note: String!
+  sex: Sex!
+  modeRegister: ModeRegiser!
+}
+
+input InputAsistence {
+  note: ID
+  clientId: ID!
+}
+
+input PlanInput {
+  visible: Boolean!
+  detail: DetailInput!
+  duration: Int!
+}
+
+input DetailInput {
+  name: String!
+  description: String!
+  price: Float!
+}
+
+input ContractInput {
+  clientId: Float!
+  paid: Boolean!
+  price: Float!
+  note: String
+  planId: ID
+  activityId: ID
+}
+
+input ActivityInput {
+  visible: Boolean!
+  detail: DetailInput!
+  duration: Int!
+  mode: ModeSuscription!
+  startAt: DateTime
+}
+
+"""This enum determine the mode of a suscription"""
+enum ModeSuscription {
+  """"""
+  FIXED
+
+  """"""
+  DINAMIC
+}

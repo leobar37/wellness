@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "generate": "graphql-codegen --config codegen.yml"
   },
   "private": true,
   "dependencies": {
@@ -31,7 +32,7 @@
     "deepmerge": "^4.2.2",
     "faker": "^5.5.3",
     "framer-motion": "^4",
-    "graphql": "^16.0.1",
+    "graphql": "15.0.0",
     "lodash": "^4.17.21",
     "nestjs-pino": "^2.2.0",
     "next": "12.0.2",
@@ -54,6 +55,11 @@
     "@babel/core": "7.12.13",
     "@babel/preset-typescript": "7.12.13",
     "@emotion/babel-plugin": "11.3.0",
+    "@graphql-codegen/add": "^3.1.0",
+    "@graphql-codegen/cli": "^2.3.0",
+    "@graphql-codegen/typescript": "^2.4.0",
+    "@graphql-codegen/typescript-operations": "^2.2.0",
+    "@graphql-codegen/typescript-react-apollo": "^3.2.1",
     "@nestjs/schematics": "^7.0.0",
     "@nestjs/testing": "^7.0.0",
     "@nrwl/cli": "13.1.2",

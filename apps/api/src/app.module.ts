@@ -21,9 +21,12 @@ const BUSINESS_MODULES = [
 
 @Module({
   imports: [
+    /*
+      Include module configuration for control configuration like this
+    */
     TypeOrmModule.forRoot({
       password: 'alfk3458',
-      username: 'leobar37',
+      username: 'postgres',
       type: 'postgres',
       host: 'localhost',
       database: 'wellness',
@@ -34,9 +37,9 @@ const BUSINESS_MODULES = [
     GraphQLModule.forRoot({
       playground: true,
       debug: true,
-      autoSchemaFile: resolve('../../../', 'schema'),
+      autoSchemaFile: resolve('./', 'schema.gql'),
+      context: ({ req }) => ({ req }),
     }),
-
     EventBusModule,
     LoggerWellnessModule,
     ...BUSINESS_MODULES,
