@@ -1,14 +1,16 @@
 import { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
-import * as React from 'react';
 import { theme } from '@wellness/admin-ui';
+import { ApolloProvider } from '@apollo/client';
+import { useApollo } from '../lib/apollo';
 function CustomApp({ Component, pageProps }: AppProps) {
+  const apolloClient = useApollo(pageProps);
   return (
-    <React.Fragment>
+    <ApolloProvider client={apolloClient}>
       <ChakraProvider theme={theme}>
         <Component {...pageProps} />
       </ChakraProvider>
-    </React.Fragment>
+    </ApolloProvider>
   );
 }
 
