@@ -11,6 +11,7 @@ import { IncomingHttpHeaders } from 'http';
 import { isEqual } from 'lodash';
 import { AppProps } from 'next/app';
 import { useMemo } from 'react';
+
 const APOLLO_PROP_NAME = '__APOLLO__STATE';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
