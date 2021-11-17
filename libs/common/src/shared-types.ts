@@ -17,6 +17,76 @@ export type DeepPartial<T> = {
 };
 
 /**
+ * This partial include a coditional for verify a class
+ */
+export type DeepPartialSimple<T> = {
+  [P in keyof T]?:
+    | null
+    | (T[P] extends Array<infer U>
+        ? Array<DeepPartialSimple<U>>
+        : T[P] extends ReadonlyArray<infer X>
+        ? ReadonlyArray<DeepPartialSimple<X>>
+        : T[P] extends Type<SafeAny>
+        ? T[P]
+        : DeepPartialSimple<T[P]>);
+};
+
+/**
+ * @description
+ * This enum determine the mode of a suscription
+ *
+ */
+export enum ModeSuscription {
+  FIXED = 'FIXED',
+  DINAMIC = 'DINAMIC',
+}
+
+export interface HasNote {
+  note: string;
+}
+type Join<K, P> = K extends string | number
+  ? P extends string | number
+    ? `${K}${'' extends P ? '' : '.'}${P}`
+    : never
+  : never;
+
+type Prev = [
+  never,
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  ...0[]
+];
+
+export type Paths<T, D extends number = 10> = [D] extends [never]
+  ? never
+  : T extends TObject
+  ? {
+      [K in keyof T]-?: K extends string | number
+        ? `${K}` | Join<K, Paths<T[K], Prev[D]>>
+        : never;
+    }[keyof T]
+  : '';
+
+/**
  * A type representing the type rather than instance of a class.
  */
 export interface Type<T> extends Function {

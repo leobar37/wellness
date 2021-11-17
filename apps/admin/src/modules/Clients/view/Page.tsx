@@ -1,5 +1,5 @@
 import React from 'react';
-import { BaseLayout, ModalCrud } from '@wellness/admin-ui/components';
+import { Layout, ModalCrud } from '@wellness/admin-ui/components';
 import {
   Button,
   useDisclosure,
@@ -12,8 +12,11 @@ import { useClientsController } from '../controller';
 import * as yup from 'yup';
 import { Asserts } from 'yup';
 import { Formik } from 'formik';
-import { InputControl, SubmitButton } from 'formik-chakra-ui';
-import { ModeRegiser, Sex } from '@wellness/admin-ui/common/generated-types';
+import { InputControl } from 'formik-chakra-ui';
+import { ModeRegiser, Sex } from '@wellness/admin-ui/common';
+import type { NextPageWithLayout } from '@wellness/admin-ui/common';
+import { BaseLayout } from '@wellness/admin-ui/components';
+import { SafeAny } from '@wellness/common';
 
 const clientSchema = yup.object({
   name: yup.string().required(),
@@ -29,12 +32,12 @@ const clientSchema = yup.object({
 
 export type ClientSchena = Asserts<typeof clientSchema>;
 
-export function Page() {
+export const Page: NextPageWithLayout<SafeAny> = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { registerClient } = useClientsController();
 
   return (
-    <BaseLayout
+    <Layout
       backText="Clientes"
       actions={<Button onClick={onOpen}>Crear</Button>}
     >
@@ -82,6 +85,10 @@ export function Page() {
           </ModalCrud>
         )}
       </Formik>
-    </BaseLayout>
+    </Layout>
   );
-}
+};
+
+Page.getLayout = (page) => {
+  return <BaseLayout>{page}</BaseLayout>;
+};

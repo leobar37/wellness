@@ -26,17 +26,3 @@ export enum ModeRegiser {
   SELF = 'SELF',
   ADMIN = 'ADMIN',
 }
-
-/**
- * @description
- * This enum determine the mode of a suscription
- *
- */
-export enum ModeSuscription {
-  FIXED = 'FIXED',
-  DINAMIC = 'DINAMIC',
-}
-
-export interface HasNote {
-  note: string;
-}

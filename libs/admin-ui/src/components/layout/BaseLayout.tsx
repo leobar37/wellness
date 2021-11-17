@@ -17,7 +17,7 @@ import {
 } from '../../components';
 import { Left, UsersIcon } from '../../icons';
 import * as React from 'react';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, FunctionComponent } from 'react';
 
 const layoutGrid: SystemStyleObject = {
   height: '100vh',
@@ -38,18 +38,16 @@ const contentLayoutGrid: SystemStyleObject = {
   gridTemplateRows: '100px minmax(600px, 1fr)',
 };
 
-type BaseLayoutProps = PropsWithChildren<
-  {
-    /**
-     * layout optional Sidebar
-     */
-    sidebar?: React.ReactNode;
-    footer?: React.ReactNode;
-    header?: React.ReactNode;
-  } & HeaderlayoutProps
->;
+type BaseLayoutProps = PropsWithChildren<{
+  /**
+   * layout optional Sidebar
+   */
+  sidebar?: React.ReactNode;
+  footer?: React.ReactNode;
+  header?: React.ReactNode;
+}>;
 
-type HeaderlayoutProps = {
+export const Layout: FunctionComponent<{
   /**
    * Text of hero
    */
@@ -58,29 +56,55 @@ type HeaderlayoutProps = {
    * Actions to go in the header
    */
   actions?: React.ReactNode;
-};
-const Headerlayout = ({ backText, actions }: HeaderlayoutProps) => {
+}> = ({ children, actions, backText }) => {
+  const showHeader = backText || actions;
   return (
-    <HStack
-      gridRow="1"
-      gridColumn="1 / 5"
-      justify="space-between"
-      px={10}
-      pt={5}
-      align="center"
+    <GridItem
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      gridArea="content"
     >
-      {/* Back Button */}
-      <HStack spacing={5}>
-        <Button width="45px" height="45px" bg="brown.500">
-          <Box fontSize="18px">
-            <Left color="white" fontSize="xl" />
-          </Box>
-        </Button>
-        <Heading size="lg">{backText}</Heading>
-      </HStack>
-      {/* Actions */}
-      {actions && <HStack pr="20px">{actions}</HStack>}
-    </HStack>
+      <Box
+        overflowY="scroll"
+        overflowX="hidden"
+        width="90%"
+        bg="white"
+        height="90%"
+        borderRadius="10px"
+        sx={contentLayoutGrid}
+      >
+        {showHeader && (
+          <HStack
+            gridRow="1"
+            gridColumn="1 / 5"
+            justify="space-between"
+            px={10}
+            pt={5}
+            align="center"
+          >
+            <HStack spacing={5}>
+              <Button width="45px" height="45px" bg="brown.500">
+                <Box fontSize="18px">
+                  <Left color="white" fontSize="xl" />
+                </Box>
+              </Button>
+              <Heading size="lg">{backText}</Heading>
+            </HStack>
+            {/* Actions */}
+            {actions && <HStack pr="20px">{actions}</HStack>}
+          </HStack>
+        )}
+        <Box
+          gridColumn="1 / 5"
+          gridRow={`${showHeader ? '2 / 4' : '1 /4'}  `}
+          my={2}
+          p={4}
+        >
+          {children}
+        </Box>
+      </Box>
+    </GridItem>
   );
 };
 
@@ -89,41 +113,12 @@ const BaseLayout: React.FunctionComponent<BaseLayoutProps> = ({
   footer,
   children,
   header,
-  backText,
-  actions,
 }) => {
-  const showHeader = backText || actions;
-
   return (
     <Grid sx={layoutGrid}>
       <GridItem gridArea="sidebar">{sidebar}</GridItem>
       {/* Content */}
-      <GridItem
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        gridArea="content"
-      >
-        <Box
-          overflowY="scroll"
-          overflowX="hidden"
-          width="90%"
-          bg="white"
-          height="90%"
-          borderRadius="10px"
-          sx={contentLayoutGrid}
-        >
-          {showHeader && <Headerlayout backText={backText} actions={actions} />}
-          <Box
-            gridColumn="1 / 5"
-            gridRow={`${showHeader ? '2 / 4' : '1 /4'}  `}
-            my={2}
-            p={4}
-          >
-            {children}
-          </Box>
-        </Box>
-      </GridItem>
+      {children}
       <GridItem
         gridArea="footer"
         display="flex"

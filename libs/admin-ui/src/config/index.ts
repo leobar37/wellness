@@ -9,3 +9,5 @@
  * - https://github.dev/contiamo/react-runtime-config
  *
  */
+
+export * from './config-helpers';

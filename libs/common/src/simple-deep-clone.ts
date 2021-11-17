@@ -1,5 +1,5 @@
 import { SafeAny } from '.';
-import { isClassInstance } from './share-utils';
+import { isClassInstance } from './shared-utils';
 import { TObject } from './shared-types';
 
 /**
@@ -17,7 +17,7 @@ export function simpleDeepClone<
   let i: number | string;
   // handle case: array
   if (input instanceof Array) {
-    let l;
+    let l: SafeAny;
     output = [] as SafeAny[];
     for (i = 0, l = input.length; i < l; i++) {
       output[i] = simpleDeepClone(input[i]);
