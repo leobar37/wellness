@@ -16,19 +16,68 @@ import {
   FormLabel,
   Input,
   ModalProps,
+  BoxProps,
 } from '@chakra-ui/react';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 import { TextOrChild, ChildrenOrText } from '../children';
+import { Box } from '@chakra-ui/react';
+import { SafeAny } from '@wellness/common';
+
+export type UdpateActionsProps = {
+  onReset: () => void;
+  onSave: () => void;
+};
+/**
+ *
+ * This is a utility for working with formik
+ *
+ */
+export const ChackraForm: FunctionComponent<{ submit?: SafeAny } & BoxProps> =
+  ({ submit, children }) => {
+    return (
+      <Box as="form" onSubmit={submit}>
+        {children}
+      </Box>
+    );
+  };
+
+export const UdpateActions = ({ onReset, onSave }: UdpateActionsProps) => {
+  return (
+    <HStack>
+      <Button onClick={onReset} variant="ghost">
+        Restablecer
+      </Button>
+      <Button onClick={onSave}>Guardar Cambios</Button>
+    </HStack>
+  );
+};
+
+export type SaveActionsProps = {
+  onCancel: () => void;
+  onSave: () => void;
+};
+
+export const SaveActions = ({ onCancel, onSave }: SaveActionsProps) => {
+  return (
+    <HStack>
+      <Button onClick={onCancel} variant="ghost">
+        Cancelar
+      </Button>
+      <Button onClick={onSave}>Guardar</Button>
+    </HStack>
+  );
+};
+
+type TMode = 'EDIT' | 'CREATE';
 
 type ModalCrudProps = {
   overlay?: boolean;
   textHeader: TextOrChild;
-  buttons?: {
-    saveText: string;
-    resetText: string;
-  };
-  onReset?: () => void;
-  onSave?: () => void;
+  /**
+   *
+   */
+  footer: ReactNode;
+  mode?: TMode;
 } & Pick<ModalProps, 'isOpen' | 'onClose' | 'isCentered' | 'motionPreset'>;
 
 export const ModalCrud: FunctionComponent<ModalCrudProps> = ({
@@ -39,9 +88,7 @@ export const ModalCrud: FunctionComponent<ModalCrudProps> = ({
   onClose,
   isCentered,
   motionPreset,
-  onReset,
-  onSave,
-  buttons,
+  footer,
 }) => {
   const [gray500] = useToken('colors', ['gray.500']);
 
@@ -67,14 +114,11 @@ export const ModalCrud: FunctionComponent<ModalCrudProps> = ({
             {textHeader}
           </ChildrenOrText>
         </ModalHeader>
-        <ModalBody mx={4}>{children}</ModalBody>
+        <ModalBody mx={4} mt={4}>
+          {children}
+        </ModalBody>
         <ModalFooter w={'100%'} left="0" position="absolute" bottom="0">
-          <HStack>
-            <Button onClick={onReset} variant="ghost">
-              {buttons?.resetText}
-            </Button>
-            <Button onClick={onSave}>{buttons?.saveText}</Button>
-          </HStack>
+          {footer}
         </ModalFooter>
       </ModalContent>
     </Modal>
@@ -83,8 +127,5 @@ export const ModalCrud: FunctionComponent<ModalCrudProps> = ({
 
 ModalCrud.defaultProps = {
   overlay: true,
-  buttons: {
-    resetText: 'Restablecer',
-    saveText: 'Guardar cambios',
-  },
+  mode: 'CREATE',
 };

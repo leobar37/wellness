@@ -31,6 +31,8 @@
     "date-fns": "^2.25.0",
     "deepmerge": "^4.2.2",
     "faker": "^5.5.3",
+    "formik": "^2.2.9",
+    "formik-chakra-ui": "^1.4.8",
     "framer-motion": "^4",
     "graphql": "15.0.0",
     "lodash": "^4.17.21",
@@ -49,6 +51,7 @@
     "rxjs": "^7",
     "tslib": "^2.0.0",
     "typeorm": "^0.2.38",
+    "yup": "^0.32.11",
     "zustand": "^3.6.5"
   },
   "devDependencies": {
@@ -58,6 +61,7 @@
     "@graphql-codegen/add": "^3.1.0",
     "@graphql-codegen/cli": "^2.3.0",
     "@graphql-codegen/typescript": "^2.4.0",
+    "@graphql-codegen/typescript-compatibility": "^2.1.5",
     "@graphql-codegen/typescript-operations": "^2.2.0",
     "@graphql-codegen/typescript-react-apollo": "^3.2.1",
     "@nestjs/schematics": "^7.0.0",

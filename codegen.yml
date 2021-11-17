@@ -1,7 +1,7 @@
 schema: ./schema.gql
-documents: "./apps/admin/src/**/*.graphql.{ts,tsx}"
+documents: "./libs/admin-ui/src/**/*.graphql.{ts,tsx}"
 generates:
-  ./apps/admin/src/common/generated-types.ts:
+  ./libs/admin-ui/src/common/generated-types.ts:
     plugins:
       - add:
           content : "// tslint:disable"
@@ -12,10 +12,12 @@ generates:
       - "typescript"
       - typescript-operations
       - typescript-react-apollo
+      - "typescript-compatibility"
     config:
-      typesPrefix: "I"
       namingConvention:
         enumValues: "keep"
       maybeValue: "T"
       strict: true 
       defaultScalarType: "SafeAny"
+      noNamespaces: true
+      withHOC: false

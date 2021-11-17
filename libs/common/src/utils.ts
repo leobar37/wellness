@@ -8,3 +8,7 @@
 export function normalizeEmailAddress(input: string): string {
   return input.trim().toLowerCase();
 }
+
+// export function enumToArray<T>(enumSource: T) : [...ke] {
+
+// }

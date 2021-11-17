@@ -1,8 +1,6 @@
 import { SafeAny } from '@wellness/common';
 /**
  *
- * @param val
- * @param fallback
  */
 
 export const matVa = <Val, T extends string | number | symbol>(
