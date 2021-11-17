@@ -1,6 +1,6 @@
 import { WellnessEntity } from '../base/base.entity';
 import { Entity, Column, ManyToOne } from 'typeorm';
-import { ObjectType } from '@nestjs/graphql';
+import { ObjectType, Field, Float } from '@nestjs/graphql';
 import { DeepPartial, SafeAny } from '@wellness/common';
 import { AssetBoot } from './relation-asset.entity';
 /**
@@ -14,14 +14,24 @@ export class Asset extends WellnessEntity {
   }
 
   @Column()
+  @Field()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
+  @Field((type) => Float, { nullable: true })
   size: number;
 
-  @Column('simple-json')
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  @Column('simple-json', { default: () => {} })
   metadata: SafeAny;
 
+  @Column()
+  bootId: number;
+
+  @Field({ nullable: true })
+  previewUrl: string;
+
   @ManyToOne((type) => AssetBoot, (boot) => boot.assets, { nullable: true })
+  @Field((type) => AssetBoot, { nullable: true })
   boot: AssetBoot;
 }

@@ -26,6 +26,7 @@
     "apollo-link-error": "^1.1.13",
     "apollo-server-express": "^3.4.0",
     "class-validator": "^0.13.1",
+    "cloudinary": "^1.27.1",
     "core-js": "^3.6.5",
     "cron-parser": "^4.1.0",
     "date-fns": "^2.25.0",

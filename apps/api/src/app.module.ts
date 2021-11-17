@@ -11,12 +11,14 @@ import { AsistenceModule } from './modules/asistence';
 import { SuscriptionModule } from './modules/suscriptions';
 import { PingModule } from './modules/ping';
 import { UserModule } from './modules/users';
-
+import { AssetsModule } from './modules/assets';
+import { ConfigModule } from '@nestjs/config';
 const BUSINESS_MODULES = [
   PingModule,
   UserModule,
   AsistenceModule,
   SuscriptionModule,
+  AssetsModule,
 ];
 
 @Module({
@@ -43,6 +45,10 @@ const BUSINESS_MODULES = [
     EventBusModule,
     LoggerWellnessModule,
     ...BUSINESS_MODULES,
+    ConfigModule.forRoot({
+      envFilePath: resolve('../', '.env'),
+      isGlobal: true,
+    }),
   ],
   controllers: [],
   providers: [RequestContextService],

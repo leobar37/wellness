@@ -11,7 +11,6 @@ export class WellnessEntity {
       for (const [key, value] of Object.entries(input)) {
         (this as SafeAny)[key] = value;
       }
-      
     }
   }
 
