@@ -13,6 +13,17 @@ type Asistence {
   client: Client!
 }
 
+type AssetBoot {
+  assets: [Asset]!
+}
+
+type Asset {
+  name: String!
+  size: Float
+  previewUrl: String
+  boot: AssetBoot
+}
+
 type Client {
   code: String!
   dni: String!
@@ -56,6 +67,11 @@ type Plan {
   visible: Boolean!
 }
 
+type ResponseSignature {
+  signature: String!
+  timestamp: Float!
+}
+
 type Query {
   ping: String!
   clients: [Client!]!
@@ -75,6 +91,7 @@ type Mutation {
   createActivity(input: ActivityInput!): Activity!
   deleteActivity(id: ID!): Activity!
   joinActivity(contract: ContractInput!): Contract!
+  signature(publicId: String!): ResponseSignature!
 }
 
 input ClientInput {

@@ -13,6 +13,7 @@ import { PingModule } from './modules/ping';
 import { UserModule } from './modules/users';
 import { AssetsModule } from './modules/assets';
 import { ConfigModule } from '@nestjs/config';
+
 const BUSINESS_MODULES = [
   PingModule,
   UserModule,
@@ -52,6 +53,7 @@ const BUSINESS_MODULES = [
   ],
   controllers: [],
   providers: [RequestContextService],
+  exports: [],
 })
 export class AppModule {
   public static injector: ModuleRef;

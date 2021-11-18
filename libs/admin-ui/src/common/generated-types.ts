@@ -39,6 +39,19 @@ export type Asistence = {
   note: Scalars['String'];
 };
 
+export type Asset = {
+  __typename?: 'Asset';
+  boot?: Maybe<AssetBoot>;
+  name: Scalars['String'];
+  previewUrl?: Maybe<Scalars['String']>;
+  size?: Maybe<Scalars['Float']>;
+};
+
+export type AssetBoot = {
+  __typename?: 'AssetBoot';
+  assets: Array<Maybe<Asset>>;
+};
+
 export type Client = {
   __typename?: 'Client';
   birth: Scalars['DateTime'];
@@ -122,6 +135,7 @@ export type Mutation = {
   joinActivity: Contract;
   joinPlan: Scalars['Boolean'];
   registerClient: Client;
+  signature: ResponseSignature;
   updateAsistence: Asistence;
   updateCLient: Client;
 };
@@ -177,6 +191,11 @@ export type MutationRegisterClientArgs = {
 };
 
 
+export type MutationSignatureArgs = {
+  publicId: Scalars['String'];
+};
+
+
 export type MutationUpdateAsistenceArgs = {
   id: Scalars['ID'];
   input: InputAsistence;
@@ -212,11 +231,24 @@ export type QueryActivitiesArgs = {
   id: Scalars['ID'];
 };
 
+export type ResponseSignature = {
+  __typename?: 'ResponseSignature';
+  signature: Scalars['String'];
+  timestamp: Scalars['Float'];
+};
+
 export enum Sex {
   MEN = 'MEN',
   OTHER = 'OTHER',
   WOMEN = 'WOMEN'
 }
+
+export type GenerateSignatureMutationVariables = Exact<{
+  publicId: Scalars['String'];
+}>;
+
+
+export type GenerateSignatureMutation = { __typename?: 'Mutation', signature: { __typename?: 'ResponseSignature', signature: string, timestamp: number } };
 
 export type RegisterClientMutationVariables = Exact<{
   client: ClientInput;
@@ -246,6 +278,40 @@ export const ClientFragmentFragmentDoc = gql`
   mode
 }
     `;
+export const GenerateSignatureDocument = gql`
+    mutation generateSignature($publicId: String!) {
+  signature(publicId: $publicId) {
+    signature
+    timestamp
+  }
+}
+    `;
+export type GenerateSignatureMutationFn = Apollo.MutationFunction<GenerateSignatureMutation, GenerateSignatureMutationVariables>;
+
+/**
+ * __useGenerateSignatureMutation__
+ *
+ * To run a mutation, you first call `useGenerateSignatureMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGenerateSignatureMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [generateSignatureMutation, { data, loading, error }] = useGenerateSignatureMutation({
+ *   variables: {
+ *      publicId: // value for 'publicId'
+ *   },
+ * });
+ */
+export function useGenerateSignatureMutation(baseOptions?: Apollo.MutationHookOptions<GenerateSignatureMutation, GenerateSignatureMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GenerateSignatureMutation, GenerateSignatureMutationVariables>(GenerateSignatureDocument, options);
+      }
+export type GenerateSignatureMutationHookResult = ReturnType<typeof useGenerateSignatureMutation>;
+export type GenerateSignatureMutationResult = Apollo.MutationResult<GenerateSignatureMutation>;
+export type GenerateSignatureMutationOptions = Apollo.BaseMutationOptions<GenerateSignatureMutation, GenerateSignatureMutationVariables>;
 export const RegisterClientDocument = gql`
     mutation registerClient($client: ClientInput!) {
   registerClient(client: $client) {
@@ -311,6 +377,8 @@ export function usePingQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type PingQueryQueryHookResult = ReturnType<typeof usePingQueryQuery>;
 export type PingQueryLazyQueryHookResult = ReturnType<typeof usePingQueryLazyQuery>;
 export type PingQueryQueryResult = Apollo.QueryResult<PingQueryQuery, PingQueryQueryVariables>;
+export type GenerateSignatureVariables = GenerateSignatureMutationVariables;
+export type GenerateSignatureSignature = (NonNullable<GenerateSignatureMutation['signature']>);
 export type RegisterClientVariables = RegisterClientMutationVariables;
 export type RegisterClientRegisterClient = (NonNullable<RegisterClientMutation['registerClient']>);
 export type PingQueryVariables = PingQueryQueryVariables;

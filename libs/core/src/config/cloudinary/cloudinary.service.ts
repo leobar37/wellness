@@ -2,13 +2,14 @@ import {
   InjectCloudinary,
   Cloudinary,
   getCloudinaryConfig,
+  CLOUDINARY,
 } from './Cloudinary.provider';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class CloudinaryService {
   constructor(
-    @InjectCloudinary() private cloudinary: Cloudinary,
+    @Inject(CLOUDINARY) private cloudinary: Cloudinary,
     private configService: ConfigService
   ) {}
 
@@ -21,6 +22,7 @@ export class CloudinaryService {
   //
   generateSignature(options: { public_id?: string }) {
     const timestamp = Math.round(new Date().getTime() / 1000);
+
     const signature = this.cloudinary.utils.api_sign_request(
       {
         timestamp: timestamp,

@@ -22,7 +22,7 @@ export class Asset extends WellnessEntity {
   size: number;
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  @Column('simple-json', { default: () => {} })
+  @Column('simple-json', { default: null })
   metadata: SafeAny;
 
   @Column()
