@@ -7,4 +7,8 @@ export class AssetService {
   generateSignature(options: { public_id?: string }) {
     return this.cloudinary.generateSignature(options);
   }
+
+  public deleteFile(public_id: string) {
+    return this.cloudinary.deleteFile(public_id);
+  }
 }

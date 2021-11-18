@@ -7,9 +7,20 @@ export class AssetResolver {
   constructor(private assetService: AssetService) {}
 
   @Mutation((type) => ResponseSignature)
-  signature(@Args('publicId', { type: () => String }) publicId: string) {
+  signature(
+    @Args('publicId', { type: () => String, nullable: true }) publicId: string
+  ) {
     return this.assetService.generateSignature({
       public_id: publicId,
     });
+  }
+
+  @Mutation((type) => Boolean)
+  deleteResource(
+    @Args('publicId', { type: () => String, nullable: true }) publicId: string
+  ) {
+    const deleteFileResponse = this.assetService.deleteFile(publicId);
+    console.log(deleteFileResponse);
+    return true;
   }
 }

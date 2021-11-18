@@ -6,4 +6,9 @@ export const defaultConfig: WellnessConfig = {
       name: '',
     },
   },
+  cloudinary: {
+    apiKey: '',
+    cloudName: '',
+    uploadPreset: '',
+  },
 };

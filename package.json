@@ -25,6 +25,7 @@
     "@nrwl/next": "13.1.2",
     "apollo-link-error": "^1.1.13",
     "apollo-server-express": "^3.4.0",
+    "axios": "^0.24.0",
     "class-validator": "^0.13.1",
     "cloudinary": "^1.27.1",
     "core-js": "^3.6.5",

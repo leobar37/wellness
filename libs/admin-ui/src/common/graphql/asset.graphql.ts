@@ -7,3 +7,9 @@ export const generateSignature = gql`
     }
   }
 `;
+
+export const deleteResource = gql`
+  mutation deleteResource($publicId: String) {
+    deleteResource(publicId: $publicId)
+  }
+`;

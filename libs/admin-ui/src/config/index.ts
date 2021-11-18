@@ -11,3 +11,4 @@
  */
 
 export * from './config-helpers';
+export * from './Wellness-config';

@@ -8,3 +8,7 @@ export function isObject(item: SafeAny): item is object {
 export function isClassInstance(item: SafeAny): boolean {
   return isObject(item) && item.constructor.name !== 'Object';
 }
+
+export function isValid(source: SafeAny) {
+  return source != null && source != undefined;
+}

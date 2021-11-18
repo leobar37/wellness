@@ -91,7 +91,8 @@ type Mutation {
   createActivity(input: ActivityInput!): Activity!
   deleteActivity(id: ID!): Activity!
   joinActivity(contract: ContractInput!): Contract!
-  signature(publicId: String!): ResponseSignature!
+  signature(publicId: String): ResponseSignature!
+  deleteResource(publicId: String): Boolean!
 }
 
 input ClientInput {
