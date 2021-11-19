@@ -63,7 +63,9 @@ export const SaveActions = ({ onCancel, onSave }: SaveActionsProps) => {
       <Button onClick={onCancel} variant="ghost">
         Cancelar
       </Button>
-      <Button onClick={onSave}>Guardar</Button>
+      <Button type="submit" onClick={onSave}>
+        Guardar
+      </Button>
     </HStack>
   );
 };
@@ -100,12 +102,7 @@ export const ModalCrud: FunctionComponent<ModalCrudProps> = ({
       motionPreset={motionPreset || 'slideInBottom'}
     >
       {overlay && <ModalOverlay />}
-      <ModalContent
-        position="relative"
-        borderRadius="0"
-        minWidth="650px"
-        minHeight="500px"
-      >
+      <ModalContent position="relative" borderRadius="0" minWidth="650px">
         <ModalCloseButton />
         <ModalHeader borderBottom={`5px solid ${gray500}`}>
           <ChildrenOrText
@@ -114,7 +111,7 @@ export const ModalCrud: FunctionComponent<ModalCrudProps> = ({
             {textHeader}
           </ChildrenOrText>
         </ModalHeader>
-        <ModalBody mx={4} mt={4}>
+        <ModalBody mx={4} mt={4} mb={'100px'} overflowY="scroll" height="auto">
           {children}
         </ModalBody>
         <ModalFooter w={'100%'} left="0" position="absolute" bottom="0">

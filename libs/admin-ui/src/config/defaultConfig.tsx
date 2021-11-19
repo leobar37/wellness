@@ -11,4 +11,8 @@ export const defaultConfig: WellnessConfig = {
     cloudName: '',
     uploadPreset: '',
   },
+  uploadImage: {
+    height: 130,
+    width: 130,
+  },
 };

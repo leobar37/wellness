@@ -6,6 +6,12 @@ export type SidebarConfig = {
   };
 };
 
+export type UploadImageConfig = {
+  // the default width of the componente
+  width: number;
+  height: number;
+};
+
 export type CloudinaryConfig = {
   cloudName: string;
   uploadPreset: string;
@@ -15,6 +21,7 @@ export type CloudinaryConfig = {
 export interface WellnessConfig {
   sidebar: SidebarConfig;
   cloudinary: CloudinaryConfig;
+  uploadImage: UploadImageConfig;
 }
 
 export type PartialWellnessConfig = DeepPartialSimple<WellnessConfig>;

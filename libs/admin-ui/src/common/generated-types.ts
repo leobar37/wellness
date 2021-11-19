@@ -1,20 +1,14 @@
 // tslint:disable
 // this file is generate pls not edit manually :)
-import { SafeAny } from '@wellness/common';
+import { SafeAny} from '@wellness/common'
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T;
 export type InputMaybe<T> = T;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
-const defaultOptions = {};
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+const defaultOptions =  {}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -120,13 +114,13 @@ export type InputAsistence = {
 
 export enum ModeRegiser {
   ADMIN = 'ADMIN',
-  SELF = 'SELF',
+  SELF = 'SELF'
 }
 
 /** This enum determine the mode of a suscription */
 export enum ModeSuscription {
   DINAMIC = 'DINAMIC',
-  FIXED = 'FIXED',
+  FIXED = 'FIXED'
 }
 
 export type Mutation = {
@@ -147,58 +141,72 @@ export type Mutation = {
   updateCLient: Client;
 };
 
+
 export type MutationCreateActivityArgs = {
   input: ActivityInput;
 };
+
 
 export type MutationCreateAsistenceArgs = {
   asistence: InputAsistence;
 };
 
+
 export type MutationCreatePlanArgs = {
   input: PlanInput;
 };
+
 
 export type MutationDeleteActivityArgs = {
   id: Scalars['ID'];
 };
 
+
 export type MutationDeleteAsistenceArgs = {
   id: Scalars['ID'];
 };
+
 
 export type MutationDeleteCLientArgs = {
   id: Scalars['ID'];
 };
 
+
 export type MutationDeletePlanArgs = {
   id: Scalars['ID'];
 };
+
 
 export type MutationDeleteResourceArgs = {
   publicId?: InputMaybe<Scalars['String']>;
 };
 
+
 export type MutationJoinActivityArgs = {
   contract: ContractInput;
 };
+
 
 export type MutationJoinPlanArgs = {
   contract: ContractInput;
 };
 
+
 export type MutationRegisterClientArgs = {
   client: ClientInput;
 };
+
 
 export type MutationSignatureArgs = {
   publicId?: InputMaybe<Scalars['String']>;
 };
 
+
 export type MutationUpdateAsistenceArgs = {
   id: Scalars['ID'];
   input: InputAsistence;
 };
+
 
 export type MutationUpdateCLientArgs = {
   id: Scalars['ID'];
@@ -224,6 +232,7 @@ export type Query = {
   ping: Scalars['String'];
 };
 
+
 export type QueryActivitiesArgs = {
   id: Scalars['ID'];
 };
@@ -237,96 +246,60 @@ export type ResponseSignature = {
 export enum Sex {
   MEN = 'MEN',
   OTHER = 'OTHER',
-  WOMEN = 'WOMEN',
+  WOMEN = 'WOMEN'
 }
 
 export type GenerateSignatureMutationVariables = Exact<{
   publicId: Scalars['String'];
 }>;
 
-export type GenerateSignatureMutation = {
-  __typename?: 'Mutation';
-  signature: {
-    __typename?: 'ResponseSignature';
-    signature: string;
-    timestamp: number;
-  };
-};
+
+export type GenerateSignatureMutation = { __typename?: 'Mutation', signature: { __typename?: 'ResponseSignature', signature: string, timestamp: number } };
 
 export type DeleteResourceMutationVariables = Exact<{
   publicId?: Maybe<Scalars['String']>;
 }>;
 
-export type DeleteResourceMutation = {
-  __typename?: 'Mutation';
-  deleteResource: boolean;
-};
+
+export type DeleteResourceMutation = { __typename?: 'Mutation', deleteResource: boolean };
 
 export type RegisterClientMutationVariables = Exact<{
   client: ClientInput;
 }>;
 
-export type RegisterClientMutation = {
-  __typename?: 'Mutation';
-  registerClient: {
-    __typename?: 'Client';
-    code: string;
-    dni: string;
-    email: string;
-    name: string;
-    lastName: string;
-    birth: SafeAny;
-    phone: SafeAny;
-    direction?: string | null | undefined;
-    sex: Sex;
-    mode: ModeRegiser;
-  };
-};
 
-export type ClientFragmentFragment = {
-  __typename?: 'Client';
-  code: string;
-  dni: string;
-  email: string;
-  name: string;
-  lastName: string;
-  birth: SafeAny;
-  phone: SafeAny;
-  direction?: string | null | undefined;
-  sex: Sex;
-  mode: ModeRegiser;
-};
+export type RegisterClientMutation = { __typename?: 'Mutation', registerClient: { __typename?: 'Client', code: string, dni: string, email: string, name: string, lastName: string, birth: SafeAny, phone: SafeAny, direction?: string | null | undefined, sex: Sex, mode: ModeRegiser } };
 
-export type PingQueryQueryVariables = Exact<{ [key: string]: never }>;
+export type ClientFragmentFragment = { __typename?: 'Client', code: string, dni: string, email: string, name: string, lastName: string, birth: SafeAny, phone: SafeAny, direction?: string | null | undefined, sex: Sex, mode: ModeRegiser };
 
-export type PingQueryQuery = { __typename?: 'Query'; ping: string };
+export type PingQueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PingQueryQuery = { __typename?: 'Query', ping: string };
 
 export const ClientFragmentFragmentDoc = gql`
-  fragment ClientFragment on Client {
-    code
-    dni
-    email
-    name
-    lastName
-    birth
-    phone
-    direction
-    sex
-    mode
-  }
-`;
+    fragment ClientFragment on Client {
+  code
+  dni
+  email
+  name
+  lastName
+  birth
+  phone
+  direction
+  sex
+  mode
+}
+    `;
 export const GenerateSignatureDocument = gql`
-  mutation generateSignature($publicId: String!) {
-    signature(publicId: $publicId) {
-      signature
-      timestamp
-    }
+    mutation generateSignature($publicId: String!) {
+  signature(publicId: $publicId) {
+    signature
+    timestamp
   }
-`;
-export type GenerateSignatureMutationFn = Apollo.MutationFunction<
-  GenerateSignatureMutation,
-  GenerateSignatureMutationVariables
->;
+}
+    `;
+export type GenerateSignatureMutationFn = Apollo.MutationFunction<GenerateSignatureMutation, GenerateSignatureMutationVariables>;
 
 /**
  * __useGenerateSignatureMutation__
@@ -345,36 +318,19 @@ export type GenerateSignatureMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useGenerateSignatureMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    GenerateSignatureMutation,
-    GenerateSignatureMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<
-    GenerateSignatureMutation,
-    GenerateSignatureMutationVariables
-  >(GenerateSignatureDocument, options);
-}
-export type GenerateSignatureMutationHookResult = ReturnType<
-  typeof useGenerateSignatureMutation
->;
-export type GenerateSignatureMutationResult =
-  Apollo.MutationResult<GenerateSignatureMutation>;
-export type GenerateSignatureMutationOptions = Apollo.BaseMutationOptions<
-  GenerateSignatureMutation,
-  GenerateSignatureMutationVariables
->;
+export function useGenerateSignatureMutation(baseOptions?: Apollo.MutationHookOptions<GenerateSignatureMutation, GenerateSignatureMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GenerateSignatureMutation, GenerateSignatureMutationVariables>(GenerateSignatureDocument, options);
+      }
+export type GenerateSignatureMutationHookResult = ReturnType<typeof useGenerateSignatureMutation>;
+export type GenerateSignatureMutationResult = Apollo.MutationResult<GenerateSignatureMutation>;
+export type GenerateSignatureMutationOptions = Apollo.BaseMutationOptions<GenerateSignatureMutation, GenerateSignatureMutationVariables>;
 export const DeleteResourceDocument = gql`
-  mutation deleteResource($publicId: String) {
-    deleteResource(publicId: $publicId)
-  }
-`;
-export type DeleteResourceMutationFn = Apollo.MutationFunction<
-  DeleteResourceMutation,
-  DeleteResourceMutationVariables
->;
+    mutation deleteResource($publicId: String) {
+  deleteResource(publicId: $publicId)
+}
+    `;
+export type DeleteResourceMutationFn = Apollo.MutationFunction<DeleteResourceMutation, DeleteResourceMutationVariables>;
 
 /**
  * __useDeleteResourceMutation__
@@ -393,39 +349,21 @@ export type DeleteResourceMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useDeleteResourceMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    DeleteResourceMutation,
-    DeleteResourceMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<
-    DeleteResourceMutation,
-    DeleteResourceMutationVariables
-  >(DeleteResourceDocument, options);
-}
-export type DeleteResourceMutationHookResult = ReturnType<
-  typeof useDeleteResourceMutation
->;
-export type DeleteResourceMutationResult =
-  Apollo.MutationResult<DeleteResourceMutation>;
-export type DeleteResourceMutationOptions = Apollo.BaseMutationOptions<
-  DeleteResourceMutation,
-  DeleteResourceMutationVariables
->;
+export function useDeleteResourceMutation(baseOptions?: Apollo.MutationHookOptions<DeleteResourceMutation, DeleteResourceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteResourceMutation, DeleteResourceMutationVariables>(DeleteResourceDocument, options);
+      }
+export type DeleteResourceMutationHookResult = ReturnType<typeof useDeleteResourceMutation>;
+export type DeleteResourceMutationResult = Apollo.MutationResult<DeleteResourceMutation>;
+export type DeleteResourceMutationOptions = Apollo.BaseMutationOptions<DeleteResourceMutation, DeleteResourceMutationVariables>;
 export const RegisterClientDocument = gql`
-  mutation registerClient($client: ClientInput!) {
-    registerClient(client: $client) {
-      ...ClientFragment
-    }
+    mutation registerClient($client: ClientInput!) {
+  registerClient(client: $client) {
+    ...ClientFragment
   }
-  ${ClientFragmentFragmentDoc}
-`;
-export type RegisterClientMutationFn = Apollo.MutationFunction<
-  RegisterClientMutation,
-  RegisterClientMutationVariables
->;
+}
+    ${ClientFragmentFragmentDoc}`;
+export type RegisterClientMutationFn = Apollo.MutationFunction<RegisterClientMutation, RegisterClientMutationVariables>;
 
 /**
  * __useRegisterClientMutation__
@@ -444,32 +382,18 @@ export type RegisterClientMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useRegisterClientMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    RegisterClientMutation,
-    RegisterClientMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<
-    RegisterClientMutation,
-    RegisterClientMutationVariables
-  >(RegisterClientDocument, options);
-}
-export type RegisterClientMutationHookResult = ReturnType<
-  typeof useRegisterClientMutation
->;
-export type RegisterClientMutationResult =
-  Apollo.MutationResult<RegisterClientMutation>;
-export type RegisterClientMutationOptions = Apollo.BaseMutationOptions<
-  RegisterClientMutation,
-  RegisterClientMutationVariables
->;
+export function useRegisterClientMutation(baseOptions?: Apollo.MutationHookOptions<RegisterClientMutation, RegisterClientMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterClientMutation, RegisterClientMutationVariables>(RegisterClientDocument, options);
+      }
+export type RegisterClientMutationHookResult = ReturnType<typeof useRegisterClientMutation>;
+export type RegisterClientMutationResult = Apollo.MutationResult<RegisterClientMutation>;
+export type RegisterClientMutationOptions = Apollo.BaseMutationOptions<RegisterClientMutation, RegisterClientMutationVariables>;
 export const PingQueryDocument = gql`
-  query pingQuery {
-    ping
-  }
-`;
+    query pingQuery {
+  ping
+}
+    `;
 
 /**
  * __usePingQueryQuery__
@@ -486,42 +410,20 @@ export const PingQueryDocument = gql`
  *   },
  * });
  */
-export function usePingQueryQuery(
-  baseOptions?: Apollo.QueryHookOptions<PingQueryQuery, PingQueryQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<PingQueryQuery, PingQueryQueryVariables>(
-    PingQueryDocument,
-    options
-  );
-}
-export function usePingQueryLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    PingQueryQuery,
-    PingQueryQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<PingQueryQuery, PingQueryQueryVariables>(
-    PingQueryDocument,
-    options
-  );
-}
+export function usePingQueryQuery(baseOptions?: Apollo.QueryHookOptions<PingQueryQuery, PingQueryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PingQueryQuery, PingQueryQueryVariables>(PingQueryDocument, options);
+      }
+export function usePingQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PingQueryQuery, PingQueryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PingQueryQuery, PingQueryQueryVariables>(PingQueryDocument, options);
+        }
 export type PingQueryQueryHookResult = ReturnType<typeof usePingQueryQuery>;
-export type PingQueryLazyQueryHookResult = ReturnType<
-  typeof usePingQueryLazyQuery
->;
-export type PingQueryQueryResult = Apollo.QueryResult<
-  PingQueryQuery,
-  PingQueryQueryVariables
->;
+export type PingQueryLazyQueryHookResult = ReturnType<typeof usePingQueryLazyQuery>;
+export type PingQueryQueryResult = Apollo.QueryResult<PingQueryQuery, PingQueryQueryVariables>;
 export type GenerateSignatureVariables = GenerateSignatureMutationVariables;
-export type GenerateSignatureSignature = NonNullable<
-  GenerateSignatureMutation['signature']
->;
+export type GenerateSignatureSignature = (NonNullable<GenerateSignatureMutation['signature']>);
 export type DeleteResourceVariables = DeleteResourceMutationVariables;
 export type RegisterClientVariables = RegisterClientMutationVariables;
-export type RegisterClientRegisterClient = NonNullable<
-  RegisterClientMutation['registerClient']
->;
+export type RegisterClientRegisterClient = (NonNullable<RegisterClientMutation['registerClient']>);
 export type PingQueryVariables = PingQueryQueryVariables;

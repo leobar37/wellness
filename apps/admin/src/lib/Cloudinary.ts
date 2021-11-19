@@ -99,7 +99,7 @@ export const useCloudinaryApi = () => {
       formData.append('timestamp', String(options.timestamp));
       formData.append('upload_preset', cloudinaryConfig.uploadPreset);
       formData.append('signature', options.signature);
-      // const headers = new HttpHeaders().set('X-Requested-With', 'XMLHttpRequest');
+
       const uploadedResponse = await Axios({
         method: 'POST',
         url: url,
