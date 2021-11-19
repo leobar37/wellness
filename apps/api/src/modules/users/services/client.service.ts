@@ -6,6 +6,10 @@ import { ClientInput } from '../dto/client.input';
 import { CRUD, ID, normalizeEmailAddress } from '@wellness/common';
 import { EntityNotFoundError } from '@wellness/core/common/error';
 import { EventBus, ClientEvent } from '@wellness/core/event-bus';
+import * as faker from 'faker';
+const temporalId = () => {
+  return faker.lorem.word(3) + faker.datatype.number(10);
+};
 @Injectable()
 export class ClientService {
   constructor(
@@ -15,7 +19,11 @@ export class ClientService {
 
   public async createClient(input: ClientInput) {
     input.email = normalizeEmailAddress(input.email);
+    if (!input.code) {
+      input.code = temporalId();
+    }
     const client = new Client(input);
+    client.birth = input.birthday;
     // client has been saved
     const createdClient = await this.repository.save(client);
     this.eventBus.publish(

@@ -30,8 +30,8 @@ type Client {
   email: String!
   name: String!
   lastName: String!
-  birth: DateTime!
-  phone: DateTime!
+  birth: DateTime
+  phone: DateTime
   direction: String
   sex: Sex!
   mode: ModeRegiser!

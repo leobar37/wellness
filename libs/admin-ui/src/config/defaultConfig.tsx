@@ -12,7 +12,7 @@ export const defaultConfig: WellnessConfig = {
     uploadPreset: '',
   },
   uploadImage: {
-    height: 130,
-    width: 130,
+    height: 150,
+    width: 150,
   },
 };

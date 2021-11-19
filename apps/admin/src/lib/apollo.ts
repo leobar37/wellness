@@ -3,6 +3,7 @@ import {
   ApolloLink,
   InMemoryCache,
   NormalizedCacheObject,
+  HttpLink,
 } from '@apollo/client';
 import { isServer } from '@wellness/admin-ui/utils';
 import { onError } from 'apollo-link-error';
@@ -29,13 +30,17 @@ const linkError = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.log(`[Network error]: ${networkError}`);
 }) as unknown as ApolloLink;
 
+const httpLink = new HttpLink({
+  uri: 'http://localhost:3333/graphql',
+});
+
 export const createApolloClient = (
   headers: IncomingHttpHeaders | null = null
 ) => {
   return new ApolloClient({
     ssrMode: isServer,
     // https://www.apollographql.com/docs/react/api/link/introduction/
-    link: ApolloLink.from([linkError]),
+    link: ApolloLink.from([linkError, httpLink]),
     cache: new InMemoryCache({}),
   });
 };

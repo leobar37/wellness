@@ -8,8 +8,6 @@ export const ChildrenOrText: FunctionComponent<{
   onText?: (text: string) => JSX.Element;
   onElement?: (children: ReactChildren) => JSX.Element;
 }> = ({ children, onElement, onText }) => {
-  console.log(children);
-
   const isReactElemet = typeof children !== 'string';
   warn({
     condition: !children,

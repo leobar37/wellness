@@ -23,6 +23,15 @@ const Button = {
   // The default `size` or `variant` values
   defaultProps: {},
 };
+
+const Form = {
+  baseStyle: {
+    container: {
+      my: '4',
+    } as SystemStyleObject,
+  },
+};
+
 export const theme = extendTheme({
   colors: {
     primary: '#22FF02',
@@ -38,5 +47,6 @@ export const theme = extendTheme({
   },
   components: {
     Button,
+    Form,
   },
 });

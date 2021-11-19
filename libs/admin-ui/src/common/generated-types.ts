@@ -54,7 +54,7 @@ export type AssetBoot = {
 
 export type Client = {
   __typename?: 'Client';
-  birth: Scalars['DateTime'];
+  birth?: Maybe<Scalars['DateTime']>;
   code: Scalars['String'];
   direction?: Maybe<Scalars['String']>;
   dni: Scalars['String'];
@@ -62,7 +62,7 @@ export type Client = {
   lastName: Scalars['String'];
   mode: ModeRegiser;
   name: Scalars['String'];
-  phone: Scalars['DateTime'];
+  phone?: Maybe<Scalars['DateTime']>;
   sex: Sex;
 };
 
@@ -268,9 +268,9 @@ export type RegisterClientMutationVariables = Exact<{
 }>;
 
 
-export type RegisterClientMutation = { __typename?: 'Mutation', registerClient: { __typename?: 'Client', code: string, dni: string, email: string, name: string, lastName: string, birth: SafeAny, phone: SafeAny, direction?: string | null | undefined, sex: Sex, mode: ModeRegiser } };
+export type RegisterClientMutation = { __typename?: 'Mutation', registerClient: { __typename?: 'Client', code: string, dni: string, email: string, name: string, lastName: string, birth?: SafeAny | null | undefined, phone?: SafeAny | null | undefined, direction?: string | null | undefined, sex: Sex, mode: ModeRegiser } };
 
-export type ClientFragmentFragment = { __typename?: 'Client', code: string, dni: string, email: string, name: string, lastName: string, birth: SafeAny, phone: SafeAny, direction?: string | null | undefined, sex: Sex, mode: ModeRegiser };
+export type ClientFragmentFragment = { __typename?: 'Client', code: string, dni: string, email: string, name: string, lastName: string, birth?: SafeAny | null | undefined, phone?: SafeAny | null | undefined, direction?: string | null | undefined, sex: Sex, mode: ModeRegiser };
 
 export type PingQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
