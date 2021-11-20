@@ -9,3 +9,12 @@ export const registerClient = gql`
     }
   }
 `;
+
+export const getClients = gql`
+  ${ClientFragment}
+  query getClients {
+    clients {
+      ...ClientFragment
+    }
+  }
+`;

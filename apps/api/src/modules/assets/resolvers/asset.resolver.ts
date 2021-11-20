@@ -2,8 +2,8 @@ import { Resolver } from '@nestjs/graphql';
 import { AssetService } from '../services/asset.service';
 import { Mutation, Query, Args, createUnionType } from '@nestjs/graphql';
 import { ResponseSignature } from '../dto/signature.dto';
-import { Asset, AssetBoot } from '@wellness/core';
-import { AssetInput } from '../dto/asset.input';
+import { AssetInput } from '../dto/createAsset.input';
+import { DeleteAssetInput } from '../dto/deleteAsset.input';
 import { ResourceUnion } from '../internal';
 
 @Resolver()
@@ -19,16 +19,14 @@ export class AssetResolver {
     });
   }
 
-  @Mutation((type) => Boolean)
+  @Mutation((type) => ResourceUnion)
   deleteResource(
-    @Args('publicId', { type: () => String, nullable: true }) publicId: string
+    @Args('input', { type: () => DeleteAssetInput }) input: DeleteAssetInput
   ) {
-    const deleteFileResponse = this.assetService.deleteFile(publicId);
-    console.log(deleteFileResponse);
-    return true;
+    return this.assetService.deleteResource(input);
   }
 
-  @Mutation((type) => Boolean)
+  @Mutation((type) => ResourceUnion)
   createResource(
     @Args('resource', { type: () => AssetInput }) resource: AssetInput
   ): Promise<typeof ResourceUnion> {

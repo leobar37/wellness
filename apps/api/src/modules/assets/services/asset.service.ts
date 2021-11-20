@@ -3,10 +3,13 @@ import { CloudinaryService } from '@wellness/core';
 import { InjectRepository, InjectEntityManager } from '@nestjs/typeorm';
 import { Asset, AssetBoot } from '@wellness/core/entity';
 import { Repository, EntityManager } from 'typeorm';
-import { AssetInput } from '../dto/asset.input';
-import { CloudinaryResponse, SafeAny } from '@wellness/common';
-import { AssetEvent, EventBus } from '@wellness/core/event-bus';
-
+import { AssetInput } from '../dto/createAsset.input';
+import { CloudinaryResponse, SafeAny, CRUD } from '@wellness/common';
+import { EventBus, AssetEvent } from '@wellness/core/event-bus';
+import { ResourceUnionType } from '../internal';
+import { isValid } from '@wellness/common';
+import { EntityNotFoundError } from '@wellness/core/common/error';
+import { DeleteAssetInput } from '../dto/deleteAsset.input';
 @Injectable()
 export class AssetService {
   constructor(
@@ -44,22 +47,63 @@ export class AssetService {
     if (!isMultiple) {
       // create a only  assset
       const metadata = inputAsset.metadata;
-      return this.assetRepository.save(createOnlyAsset(metadata));
+      const savedAsset = await this.assetRepository.save(
+        createOnlyAsset(metadata)
+      );
+
+      //
+      this.eventBus.publish(
+        new AssetEvent({
+          operation: CRUD.CREATE,
+          source: savedAsset,
+        })
+      );
+
+      return savedAsset;
     } else {
       // multiples assets
       return await this.manager.transaction<AssetBoot>(async (manager) => {
         const assets = inputAsset.metadatas.map(createOnlyAsset);
-
         const assetsSaved = assets.map((asset) => manager.save(Asset, asset));
-
         await Promise.all(assetsSaved);
-
         return await manager.save(
           AssetBoot,
           new AssetBoot({
             assets: assets,
           })
         );
+      });
+    }
+  }
+
+  async deleteResource(input: DeleteAssetInput) {
+    const isAsset = input.isMultiple;
+    const deleteAsset = async (idAsset: number, manager: EntityManager) => {
+      const assetBd = await manager.findOne(Asset, idAsset);
+      if (!assetBd) {
+        throw new EntityNotFoundError('Asset', idAsset);
+      }
+      await this.assetRepository.delete(idAsset);
+      const metadata = assetBd.metadata;
+      await this.deleteFile(metadata.public_id);
+      return assetBd;
+    };
+    if (isAsset) {
+      return deleteAsset(input.id, this.manager);
+    } else {
+      return this.manager.transaction(async (manager) => {
+        const assetBoot = await manager.findOne(AssetBoot, input.id);
+        if (!assetBoot) {
+          throw new EntityNotFoundError('AssetBoot', input.id);
+        }
+        const assets = assetBoot.assets;
+        const assetsBd = await Promise.all(assets);
+        const assetsDeleted = assetsBd.map((asset) =>
+          deleteAsset(asset.id, manager)
+        );
+        await Promise.all(assetsDeleted);
+        await manager.delete(AssetBoot, assetBoot.id);
+        return assetBoot;
       });
     }
   }

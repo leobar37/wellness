@@ -1,14 +1,9 @@
 // see https://github.com/chickenLeobar/storeapp/blob/stagging/nimo/projects/shared/src/common/cloudinary/upload-cloudinary.service.ts
 import {
-  useGenerateSignatureMutation,
   GenerateSignatureDocument,
   GenerateSignatureMutationVariables,
   GenerateSignatureMutation,
   ResponseSignature,
-  DeleteResourceDocument,
-  DeleteResourceMutationVariables,
-  DeleteResourceMutation,
-  DeleteResourceMutationResult,
 } from '@wellness/admin-ui/common';
 import { useApolloClient } from '@apollo/client';
 import { useConfig, CloudinaryConfig } from '@wellness/admin-ui/config';
@@ -48,22 +43,22 @@ export const useCloudinaryApi = () => {
     [client]
   );
 
-  const deleteResource = useCallback(
-    async (publicId: string) => {
-      const resultMutation = await client.mutate<
-        DeleteResourceMutation,
-        DeleteResourceMutationVariables
-      >({
-        variables: {
-          publicId: publicId,
-        },
-        mutation: DeleteResourceDocument,
-      });
-      const result = get(resultMutation, 'data.deleteResource');
-      return result;
-    },
-    [client]
-  );
+  // const deleteResource = useCallback(
+  //   async (publicId: string) => {
+  //     const resultMutation = await client.mutate<
+  //       DeleteResourceMutation,
+  //       DeleteResourceMutationVariables
+  //     >({
+  //       variables: {
+  //         publicId: publicId,
+  //       },
+  //       mutation: DeleteResourceDocument,
+  //     });
+  //     const result = get(resultMutation, 'data.deleteResource');
+  //     return result;
+  //   },
+  //   [client]
+  // );
 
   const uploadCloudinary = useCallback(
     async (file: File, options: uploadCloudinaryOptions) => {
@@ -100,19 +95,18 @@ export const useCloudinaryApi = () => {
     [generateSignature, uploadCloudinary]
   );
 
-  const deleteAndCreateResource = useCallback(
-    async (file: File, publicId: string | null | undefined) => {
-      if (isValid(publicId)) {
-        await deleteResource(publicId);
-      }
-      const cloudinaryResponse = await uploadFile(file);
-      return cloudinaryResponse;
-    },
-    [deleteResource, uploadFile]
-  );
+  // const deleteAndCreateResource = useCallback(
+  //   async (file: File, publicId: string | null | undefined) => {
+  //     if (isValid(publicId)) {
+  //       await deleteResource(publicId);
+  //     }
+  //     const cloudinaryResponse = await uploadFile(file);
+  //     return cloudinaryResponse;
+  //   },
+  //   [deleteResource, uploadFile]
+  // );
 
   return {
-    deleteAndCreateResource,
     uploadFile,
   };
 };

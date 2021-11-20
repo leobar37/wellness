@@ -27,9 +27,10 @@ export class Client extends WellnessEntity implements HasNote {
   @Column({ nullable: true })
   photoId: number;
 
-  @OneToOne((type) => Asset, { eager: true, onDelete: 'CASCADE' })
   @JoinColumn()
-  photo: Asset;
+  @Field((type) => Asset, { nullable: true })
+  @OneToOne((type) => Asset, { onDelete: 'CASCADE' })
+  photo: Promise<Asset>;
 
   @Column()
   @Field()
@@ -56,7 +57,7 @@ export class Client extends WellnessEntity implements HasNote {
   birth: Date;
 
   @Column({ nullable: true })
-  @Field((type) => Date, { nullable: true })
+  @Field((type) => String, { nullable: true })
   phone: string;
 
   @Column({ nullable: true })

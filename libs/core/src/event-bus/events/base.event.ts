@@ -7,4 +7,8 @@ export abstract class WellnessEvent {
       (this as SafeAny)[key] = value;
     }
   }
+
+  get created() {
+    return this.createdAt;
+  }
 }

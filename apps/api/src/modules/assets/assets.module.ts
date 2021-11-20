@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CloudinaryModule } from '@wellness/core';
 import { ConfigModule } from '@nestjs/config';
 import { EventBusModule } from '@wellness/core/event-bus';
+import { AssetEntityResolver } from './resolvers/asset.entityresolver';
 @Module({
   imports: [
     ConfigModule,
@@ -13,6 +14,6 @@ import { EventBusModule } from '@wellness/core/event-bus';
     CloudinaryModule,
     EventBusModule,
   ],
-  providers: [AssetResolver, AssetService],
+  providers: [AssetResolver, AssetService, AssetEntityResolver],
 })
 export class AssetsModule {}

@@ -1,6 +1,6 @@
 import { Flex, HStack, Radio, useDisclosure } from '@chakra-ui/react';
 import { DatePicker, ImageUpload } from '@wellness/admin-ui';
-import { ModeRegiser, Sex } from '@wellness/admin-ui/common';
+import { Sex } from '@wellness/admin-ui/common';
 import { ModalCrud } from '@wellness/admin-ui/components';
 import { ChackraForm } from '@wellness/admin-ui/components/crud';
 import { Formik } from 'formik';
@@ -10,31 +10,14 @@ import {
   SubmitButton,
   TextareaControl,
 } from 'formik-chakra-ui';
-import * as React from 'react';
-import * as yup from 'yup';
-import { Asserts } from 'yup';
 import { useClientsController } from '../controller';
 import { useClientsStore } from '../data/client-store';
-import { useCloudinaryApi } from '../../../lib';
+import { SaveClientSchena } from '../data/schemas';
+import { useToast, useTheme } from '@chakra-ui/react';
 
-const clientSchema = yup.object({
-  name: yup.string().required(),
-  imageProfile: yup.mixed().required(),
-  email: yup.string().required(),
-  birth: yup.date().nullable(),
-  phone: yup.string().nullable(),
-  direction: yup.string().nullable(),
-  note: yup.string().required(),
-  dni: yup.string().required(),
-  lastName: yup.string().required(),
-  sex: yup.mixed().oneOf([Sex.MEN, Sex.OTHER, Sex.WOMEN]),
-});
-
-export type ClientSchena = Asserts<typeof clientSchema>;
 const { toggleClientModal } = useClientsStore.getState();
 
 export const RegisterClientModal = () => {
-  const { uploadFile } = useCloudinaryApi();
   const { clientModal } = useClientsStore();
   const { registerClient } = useClientsController();
 
@@ -44,8 +27,13 @@ export const RegisterClientModal = () => {
     onOpen: () => toggleClientModal(true),
   });
 
+  const toast = useToast();
+  const theme = useTheme();
+
+  // console.log(theme.components);
+
   return (
-    <Formik<ClientSchena>
+    <Formik<SaveClientSchena>
       initialValues={{
         name: '',
         lastName: '',
@@ -58,20 +46,14 @@ export const RegisterClientModal = () => {
         birth: null,
         imageProfile: null,
       }}
-      onSubmit={async (values, { setSubmitting }) => {
-        const resultFile = await uploadFile(values.imageProfile);
-
-        // registerClient({
-        //   direction: values.direction,
-        //   dni: values.dni,
-        //   email: values.email,
-        //   lastName: values.lastName,
-        //   modeRegister: ModeRegiser.ADMIN,
-        //   note: values.note,
-        //   name: values.name,
-        //   birthday: values.birth,
-        //   sex: values.sex,
-        // });
+      onSubmit={async (values, { setSubmitting, setValues }) => {
+        const client = await registerClient(values);
+        toast({
+          status: 'success',
+          description: 'Cliente correctamente creado',
+        });
+        console.log(client);
+        onClose();
       }}
     >
       {({ handleSubmit, submitForm }) => (

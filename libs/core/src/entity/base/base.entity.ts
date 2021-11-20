@@ -3,8 +3,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Field, ID } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { DeepPartial, SafeAny } from '@wellness/common';
+
+@ObjectType({
+  isAbstract: true,
+})
 export class WellnessEntity {
   constructor(input?: DeepPartial<WellnessEntity>) {
     if (input) {
@@ -14,15 +18,15 @@ export class WellnessEntity {
     }
   }
 
-  @Field((type) => ID)
   @PrimaryGeneratedColumn()
+  @Field((type) => ID)
   id: number;
 
-  @Field((type) => Date)
   @CreateDateColumn()
+  @Field((type) => Date)
   createdAt: Date;
 
-  @Field((type) => Date)
   @UpdateDateColumn()
+  @Field((type) => Date)
   updateAt: Date;
 }

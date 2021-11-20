@@ -16,3 +16,5 @@ export const ResourceUnion = createUnionType({
     return null;
   },
 });
+
+export type ResourceUnionType = typeof ResourceUnion;

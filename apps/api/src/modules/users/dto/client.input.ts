@@ -12,6 +12,9 @@ export class ClientInput implements Partial<Client> {
   dni: string;
 
   @Field()
+  phone: string;
+
+  @Field()
   name: string;
 
   @Field()

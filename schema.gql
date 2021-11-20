@@ -9,15 +9,29 @@ type Detail {
 }
 
 type Asistence {
+  id: ID!
+  createdAt: DateTime!
+  updateAt: DateTime!
   note: String!
   client: Client!
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type AssetBoot {
+  id: ID!
+  createdAt: DateTime!
+  updateAt: DateTime!
   assets: [Asset]!
 }
 
 type Asset {
+  id: ID!
+  createdAt: DateTime!
+  updateAt: DateTime!
   name: String!
   size: Float
   previewUrl: String
@@ -25,22 +39,21 @@ type Asset {
 }
 
 type Client {
+  id: ID!
+  createdAt: DateTime!
+  updateAt: DateTime!
+  photo: Asset
   code: String!
   dni: String!
   email: String!
   name: String!
   lastName: String!
   birth: DateTime
-  phone: DateTime
+  phone: String
   direction: String
   sex: Sex!
   mode: ModeRegiser!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 enum Sex {
   WOMEN
@@ -54,15 +67,24 @@ enum ModeRegiser {
 }
 
 type Contract {
+  id: ID!
+  createdAt: DateTime!
+  updateAt: DateTime!
   paid: Boolean!
   price: Float!
 }
 
 type Activity {
+  id: ID!
+  createdAt: DateTime!
+  updateAt: DateTime!
   detail: Detail!
 }
 
 type Plan {
+  id: ID!
+  createdAt: DateTime!
+  updateAt: DateTime!
   detail: Detail!
   visible: Boolean!
 }
@@ -92,13 +114,14 @@ type Mutation {
   deleteActivity(id: ID!): Activity!
   joinActivity(contract: ContractInput!): Contract!
   signature(publicId: String): ResponseSignature!
-  deleteResource(publicId: String): Boolean!
-  createResource(resource: AssetInput!): Boolean!
+  deleteResource(input: DeleteAssetInput!): ResourceUnion!
+  createResource(resource: AssetInput!): ResourceUnion!
 }
 
 input ClientInput {
   code: String
   dni: String!
+  phone: String!
   name: String!
   lastName: String!
   birthday: DateTime
@@ -151,6 +174,13 @@ enum ModeSuscription {
 
   """"""
   DINAMIC
+}
+
+union ResourceUnion = AssetBoot | Asset
+
+input DeleteAssetInput {
+  id: ID!
+  isMultiple: Boolean!
 }
 
 input AssetInput {

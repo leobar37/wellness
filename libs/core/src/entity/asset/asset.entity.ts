@@ -25,7 +25,7 @@ export class Asset extends WellnessEntity {
   @Column('simple-json', { default: null })
   metadata: SafeAny;
 
-  @Column()
+  @Column({ nullable: true })
   bootId: number;
 
   @Field({ nullable: true })

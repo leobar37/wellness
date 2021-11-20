@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import { AssetFragment } from './fragments/asset.graphql';
 export const generateSignature = gql`
   mutation generateSignature($publicId: String) {
     signature(publicId: $publicId) {
@@ -9,7 +10,37 @@ export const generateSignature = gql`
 `;
 
 export const deleteResource = gql`
-  mutation deleteResource($publicId: String) {
-    deleteResource(publicId: $publicId)
+  ${AssetFragment}
+  mutation deleteResource($input: DeleteAssetInput!) {
+    deleteResource(input: $input) {
+      __typename
+      ... on Asset {
+        ...AssetFragment
+      }
+      ... on AssetBoot {
+        id
+        assets {
+          ...AssetFragment
+        }
+      }
+    }
+  }
+`;
+
+export const createResource = gql`
+  ${AssetFragment}
+  mutation createResource($resource: AssetInput!) {
+    createResource(resource: $resource) {
+      __typename
+      ... on Asset {
+        ...AssetFragment
+      }
+      ... on AssetBoot {
+        id
+        assets {
+          ...AssetFragment
+        }
+      }
+    }
   }
 `;

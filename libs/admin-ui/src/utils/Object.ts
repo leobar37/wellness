@@ -1,7 +1,5 @@
 import { SafeAny } from '@wellness/common';
-/**
- *
- */
+import { get } from 'lodash';
 
 export const matVa = <Val, T extends string | number | symbol>(
   val?: T,
