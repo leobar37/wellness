@@ -11116,6 +11116,13 @@ graphql-request@^3.3.0:
     extract-files "^9.0.0"
     form-data "^3.0.0"
 
+graphql-scalars@^1.13.6:
+  version "1.13.6"
+  resolved "https://registry.yarnpkg.com/graphql-scalars/-/graphql-scalars-1.13.6.tgz#c8fadd0d88860926b1e7dcd9451a17d2a0bf775e"
+  integrity sha512-jetz3kAsAC2dNkw/fMbsT0XR+sd2rOtnOuW+6v5BjLcPR2QGgvL64tNINVRrzVuGHvDRgvoAvzwE+Z68zCsi4Q==
+  dependencies:
+    tslib "~2.3.0"
+
 graphql-sse@^1.0.1:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/graphql-sse/-/graphql-sse-1.0.5.tgz#9185dc4764cce9296fc90341f9fdac9ed024ff67"

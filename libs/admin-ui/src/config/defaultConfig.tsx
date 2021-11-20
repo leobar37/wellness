@@ -7,9 +7,9 @@ export const defaultConfig: WellnessConfig = {
     },
   },
   cloudinary: {
-    apiKey: '',
-    cloudName: '',
-    uploadPreset: '',
+    apiKey: '827568399999768',
+    cloudName: 'wellnesspro',
+    uploadPreset: 'ml_default',
   },
   uploadImage: {
     height: 150,

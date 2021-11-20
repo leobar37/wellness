@@ -10,7 +10,7 @@ import { ObjectType, Field } from '@nestjs/graphql';
  */
 @Entity()
 @ObjectType()
-export abstract class AssetBoot extends WellnessEntity {
+export class AssetBoot extends WellnessEntity {
   constructor(input: DeepPartial<AssetBoot>) {
     super(input);
   }

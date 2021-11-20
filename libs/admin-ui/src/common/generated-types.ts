@@ -18,6 +18,8 @@ export type Scalars = {
   Float: number;
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: SafeAny;
+  /** The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
+  JSONObject: SafeAny;
 };
 
 export type Activity = {
@@ -52,6 +54,12 @@ export type AssetBoot = {
   assets: Array<Maybe<Asset>>;
 };
 
+export type AssetInput = {
+  isMultiple: Scalars['Boolean'];
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  metadatas?: InputMaybe<Array<Scalars['JSONObject']>>;
+};
+
 export type Client = {
   __typename?: 'Client';
   birth?: Maybe<Scalars['DateTime']>;
@@ -76,6 +84,7 @@ export type ClientInput = {
   modeRegister: ModeRegiser;
   name: Scalars['String'];
   note: Scalars['String'];
+  photoId?: InputMaybe<Scalars['Int']>;
   sex: Sex;
 };
 
@@ -128,6 +137,7 @@ export type Mutation = {
   createActivity: Activity;
   createAsistence: Asistence;
   createPlan: Plan;
+  createResource: Scalars['Boolean'];
   deleteActivity: Activity;
   deleteAsistence: Scalars['Boolean'];
   deleteCLient: Client;
@@ -154,6 +164,11 @@ export type MutationCreateAsistenceArgs = {
 
 export type MutationCreatePlanArgs = {
   input: PlanInput;
+};
+
+
+export type MutationCreateResourceArgs = {
+  resource: AssetInput;
 };
 
 
@@ -250,7 +265,7 @@ export enum Sex {
 }
 
 export type GenerateSignatureMutationVariables = Exact<{
-  publicId: Scalars['String'];
+  publicId?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -292,7 +307,7 @@ export const ClientFragmentFragmentDoc = gql`
 }
     `;
 export const GenerateSignatureDocument = gql`
-    mutation generateSignature($publicId: String!) {
+    mutation generateSignature($publicId: String) {
   signature(publicId: $publicId) {
     signature
     timestamp

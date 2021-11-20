@@ -1,4 +1,4 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, Int } from '@nestjs/graphql';
 import { Client } from '@wellness/core/entity';
 import { Sex, ModeRegiser } from '@wellness/common';
 import { IsEmail } from 'class-validator';
@@ -35,4 +35,7 @@ export class ClientInput implements Partial<Client> {
 
   @Field((type) => ModeRegiser)
   modeRegister: ModeRegiser;
+
+  @Field((type) => Int, { nullable: true })
+  photoId: number;
 }

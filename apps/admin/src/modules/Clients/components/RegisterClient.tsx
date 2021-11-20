@@ -1,22 +1,22 @@
-import * as React from 'react';
-import { Button, useDisclosure, HStack, Radio, Flex } from '@chakra-ui/react';
-import type { NextPageWithLayout } from '@wellness/admin-ui/common';
+import { Flex, HStack, Radio, useDisclosure } from '@chakra-ui/react';
+import { DatePicker, ImageUpload } from '@wellness/admin-ui';
 import { ModeRegiser, Sex } from '@wellness/admin-ui/common';
-import { BaseLayout, Layout, ModalCrud } from '@wellness/admin-ui/components';
-import { ChackraForm, SaveActions } from '@wellness/admin-ui/components/crud';
+import { ModalCrud } from '@wellness/admin-ui/components';
+import { ChackraForm } from '@wellness/admin-ui/components/crud';
 import { Formik } from 'formik';
 import {
   InputControl,
-  TextareaControl,
-  SubmitButton,
   RadioGroupControl,
+  SubmitButton,
+  TextareaControl,
 } from 'formik-chakra-ui';
+import * as React from 'react';
 import * as yup from 'yup';
 import { Asserts } from 'yup';
 import { useClientsController } from '../controller';
-import { ImageUpload } from '@wellness/admin-ui';
-import { DatePicker } from '@wellness/admin-ui';
 import { useClientsStore } from '../data/client-store';
+import { useCloudinaryApi } from '../../../lib';
+
 const clientSchema = yup.object({
   name: yup.string().required(),
   imageProfile: yup.mixed().required(),
@@ -34,14 +34,15 @@ export type ClientSchena = Asserts<typeof clientSchema>;
 const { toggleClientModal } = useClientsStore.getState();
 
 export const RegisterClientModal = () => {
+  const { uploadFile } = useCloudinaryApi();
   const { clientModal } = useClientsStore();
+  const { registerClient } = useClientsController();
+
   const { isOpen, onClose } = useDisclosure({
     isOpen: clientModal,
     onClose: () => toggleClientModal(false),
     onOpen: () => toggleClientModal(true),
   });
-
-  const { registerClient } = useClientsController();
 
   return (
     <Formik<ClientSchena>
@@ -58,19 +59,19 @@ export const RegisterClientModal = () => {
         imageProfile: null,
       }}
       onSubmit={async (values, { setSubmitting }) => {
-        setSubmitting(false);
-        console.log(values);
-        registerClient({
-          direction: values.direction,
-          dni: values.dni,
-          email: values.email,
-          lastName: values.lastName,
-          modeRegister: ModeRegiser.ADMIN,
-          note: values.note,
-          name: values.name,
-          birthday: values.birth,
-          sex: values.sex,
-        });
+        const resultFile = await uploadFile(values.imageProfile);
+
+        // registerClient({
+        //   direction: values.direction,
+        //   dni: values.dni,
+        //   email: values.email,
+        //   lastName: values.lastName,
+        //   modeRegister: ModeRegiser.ADMIN,
+        //   note: values.note,
+        //   name: values.name,
+        //   birthday: values.birth,
+        //   sex: values.sex,
+        // });
       }}
     >
       {({ handleSubmit, submitForm }) => (

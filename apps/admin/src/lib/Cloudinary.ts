@@ -15,7 +15,7 @@ import { useConfig, CloudinaryConfig } from '@wellness/admin-ui/config';
 import { get, isNull } from 'lodash';
 import { useCallback } from 'react';
 import Axios from 'axios';
-import { SafeAny, isValid } from '@wellness/common';
+import { isValid, CloudinaryResponse } from '@wellness/common';
 
 type GenerateSignatureParams = {
   publicId?: string;
@@ -25,34 +25,9 @@ type uploadCloudinaryOptions = {
   timestamp: number;
   signature: string;
 };
-
-export interface CloudinaryResponse {
-  asset_id: string;
-  public_id: string;
-  version: number;
-  version_id: string;
-  signature: string;
-  width: number;
-  height: number;
-  format: string;
-  resource_type: string;
-  created_at: string;
-  tags: SafeAny[];
-  bytes: number;
-  type: string;
-  etag: string;
-  placeholder: boolean;
-  url: string;
-  secure_url: string;
-  access_mode: string;
-  original_filename: string;
-  api_key: string;
-}
-
 export const useCloudinaryApi = () => {
   const client = useApolloClient();
   const cloudinaryConfig = useConfig<CloudinaryConfig>('cloudinary');
-
   const generateSignature = useCallback(
     async ({ publicId }: GenerateSignatureParams) => {
       const resultMutation = await client.mutate<
@@ -64,7 +39,6 @@ export const useCloudinaryApi = () => {
         },
         mutation: GenerateSignatureDocument,
       });
-
       const responseSignature = get(
         resultMutation,
         'data.signature'
@@ -73,6 +47,7 @@ export const useCloudinaryApi = () => {
     },
     [client]
   );
+
   const deleteResource = useCallback(
     async (publicId: string) => {
       const resultMutation = await client.mutate<
@@ -99,7 +74,6 @@ export const useCloudinaryApi = () => {
       formData.append('timestamp', String(options.timestamp));
       formData.append('upload_preset', cloudinaryConfig.uploadPreset);
       formData.append('signature', options.signature);
-
       const uploadedResponse = await Axios({
         method: 'POST',
         url: url,
