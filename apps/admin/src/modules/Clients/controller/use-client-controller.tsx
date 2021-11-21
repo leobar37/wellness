@@ -41,6 +41,6 @@ export const useClientsController = () => {
 
   return {
     registerClient,
-    clients: clients.clients,
+    clients: clients?.clients ?? [],
   };
 };

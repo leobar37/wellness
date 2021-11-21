@@ -17,7 +17,9 @@ import {
   useTable,
   UseTableInstanceProps,
 } from 'react-table';
+import { TableProps as ChakraTableProps, Center } from '@chakra-ui/react';
 import { convertChildrenToColumns } from './utils';
+import { get } from 'lodash';
 
 export type TableInstanceProps = UseGlobalFiltersInstanceProps<SafeAny> &
   UseTableInstanceProps<SafeAny>;
@@ -26,7 +28,8 @@ export type TableProps = {
   data: SafeAny[];
   rowStyles?: SystemStyleObject;
   onTable?: (table: TableInstanceProps) => void;
-} & CTableProps;
+} & CTableProps &
+  ChakraTableProps;
 
 export const Table: FunctionComponent<TableProps> = ({
   data,
@@ -76,8 +79,14 @@ export const Table: FunctionComponent<TableProps> = ({
           return (
             <Tr sx={stylesRow || {}} {...row.getRowProps()} key={i}>
               {row.cells.map((cell, j) => {
+                const cellStyles = get(
+                  cell.column,
+                  'cellStyles',
+                  {}
+                ) as SystemStyleObject;
+
                 return (
-                  <Td {...cell.getCellProps()} key={j}>
+                  <Td {...cell.getCellProps()} sx={cellStyles}>
                     {cell.render('Cell')}
                   </Td>
                 );
