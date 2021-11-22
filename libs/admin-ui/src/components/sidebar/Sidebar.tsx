@@ -30,15 +30,6 @@ export const SidebarHeader = () => {
           <Left color="white" />
         </Center>
       </HStack>
-      <VStack>
-        {/* search componente */}
-        <InputGroup bg="white" size="md" borderRadius="5px">
-          <InputLeftElement>
-            <Search fontSize="20px" />
-          </InputLeftElement>
-          <Input type="text" placeholder="Buscar" />
-        </InputGroup>
-      </VStack>
       <Divider></Divider>
     </VStack>
   );

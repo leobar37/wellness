@@ -4,3 +4,5 @@ export * from './Left';
 export * from './User';
 export * from './Calendar';
 export * from './Dots-vertical';
+export * from './Delete';
+export * from './Filter';

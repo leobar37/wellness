@@ -7,6 +7,7 @@ import {
   HStack,
   SystemStyleObject,
   Text,
+  GridItemProps,
 } from '@chakra-ui/react';
 import {
   MenuItem,
@@ -47,16 +48,18 @@ type BaseLayoutProps = PropsWithChildren<{
   header?: React.ReactNode;
 }>;
 
-export const Layout: FunctionComponent<{
-  /**
-   * Text of hero
-   */
-  backText?: string;
-  /**
-   * Actions to go in the header
-   */
-  actions?: React.ReactNode;
-}> = ({ children, actions, backText }) => {
+export const Layout: FunctionComponent<
+  {
+    /**
+     * Text of hero
+     */
+    backText?: string;
+    /**
+     * Actions to go in the header
+     */
+    actions?: React.ReactNode;
+  } & GridItemProps
+> = ({ children, actions, backText, ...boxProps }) => {
   const showHeader = backText || actions;
   return (
     <GridItem
@@ -64,6 +67,7 @@ export const Layout: FunctionComponent<{
       justifyContent="center"
       alignItems="center"
       gridArea="content"
+      {...boxProps}
     >
       <Box
         overflowY="scroll"

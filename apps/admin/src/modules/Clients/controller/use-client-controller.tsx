@@ -6,19 +6,31 @@ import { Asset } from '@wellness/admin-ui';
 import { isValid, pluck } from '@wellness/common';
 import { useAssetService, ModeRegiser, Client } from '@wellness/admin-ui';
 import { SaveClientSchena } from '../data/schemas';
+import { useClientsStore } from '../data/client-store';
+
+import * as React from 'react';
+const { patch } = useClientsStore.getState();
 
 export const useClientsController = () => {
   const [mutRegisterClient, { loading, data }] = useRegisterClientMutation();
-  const { data: clients } = useGetClientsQuery();
+  const { data: dataClients } = useGetClientsQuery();
   const { createAsset } = useAssetService();
 
+  React.useEffect(() => {
+    if (dataClients) {
+      patch({
+        clients: dataClients.clients as Client[],
+      });
+    }
+  }, [dataClients]);
+
+  // TODO: memoize this function
   const registerClient = async (values: SaveClientSchena) => {
     let asset: Asset = null;
     if (isValid(values.imageProfile)) {
       const assetResult = await createAsset(values.imageProfile);
       asset = assetResult;
     }
-
     const result = await mutRegisterClient({
       variables: {
         client: {
@@ -41,6 +53,6 @@ export const useClientsController = () => {
 
   return {
     registerClient,
-    clients: clients?.clients ?? [],
+    clients: dataClients?.clients ?? [],
   };
 };

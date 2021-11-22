@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Column, CellProps } from 'react-table';
 import { toArray } from '../../utils/react-utils';
 import { SafeAny, TObject } from '@wellness/common';
+import { TableInstanceProps } from './internals';
+import { get } from 'lodash';
 /**
  * see : https://github.com/tannerlinsley/react-table/blob/master/src/filterTypes.js
  */
@@ -44,5 +46,15 @@ export const prepareCellProps = <D extends TObject>(props: CellProps<D>) => {
   return {
     ...props,
     original: props.cell.row.original,
+  };
+};
+
+export const prepareTableProps = (props: TableInstanceProps) => {
+  const selection = {
+    ids: get(props, 'state.selectedRowIds'),
+  };
+  return {
+    selection,
+    ...props,
   };
 };

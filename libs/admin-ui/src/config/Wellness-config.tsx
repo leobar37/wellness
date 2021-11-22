@@ -12,6 +12,13 @@ export type UploadImageConfig = {
   height: number;
 };
 
+export type TableConfig = {
+  gloabalFilter: {
+    debounce: number;
+    placeHolder: (count: number) => string;
+  };
+};
+
 export type CloudinaryConfig = {
   cloudName: string;
   uploadPreset: string;
@@ -22,6 +29,7 @@ export interface WellnessConfig {
   sidebar: SidebarConfig;
   cloudinary: CloudinaryConfig;
   uploadImage: UploadImageConfig;
+  tableConfig: TableConfig;
 }
 
 export type PartialWellnessConfig = DeepPartialSimple<WellnessConfig>;

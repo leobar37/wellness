@@ -15,4 +15,10 @@ export const defaultConfig: WellnessConfig = {
     height: 150,
     width: 150,
   },
+  tableConfig: {
+    gloabalFilter: {
+      debounce: 250,
+      placeHolder: (count) => `Search in ${count} records`,
+    },
+  },
 };

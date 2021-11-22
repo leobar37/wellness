@@ -19,6 +19,10 @@ const Button = {
         transform: 'scale(0.9)',
       },
     } as SystemStyleObject,
+    red: {
+      bg: 'red.500',
+      color: 'white',
+    },
   },
   // The default `size` or `variant` values
   defaultProps: {},
