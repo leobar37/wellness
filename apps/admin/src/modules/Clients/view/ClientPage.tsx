@@ -1,41 +1,25 @@
+import { TabList, TabPanels, Tabs, useToken } from '@chakra-ui/react';
 import type { NextPageWithLayout } from '@wellness/admin-ui/common';
-import { BaseLayout, Layout } from '@wellness/admin-ui/components';
+import {
+  BaseLayout,
+  Layout,
+  TabContent,
+  TabWellness,
+} from '@wellness/admin-ui/components';
 import { DeleteIcon, EditIcon } from '@wellness/admin-ui/icons';
+import { ButtonIcon } from '@wellness/admin-ui/ui';
 import { SafeAny } from '@wellness/common';
 import { useRouter } from 'next/router';
+import { DashboardClient } from '../components/DashboarClient';
+import { AsistenceTab } from '../components/asistence/AsistenceTab';
 import { useClientController } from '../controller';
-import {
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  useTheme,
-  SystemStyleObject,
-} from '@chakra-ui/react';
 
-import { ButtonIcon } from '@wellness/admin-ui/ui';
 export const ClientPage: NextPageWithLayout<SafeAny> = () => {
   const { query } = useRouter();
-  const theme = useTheme();
+
   const { client } = useClientController({
     clientId: query.clientId as string,
   });
-  const tabStyles = {
-    borderRadius: 'xl',
-    mx: '3',
-    _hover: {
-      bg: 'gray.100',
-    } as SystemStyleObject,
-    _selected: {
-      bg: 'brown.300',
-      color: 'white',
-    } as SystemStyleObject,
-    _active: {
-      bg: 'brown.300',
-      color: 'white',
-    } as SystemStyleObject,
-  };
   if (!client) {
     return <div>Loading...</div>;
   }
@@ -55,15 +39,18 @@ export const ClientPage: NextPageWithLayout<SafeAny> = () => {
     >
       <Tabs variant="unstyled">
         <TabList>
-          <Tab {...tabStyles}>Dashboard</Tab>
-          <Tab {...tabStyles}>Asistencias</Tab>
-          <Tab {...tabStyles}>Servicios</Tab>
-          <Tab {...tabStyles}>fichas</Tab>
+          <TabWellness>Dashboard</TabWellness>
+          <TabWellness>Asistencias</TabWellness>
+          <TabWellness>Servicios</TabWellness>
+          <TabWellness>fichas</TabWellness>
         </TabList>
         <TabPanels>
-          <TabPanel>
-            <pre>{JSON.stringify(client, null, 5)}</pre>
-          </TabPanel>
+          <TabContent>
+            <DashboardClient />
+          </TabContent>
+          <TabContent>
+            <AsistenceTab />
+          </TabContent>
         </TabPanels>
       </Tabs>
     </Layout>

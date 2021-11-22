@@ -98,6 +98,7 @@ type Query {
   ping: String!
   clients: [Client!]!
   client(id: ID!): Client!
+  finAsistences(cliendId: ID!): [Asistence!]!
   activities(id: ID!): [Activity!]!
 }
 
@@ -135,7 +136,7 @@ input ClientInput {
 }
 
 input InputAsistence {
-  note: ID
+  note: String
   clientId: ID!
 }
 

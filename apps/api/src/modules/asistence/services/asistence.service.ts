@@ -29,7 +29,6 @@ export class AsitenceService {
         clientId: idClient,
       },
     });
-
     return asistences;
   }
 

@@ -149,7 +149,7 @@ export type DetailInput = {
 
 export type InputAsistence = {
   clientId: Scalars['ID'];
-  note?: InputMaybe<Scalars['ID']>;
+  note?: InputMaybe<Scalars['String']>;
 };
 
 export enum ModeRegiser {
@@ -264,6 +264,7 @@ export type Query = {
   activities: Array<Activity>;
   client: Client;
   clients: Array<Client>;
+  finAsistences: Array<Asistence>;
   ping: Scalars['String'];
 };
 
@@ -273,6 +274,10 @@ export type QueryActivitiesArgs = {
 
 export type QueryClientArgs = {
   id: Scalars['ID'];
+};
+
+export type QueryFinAsistencesArgs = {
+  cliendId: Scalars['ID'];
 };
 
 export type ResourceUnion = Asset | AssetBoot;
@@ -288,6 +293,52 @@ export enum Sex {
   OTHER = 'OTHER',
   WOMEN = 'WOMEN',
 }
+
+export type CreateAsistenceMutationVariables = Exact<{
+  asistence: InputAsistence;
+}>;
+
+export type CreateAsistenceMutation = {
+  __typename?: 'Mutation';
+  createAsistence: {
+    __typename?: 'Asistence';
+    id: string;
+    createdAt: SafeAny;
+    updateAt: SafeAny;
+    note: string;
+  };
+};
+
+export type UpdateAsistenceMutationVariables = Exact<{
+  input: InputAsistence;
+  id: Scalars['ID'];
+}>;
+
+export type UpdateAsistenceMutation = {
+  __typename?: 'Mutation';
+  updateAsistence: {
+    __typename?: 'Asistence';
+    id: string;
+    createdAt: SafeAny;
+    updateAt: SafeAny;
+    note: string;
+  };
+};
+
+export type FindAsistencesQueryVariables = Exact<{
+  cliendId: Scalars['ID'];
+}>;
+
+export type FindAsistencesQuery = {
+  __typename?: 'Query';
+  finAsistences: Array<{
+    __typename?: 'Asistence';
+    id: string;
+    createdAt: SafeAny;
+    updateAt: SafeAny;
+    note: string;
+  }>;
+};
 
 export type GenerateSignatureMutationVariables = Exact<{
   publicId?: Maybe<Scalars['String']>;
@@ -472,6 +523,14 @@ export type GetClientQuery = {
   };
 };
 
+export type AsistenceFragmentFragment = {
+  __typename?: 'Asistence';
+  id: string;
+  createdAt: SafeAny;
+  updateAt: SafeAny;
+  note: string;
+};
+
 export type AssetFragmentFragment = {
   __typename?: 'Asset';
   name: string;
@@ -513,6 +572,14 @@ export type PingQueryQueryVariables = Exact<{ [key: string]: never }>;
 
 export type PingQueryQuery = { __typename?: 'Query'; ping: string };
 
+export const AsistenceFragmentFragmentDoc = gql`
+  fragment asistenceFragment on Asistence {
+    id
+    createdAt
+    updateAt
+    note
+  }
+`;
 export const AssetFragmentFragmentDoc = gql`
   fragment AssetFragment on Asset {
     name
@@ -542,6 +609,168 @@ export const ClientFragmentFragmentDoc = gql`
   }
   ${AssetFragmentFragmentDoc}
 `;
+export const CreateAsistenceDocument = gql`
+  mutation createAsistence($asistence: InputAsistence!) {
+    createAsistence(asistence: $asistence) {
+      ...asistenceFragment
+    }
+  }
+  ${AsistenceFragmentFragmentDoc}
+`;
+export type CreateAsistenceMutationFn = Apollo.MutationFunction<
+  CreateAsistenceMutation,
+  CreateAsistenceMutationVariables
+>;
+
+/**
+ * __useCreateAsistenceMutation__
+ *
+ * To run a mutation, you first call `useCreateAsistenceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAsistenceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAsistenceMutation, { data, loading, error }] = useCreateAsistenceMutation({
+ *   variables: {
+ *      asistence: // value for 'asistence'
+ *   },
+ * });
+ */
+export function useCreateAsistenceMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateAsistenceMutation,
+    CreateAsistenceMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateAsistenceMutation,
+    CreateAsistenceMutationVariables
+  >(CreateAsistenceDocument, options);
+}
+export type CreateAsistenceMutationHookResult = ReturnType<
+  typeof useCreateAsistenceMutation
+>;
+export type CreateAsistenceMutationResult =
+  Apollo.MutationResult<CreateAsistenceMutation>;
+export type CreateAsistenceMutationOptions = Apollo.BaseMutationOptions<
+  CreateAsistenceMutation,
+  CreateAsistenceMutationVariables
+>;
+export const UpdateAsistenceDocument = gql`
+  mutation updateAsistence($input: InputAsistence!, $id: ID!) {
+    updateAsistence(input: $input, id: $id) {
+      ...asistenceFragment
+    }
+  }
+  ${AsistenceFragmentFragmentDoc}
+`;
+export type UpdateAsistenceMutationFn = Apollo.MutationFunction<
+  UpdateAsistenceMutation,
+  UpdateAsistenceMutationVariables
+>;
+
+/**
+ * __useUpdateAsistenceMutation__
+ *
+ * To run a mutation, you first call `useUpdateAsistenceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateAsistenceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateAsistenceMutation, { data, loading, error }] = useUpdateAsistenceMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUpdateAsistenceMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateAsistenceMutation,
+    UpdateAsistenceMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateAsistenceMutation,
+    UpdateAsistenceMutationVariables
+  >(UpdateAsistenceDocument, options);
+}
+export type UpdateAsistenceMutationHookResult = ReturnType<
+  typeof useUpdateAsistenceMutation
+>;
+export type UpdateAsistenceMutationResult =
+  Apollo.MutationResult<UpdateAsistenceMutation>;
+export type UpdateAsistenceMutationOptions = Apollo.BaseMutationOptions<
+  UpdateAsistenceMutation,
+  UpdateAsistenceMutationVariables
+>;
+export const FindAsistencesDocument = gql`
+  query findAsistences($cliendId: ID!) {
+    finAsistences(cliendId: $cliendId) {
+      ...asistenceFragment
+    }
+  }
+  ${AsistenceFragmentFragmentDoc}
+`;
+
+/**
+ * __useFindAsistencesQuery__
+ *
+ * To run a query within a React component, call `useFindAsistencesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindAsistencesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindAsistencesQuery({
+ *   variables: {
+ *      cliendId: // value for 'cliendId'
+ *   },
+ * });
+ */
+export function useFindAsistencesQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FindAsistencesQuery,
+    FindAsistencesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FindAsistencesQuery, FindAsistencesQueryVariables>(
+    FindAsistencesDocument,
+    options
+  );
+}
+export function useFindAsistencesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FindAsistencesQuery,
+    FindAsistencesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FindAsistencesQuery, FindAsistencesQueryVariables>(
+    FindAsistencesDocument,
+    options
+  );
+}
+export type FindAsistencesQueryHookResult = ReturnType<
+  typeof useFindAsistencesQuery
+>;
+export type FindAsistencesLazyQueryHookResult = ReturnType<
+  typeof useFindAsistencesLazyQuery
+>;
+export type FindAsistencesQueryResult = Apollo.QueryResult<
+  FindAsistencesQuery,
+  FindAsistencesQueryVariables
+>;
 export const GenerateSignatureDocument = gql`
   mutation generateSignature($publicId: String) {
     signature(publicId: $publicId) {
@@ -926,6 +1155,18 @@ export type PingQueryQueryResult = Apollo.QueryResult<
 >;
 type DiscriminateUnion<T, U> = T extends U ? T : never;
 
+export type CreateAsistenceVariables = CreateAsistenceMutationVariables;
+export type CreateAsistenceCreateAsistence = NonNullable<
+  CreateAsistenceMutation['createAsistence']
+>;
+export type UpdateAsistenceVariables = UpdateAsistenceMutationVariables;
+export type UpdateAsistenceUpdateAsistence = NonNullable<
+  UpdateAsistenceMutation['updateAsistence']
+>;
+export type FindAsistencesVariables = FindAsistencesQueryVariables;
+export type FindAsistencesFinAsistences = NonNullable<
+  NonNullable<FindAsistencesQuery['finAsistences']>[number]
+>;
 export type GenerateSignatureVariables = GenerateSignatureMutationVariables;
 export type GenerateSignatureSignature = NonNullable<
   GenerateSignatureMutation['signature']
