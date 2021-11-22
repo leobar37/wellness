@@ -1,18 +1,18 @@
 import {
   ApolloClient,
   ApolloLink,
+  HttpLink,
   InMemoryCache,
   NormalizedCacheObject,
-  HttpLink,
 } from '@apollo/client';
-import { isServer } from '@wellness/admin-ui/utils';
 import { onError } from 'apollo-link-error';
 import merge from 'deepmerge';
 import { IncomingHttpHeaders } from 'http';
 import { isEqual } from 'lodash';
 import { AppProps } from 'next/app';
-import { useMemo } from 'react';
-
+import { PropsWithChildren, useEffect, useMemo, useState } from 'react';
+import { isServer } from '../utils';
+import { Box, BoxProps } from '@chakra-ui/react';
 const APOLLO_PROP_NAME = '__APOLLO__STATE';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
@@ -58,7 +58,7 @@ export const inializeApollo = ({
 }: InitialStateApollo) => {
   const _apolloClient = apolloClient ?? createApolloClient(headers);
 
-  if (initialState) {
+  if (initialState && apolloClient) {
     const existingCache = apolloClient.extract();
 
     const data = merge(initialState, existingCache, {
@@ -103,4 +103,22 @@ export function useApollo(pageProps: AppProps['pageProps']) {
   const state = pageProps[APOLLO_PROP_NAME];
   const store = useMemo(() => inializeApollo({ initialState: state }), [state]);
   return store;
+}
+
+export function ClientOnly({
+  children,
+}: // eslint-disable-next-line @typescript-eslint/ban-types
+PropsWithChildren<{}>) {
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) {
+    return null;
+  }
+
+  // eslint-disable-next-line react/jsx-no-useless-fragment
+  return <>{children}</>;
 }

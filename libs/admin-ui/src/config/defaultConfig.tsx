@@ -18,7 +18,7 @@ export const defaultConfig: WellnessConfig = {
   tableConfig: {
     gloabalFilter: {
       debounce: 250,
-      placeHolder: (count) => `Search in ${count} records`,
+      placeHolder: (count) => `Buscar en ${count} resultados`,
     },
   },
 };

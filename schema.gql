@@ -97,6 +97,7 @@ type ResponseSignature {
 type Query {
   ping: String!
   clients: [Client!]!
+  client(id: ID!): Client!
   activities(id: ID!): [Activity!]!
 }
 

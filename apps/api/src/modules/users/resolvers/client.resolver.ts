@@ -31,4 +31,9 @@ export class ClientResolver {
   async deleteCLient(@Args('id', { type: () => ID }) id: number) {
     return this.clientService.delete(id);
   }
+
+  @Query((type) => Client)
+  client(@Args('id', { type: () => ID }) id: number) {
+    return this.clientService.findOne(id);
+  }
 }

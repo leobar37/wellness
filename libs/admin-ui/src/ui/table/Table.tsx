@@ -1,4 +1,5 @@
 import {
+  Checkbox,
   SystemStyleObject,
   Table as ChacrakTable,
   Tbody,
@@ -6,27 +7,29 @@ import {
   Th,
   Thead,
   Tr,
-  Checkbox,
+  usePrevious,
 } from '@chakra-ui/react';
 import { SafeAny } from '@wellness/common';
+import { count } from 'console';
 import { get, isFunction } from 'lodash';
 import React, {
   FunctionComponent,
   ReactChildren,
+  useCallback,
   useEffect,
   useMemo,
-  useCallback,
+  useRef,
 } from 'react';
 import {
   useFilters,
   useGlobalFilter,
-  useTable,
   useRowSelect,
   UseRowSelectHooks,
+  useTable,
 } from 'react-table';
+import { ColTableProps } from './Column';
 import { TableInstanceProps, TableProps } from './internals';
 import { convertChildrenToColumns } from './utils';
-import { ColTableProps } from './Column';
 
 export const Table: FunctionComponent<TableProps> = ({
   data,
@@ -37,6 +40,7 @@ export const Table: FunctionComponent<TableProps> = ({
   onChangueTable,
   ...rest
 }) => {
+  // define columns
   const columns = React.useMemo(() => {
     const _columns: ColTableProps[] = [];
     if (isSelecteable) {
@@ -45,11 +49,26 @@ export const Table: FunctionComponent<TableProps> = ({
         Header: ({
           getToggleAllRowsSelectedProps,
         }: UseRowSelectHooks<SafeAny>) => {
-          return <Checkbox {...(getToggleAllRowsSelectedProps as SafeAny)()} />;
+          const props = (getToggleAllRowsSelectedProps as SafeAny)();
+          const { checked, indeterminate, onChange } = props;
+          return (
+            <Checkbox
+              isChecked={checked}
+              isIndeterminate={indeterminate}
+              onChange={onChange}
+            />
+          );
         },
         Cell: (props: SafeAny) => {
           const fn = get(props, 'row.getToggleRowSelectedProps');
-          return <Checkbox {...fn()} />;
+          const propsCheck = fn();
+
+          return (
+            <Checkbox
+              isChecked={propsCheck.checked}
+              onChange={propsCheck.onChange}
+            />
+          );
         },
       };
       _columns.push(selectColumn);
@@ -61,6 +80,7 @@ export const Table: FunctionComponent<TableProps> = ({
   }, [children, isSelecteable]);
 
   const memoizedData = useMemo(() => data, [data]);
+
   const props = useTable(
     { data: memoizedData, columns },
     useFilters,
@@ -78,19 +98,7 @@ export const Table: FunctionComponent<TableProps> = ({
     state,
   } = props as SafeAny as TableInstanceProps;
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const memoChangue = useCallback(
-    onChangueTable ||
-      (() => {
-        return 0;
-      }),
-    []
-  );
-
-  const calculateOnChangue = useCallback(() => {
-    if (onTable) {
-      onTable(props as SafeAny as TableInstanceProps);
-    }
+  const calculateOnChangue = () => {
     if (onChangueTable) {
       let selection;
       if (isSelecteable) {
@@ -101,18 +109,20 @@ export const Table: FunctionComponent<TableProps> = ({
           nodes: selectedFlatRows.map((r) => r.original),
         };
       }
-      memoChangue({
+      onChangueTable({
         selection,
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props]);
+  };
   useEffect(() => {
-    console.log('effect');
-
+    if (onTable) {
+      onTable(props as SafeAny as TableInstanceProps);
+    }
+  }, [onTable, props]);
+  useEffect(() => {
     calculateOnChangue();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props, state]);
+  }, [selectedFlatRows.length]);
 
   return (
     <ChacrakTable {...getTableProps()} {...rest}>
@@ -135,7 +145,6 @@ export const Table: FunctionComponent<TableProps> = ({
         {rows.map((row) => {
           prepareRow(row);
           const trProps = isFunction(rowProps) ? rowProps(row) : rowProps;
-
           return (
             <Tr {...row.getRowProps()} {...trProps}>
               {row.cells.map((cell, j) => {

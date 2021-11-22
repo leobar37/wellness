@@ -3,6 +3,7 @@ import { AssetFragment } from './asset.graphql';
 export const ClientFragment = gql`
   ${AssetFragment}
   fragment ClientFragment on Client {
+    id
     code
     dni
     email

@@ -16,7 +16,8 @@ export const useClientsStore = create<IClientStore>((set, get) => {
       }));
     },
     setDeleteClients: (value) => {
-      return set((state) => ({ selectDeleteClients: value }));
+      console.log(value);
+      set({ selectDeleteClients: value });
     },
   };
 });

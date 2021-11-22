@@ -18,3 +18,12 @@ export const getClients = gql`
     }
   }
 `;
+
+export const getClient = gql`
+  ${ClientFragment}
+  query getClient($id: ID!) {
+    client(id: $id) {
+      ...ClientFragment
+    }
+  }
+`;

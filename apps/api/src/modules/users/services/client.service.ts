@@ -43,6 +43,10 @@ export class ClientService {
     return this.repository.find({});
   }
 
+  public async findOne(id: ID) {
+    return this.repository.findOne(id);
+  }
+
   public async delete(id: ID) {
     const clientFound = await this.existCLient(id);
     await this.repository.delete(id);

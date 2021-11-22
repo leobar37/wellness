@@ -18,8 +18,9 @@ import {
 } from '../../components';
 import { Left, UsersIcon } from '../../icons';
 import * as React from 'react';
+import { ClientOnly } from '../../lib';
 import { PropsWithChildren, FunctionComponent } from 'react';
-
+import { useRouter } from 'next/router';
 const layoutGrid: SystemStyleObject = {
   height: '100vh',
   bg: 'gray.200',
@@ -61,54 +62,67 @@ export const Layout: FunctionComponent<
   } & GridItemProps
 > = ({ children, actions, backText, ...boxProps }) => {
   const showHeader = backText || actions;
+  const router = useRouter();
+
+  const onBack = () => {
+    router.back();
+  };
+
   return (
-    <GridItem
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      gridArea="content"
-      {...boxProps}
-    >
-      <Box
-        overflowY="scroll"
-        overflowX="hidden"
-        width="90%"
-        bg="white"
-        height="90%"
-        borderRadius="10px"
-        sx={contentLayoutGrid}
+    <ClientOnly>
+      <GridItem
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        gridArea="content"
+        {...boxProps}
       >
-        {showHeader && (
-          <HStack
-            gridRow="1"
-            gridColumn="1 / 5"
-            justify="space-between"
-            px={10}
-            pt={5}
-            align="center"
-          >
-            <HStack spacing={5}>
-              <Button width="45px" height="45px" bg="brown.500">
-                <Box fontSize="18px">
-                  <Left color="white" fontSize="xl" />
-                </Box>
-              </Button>
-              <Heading size="lg">{backText}</Heading>
-            </HStack>
-            {/* Actions */}
-            {actions && <HStack pr="20px">{actions}</HStack>}
-          </HStack>
-        )}
         <Box
-          gridColumn="1 / 5"
-          gridRow={`${showHeader ? '2 / 4' : '1 /4'}  `}
-          my={2}
-          p={4}
+          overflowY="scroll"
+          overflowX="hidden"
+          width="90%"
+          bg="white"
+          height="90%"
+          borderRadius="10px"
+          sx={contentLayoutGrid}
         >
-          {children}
+          {showHeader && (
+            <HStack
+              gridRow="1"
+              gridColumn="1 / 5"
+              justify="space-between"
+              px={10}
+              pt={5}
+              align="center"
+            >
+              <HStack spacing={5}>
+                <Button
+                  onClick={() => onBack()}
+                  width="45px"
+                  height="45px"
+                  bg="brown.500"
+                >
+                  <Box fontSize="18px">
+                    <Left color="white" fontSize="xl" />
+                  </Box>
+                </Button>
+                <Heading size="lg">{backText}</Heading>
+              </HStack>
+              {/* Actions */}
+              {actions && <HStack pr="20px">{actions}</HStack>}
+            </HStack>
+          )}
+          <Box
+            gridColumn="1 / 5"
+            gridRow={`${showHeader ? '2 / 4' : '1 /4'}  `}
+            my={2}
+            p={4}
+          >
+            {children}
+          </Box>
         </Box>
-      </Box>
-    </GridItem>
+      </GridItem>
+    </ClientOnly>
   );
 };
 

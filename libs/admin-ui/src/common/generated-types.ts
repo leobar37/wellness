@@ -262,11 +262,16 @@ export type PlanInput = {
 export type Query = {
   __typename?: 'Query';
   activities: Array<Activity>;
+  client: Client;
   clients: Array<Client>;
   ping: Scalars['String'];
 };
 
 export type QueryActivitiesArgs = {
+  id: Scalars['ID'];
+};
+
+export type QueryClientArgs = {
   id: Scalars['ID'];
 };
 
@@ -375,6 +380,7 @@ export type RegisterClientMutation = {
   __typename?: 'Mutation';
   registerClient: {
     __typename?: 'Client';
+    id: string;
     code: string;
     dni: string;
     email: string;
@@ -406,6 +412,7 @@ export type GetClientsQuery = {
   __typename?: 'Query';
   clients: Array<{
     __typename?: 'Client';
+    id: string;
     code: string;
     dni: string;
     email: string;
@@ -431,6 +438,40 @@ export type GetClientsQuery = {
   }>;
 };
 
+export type GetClientQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type GetClientQuery = {
+  __typename?: 'Query';
+  client: {
+    __typename?: 'Client';
+    id: string;
+    code: string;
+    dni: string;
+    email: string;
+    name: string;
+    lastName: string;
+    birth?: SafeAny | null | undefined;
+    phone?: string | null | undefined;
+    direction?: string | null | undefined;
+    sex: Sex;
+    mode: ModeRegiser;
+    photo?:
+      | {
+          __typename?: 'Asset';
+          name: string;
+          size?: number | null | undefined;
+          previewUrl?: string | null | undefined;
+          id: string;
+          createdAt: SafeAny;
+          updateAt: SafeAny;
+        }
+      | null
+      | undefined;
+  };
+};
+
 export type AssetFragmentFragment = {
   __typename?: 'Asset';
   name: string;
@@ -443,6 +484,7 @@ export type AssetFragmentFragment = {
 
 export type ClientFragmentFragment = {
   __typename?: 'Client';
+  id: string;
   code: string;
   dni: string;
   email: string;
@@ -483,6 +525,7 @@ export const AssetFragmentFragmentDoc = gql`
 `;
 export const ClientFragmentFragmentDoc = gql`
   fragment ClientFragment on Client {
+    id
     code
     dni
     email
@@ -777,6 +820,60 @@ export type GetClientsQueryResult = Apollo.QueryResult<
   GetClientsQuery,
   GetClientsQueryVariables
 >;
+export const GetClientDocument = gql`
+  query getClient($id: ID!) {
+    client(id: $id) {
+      ...ClientFragment
+    }
+  }
+  ${ClientFragmentFragmentDoc}
+`;
+
+/**
+ * __useGetClientQuery__
+ *
+ * To run a query within a React component, call `useGetClientQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetClientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetClientQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetClientQuery(
+  baseOptions: Apollo.QueryHookOptions<GetClientQuery, GetClientQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetClientQuery, GetClientQueryVariables>(
+    GetClientDocument,
+    options
+  );
+}
+export function useGetClientLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetClientQuery,
+    GetClientQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetClientQuery, GetClientQueryVariables>(
+    GetClientDocument,
+    options
+  );
+}
+export type GetClientQueryHookResult = ReturnType<typeof useGetClientQuery>;
+export type GetClientLazyQueryHookResult = ReturnType<
+  typeof useGetClientLazyQuery
+>;
+export type GetClientQueryResult = Apollo.QueryResult<
+  GetClientQuery,
+  GetClientQueryVariables
+>;
 export const PingQueryDocument = gql`
   query pingQuery {
     ping
@@ -881,5 +978,7 @@ export type GetClientsVariables = GetClientsQueryVariables;
 export type GetClientsClients = NonNullable<
   NonNullable<GetClientsQuery['clients']>[number]
 >;
+export type GetClientVariables = GetClientQueryVariables;
+export type GetClientClient = NonNullable<GetClientQuery['client']>;
 export type ClientFragmentPhoto = NonNullable<ClientFragmentFragment['photo']>;
 export type PingQueryVariables = PingQueryQueryVariables;

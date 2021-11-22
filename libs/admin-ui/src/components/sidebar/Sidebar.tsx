@@ -62,5 +62,5 @@ export const Sidebar: FunctionComponent<SidebarProps> = ({ children }) => {
 };
 
 Sidebar.defaultProps = {
-  open: false,
+  open: true,
 };

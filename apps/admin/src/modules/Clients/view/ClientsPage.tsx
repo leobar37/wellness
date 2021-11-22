@@ -1,34 +1,31 @@
-import { Box, Button, HStack, Checkbox } from '@chakra-ui/react';
+import { Box, Button, HStack } from '@chakra-ui/react';
 import type { Client, NextPageWithLayout } from '@wellness/admin-ui/common';
 import { BaseLayout, Layout } from '@wellness/admin-ui/components';
 import { DeleteIcon, DotsVertical, Filter } from '@wellness/admin-ui/icons';
-import {
-  Badgebg,
-  ColTable,
-  Table,
-  prepareTableProps,
-} from '@wellness/admin-ui/ui';
+import { Badgebg, ColTable, Table } from '@wellness/admin-ui/ui';
 import {
   GlobalFilter,
   prepareCellProps,
   TableInstanceProps,
 } from '@wellness/admin-ui/ui/table';
 import { SafeAny } from '@wellness/common';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { RegisterClientModal } from '../components';
 import { useClientsController } from '../controller';
 import { useClientsStore } from '../data/client-store';
-
+import { useRouter } from 'next/router';
 export const Page: NextPageWithLayout<SafeAny> = () => {
   const { clients } = useClientsController();
   const [table, setTable] = useState<TableInstanceProps | null>();
+
   const { toggleClientModal, setDeleteClients } = useClientsStore.getState();
   const { selectDeleteClients } = useClientsStore();
-
+  const router = useRouter();
   const showDeleteIcon = selectDeleteClients && selectDeleteClients.length > 0;
 
   const onSelectClient = (client: Client) => {
-    // console.log('selected client', client);
+    router.push(`./clients/${client.id}`);
+    console.log(client);
   };
   return (
     <Layout
@@ -48,8 +45,8 @@ export const Page: NextPageWithLayout<SafeAny> = () => {
             Filtros
           </Button>
           {showDeleteIcon && (
-            <Button variant="red">
-              <DeleteIcon fontSize="large" />
+            <Button variant="red" leftIcon={<DeleteIcon fontSize="large" />}>
+              {selectDeleteClients.length}
             </Button>
           )}
         </HStack>
@@ -59,11 +56,8 @@ export const Page: NextPageWithLayout<SafeAny> = () => {
           setTable(table);
         }}
         onChangueTable={(result) => {
-          console.log('changue', result);
+          console.log('result', result);
           setDeleteClients(result.selection.nodes);
-          // patch({
-          //   selectDeleteClients: result.selection.nodes,
-          // });
         }}
         rowProps={({ original }) => ({
           onClick: () => onSelectClient(original as SafeAny),
