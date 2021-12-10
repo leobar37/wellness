@@ -2,3 +2,4 @@
  *
  *
  */
+export * from './ficha.module';

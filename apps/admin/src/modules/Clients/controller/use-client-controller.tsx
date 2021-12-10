@@ -9,6 +9,8 @@ export type useClientControllerProps = {
 const { patch } = useClientsStore.getState();
 
 export const useClientController = ({ clientId }: useClientControllerProps) => {
+  console.log(clientId);
+
   const { data: dataGetClient } = useGetClientQuery({
     variables: {
       id: clientId as string,

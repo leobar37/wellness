@@ -19,8 +19,9 @@ export class AsitenceService {
   }
 
   async deleteAsistence(id: number) {
-    const deletedAsistence = await this.repository.delete(id);
-    return parseDeleteResult(deletedAsistence);
+    const asistence = await this.existAsistence(id);
+    await this.repository.delete(id);
+    return asistence;
   }
 
   async findAsistences(idClient: number) {

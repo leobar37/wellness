@@ -14,6 +14,7 @@ export const defaultConfig: WellnessConfig = {
   uploadImage: {
     height: 150,
     width: 150,
+    maxFiles: 10,
   },
   tableConfig: {
     gloabalFilter: {

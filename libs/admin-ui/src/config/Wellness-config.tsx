@@ -10,6 +10,7 @@ export type UploadImageConfig = {
   // the default width of the componente
   width: number;
   height: number;
+  maxFiles: number;
 };
 
 export type TableConfig = {

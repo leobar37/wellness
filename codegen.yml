@@ -1,23 +1,23 @@
 schema: ./schema.gql
-documents: "./libs/admin-ui/src/**/*.graphql.{ts,tsx}"
+documents: './libs/admin-ui/src/**/*.graphql.{ts,tsx}'
 generates:
   ./libs/admin-ui/src/common/generated-types.ts:
     plugins:
       - add:
-          content : "// tslint:disable"
+          content: '// tslint:disable'
       - add:
-          content : "import { SafeAny} from '@wellness/common'"
+          content: "import { SafeAny} from '@wellness/common'"
       - add:
-          content: "// this file is generate pls not edit manually :)" 
-      - "typescript"
+          content: '// this file is generate pls not edit manually :)'
+      - 'typescript'
       - typescript-operations
       - typescript-react-apollo
-      - "typescript-compatibility"
+      - 'typescript-compatibility'
     config:
       namingConvention:
-        enumValues: "keep"
-      maybeValue: "T"
-      strict: true 
-      defaultScalarType: "SafeAny"
+        enumValues: 'keep'
+      maybeValue: 'T'
+      strict: true
+      defaultScalarType: 'SafeAny'
       noNamespaces: true
       withHOC: false

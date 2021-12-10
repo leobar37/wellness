@@ -10,7 +10,7 @@ export class AsistenceResolver {
     return this.asistenceService.createAsistence(asistence);
   }
 
-  @Mutation((type) => Boolean)
+  @Mutation((type) => Asistence)
   public deleteAsistence(@Args('id', { type: () => ID }) id: number) {
     return this.asistenceService.deleteAsistence(id);
   }

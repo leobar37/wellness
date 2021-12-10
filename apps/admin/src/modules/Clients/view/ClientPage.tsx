@@ -1,5 +1,14 @@
-import { TabList, TabPanels, Tabs, useToken } from '@chakra-ui/react';
+import {
+  TabList,
+  TabPanels,
+  Tabs,
+  Tab,
+  Box,
+  Link,
+  HStack,
+} from '@chakra-ui/react';
 import type { NextPageWithLayout } from '@wellness/admin-ui/common';
+
 import {
   BaseLayout,
   Layout,
@@ -13,7 +22,7 @@ import { useRouter } from 'next/router';
 import { DashboardClient } from '../components/DashboarClient';
 import { AsistenceTab } from '../components/asistence/AsistenceTab';
 import { useClientController } from '../controller';
-
+import { DashboardFicha } from '../components/ficha';
 export const ClientPage: NextPageWithLayout<SafeAny> = () => {
   const { query } = useRouter();
 
@@ -37,19 +46,23 @@ export const ClientPage: NextPageWithLayout<SafeAny> = () => {
         </>
       }
     >
-      <Tabs variant="unstyled">
+      <Tabs defaultIndex={4} variant="unstyled">
         <TabList>
           <TabWellness>Dashboard</TabWellness>
           <TabWellness>Asistencias</TabWellness>
           <TabWellness>Servicios</TabWellness>
           <TabWellness>fichas</TabWellness>
         </TabList>
-        <TabPanels>
+        <TabPanels overflowY="scroll" maxHeight="500px">
           <TabContent>
             <DashboardClient />
           </TabContent>
           <TabContent>
             <AsistenceTab />
+          </TabContent>
+          <TabContent></TabContent>
+          <TabContent>
+            <DashboardFicha />
           </TabContent>
         </TabPanels>
       </Tabs>

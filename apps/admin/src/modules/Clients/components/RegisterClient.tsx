@@ -1,9 +1,17 @@
-import { Flex, HStack, Radio, useDisclosure } from '@chakra-ui/react';
-import { DatePicker, ImageUpload } from '@wellness/admin-ui';
+import {
+  Flex,
+  HStack,
+  Radio,
+  useDisclosure,
+  VStack,
+  Text,
+} from '@chakra-ui/react';
+import { DatePicker, UploadOne } from '@wellness/admin-ui';
 import { Sex } from '@wellness/admin-ui/common';
 import { ModalCrud } from '@wellness/admin-ui/components';
 import { ChackraForm } from '@wellness/admin-ui/components/crud';
 import { Formik } from 'formik';
+import { User } from '@wellness/admin-ui/icons';
 import {
   InputControl,
   RadioGroupControl,
@@ -14,13 +22,10 @@ import { useClientsController } from '../controller';
 import { useClientsStore } from '../data/client-store';
 import { SaveClientSchena } from '../data/schemas';
 import { useToast, useTheme } from '@chakra-ui/react';
-
 const { toggleClientModal } = useClientsStore.getState();
-
 export const RegisterClientModal = () => {
   const { clientModal } = useClientsStore();
   const { registerClient } = useClientsController();
-
   const { isOpen, onClose } = useDisclosure({
     isOpen: clientModal,
     onClose: () => toggleClientModal(false),
@@ -70,7 +75,20 @@ export const RegisterClientModal = () => {
         >
           <ChackraForm submit={handleSubmit}>
             <Flex justifyContent="center" py="3">
-              <ImageUpload name="imageProfile" />
+              <UploadOne
+                placeHolderElment={() => (
+                  <VStack spacing={'0'} textAlign="center">
+                    <User color="gray.400" fontSize="lg" mt={2} />
+                    <Text color="gray.400" fontSize="sm">
+                      Foto de perfil
+                    </Text>
+                    <Text color="gray.400" fontSize="sm">
+                      400 x 400
+                    </Text>
+                  </VStack>
+                )}
+                name="imageProfile"
+              />
             </Flex>
             <InputControl name="name" label="Nombre" />
             <InputControl name="lastName" label="Apellido" />

@@ -11,4 +11,8 @@ export class FichaResolver {
   ) {
     return this.fichaService.openAndCloseFicha(ficha);
   }
+  @Mutation((type) => Ficha)
+  public async updateFicha(@Args('input') ficha: FichaInput) {
+    return this.fichaService.updateFicha(ficha);
+  }
 }

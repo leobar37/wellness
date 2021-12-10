@@ -43,7 +43,9 @@ export const CreateAsistence: React.FunctionComponent<CreateAsistenceProps> =
               textHeader="Registrar asistencia"
               footer={
                 <HStack>
-                  <Button variant="ghost">Cancelar</Button>
+                  <Button variant="ghost" onClick={() => onClose()}>
+                    Cancelar
+                  </Button>
                   <SubmitButton type="submit" onClick={submitForm}>
                     Guardar
                   </SubmitButton>

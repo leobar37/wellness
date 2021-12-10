@@ -14,6 +14,7 @@ import { RegisterClientModal } from '../components';
 import { useClientsController } from '../controller';
 import { useClientsStore } from '../data/client-store';
 import { useRouter } from 'next/router';
+
 export const Page: NextPageWithLayout<SafeAny> = () => {
   const { clients } = useClientsController();
   const [table, setTable] = useState<TableInstanceProps | null>();
@@ -25,7 +26,6 @@ export const Page: NextPageWithLayout<SafeAny> = () => {
 
   const onSelectClient = (client: Client) => {
     router.push(`./clients/${client.id}`);
-    console.log(client);
   };
   return (
     <Layout
@@ -56,7 +56,6 @@ export const Page: NextPageWithLayout<SafeAny> = () => {
           setTable(table);
         }}
         onChangueTable={(result) => {
-          console.log('result', result);
           setDeleteClients(result.selection.nodes);
         }}
         rowProps={({ original }) => ({

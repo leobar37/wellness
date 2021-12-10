@@ -12,6 +12,7 @@ import { SuscriptionModule } from './modules/suscriptions';
 import { PingModule } from './modules/ping';
 import { UserModule } from './modules/users';
 import { AssetsModule } from './modules/assets';
+import { FichaModule } from './modules/ficha';
 import { ConfigModule } from '@nestjs/config';
 
 const BUSINESS_MODULES = [
@@ -20,6 +21,7 @@ const BUSINESS_MODULES = [
   AsistenceModule,
   SuscriptionModule,
   AssetsModule,
+  FichaModule,
 ];
 
 @Module({

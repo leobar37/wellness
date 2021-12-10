@@ -9184,6 +9184,13 @@ dom-walk@^0.1.0:
   resolved "https://registry.yarnpkg.com/dom-walk/-/dom-walk-0.1.2.tgz#0c548bef048f4d1f2a97249002236060daa3fd84"
   integrity sha512-6QvTW9mrGeIegrFXdtQi9pk7O/nSK6lSdXW2eqUspN5LWD7UTji2Fqw5V2YLjBpHEoU9Xl/eUWNpDeZvoyOv2w==
 
+dom7@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/dom7/-/dom7-4.0.1.tgz#821209df1bfdf97dd82b5156e50f7cb66b3f166c"
+  integrity sha512-y/RWjw3gK3qQnZz6IqDaIoqH6+xBhcB3Wsh5HFwl0abwuO/NAgbSB31ZbxtBDcuDe8jAX5NYUNDLTx4Ul48sIw==
+  dependencies:
+    ssr-window "^4.0.0"
+
 domain-browser@4.19.0:
   version "4.19.0"
   resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-4.19.0.tgz#1093e17c0a17dbd521182fe90d49ac1370054af1"
@@ -11728,6 +11735,11 @@ immer@8.0.1:
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/immer/-/immer-8.0.1.tgz#9c73db683e2b3975c424fb0572af5889877ae656"
   integrity sha512-aqXhGP7//Gui2+UrEtvxZxSquQVXTpZ7KDxfCcKAF3Vysvw0CViVaW9RZ1j1xlIYqaaaipBoqdqeibkc18PNvA==
+
+immer@^9.0.7:
+  version "9.0.7"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.7.tgz#b6156bd7db55db7abc73fd2fdadf4e579a701075"
+  integrity sha512-KGllzpbamZDvOIxnmJ0jI840g7Oikx58lBPWV0hUh7dtAyZpFqqrBZdKka5GlTwMTZ1Tjc/bKKW4VSFAt6BqMA==
 
 immutable@~3.7.6:
   version "3.7.6"
@@ -16587,6 +16599,11 @@ react-remove-scroll@2.4.1:
     use-callback-ref "^1.2.3"
     use-sidecar "^1.0.1"
 
+react-singleton-hook@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/react-singleton-hook/-/react-singleton-hook-3.2.1.tgz#018dcf05e889bba592be44b505122c2ac732b05d"
+  integrity sha512-t5SBuBerSbW3rGcDk9gy9hJl7CYk+Iunfzb3V3C0vYgtdXDSpc56u5oa2URoWAgSOa7/3veaEb6hyv7XxC1PCg==
+
 react-sizeme@^3.0.1:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/react-sizeme/-/react-sizeme-3.0.2.tgz#4a2f167905ba8f8b8d932a9e35164e459f9020e4"
@@ -17893,6 +17910,11 @@ sshpk@^1.7.0:
     safer-buffer "^2.0.2"
     tweetnacl "~0.14.0"
 
+ssr-window@^4.0.0, ssr-window@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/ssr-window/-/ssr-window-4.0.1.tgz#514bf2ca81952f63fe88e8b0c623a23f90f7feb3"
+  integrity sha512-5q936lkCk5Lg5hM6tG8Nutdym4vNiuFSWorslTzOn71PWb3Wnx44q/k2Ryn1LWA1G4FtxMzjywUFOiOxPkVGrA==
+
 ssri@^6.0.1:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/ssri/-/ssri-6.0.2.tgz#157939134f20464e7301ddba3e90ffa8f7728ac5"
@@ -18410,6 +18432,14 @@ swap-case@^2.0.2:
   integrity sha512-kc6S2YS/2yXbtkSMunBtKdah4VFETZ8Oh6ONSmSd9bRxhqTrtARUCBUiWXH3xVPpvR7tz2CSnkuXVE42EcGnMw==
   dependencies:
     tslib "^2.0.3"
+
+swiper@^7.3.1:
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/swiper/-/swiper-7.3.1.tgz#697734231d43c67c0e03134c969ebbd5e5037b54"
+  integrity sha512-YHa8uI22UwF9Q6F9tCDSai7/BJo8uVHKampKYAIShlFrWoHfM+sCCn24Yeq3oqIKZv2bfSULzXKsXmh0VpCNeQ==
+  dependencies:
+    dom7 "^4.0.1"
+    ssr-window "^4.0.1"
 
 symbol-observable@^1.0.4, symbol-observable@^1.1.0:
   version "1.2.0"
@@ -20256,10 +20286,10 @@ zen-observable@0.8.15, zen-observable@^0.8.0:
   resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.8.15.tgz#96415c512d8e3ffd920afd3889604e30b9eaac15"
   integrity sha512-PQ2PC7R9rslx84ndNBZB/Dkv8V8fZEpk83RLgXtYd0fwUgEjseMn1Dgajh2x6S8QbZAFa9p2qVCEuYZNgve0dQ==
 
-zustand@^3.6.5:
-  version "3.6.5"
-  resolved "https://registry.yarnpkg.com/zustand/-/zustand-3.6.5.tgz#42a459397907d6bf0e2375351394733b2f83ee44"
-  integrity sha512-/WfLJuXiEJimt61KGMHebrFBwckkCHGhAgVXTgPQHl6IMzjqm6MREb1OnDSnCRiSmRdhgdFCctceg6tSm79hiw==
+zustand@^3.6.7:
+  version "3.6.7"
+  resolved "https://registry.yarnpkg.com/zustand/-/zustand-3.6.7.tgz#aab5ac0a9d6d21dce752aecd390f373ed9c9d70a"
+  integrity sha512-bYWKXMfoJwZyliFgidcQ3tJC/F2f2hHq1+lhTk8dVPX2k28i4VnpnKjBGNxAd2QNliV0m455Vm+gDL8LShrV3g==
 
 zwitch@^1.0.0:
   version "1.0.5"

@@ -13,7 +13,7 @@ type Asistence {
   createdAt: DateTime!
   updateAt: DateTime!
   note: String!
-  client: Client!
+  client: Client
 }
 
 """
@@ -36,6 +36,25 @@ type Asset {
   size: Float
   previewUrl: String
   boot: AssetBoot
+}
+
+type DetailFicha {
+  id: ID!
+  createdAt: DateTime!
+  updateAt: DateTime!
+  weight: Float!
+  objective: String
+  note: String
+  open: Boolean!
+  asset: AssetBoot
+}
+
+type Ficha {
+  id: ID!
+  createdAt: DateTime!
+  updateAt: DateTime!
+  details: [DetailFicha!]!
+  client: Client!
 }
 
 type Client {
@@ -107,7 +126,7 @@ type Mutation {
   updateCLient(input: ClientInput!, id: ID!): Client!
   deleteCLient(id: ID!): Client!
   createAsistence(asistence: InputAsistence!): Asistence!
-  deleteAsistence(id: ID!): Boolean!
+  deleteAsistence(id: ID!): Asistence!
   updateAsistence(input: InputAsistence!, id: ID!): Asistence!
   createPlan(input: PlanInput!): Plan!
   deletePlan(id: ID!): Plan!
@@ -118,6 +137,8 @@ type Mutation {
   signature(publicId: String): ResponseSignature!
   deleteResource(input: DeleteAssetInput!): ResourceUnion!
   createResource(resource: AssetInput!): ResourceUnion!
+  openAndCloseFicha(input: FichaInput!): Ficha!
+  updateFicha(input: FichaInput!): Ficha!
 }
 
 input ClientInput {
@@ -195,3 +216,14 @@ input AssetInput {
 The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
 scalar JSONObject
+
+input FichaInput {
+  weight: Float!
+  objective: String
+  note: String
+
+  """When this is null , close the ficha"""
+  fichaId: ID
+  clientId: Int
+  open: Boolean
+}

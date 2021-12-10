@@ -15,5 +15,5 @@
     "**/*.ts",
     "**/*.tsx",
     "src/ui/table/contex.tsX"
-  ]
+, "src/hooks/use-hove.rtsx"  ]
 }

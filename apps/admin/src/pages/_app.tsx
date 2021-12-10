@@ -6,6 +6,10 @@ import { AppPropsWithLayout } from '@wellness/admin-ui/common';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
 function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
   const apolloClient = useApollo(pageProps);
   const getLayout = Component.getLayout ?? ((page) => page);

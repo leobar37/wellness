@@ -7,3 +7,4 @@ export * from './Dots-vertical';
 export * from './Delete';
 export * from './Filter';
 export * from './Edit';
+export * from './File';

@@ -18,9 +18,14 @@ export const updateAsistence = gql`
   }
 `;
 
-// export const deleteAsistence = gql`
-//   ${asistenceFragment}
-// `;
+export const deleteAsistence = gql`
+  ${asistenceFragment}
+  mutation deleteAsistence($id: ID!) {
+    deleteAsistence(id: $id) {
+      ...asistenceFragment
+    }
+  }
+`;
 
 export const findAsistences = gql`
   ${asistenceFragment}

@@ -21,6 +21,6 @@ export class Asistence extends WellnessEntity {
   clientId: number;
 
   @ManyToOne((type) => Client, (client) => client.asistences)
-  @Field((type) => Client)
+  @Field((type) => Client, { nullable: true })
   client: Promise<Client>;
 }

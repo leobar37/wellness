@@ -38,6 +38,7 @@
     "framer-motion": "^4",
     "graphql": "15.0.0",
     "graphql-scalars": "^1.13.6",
+    "immer": "^9.0.7",
     "lodash": "^4.17.21",
     "nestjs-pino": "^2.2.0",
     "next": "12.0.2",
@@ -50,14 +51,16 @@
     "react-dropzone": "^11.4.2",
     "react-icons": "^4.3.1",
     "react-is": "^17.0.2",
+    "react-singleton-hook": "^3.2.1",
     "react-table": "^7.7.0",
     "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "0.13.7",
     "rxjs": "^7",
+    "swiper": "^7.3.1",
     "tslib": "^2.0.0",
     "typeorm": "^0.2.38",
     "yup": "^0.32.11",
-    "zustand": "^3.6.5"
+    "zustand": "^3.6.7"
   },
   "devDependencies": {
     "@babel/core": "7.12.13",

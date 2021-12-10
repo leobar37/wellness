@@ -117,6 +117,7 @@ export const Layout: FunctionComponent<
             gridRow={`${showHeader ? '2 / 4' : '1 /4'}  `}
             my={2}
             p={4}
+            overflowY="scroll"
           >
             {children}
           </Box>

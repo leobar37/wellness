@@ -7,6 +7,8 @@ import { Asistence } from '../asistence/asistence.entity';
 import { Asset } from '../asset/asset.entity';
 import { Contract } from '../contract/contract.entity';
 import { HasNote } from '@wellness/common';
+import { Ficha } from '../ficha/ficha.entity';
+
 registerEnumType(Sex, {
   name: 'Sex',
 });
@@ -93,4 +95,7 @@ export class Client extends WellnessEntity implements HasNote {
 
   @OneToMany((type) => Contract, (contract) => contract.client)
   contracts: Promise<Contract[]>;
+
+  @OneToMany((type) => Ficha, (ficha) => ficha.client)
+  fichas: Promise<Ficha[]>;
 }
