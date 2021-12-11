@@ -34,7 +34,7 @@ export const CreateFicha: React.FunctionComponent<CreateFichaProps> = ({
   mode,
 }) => {
   const { modalCrudFicha, modeModalFicha, selectClient } = useClientsStore();
-  const { createFicha } = useFichaController();
+  const { createFicha, closeFicha } = useFichaController();
   const { isOpen, onClose } = useDisclosure({
     isOpen: modalCrudFicha,
     onClose: () => toggleModalFicha(false),
@@ -51,11 +51,17 @@ export const CreateFicha: React.FunctionComponent<CreateFichaProps> = ({
         files: [],
       }}
       onSubmit={async (values) => {
-        console.log(values);
-        await createFicha(values);
+        if (modeModalFicha === 'open') {
+          await createFicha(values);
+        } else {
+          console.log('close ficha');
+
+          await closeFicha(values);
+        }
+        onClose();
       }}
     >
-      {({ values, submitForm, handleSubmit }) => {
+      {({ submitForm, handleSubmit }) => {
         return (
           <ModalCrud
             isOpen={isOpen}

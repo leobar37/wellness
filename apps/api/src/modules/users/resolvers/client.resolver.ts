@@ -2,6 +2,7 @@ import { Resolver, Mutation, Query, Args, ID } from '@nestjs/graphql';
 import { Client } from '@wellness/core/entity';
 import { ClientInput } from '../dto/client.input';
 import { ClientService } from '../services/client.service';
+
 @Resolver()
 export class ClientResolver {
   constructor(private clientService: ClientService) {}

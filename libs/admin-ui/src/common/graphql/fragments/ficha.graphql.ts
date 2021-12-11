@@ -5,6 +5,8 @@ export const FichaFragment = gql`
   fragment fichaFragment on Ficha {
     id
     createdAt
+    closedAt
+    closed
     updateAt
     details {
       id

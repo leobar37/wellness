@@ -98,4 +98,7 @@ export class Client extends WellnessEntity implements HasNote {
 
   @OneToMany((type) => Ficha, (ficha) => ficha.client)
   fichas: Promise<Ficha[]>;
+
+  @Field((type) => Ficha, { nullable: true })
+  currentFicha: Promise<Ficha>;
 }

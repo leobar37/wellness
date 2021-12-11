@@ -1,9 +1,9 @@
-import { WellnessEntity } from '../base/base.entity';
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
-import { ObjectType, Field } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { DeepPartial } from '@wellness/common';
-import { DetailFicha } from './Detail-ficha.entity';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { WellnessEntity } from '../base/base.entity';
 import { Client } from '../client/client.entity';
+import { DetailFicha } from './Detail-ficha.entity';
 
 /**
  * @description
@@ -17,13 +17,18 @@ export class Ficha extends WellnessEntity {
   }
 
   @Column('bool', { default: false, nullable: true })
+  @Field((type) => Boolean, { defaultValue: false })
   closed: boolean;
+
+  @Field((type) => Date, { nullable: true })
+  @Column('timestamp', { nullable: true })
+  closedAt: Date | null;
 
   @OneToMany((type) => DetailFicha, (detail) => detail.ficha, {
     cascade: ['update', 'insert'],
   })
   @Field(() => [DetailFicha])
-  details: DetailFicha[];
+  details: Promise<DetailFicha[]>;
 
   @Column({ nullable: true })
   clientId: number;

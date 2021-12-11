@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
-import { DetailFicha, Ficha } from '@wellness/core';
+import { DetailFicha, Ficha, Client } from '@wellness/core';
 import { EntityNotFoundError } from '@wellness/core/common/error';
 import { isNull, isUndefined } from 'lodash';
 import { EntityManager } from 'typeorm';
@@ -13,25 +13,23 @@ export class FichaService {
 
   public async openAndCloseFicha(inputFicha: FichaInput) {
     let ficha: Ficha | null = null;
-    if (isNull(inputFicha.fichaId) || isUndefined(inputFicha.fichaId)) {
-      console.log(inputFicha.clientId);
-      ficha = this.manager.create(
+
+    if (inputFicha.open) {
+      ficha = await this.manager.save(
         Ficha,
         new Ficha({
           clientId: inputFicha.clientId,
         })
       );
-      ficha = await this.manager.save(ficha);
-
       const openDetail = new DetailFicha({
         weight: inputFicha.weight,
         note: inputFicha.note,
         objective: inputFicha.objective,
         fichaId: ficha.id,
+        assetId: inputFicha.assetId,
       });
-
       const openDetailSaved = await this.manager.save(DetailFicha, openDetail);
-      ficha.details = [openDetailSaved];
+      ficha.details = Promise.resolve([openDetailSaved]);
       return ficha;
     }
 
@@ -41,15 +39,22 @@ export class FichaService {
       .where('ficha.id = :fichaId', { fichaId: inputFicha.fichaId })
       .getOne();
 
+    if (!ficha) {
+      throw new EntityNotFoundError('Ficha', inputFicha.fichaId);
+    }
     const closeDetail = new DetailFicha({
       open: false,
-      ...inputFicha,
+      weight: inputFicha.weight,
+      assetId: inputFicha.assetId,
+      fichaId: inputFicha.fichaId,
+      objective: inputFicha.objective,
     });
-    ficha.closed = true;
-    ficha.details.push(closeDetail);
-    ficha = await this.manager.save(Ficha, ficha);
-
-    return ficha;
+    const detail = await this.manager.save(DetailFicha, closeDetail);
+    await this.manager.update(Ficha, ficha.id, {
+      closed: true,
+      closedAt: new Date(),
+    });
+    return this.manager.findOne(Ficha, ficha.id);
   }
 
   public async updateFicha(inputFicha: FichaInput) {
@@ -71,5 +76,40 @@ export class FichaService {
     detail.objective = inputFicha.objective;
     await this.manager.save(DetailFicha, detail);
     return ficha;
+  }
+  /**
+   *
+   * Return active ficha to user
+   */
+
+  public async getFicha(userId: number) {
+    const user = await this.manager.findOne(Client, userId);
+    if (!user) {
+      throw new EntityNotFoundError('Client', userId);
+    }
+    const fichas = await this.manager.find(Ficha, {
+      where: {
+        clientId: user.id,
+        closed: false,
+      },
+    });
+    return fichas.length > 0 ? fichas[0] : null;
+  }
+  /**
+   * Return all fichas for a user
+   */
+  public async getFichas(userId: number) {
+    const user = await this.manager.findOne(Client, userId);
+    if (!user) {
+      throw new EntityNotFoundError('Client', userId);
+    }
+    const fichas = await this.manager.find(Ficha, {
+      where: {
+        clientId: user.id,
+      },
+    });
+    console.log(fichas);
+
+    return fichas;
   }
 }

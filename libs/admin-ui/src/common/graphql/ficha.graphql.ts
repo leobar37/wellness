@@ -15,3 +15,19 @@ export const updateFicha = gql`
     }
   }
 `;
+
+export const getFicha = gql`
+  query getFicha($userId: Int!) {
+    getFicha(userId: $userId) {
+      ...fichaFragment
+    }
+  }
+`;
+
+export const getFichas = gql`
+  query getFichas($userId: Int!) {
+    getFichas(userId: $userId) {
+      ...fichaFragment
+    }
+  }
+`;

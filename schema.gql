@@ -53,6 +53,8 @@ type Ficha {
   id: ID!
   createdAt: DateTime!
   updateAt: DateTime!
+  closed: Boolean!
+  closedAt: DateTime
   details: [DetailFicha!]!
   client: Client!
 }
@@ -72,6 +74,7 @@ type Client {
   direction: String
   sex: Sex!
   mode: ModeRegiser!
+  currentFicha: Ficha
 }
 
 enum Sex {
@@ -119,6 +122,8 @@ type Query {
   client(id: ID!): Client!
   finAsistences(cliendId: ID!): [Asistence!]!
   activities(id: ID!): [Activity!]!
+  getFicha(userId: Int!): Ficha
+  getFichas(userId: Int!): [Ficha!]
 }
 
 type Mutation {
@@ -220,6 +225,9 @@ scalar JSONObject
 input FichaInput {
   weight: Float!
   objective: String
+
+  """This images of the ficha"""
+  assetId: Float!
   note: String
 
   """When this is null , close the ficha"""

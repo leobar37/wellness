@@ -1,4 +1,4 @@
-import { Client, Asistence } from '@wellness/admin-ui';
+import { Client, Asistence, Ficha } from '@wellness/admin-ui';
 import { SetState } from 'zustand';
 export interface IClientStore {
   clients: Client[];
@@ -11,6 +11,9 @@ export interface IClientStore {
   modalCrudFicha: boolean;
   toggleModalFicha(value: boolean): void;
   modeModalFicha: 'open' | 'close';
+  ficha: Ficha | null;
+  fichas: Ficha[] | null;
+  addFicha(ficha: Ficha): void;
 
   // asistences
   createAsistencesModal: boolean;

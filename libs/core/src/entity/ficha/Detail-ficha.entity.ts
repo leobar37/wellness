@@ -27,10 +27,13 @@ export class DetailFicha extends WellnessEntity {
   @Field((type) => Boolean)
   open: boolean;
 
-  @OneToOne((type) => AssetBoot, { eager: true, cascade: true })
+  @Column({ nullable: true })
+  assetId: number;
+
+  @OneToOne((type) => AssetBoot, { cascade: true })
   @JoinColumn()
   @Field((type) => AssetBoot, { nullable: true })
-  asset: AssetBoot;
+  asset: Promise<AssetBoot>;
 
   @Column()
   fichaId: number;

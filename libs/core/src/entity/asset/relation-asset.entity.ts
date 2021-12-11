@@ -14,7 +14,7 @@ export class AssetBoot extends WellnessEntity {
   constructor(input: DeepPartial<AssetBoot>) {
     super(input);
   }
-  @OneToMany((type) => Asset, (asset) => asset.boot, { eager: true })
+  @OneToMany((type) => Asset, (asset) => asset.boot)
   @Field((type) => [Asset], { nullable: 'items' })
-  assets: Asset[];
+  assets: Promise<Asset[]>;
 }

@@ -27,7 +27,13 @@ export const useClientsStore = create<IClientStore>((set, get) => {
     modalCrudFicha: false,
     modeModalFicha: 'open',
     toggleModalFicha: makeToggle('modalCrudFicha', set),
-
+    ficha: null,
+    fichas: null,
+    addFicha: (ficha) => {
+      set((state) => {
+        state.fichas.push(ficha);
+      });
+    },
     // asistence
     createAsistencesModal: false,
     asistences: [],

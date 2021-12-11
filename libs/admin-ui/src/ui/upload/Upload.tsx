@@ -1,43 +1,12 @@
-import {
-  Box,
-  BoxProps,
-  Center,
-  chakra,
-  Img,
-  SystemStyleObject,
-  useToken,
-} from '@chakra-ui/react';
+import { Center, chakra, SystemStyleObject, useToken } from '@chakra-ui/react';
 import { isValid } from '@wellness/common';
 import { useField } from 'formik';
 import NextImage from 'next/image';
-import React, {
-  FC,
-  ReactElement,
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import { UploadImageConfig, useConfig } from '../../config';
-import { DeleteIcon, FileIcon } from '../../icons';
-import { ButtonIcon } from '../button';
-import { MFile } from './types';
-export type ImageUploadProps = {
-  preview?: boolean;
-  /** allow multiples images; by default is false */
-  multiples?: boolean;
-
-  /**
-   * placeholder image
-   */
-  placeHolderElment?: () => ReactElement;
-  onFile: <T extends boolean>(options: {
-    source: T extends true ? MFile[] : MFile;
-    isArray: T;
-  }) => void;
-} & BoxProps;
+import { FileIcon } from '../../icons';
+import { ImageUploadProps, MFile } from './types';
 
 /**
  * TODO:
@@ -202,112 +171,4 @@ ImageUpload.defaultProps = {
       </Center>
     );
   },
-};
-/**
- * This is a integration with formik
- */
-type UploadOneProps = {
-  name: string;
-} & Omit<ImageUploadProps, 'onFile'>;
-
-export const UploadOne: FC<UploadOneProps> = ({ name, ...extraProps }) => {
-  const [field, meta, helpers] = useField(name);
-
-  return (
-    <ImageUpload
-      onFile={({ source, isArray }) => {
-        if (!isArray) {
-          helpers.setValue(source);
-        }
-      }}
-      {...extraProps}
-    />
-  );
-};
-type UploadMultipleProps = {
-  name: string;
-} & Omit<ImageUploadProps, 'onFile'>;
-
-const SlideImage = ({ file }: { file: MFile }) => {
-  return (
-    <Box
-      width={'150px'}
-      height={'150px'}
-      borderRadius="lg"
-      overflow="hidden"
-      position="relative"
-      cursor={'pointer'}
-      sx={{
-        _hover: {
-          '.overlay': {
-            display: 'flex',
-          },
-        },
-      }}
-    >
-      <Img
-        position="absolute"
-        objectFit="cover"
-        w="full"
-        h="full"
-        src={file.preview}
-      />
-      <Center
-        className="overlay"
-        position="absolute"
-        w="full"
-        h="full"
-        bg="#000"
-        display="none"
-        opacity="80%"
-      >
-        <ButtonIcon
-          _hover={{
-            bg: 'brown.300',
-            border: '2px solid white',
-            '.icon': {
-              color: 'white',
-            },
-          }}
-          bg="white"
-        >
-          <DeleteIcon color={'brown.300'} className="icon" />
-        </ButtonIcon>
-      </Center>
-    </Box>
-  );
-};
-
-export const UploadMultiple: FC<UploadMultipleProps> = ({
-  name,
-  ...extraProps
-}) => {
-  const [field, meta, helpers] = useField(name);
-  const [files, setFiles] = useState<MFile[]>([]);
-  const filesRef = useRef<MFile[]>([]);
-  const mapFiles = (file: MFile, idx: number) => {
-    return (
-      <SwiperSlide>
-        <SlideImage key={idx} file={file} />;
-      </SwiperSlide>
-    );
-  };
-
-  return (
-    <Box>
-      <Swiper slidesPerView={3}>{files.map(mapFiles)}</Swiper>
-      <ImageUpload
-        width="90px"
-        height="90px"
-        multiples={true}
-        onFile={({ source, isArray }) => {
-          if (isArray) {
-            filesRef.current = [...filesRef.current, ...(source as MFile[])];
-            setFiles(filesRef.current);
-          }
-        }}
-        {...extraProps}
-      />
-    </Box>
-  );
 };

@@ -1,43 +1,114 @@
-import { useToken } from '@chakra-ui/react';
-import { SafeAny } from '@wellness/common';
+import { Box, Center, Img } from '@chakra-ui/react';
 import { useField } from 'formik';
-import { useCallback, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { UploadImageConfig, useConfig } from '../../config';
-import { MFile } from './types';
+import React, { FC, useRef, useState } from 'react';
+import { SafeAny } from '@wellness/common';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { DeleteIcon } from '../../icons';
+import { ButtonIcon } from '../button';
+import { ImageUploadProps, MFile } from './types';
+import { ImageUpload } from './Upload';
 
-type Props = {
+type UploadMultipleProps = {
   name: string;
-};
-export const ImageUploadMultiple = ({ name }: Props) => {
-  const [field, meta, helpers] = useField(name);
-  const [gray500, gray600] = useToken('colors', ['gray.500', 'gray.600']);
-  const config = useConfig<UploadImageConfig>('uploadImage');
-  const [image, setImage] = useState<MFile | null>(null);
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      // Do something with the files
-      const file = acceptedFiles.pop();
-      helpers.setValue(file);
-      setImage(
-        Object.assign(file, {
-          preview: URL.createObjectURL(file as SafeAny),
-        })
-      );
-    },
-    [helpers]
-  );
+} & Omit<ImageUploadProps, 'onFile'>;
 
-  const {
-    acceptedFiles,
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone({
-    accept: '.jpeg,.png',
-    onDrop: onDrop,
-    maxFiles: config.maxFiles,
-  });
+const SlideImage = ({
+  file,
+  onDelete,
+}: {
+  file: MFile;
+  onDelete: (...args: SafeAny) => void;
+}) => {
+  return (
+    <Box
+      width={'150px'}
+      height={'150px'}
+      borderRadius="lg"
+      overflow="hidden"
+      position="relative"
+      cursor={'pointer'}
+      sx={{
+        _hover: {
+          '.overlay': {
+            display: 'flex',
+          },
+        },
+      }}
+    >
+      <Img
+        position="absolute"
+        objectFit="cover"
+        w="full"
+        h="full"
+        src={file.preview}
+      />
+      <Center
+        className="overlay"
+        position="absolute"
+        w="full"
+        h="full"
+        bg="#000"
+        display="none"
+        opacity="80%"
+      >
+        <ButtonIcon
+          _hover={{
+            bg: 'brown.300',
+            border: '2px solid white',
+            '.icon': {
+              color: 'white',
+            },
+          }}
+          bg="white"
+        >
+          <DeleteIcon
+            color={'brown.300'}
+            onClick={() => onDelete(file)}
+            className="icon"
+          />
+        </ButtonIcon>
+      </Center>
+    </Box>
+  );
+};
+
+export const UploadMultiple: FC<UploadMultipleProps> = ({
+  name,
+  ...extraProps
+}) => {
+  const [field, meta, helpers] = useField(name);
+  const [files, setFiles] = useState<MFile[]>([]);
+  const filesRef = useRef<MFile[]>([]);
+
+  const onDelete = (file: MFile) => {
+    const newFiles = files.filter((f) => f.name !== file.name);
+    setFiles(newFiles);
+  };
+
+  const mapFiles = (file: MFile, idx: number) => {
+    return (
+      <SwiperSlide>
+        <SlideImage onDelete={onDelete} key={idx} file={file} />;
+      </SwiperSlide>
+    );
+  };
+
+  return (
+    <Box>
+      <Swiper slidesPerView={3}>{files.map(mapFiles)}</Swiper>
+      <ImageUpload
+        width="90px"
+        height="90px"
+        multiples={true}
+        onFile={({ source, isArray }) => {
+          if (isArray) {
+            filesRef.current = [...filesRef.current, ...(source as MFile[])];
+            setFiles(filesRef.current);
+            helpers.setValue(filesRef.current);
+          }
+        }}
+        {...extraProps}
+      />
+    </Box>
+  );
 };
