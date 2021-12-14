@@ -16,6 +16,8 @@ export type ImageUploadProps = {
   }) => void;
 } & BoxProps;
 
-export type MFile = {
-  preview: string;
-} & File;
+export type MFile =
+  | ({
+      preview: string;
+    } & File)
+  | string;

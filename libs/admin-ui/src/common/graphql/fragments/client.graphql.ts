@@ -6,6 +6,7 @@ export const ClientFragment = gql`
     id
     code
     dni
+    createdAt
     email
     name
     lastName

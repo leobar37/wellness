@@ -7,6 +7,8 @@ import {
   useToken,
   VStack,
 } from '@chakra-ui/react';
+import { get } from 'lodash';
+import format from 'date-fns/format';
 /**
  * TODO:
  * - Move this to the client folder
@@ -16,9 +18,11 @@ type BadgeDisplayProps = {
   title: string;
   value: string;
 };
+import { useClientsStore } from '../data/client-store';
 
 const BadgeDisplay = ({ title, value }: BadgeDisplayProps) => {
   const [blackAlpha300] = useToken('colors', ['blackAlpha.300']);
+
   return (
     <VStack
       align="start"
@@ -38,20 +42,28 @@ const BadgeDisplay = ({ title, value }: BadgeDisplayProps) => {
 };
 
 export const DashboardClient = () => {
+  const { selectClient } = useClientsStore();
+
   return (
     <HStack width="100%" align="start" justify="space-around" spacing={'120px'}>
       <VStack spacing={5} align="start">
         <Button>Ficha actual</Button>
         <BadgeDisplay title={'Última asistencia'} value={'Hace 2 dias'} />
-        <BadgeDisplay title={'Cumpleaños'} value={'10/12/12'} />
+        <BadgeDisplay
+          title={'Nacimiento'}
+          value={format(new Date(get(selectClient, 'birth')), 'dd/MM/yyyy')}
+        />
         <BadgeDisplay
           title={'Fecha de registro'}
-          value={'Nos acompaña desde  el 16/20/12'}
+          value={`Nos acompaña desde el ${format(
+            new Date(get(selectClient, 'createdAt')),
+            'dd/MM/yyyy'
+          )}`}
         />
       </VStack>
       <VStack>
         <Img
-          src="https://bit.ly/sage-adebayo"
+          src={selectClient.photo.previewUrl}
           width="250px"
           borderRadius="2xl"
         />

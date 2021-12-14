@@ -83,6 +83,9 @@ export const ImageUpload: FC<ImageUploadProps> = ({
   const renderPreview = (files: MFile | MFile[]) => {
     if (preview && !Array.isArray(files)) {
       const file = files;
+      if (!file) {
+        return null;
+      }
       return (
         <NextImage
           objectFit="contain"
@@ -127,6 +130,10 @@ export const ImageUpload: FC<ImageUploadProps> = ({
     if (multiples && placeHolderElment) {
       return placeHolderElment();
     }
+    if ((files === null || files === undefined) && placeHolderElment) {
+      return placeHolderElment();
+    }
+
     if (preview && placeHolderElment) {
       return renderPreview(files as MFile);
     }

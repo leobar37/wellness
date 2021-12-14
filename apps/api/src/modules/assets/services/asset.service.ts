@@ -63,13 +63,15 @@ export class AssetService {
     } else {
       // multiples assets
       return await this.manager.transaction<AssetBoot>(async (manager) => {
-        const assets = inputAsset.metadatas.map(createOnlyAsset);
-        const assetsSaved = assets.map((asset) => manager.save(Asset, asset));
-        await Promise.all(assetsSaved);
+        const assetsData = inputAsset.metadatas.map(createOnlyAsset);
+        const assetsSaved = assetsData.map((asset) =>
+          manager.save(Asset, asset)
+        );
+        const assets = await Promise.all(assetsSaved);
         return await manager.save(
           AssetBoot,
           new AssetBoot({
-            assets: assets,
+            assets: Promise.resolve(assets),
           })
         );
       });
@@ -77,7 +79,7 @@ export class AssetService {
   }
 
   async deleteResource(input: DeleteAssetInput) {
-    const isAsset = input.isMultiple;
+    const isAsset = !input.isMultiple;
     const deleteAsset = async (idAsset: number, manager: EntityManager) => {
       const assetBd = await manager.findOne(Asset, idAsset);
       if (!assetBd) {
@@ -96,9 +98,8 @@ export class AssetService {
         if (!assetBoot) {
           throw new EntityNotFoundError('AssetBoot', input.id);
         }
-        const assets = assetBoot.assets;
-        const assetsBd = await Promise.all(assets);
-        const assetsDeleted = assetsBd.map((asset) =>
+        const assets = await assetBoot.assets;
+        const assetsDeleted = assets.map((asset) =>
           deleteAsset(asset.id, manager)
         );
         await Promise.all(assetsDeleted);

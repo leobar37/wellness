@@ -7,7 +7,7 @@ import { DeleteIcon } from '../../icons';
 import { ButtonIcon } from '../button';
 import { ImageUploadProps, MFile } from './types';
 import { ImageUpload } from './Upload';
-
+import { isString } from 'lodash';
 type UploadMultipleProps = {
   name: string;
 } & Omit<ImageUploadProps, 'onFile'>;
@@ -40,7 +40,7 @@ const SlideImage = ({
         objectFit="cover"
         w="full"
         h="full"
-        src={file.preview}
+        src={isString(file) ? file : file.preview}
       />
       <Center
         className="overlay"
@@ -77,11 +77,14 @@ export const UploadMultiple: FC<UploadMultipleProps> = ({
   ...extraProps
 }) => {
   const [field, meta, helpers] = useField(name);
-  const [files, setFiles] = useState<MFile[]>([]);
-  const filesRef = useRef<MFile[]>([]);
+
+  const [files, setFiles] = useState<MFile[]>(meta.value);
+  const filesRef = useRef<MFile[]>(meta.value);
 
   const onDelete = (file: MFile) => {
-    const newFiles = files.filter((f) => f.name !== file.name);
+    const newFiles = files.filter((f) => f !== file);
+    filesRef.current = newFiles;
+    helpers.setValue(newFiles);
     setFiles(newFiles);
   };
 

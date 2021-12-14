@@ -13,4 +13,7 @@ export class AssetInput {
 
   @Field((type) => [GraphQLJSONObject], { nullable: true })
   metadatas: CloudinaryResponse[];
+
+  @Field((type) => String, { nullable: true })
+  bootId: number;
 }

@@ -1,9 +1,10 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import { DetailFichaT } from '../../data/schemas';
 import { Formik } from 'formik';
 import { useDisclosure, HStack, Button } from '@chakra-ui/react';
 import { ModalCrud, ChackraForm } from '@wellness/admin-ui/components';
-import { UploadMultiple } from '@wellness/admin-ui';
+import { UploadMultiple, ModeAction } from '@wellness/admin-ui';
 import { useClientsStore } from '../../data/client-store';
 import { useFichaController } from '../../controller';
 import {
@@ -11,6 +12,7 @@ import {
   TextareaControl,
   NumberInputControl,
 } from 'formik-chakra-ui';
+import { useFormikContext } from 'formik';
 type CreateFichaProps = {
   mode: 'open' | 'close';
 };
@@ -19,73 +21,134 @@ type Properties = {
   title: string;
 };
 
-const mapProperties: Record<CreateFichaProps['mode'], Properties> = {
-  open: {
-    title: 'Crear Ficha',
+type PropertiesMode = {
+  buttonLeft: string;
+  buttonRight: string;
+  isEdit: boolean;
+  mode: Record<CreateFichaProps['mode'], Properties>;
+};
+
+const mapPropertiesState: Partial<Record<ModeAction, PropertiesMode>> = {
+  edit: {
+    buttonLeft: 'Cancelar',
+    buttonRight: 'Guardar cambios',
+    isEdit: true,
+    mode: {
+      open: {
+        title: 'Editando Ficha',
+      },
+      close: {
+        title: 'Editando cierre de ficha',
+      },
+    },
   },
-  close: {
-    title: 'Cierre de ficha',
+  create: {
+    buttonLeft: 'Cancelar',
+    buttonRight: 'Guardar',
+    isEdit: false,
+    mode: {
+      close: {
+        title: 'Cierre de ficha',
+      },
+      open: {
+        title: 'Crear Ficha',
+      },
+    },
   },
 };
 
 const { toggleModalFicha } = useClientsStore.getState();
 
-export const CreateFicha: React.FunctionComponent<CreateFichaProps> = ({
-  mode,
-}) => {
-  const { modalCrudFicha, modeModalFicha, selectClient } = useClientsStore();
-  const { createFicha, closeFicha } = useFichaController();
+const FichaForm: React.FC<{
+  isOpen: boolean;
+  onClose: () => void;
+}> = ({ isOpen, onClose }) => {
+  const {
+    modalCrudFicha,
+    ficha,
+    modeModalFicha,
+    stateModalFicha,
+    currentDetail,
+  } = useClientsStore();
+  const { handleSubmit, submitForm, setValues } = useFormikContext();
+
+  const detail = currentDetail();
+
+  const propertiesState = mapPropertiesState[stateModalFicha];
+  const properties = propertiesState.mode[modeModalFicha];
+
+  useEffect(() => {
+    if (detail && stateModalFicha == 'edit') {
+      const assets = detail.asset.assets.map((asset) => asset.previewUrl);
+      setValues({
+        note: detail.objective,
+        files: assets,
+        weight: detail.weight,
+      });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ficha, stateModalFicha]);
+  return (
+    <ModalCrud
+      isOpen={isOpen}
+      textHeader={properties.title}
+      onClose={onClose}
+      footer={
+        <HStack>
+          <Button variant="ghost" onClick={() => onClose()}>
+            {propertiesState?.buttonLeft}
+          </Button>
+          <SubmitButton type="submit" onClick={submitForm}>
+            {propertiesState?.buttonRight}
+          </SubmitButton>
+        </HStack>
+      }
+    >
+      <ChackraForm submit={handleSubmit}>
+        <UploadMultiple name="files" />
+        <NumberInputControl name="weight" placeholder="" label="Peso" />
+        <TextareaControl name="note" label="Objetivo" />
+      </ChackraForm>
+    </ModalCrud>
+  );
+};
+
+export const CreateFicha: React.FunctionComponent<CreateFichaProps> = () => {
+  const { createFicha, closeFicha, editFicha } = useFichaController();
+  const { modalCrudFicha, modeModalFicha, stateModalFicha } = useClientsStore();
+
   const { isOpen, onClose } = useDisclosure({
     isOpen: modalCrudFicha,
     onClose: () => toggleModalFicha(false),
     onOpen: () => toggleModalFicha(true),
   });
 
-  const properties = mapProperties[modeModalFicha];
-
   return (
     <Formik<DetailFichaT>
       initialValues={{
+        files: [],
         note: '',
         weight: 0,
-        files: [],
       }}
       onSubmit={async (values) => {
         if (modeModalFicha === 'open') {
-          await createFicha(values);
-        } else {
-          console.log('close ficha');
+          if (stateModalFicha == 'edit') {
+            console.log('I am editing');
 
+            await editFicha(values);
+          }
+          if (stateModalFicha == 'create') {
+            await createFicha(values);
+          }
+        } else {
           await closeFicha(values);
         }
+
         onClose();
       }}
     >
-      {({ submitForm, handleSubmit }) => {
-        return (
-          <ModalCrud
-            isOpen={isOpen}
-            textHeader={properties.title}
-            onClose={onClose}
-            footer={
-              <HStack>
-                <Button variant="ghost" onClick={() => onClose()}>
-                  Cancelar
-                </Button>
-                <SubmitButton type="submit" onClick={submitForm}>
-                  Guardar
-                </SubmitButton>
-              </HStack>
-            }
-          >
-            <ChackraForm submit={handleSubmit}>
-              <UploadMultiple name="files" />
-              <NumberInputControl name="weight" placeholder="" label="Peso" />
-              <TextareaControl name="note" label="Objetivo" />
-            </ChackraForm>
-          </ModalCrud>
-        );
-      }}
+      <FichaForm isOpen={isOpen} onClose={onClose} />
     </Formik>
   );
 };

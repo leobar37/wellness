@@ -143,7 +143,8 @@ type Mutation {
   deleteResource(input: DeleteAssetInput!): ResourceUnion!
   createResource(resource: AssetInput!): ResourceUnion!
   openAndCloseFicha(input: FichaInput!): Ficha!
-  updateFicha(input: FichaInput!): Ficha!
+  updateFicha(detailId: Int!, input: FichaInput!): Ficha!
+  deleteFicha(fichaId: Int!): Ficha!
 }
 
 input ClientInput {
@@ -215,6 +216,7 @@ input AssetInput {
   isMultiple: Boolean!
   metadata: JSONObject
   metadatas: [JSONObject!]
+  bootId: String
 }
 
 """

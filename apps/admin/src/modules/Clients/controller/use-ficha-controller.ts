@@ -1,20 +1,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
-  useOpenAndCloseMutation,
   Ficha,
   useGetFichaQuery,
   useGetFichasQuery,
+  useOpenAndCloseMutation,
+  useUpdateFichaMutation,
+  useDeleteFichaMutation,
 } from '@wellness/admin-ui/common';
-import { DetailFichaT } from '../data/schemas';
-
+import { useAssetService } from '@wellness/admin-ui/services';
 import { useCallback, useEffect } from 'react';
 import { useClientsStore } from '../data/client-store';
-import { useAssetService } from '@wellness/admin-ui/services';
+import { DetailFichaT } from '../data/schemas';
+import { difference } from '@wellness/common';
+
 const { patch, addFicha } = useClientsStore.getState();
+
 export const useFichaController = () => {
   const [openAndCloseFicha] = useOpenAndCloseMutation();
-  const { createAssetBoot } = useAssetService();
-  const { selectClient, ficha } = useClientsStore();
+  const { createAssetBoot, deleteAsset, createAsset } = useAssetService();
+  const { selectClient, ficha, currentDetail } = useClientsStore();
+  const [updateFichaMutation] = useUpdateFichaMutation();
+  const [deleteFichaMutation] = useDeleteFichaMutation();
   const {
     data: fichasData,
     loading,
@@ -87,15 +93,62 @@ export const useFichaController = () => {
       },
     });
     const fichaResult = data.openAndCloseFicha as Ficha;
-
     patch({
       ficha: null,
     });
     return fichaResult;
   };
 
+  const editFicha = async ({ note, weight, files }: DetailFichaT) => {
+    const detail = currentDetail();
+    const urls = detail.asset.assets.map((asset) => asset.previewUrl);
+    const urlsPreserved = files.filter((file) => typeof file === 'string');
+    const filesForUpload = files.filter((file) => typeof file !== 'object');
+
+    const urlsToDelete = difference(urls, urlsPreserved);
+    const assets = urlsToDelete.map(async (url) => {
+      const asset = detail.asset.assets.find(
+        (asset) => asset.previewUrl === url
+      );
+      return deleteAsset(Number(asset.id));
+    });
+    await Promise.all(assets);
+
+    const newAssets = filesForUpload.map((file) => createAsset(file));
+
+    await Promise.all(newAssets);
+
+    const data = await updateFichaMutation({
+      variables: {
+        detailId: Number(detail.id),
+        input: {
+          open: detail.open,
+          weight: Number(weight),
+          objective: note,
+          clientId: Number(selectClient.id),
+          // This field not should be editable
+          assetId: Number(detail.asset.id),
+          fichaId: ficha.id,
+        },
+      },
+    });
+
+    return data.data.updateFicha as Ficha;
+  };
+
+  const deleteFicha = async (fichaId: number) => {
+    const resp = await deleteFichaMutation({
+      variables: {
+        fichaId: fichaId,
+      },
+    });
+    return resp.data.deleteFicha as Ficha;
+  };
+
   return {
     createFicha,
     closeFicha,
+    editFicha,
+    deleteFicha,
   };
 };

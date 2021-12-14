@@ -57,18 +57,14 @@ export class FichaService {
     return this.manager.findOne(Ficha, ficha.id);
   }
 
-  public async updateFicha(inputFicha: FichaInput) {
-    const ficha = await this.manager
-      .createQueryBuilder(Ficha, 'ficha')
-      .innerJoinAndSelect('ficha.details', 'details')
-      .where('ficha.id = :fichaId', { fichaId: inputFicha.fichaId })
-      .getOne();
+  public async updateFicha(inputFicha: FichaInput, detailId: number) {
+    const ficha = await this.manager.findOne(Ficha, inputFicha.fichaId);
     const open = inputFicha.open;
-    if (ficha) {
+    if (!ficha) {
       throw new EntityNotFoundError('Ficha', inputFicha.fichaId);
     }
-    const detail = ficha.details.find((detail) => detail.open === open);
-    if (detail) {
+    const detail = await this.manager.findOne(DetailFicha, detailId);
+    if (!detail) {
       throw new EntityNotFoundError('DetailFicha', detail.id);
     }
     detail.weight = inputFicha.weight;
@@ -77,6 +73,7 @@ export class FichaService {
     await this.manager.save(DetailFicha, detail);
     return ficha;
   }
+
   /**
    *
    * Return active ficha to user
@@ -95,6 +92,7 @@ export class FichaService {
     });
     return fichas.length > 0 ? fichas[0] : null;
   }
+
   /**
    * Return all fichas for a user
    */
@@ -108,8 +106,18 @@ export class FichaService {
         clientId: user.id,
       },
     });
-    console.log(fichas);
-
     return fichas;
+  }
+  /**
+   *
+   *
+   */
+  public async deleteFicha(fichaId: number) {
+    const ficha = await this.manager.findOne(Ficha, fichaId);
+    if (!ficha) {
+      throw new EntityNotFoundError('Ficha', fichaId);
+    }
+    await this.manager.delete(Ficha, fichaId);
+    return ficha;
   }
 }

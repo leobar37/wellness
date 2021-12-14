@@ -29,10 +29,13 @@ export const ClientPage: NextPageWithLayout<SafeAny> = () => {
   const { client } = useClientController({
     clientId: query.clientId as string,
   });
+  console.log('client');
   console.log(client);
+
   if (!client) {
     return <div>Loading...</div>;
   }
+
   return (
     <Layout
       backText={client.name}

@@ -10,3 +10,5 @@ export type NextPageWithLayout<P extends {}> = NextPage<P> & {
 export type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout<SafeAny>;
 };
+
+export type ModeAction = 'edit' | 'create' | 'view';

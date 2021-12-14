@@ -15,47 +15,21 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { TabContent } from '@wellness/admin-ui';
-import { matVa } from '@wellness/admin-ui/utils';
-import SwiperCore, { Autoplay } from 'swiper';
+import { Ficha } from '@wellness/admin-ui/common';
+import { Detail } from '@wellness/admin-ui/ui';
+import { ColTable, prepareCellProps, Table } from '@wellness/admin-ui/ui/table';
+import { SafeAny } from '@wellness/common';
+import format from 'date-fns/format';
 import * as React from 'react';
+import SwiperCore, { Autoplay } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { useClientsStore } from '../../data/client-store';
 import { CreateFicha } from './CreateFicha';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Table, ColTable } from '@wellness/admin-ui/ui/table';
-import format from 'date-fns/format';
-SwiperCore.use([Autoplay]);
-import {
-  GlobalFilter,
-  prepareCellProps,
-  TableInstanceProps,
-} from '@wellness/admin-ui/ui/table';
-import { SafeAny } from '@wellness/common';
-import { Ficha } from '@wellness/admin-ui/common';
-const { patch } = useClientsStore.getState();
+import { ViewFichaModal } from './ViewFicha';
 
-type DetailProps = {
-  title: string;
-  value: string;
-  direction?: 'horizontal' | 'vertical';
-};
-const Detail = ({ title, value, direction = 'horizontal' }: DetailProps) => {
-  const stylesDetail: SystemStyleObject = matVa<
-    SystemStyleObject,
-    DetailProps['direction']
-  >(direction)({
-    vertical: {
-      flexDirection: 'column',
-      alignItems: 'start',
-      margin: '0',
-    },
-  });
-  return (
-    <HStack fontSize="sm" sx={stylesDetail}>
-      <Text fontWeight="bold">{title}:</Text>
-      <Text>{value}</Text>
-    </HStack>
-  );
-};
+SwiperCore.use([Autoplay]);
+
+const { patch, selectFicha } = useClientsStore.getState();
 
 const FichaPreview = ({ ficha }: { ficha: Ficha }) => {
   const linkStyles: SystemStyleObject = {
@@ -87,13 +61,28 @@ const FichaPreview = ({ ficha }: { ficha: Ficha }) => {
         <Link
           sx={linkStyles}
           onClick={() =>
-            patch({ modalCrudFicha: true, modeModalFicha: 'close' })
+            patch({
+              modalCrudFicha: true,
+              modeModalFicha: 'close',
+              stateModalFicha: 'create',
+            })
           }
         >
           Cerrar ficha
         </Link>
         <Box height="16px" width="3px" bg="gray.400" />
-        <Link sx={linkStyles}>Editar ficha</Link>
+        <Link
+          sx={linkStyles}
+          onClick={() =>
+            patch({
+              modalCrudFicha: true,
+              modeModalFicha: 'open',
+              stateModalFicha: 'edit',
+            })
+          }
+        >
+          Editar ficha
+        </Link>
         <Box height="16px" width="3px" bg="gray.400" />
         <Link sx={linkStyles}>Eliminar ficha</Link>
       </HStack>
@@ -104,7 +93,7 @@ const FichaPreview = ({ ficha }: { ficha: Ficha }) => {
         </Swiper>
       </Box>
       <Text fontWeight="semibold" color="gray.400">
-        10/20/30
+        {format(new Date(ficha.createdAt), 'dd/MM/yyyy')}
       </Text>
       <VStack spacing={1} mt={4} align="start">
         <Detail title="Peso" value={detail.weight + ''} />
@@ -136,13 +125,29 @@ const NonFichaPreview = () => {
   );
 };
 
-const ListFichas = () => {
+const _ListFichas = () => {
   const { fichas } = useClientsStore();
 
   return (
     <Box>
       {fichas && (
-        <Table data={fichas}>
+        <Table
+          data={fichas}
+          rowProps={({ original }) => {
+            return {
+              _hover: {
+                bg: 'gray.100',
+                cursor: 'pointer',
+              },
+              onClick: () => {
+                const ficha = original as Ficha;
+                if (ficha.closed) {
+                  selectFicha(ficha);
+                }
+              },
+            };
+          }}
+        >
           <ColTable
             Header={'Abierto'}
             accessor="createdAt"
@@ -158,8 +163,6 @@ const ListFichas = () => {
             accessor="closedAt"
             Cell={(props: SafeAny) => {
               const { original } = prepareCellProps<Ficha>(props);
-              console.log(original);
-
               return original.closedAt
                 ? format(new Date(original.closedAt), 'dd/MM/yyyy')
                 : '----';
@@ -181,10 +184,12 @@ const ListFichas = () => {
           />
         </Table>
       )}
+      <ViewFichaModal />
     </Box>
   );
 };
 
+const ListFichas = React.memo(_ListFichas);
 // eslint-disable-next-line @typescript-eslint/ban-types
 type DashboardFichaProps = {};
 

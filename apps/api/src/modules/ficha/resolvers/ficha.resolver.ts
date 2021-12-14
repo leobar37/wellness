@@ -13,8 +13,11 @@ export class FichaResolver {
     return this.fichaService.openAndCloseFicha(ficha);
   }
   @Mutation((type) => Ficha)
-  public async updateFicha(@Args('input') ficha: FichaInput) {
-    return this.fichaService.updateFicha(ficha);
+  public async updateFicha(
+    @Args('input') ficha: FichaInput,
+    @Args('detailId', { type: () => Int }) detailId: number
+  ) {
+    return this.fichaService.updateFicha(ficha, detailId);
   }
 
   @Query((type) => Ficha, { nullable: true })
@@ -24,5 +27,10 @@ export class FichaResolver {
   @Query((type) => [Ficha], { nullable: true })
   public async getFichas(@Args('userId', { type: () => Int }) userId: number) {
     return this.fichaService.getFichas(userId);
+  }
+
+  @Mutation((type) => Ficha)
+  public async deleteFicha(@Args('fichaId', { type: () => Int }) id: number) {
+    return this.fichaService.deleteFicha(id);
   }
 }

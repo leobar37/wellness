@@ -5,6 +5,7 @@ import {
   useCreateAsistenceMutation,
   InputAsistence,
   useFindAsistencesQuery,
+  Ficha,
 } from '@wellness/admin-ui/common';
 import { IClientStore } from '../domain/client.store';
 import { ID, SafeAny } from '@wellness/common';
@@ -26,13 +27,31 @@ export const useClientsStore = create<IClientStore>((set, get) => {
     // ficha
     modalCrudFicha: false,
     modeModalFicha: 'open',
+    stateModalFicha: 'create',
     toggleModalFicha: makeToggle('modalCrudFicha', set),
+    // selected ficha
+    selectedFicha: null,
+    modalShowFicha: false,
+    toggleModalShowFicha: makeToggle('modalShowFicha', set),
     ficha: null,
     fichas: null,
+    selectFicha: (ficha: Ficha) => {
+      set((state) => {
+        state.selectedFicha = ficha;
+      });
+      get().toggleModalShowFicha(true);
+    },
     addFicha: (ficha) => {
       set((state) => {
         state.fichas.push(ficha);
       });
+    },
+    currentDetail: () => {
+      const ficha = get().ficha;
+      if (ficha) {
+        return ficha.details[0];
+      }
+      return null;
     },
     // asistence
     createAsistencesModal: false,
