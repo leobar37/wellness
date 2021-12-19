@@ -1,5 +1,5 @@
 schema: ./schema.gql
-documents: './libs/admin-ui/src/**/*.graphql.{ts,tsx}'
+documents: './libs/admin-ui/src/common/**/*.graphql.{ts,tsx}'
 generates:
   ./libs/admin-ui/src/common/generated-types.ts:
     plugins:
@@ -10,8 +10,8 @@ generates:
       - add:
           content: '// this file is generate pls not edit manually :)'
       - 'typescript'
-      - typescript-operations
-      - typescript-react-apollo
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
       - 'typescript-compatibility'
     config:
       namingConvention:

@@ -25,7 +25,7 @@ export class PlanResolver {
   }
   // find activities
   @Query((type) => [Plan])
-  public activities(@Args('id', { type: () => ID }) id: number) {
-    return this.planService.findPlans(id);
+  public getPlans() {
+    return this.planService.findPlans();
   }
 }

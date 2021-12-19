@@ -1,14 +1,5 @@
-import {
-  TabList,
-  TabPanels,
-  Tabs,
-  Tab,
-  Box,
-  Link,
-  HStack,
-} from '@chakra-ui/react';
+import { TabList, TabPanels, Tabs } from '@chakra-ui/react';
 import type { NextPageWithLayout } from '@wellness/admin-ui/common';
-
 import {
   BaseLayout,
   Layout,
@@ -19,18 +10,17 @@ import { DeleteIcon, EditIcon } from '@wellness/admin-ui/icons';
 import { ButtonIcon } from '@wellness/admin-ui/ui';
 import { SafeAny } from '@wellness/common';
 import { useRouter } from 'next/router';
-import { DashboardClient } from '../components/DashboarClient';
 import { AsistenceTab } from '../components/asistence/AsistenceTab';
-import { useClientController } from '../controller';
+import { DashboardClient } from '../components/DashboarClient';
 import { DashboardFicha } from '../components/ficha';
+import { useClientController } from '../controller';
+
 export const ClientPage: NextPageWithLayout<SafeAny> = () => {
   const { query } = useRouter();
 
   const { client } = useClientController({
     clientId: query.clientId as string,
   });
-  console.log('client');
-  console.log(client);
 
   if (!client) {
     return <div>Loading...</div>;

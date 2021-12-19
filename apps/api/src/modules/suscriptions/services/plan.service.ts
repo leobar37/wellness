@@ -100,9 +100,15 @@ export class PlanService {
     );
     return contract;
   }
+
   // find plans
+  public async findPlans() {
+    const plans = await this.repository.find({});
+    return plans;
+  }
+
   // TODO: add date filter
-  public async findPlans(idClient: number) {
+  public async findPlansByClient(idClient: number) {
     const plans = await this.repository
       .createQueryBuilder('plan')
       .innerJoin('plan.suscription', 'sub')

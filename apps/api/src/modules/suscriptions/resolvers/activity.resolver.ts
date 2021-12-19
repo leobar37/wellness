@@ -25,7 +25,7 @@ export class ActivityResolver {
   }
   // find activities
   @Query((type) => [Activity])
-  public activities(@Args('id', { type: () => ID }) id: number) {
-    return this.activityService.findActivities(id);
+  public getActivities() {
+    return this.activityService.findActivities();
   }
 }

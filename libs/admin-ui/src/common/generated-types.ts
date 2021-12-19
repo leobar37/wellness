@@ -326,18 +326,14 @@ export type PlanInput = {
 
 export type Query = {
   __typename?: 'Query';
-  activities: Array<Activity>;
   client: Client;
   clients: Array<Client>;
   finAsistences: Array<Asistence>;
+  getActivities: Array<Activity>;
   getFicha?: Maybe<Ficha>;
   getFichas?: Maybe<Array<Ficha>>;
+  getPlans: Array<Plan>;
   ping: Scalars['String'];
-};
-
-
-export type QueryActivitiesArgs = {
-  id: Scalars['ID'];
 };
 
 
@@ -489,10 +485,33 @@ export type ClientFragmentFragment = { __typename?: 'Client', id: string, code: 
 
 export type FichaFragmentFragment = { __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny | null | undefined, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string | null | undefined, note?: string | null | undefined, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } | null | undefined }> };
 
+export type DetailFragmentFragment = { __typename?: 'Detail', name: string, description: string, price: number };
+
+export type PlanFragmentFragment = { __typename?: 'Plan', id: string, createdAt: SafeAny, updateAt: SafeAny, visible: boolean, detail: { __typename?: 'Detail', name: string, description: string, price: number } };
+
+export type ActivityFragmentFragment = { __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number } };
+
 export type PingQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type PingQueryQuery = { __typename?: 'Query', ping: string };
+
+export type GetActivitiesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetActivitiesQuery = { __typename?: 'Query', getActivities: Array<{ __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number } }> };
+
+export type CreateActivityMutationVariables = Exact<{
+  input: ActivityInput;
+}>;
+
+
+export type CreateActivityMutation = { __typename?: 'Mutation', createActivity: { __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number } } };
+
+export type GetPlansQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetPlansQuery = { __typename?: 'Query', getPlans: Array<{ __typename?: 'Plan', id: string, createdAt: SafeAny, updateAt: SafeAny, visible: boolean, detail: { __typename?: 'Detail', name: string, description: string, price: number } }> };
 
 export const AsistenceFragmentFragmentDoc = gql`
     fragment asistenceFragment on Asistence {
@@ -562,6 +581,34 @@ export const FichaFragmentFragmentDoc = gql`
   }
 }
     ${AssetBootFragmentDoc}`;
+export const DetailFragmentFragmentDoc = gql`
+    fragment DetailFragment on Detail {
+  name
+  description
+  price
+}
+    `;
+export const PlanFragmentFragmentDoc = gql`
+    fragment PlanFragment on Plan {
+  id
+  createdAt
+  updateAt
+  detail {
+    ...DetailFragment
+  }
+  visible
+}
+    ${DetailFragmentFragmentDoc}`;
+export const ActivityFragmentFragmentDoc = gql`
+    fragment ActivityFragment on Activity {
+  id
+  createdAt
+  updateAt
+  detail {
+    ...DetailFragment
+  }
+}
+    ${DetailFragmentFragmentDoc}`;
 export const CreateAsistenceDocument = gql`
     mutation createAsistence($asistence: InputAsistence!) {
   createAsistence(asistence: $asistence) {
@@ -1119,6 +1166,107 @@ export function usePingQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type PingQueryQueryHookResult = ReturnType<typeof usePingQueryQuery>;
 export type PingQueryLazyQueryHookResult = ReturnType<typeof usePingQueryLazyQuery>;
 export type PingQueryQueryResult = Apollo.QueryResult<PingQueryQuery, PingQueryQueryVariables>;
+export const GetActivitiesDocument = gql`
+    query getActivities {
+  getActivities {
+    ...ActivityFragment
+  }
+}
+    ${ActivityFragmentFragmentDoc}`;
+
+/**
+ * __useGetActivitiesQuery__
+ *
+ * To run a query within a React component, call `useGetActivitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetActivitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetActivitiesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetActivitiesQuery(baseOptions?: Apollo.QueryHookOptions<GetActivitiesQuery, GetActivitiesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetActivitiesQuery, GetActivitiesQueryVariables>(GetActivitiesDocument, options);
+      }
+export function useGetActivitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetActivitiesQuery, GetActivitiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetActivitiesQuery, GetActivitiesQueryVariables>(GetActivitiesDocument, options);
+        }
+export type GetActivitiesQueryHookResult = ReturnType<typeof useGetActivitiesQuery>;
+export type GetActivitiesLazyQueryHookResult = ReturnType<typeof useGetActivitiesLazyQuery>;
+export type GetActivitiesQueryResult = Apollo.QueryResult<GetActivitiesQuery, GetActivitiesQueryVariables>;
+export const CreateActivityDocument = gql`
+    mutation createActivity($input: ActivityInput!) {
+  createActivity(input: $input) {
+    ...ActivityFragment
+  }
+}
+    ${ActivityFragmentFragmentDoc}`;
+export type CreateActivityMutationFn = Apollo.MutationFunction<CreateActivityMutation, CreateActivityMutationVariables>;
+
+/**
+ * __useCreateActivityMutation__
+ *
+ * To run a mutation, you first call `useCreateActivityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateActivityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createActivityMutation, { data, loading, error }] = useCreateActivityMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateActivityMutation(baseOptions?: Apollo.MutationHookOptions<CreateActivityMutation, CreateActivityMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateActivityMutation, CreateActivityMutationVariables>(CreateActivityDocument, options);
+      }
+export type CreateActivityMutationHookResult = ReturnType<typeof useCreateActivityMutation>;
+export type CreateActivityMutationResult = Apollo.MutationResult<CreateActivityMutation>;
+export type CreateActivityMutationOptions = Apollo.BaseMutationOptions<CreateActivityMutation, CreateActivityMutationVariables>;
+export const GetPlansDocument = gql`
+    query getPlans {
+  getPlans {
+    ...PlanFragment
+  }
+}
+    ${PlanFragmentFragmentDoc}`;
+
+/**
+ * __useGetPlansQuery__
+ *
+ * To run a query within a React component, call `useGetPlansQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPlansQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPlansQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetPlansQuery(baseOptions?: Apollo.QueryHookOptions<GetPlansQuery, GetPlansQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPlansQuery, GetPlansQueryVariables>(GetPlansDocument, options);
+      }
+export function useGetPlansLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPlansQuery, GetPlansQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPlansQuery, GetPlansQueryVariables>(GetPlansDocument, options);
+        }
+export type GetPlansQueryHookResult = ReturnType<typeof useGetPlansQuery>;
+export type GetPlansLazyQueryHookResult = ReturnType<typeof useGetPlansLazyQuery>;
+export type GetPlansQueryResult = Apollo.QueryResult<GetPlansQuery, GetPlansQueryVariables>;
 type DiscriminateUnion<T, U> = T extends U ? T : never;
 
 export type CreateAsistenceVariables = CreateAsistenceMutationVariables;
@@ -1161,4 +1309,12 @@ export type AssetBootAssets = NonNullable<(NonNullable<AssetBootFragment['assets
 export type ClientFragmentPhoto = (NonNullable<ClientFragmentFragment['photo']>);
 export type FichaFragmentDetails = NonNullable<(NonNullable<FichaFragmentFragment['details']>)[number]>;
 export type FichaFragmentAsset = (NonNullable<NonNullable<(NonNullable<FichaFragmentFragment['details']>)[number]>['asset']>);
+export type PlanFragmentDetail = (NonNullable<PlanFragmentFragment['detail']>);
+export type ActivityFragmentDetail = (NonNullable<ActivityFragmentFragment['detail']>);
 export type PingQueryVariables = PingQueryQueryVariables;
+export type GetActivitiesVariables = GetActivitiesQueryVariables;
+export type GetActivitiesGetActivities = NonNullable<(NonNullable<GetActivitiesQuery['getActivities']>)[number]>;
+export type CreateActivityVariables = CreateActivityMutationVariables;
+export type CreateActivityCreateActivity = (NonNullable<CreateActivityMutation['createActivity']>);
+export type GetPlansVariables = GetPlansQueryVariables;
+export type GetPlansGetPlans = NonNullable<(NonNullable<GetPlansQuery['getPlans']>)[number]>;

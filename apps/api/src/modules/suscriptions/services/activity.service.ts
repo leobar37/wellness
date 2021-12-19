@@ -104,9 +104,13 @@ export class ActivityService {
     return contract;
   }
 
-  // find activities by client and date
+  async findActivities() {
+    const activities = await this.repository.find({});
+    return activities;
+  }
 
-  async findActivities(idClient: number) {
+  // find activities by client and date
+  async findActivitiesByClient(idClient: number) {
     const activities = await this.repository
       .createQueryBuilder('act')
       .innerJoin('act.suscription', 'sub')

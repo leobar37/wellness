@@ -1,9 +1,7 @@
 import { DeepPartialSimple } from '@wellness/common';
-
+import { Item } from '../components/sidebar';
 export type SidebarConfig = {
-  items: {
-    name: string;
-  };
+  items: Item[];
 };
 
 export type UploadImageConfig = {

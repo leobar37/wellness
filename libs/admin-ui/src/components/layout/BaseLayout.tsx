@@ -9,6 +9,7 @@ import {
   Text,
   GridItemProps,
 } from '@chakra-ui/react';
+import { useConfig, SidebarConfig } from '../../config';
 import {
   MenuItem,
   Sidebar,
@@ -150,16 +151,30 @@ const BaseLayout: React.FunctionComponent<BaseLayoutProps> = ({
   );
 };
 
-BaseLayout.defaultProps = {
-  sidebar: (
+const DefaulSidebar = () => {
+  const sidebar = useConfig<SidebarConfig>('sidebar');
+
+  const renderItems = () => {
+    return sidebar.items.map((item) => {
+      return (
+        <MenuItem path={item.path} icon={item.icon} subItems={item.subItems}>
+          {item.name}
+        </MenuItem>
+      );
+    });
+  };
+
+  return (
     <Sidebar>
       <SidebarHeader />
-      <SidebarMenu>
-        <MenuItem icon={<UsersIcon fontSize="xl" />}>Clientes</MenuItem>
-      </SidebarMenu>
+      <SidebarMenu>{renderItems()}</SidebarMenu>
       <SidebarFooter />
     </Sidebar>
-  ),
+  );
+};
+
+BaseLayout.defaultProps = {
+  sidebar: <DefaulSidebar />,
   footer: <Text>Developed by @vide</Text>,
 };
 

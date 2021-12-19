@@ -1,10 +1,29 @@
 import { WellnessConfig } from './Wellness-config';
+import { Dumbell, UsersIcon } from '../icons';
 
 export const defaultConfig: WellnessConfig = {
   sidebar: {
-    items: {
-      name: '',
-    },
+    items: [
+      {
+        name: 'Clientes',
+        path: '/app/clients',
+        icon: <UsersIcon fontSize="xl" />,
+      },
+      {
+        name: 'Gymnasios',
+        icon: <Dumbell fontSize="xl" />,
+        subItems: [
+          {
+            name: 'Planes',
+            path: '',
+          },
+          {
+            name: 'Servicios',
+            path: '',
+          },
+        ],
+      },
+    ],
   },
   cloudinary: {
     apiKey: '827568399999768',
