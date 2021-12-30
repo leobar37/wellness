@@ -1,5 +1,5 @@
 import { ModalCrud } from '@wellness/admin-ui/components';
-import { useDisclosure, HStack, Button } from '@chakra-ui/react';
+import { useDisclosure, HStack, Button, Radio } from '@chakra-ui/react';
 import { ChackraForm } from '@wellness/admin-ui/components';
 import { Formik, useFormikContext } from 'formik';
 import {
@@ -8,9 +8,14 @@ import {
   CheckboxSingleControl,
   TextareaControl,
   SubmitButton,
+  RadioGroupControl,
 } from 'formik-chakra-ui';
 import { CreateActivity } from '../../domain/schemas';
+import { useActivityController } from '../../controller/activities.controller';
+import { DatePicker } from '@wellness/admin-ui/ui';
 import { ModeSuscription } from '@wellness/admin-ui';
+import { useSubscriptionsStore } from '../../data';
+
 const Form = () => {
   const { handleSubmit } = useFormikContext();
   return (
@@ -24,17 +29,28 @@ const Form = () => {
       <InputControl name="name" placeholder="Nombre" label="Nombre:" />
       <NumberInputControl name="price" maxWidth="90px" label="Precio:" />
       <TextareaControl name="description" label="Descripción:" />
+      <RadioGroupControl name="mode" label="Modo:">
+        <Radio value={ModeSuscription.FIXED}>Fijo</Radio>
+        <Radio value={ModeSuscription.DINAMIC}>Dinámico</Radio>
+      </RadioGroupControl>
+      <DatePicker name="startAt" label="Fecha de inicio" />
     </ChackraForm>
   );
 };
 
 export const CreateActivityModal = () => {
-  const { isOpen, onClose, onOpen } = useDisclosure({
-    isOpen: true,
+  const { createActivity } = useActivityController();
+  const { activitiesCrudModal, toggleActivitiesCrudModal } =
+    useSubscriptionsStore();
+  const { isOpen, onClose } = useDisclosure({
+    isOpen: activitiesCrudModal,
+    onClose: () => toggleActivitiesCrudModal(false),
+    onOpen: () => toggleActivitiesCrudModal(true),
   });
   const cancelOperation = () => {
     onClose();
   };
+
   return (
     <Formik<CreateActivity>
       initialValues={{
@@ -46,12 +62,15 @@ export const CreateActivityModal = () => {
         startAt: null,
         visible: true,
       }}
-      onSubmit={(values) => {}}
+      onSubmit={async (values) => {
+        console.log(values);
+        await createActivity(values);
+      }}
     >
       {({ submitForm }) => (
         <ModalCrud
           textHeader={'Crear Actividad'}
-          isOpen={true}
+          isOpen={isOpen}
           onClose={onClose}
           footer={
             <HStack>

@@ -4,7 +4,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { DeepPartial } from '@wellness/common';
 import { Detail } from '../detail-plan';
 import { Suscription } from '../suscription/suscription.entity';
-import { Contract } from '@wellness/core';
+import { Contract } from '../';
 /**
  * @description
  */

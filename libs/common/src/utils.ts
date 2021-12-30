@@ -18,3 +18,4 @@ export function normalizeEmailAddress(input: string): string {
 export const pluck = <D extends unknown>(data: SafeAny, path: string): D => {
   return get(data, path) as D;
 };
+export const someBoolean = (...values: boolean[]) => values.some(Boolean);

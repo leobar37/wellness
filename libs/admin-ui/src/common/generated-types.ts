@@ -1,14 +1,20 @@
 // tslint:disable
 // this file is generate pls not edit manually :)
-import { SafeAny} from '@wellness/common'
+import { SafeAny } from '@wellness/common';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T;
 export type InputMaybe<T> = T;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions =  {}
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
+const defaultOptions = {};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -185,13 +191,13 @@ export type InputAsistence = {
 
 export enum ModeRegiser {
   ADMIN = 'ADMIN',
-  SELF = 'SELF'
+  SELF = 'SELF',
 }
 
 /** This enum determine the mode of a suscription */
 export enum ModeSuscription {
   DINAMIC = 'DINAMIC',
-  FIXED = 'FIXED'
+  FIXED = 'FIXED',
 }
 
 export type Mutation = {
@@ -216,93 +222,75 @@ export type Mutation = {
   updateFicha: Ficha;
 };
 
-
 export type MutationCreateActivityArgs = {
   input: ActivityInput;
 };
-
 
 export type MutationCreateAsistenceArgs = {
   asistence: InputAsistence;
 };
 
-
 export type MutationCreatePlanArgs = {
   input: PlanInput;
 };
-
 
 export type MutationCreateResourceArgs = {
   resource: AssetInput;
 };
 
-
 export type MutationDeleteActivityArgs = {
   id: Scalars['ID'];
 };
-
 
 export type MutationDeleteAsistenceArgs = {
   id: Scalars['ID'];
 };
 
-
 export type MutationDeleteCLientArgs = {
   id: Scalars['ID'];
 };
-
 
 export type MutationDeleteFichaArgs = {
   fichaId: Scalars['Int'];
 };
 
-
 export type MutationDeletePlanArgs = {
   id: Scalars['ID'];
 };
-
 
 export type MutationDeleteResourceArgs = {
   input: DeleteAssetInput;
 };
 
-
 export type MutationJoinActivityArgs = {
   contract: ContractInput;
 };
-
 
 export type MutationJoinPlanArgs = {
   contract: ContractInput;
 };
 
-
 export type MutationOpenAndCloseFichaArgs = {
   input: FichaInput;
 };
-
 
 export type MutationRegisterClientArgs = {
   client: ClientInput;
 };
 
-
 export type MutationSignatureArgs = {
   publicId?: InputMaybe<Scalars['String']>;
 };
-
 
 export type MutationUpdateAsistenceArgs = {
   id: Scalars['ID'];
   input: InputAsistence;
 };
 
-
 export type MutationUpdateCLientArgs = {
   id: Scalars['ID'];
   input: ClientInput;
 };
-
 
 export type MutationUpdateFichaArgs = {
   detailId: Scalars['Int'];
@@ -330,27 +318,28 @@ export type Query = {
   clients: Array<Client>;
   finAsistences: Array<Asistence>;
   getActivities: Array<Activity>;
+  getActivity: Activity;
   getFicha?: Maybe<Ficha>;
   getFichas?: Maybe<Array<Ficha>>;
   getPlans: Array<Plan>;
   ping: Scalars['String'];
 };
 
-
 export type QueryClientArgs = {
   id: Scalars['ID'];
 };
-
 
 export type QueryFinAsistencesArgs = {
   cliendId: Scalars['ID'];
 };
 
+export type QueryGetActivityArgs = {
+  id: Scalars['ID'];
+};
 
 export type QueryGetFichaArgs = {
   userId: Scalars['Int'];
 };
-
 
 export type QueryGetFichasArgs = {
   userId: Scalars['Int'];
@@ -367,256 +356,838 @@ export type ResponseSignature = {
 export enum Sex {
   MEN = 'MEN',
   OTHER = 'OTHER',
-  WOMEN = 'WOMEN'
+  WOMEN = 'WOMEN',
 }
 
 export type CreateAsistenceMutationVariables = Exact<{
   asistence: InputAsistence;
 }>;
 
-
-export type CreateAsistenceMutation = { __typename?: 'Mutation', createAsistence: { __typename?: 'Asistence', id: string, createdAt: SafeAny, updateAt: SafeAny, note: string } };
+export type CreateAsistenceMutation = {
+  __typename?: 'Mutation';
+  createAsistence: {
+    __typename?: 'Asistence';
+    id: string;
+    createdAt: SafeAny;
+    updateAt: SafeAny;
+    note: string;
+  };
+};
 
 export type UpdateAsistenceMutationVariables = Exact<{
   input: InputAsistence;
   id: Scalars['ID'];
 }>;
 
-
-export type UpdateAsistenceMutation = { __typename?: 'Mutation', updateAsistence: { __typename?: 'Asistence', id: string, createdAt: SafeAny, updateAt: SafeAny, note: string } };
+export type UpdateAsistenceMutation = {
+  __typename?: 'Mutation';
+  updateAsistence: {
+    __typename?: 'Asistence';
+    id: string;
+    createdAt: SafeAny;
+    updateAt: SafeAny;
+    note: string;
+  };
+};
 
 export type DeleteAsistenceMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
-
-export type DeleteAsistenceMutation = { __typename?: 'Mutation', deleteAsistence: { __typename?: 'Asistence', id: string, createdAt: SafeAny, updateAt: SafeAny, note: string } };
+export type DeleteAsistenceMutation = {
+  __typename?: 'Mutation';
+  deleteAsistence: {
+    __typename?: 'Asistence';
+    id: string;
+    createdAt: SafeAny;
+    updateAt: SafeAny;
+    note: string;
+  };
+};
 
 export type FindAsistencesQueryVariables = Exact<{
   cliendId: Scalars['ID'];
 }>;
 
-
-export type FindAsistencesQuery = { __typename?: 'Query', finAsistences: Array<{ __typename?: 'Asistence', id: string, createdAt: SafeAny, updateAt: SafeAny, note: string }> };
+export type FindAsistencesQuery = {
+  __typename?: 'Query';
+  finAsistences: Array<{
+    __typename?: 'Asistence';
+    id: string;
+    createdAt: SafeAny;
+    updateAt: SafeAny;
+    note: string;
+  }>;
+};
 
 export type GenerateSignatureMutationVariables = Exact<{
   publicId?: Maybe<Scalars['String']>;
 }>;
 
-
-export type GenerateSignatureMutation = { __typename?: 'Mutation', signature: { __typename?: 'ResponseSignature', signature: string, timestamp: number } };
+export type GenerateSignatureMutation = {
+  __typename?: 'Mutation';
+  signature: {
+    __typename?: 'ResponseSignature';
+    signature: string;
+    timestamp: number;
+  };
+};
 
 export type DeleteResourceMutationVariables = Exact<{
   input: DeleteAssetInput;
 }>;
 
-
-export type DeleteResourceMutation = { __typename?: 'Mutation', deleteResource: { __typename: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | { __typename: 'AssetBoot', id: string, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } };
+export type DeleteResourceMutation = {
+  __typename?: 'Mutation';
+  deleteResource:
+    | {
+        __typename: 'Asset';
+        name: string;
+        size?: number | null | undefined;
+        previewUrl?: string | null | undefined;
+        id: string;
+        createdAt: SafeAny;
+        updateAt: SafeAny;
+      }
+    | {
+        __typename: 'AssetBoot';
+        id: string;
+        assets: Array<
+          | {
+              __typename?: 'Asset';
+              name: string;
+              size?: number | null | undefined;
+              previewUrl?: string | null | undefined;
+              id: string;
+              createdAt: SafeAny;
+              updateAt: SafeAny;
+            }
+          | null
+          | undefined
+        >;
+      };
+};
 
 export type CreateResourceMutationVariables = Exact<{
   resource: AssetInput;
 }>;
 
-
-export type CreateResourceMutation = { __typename?: 'Mutation', createResource: { __typename: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | { __typename: 'AssetBoot', id: string, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } };
+export type CreateResourceMutation = {
+  __typename?: 'Mutation';
+  createResource:
+    | {
+        __typename: 'Asset';
+        name: string;
+        size?: number | null | undefined;
+        previewUrl?: string | null | undefined;
+        id: string;
+        createdAt: SafeAny;
+        updateAt: SafeAny;
+      }
+    | {
+        __typename: 'AssetBoot';
+        id: string;
+        assets: Array<
+          | {
+              __typename?: 'Asset';
+              name: string;
+              size?: number | null | undefined;
+              previewUrl?: string | null | undefined;
+              id: string;
+              createdAt: SafeAny;
+              updateAt: SafeAny;
+            }
+          | null
+          | undefined
+        >;
+      };
+};
 
 export type RegisterClientMutationVariables = Exact<{
   client: ClientInput;
 }>;
 
+export type RegisterClientMutation = {
+  __typename?: 'Mutation';
+  registerClient: {
+    __typename?: 'Client';
+    id: string;
+    code: string;
+    dni: string;
+    createdAt: SafeAny;
+    email: string;
+    name: string;
+    lastName: string;
+    birth?: SafeAny | null | undefined;
+    phone?: string | null | undefined;
+    direction?: string | null | undefined;
+    sex: Sex;
+    mode: ModeRegiser;
+    photo?:
+      | {
+          __typename?: 'Asset';
+          name: string;
+          size?: number | null | undefined;
+          previewUrl?: string | null | undefined;
+          id: string;
+          createdAt: SafeAny;
+          updateAt: SafeAny;
+        }
+      | null
+      | undefined;
+  };
+};
 
-export type RegisterClientMutation = { __typename?: 'Mutation', registerClient: { __typename?: 'Client', id: string, code: string, dni: string, createdAt: SafeAny, email: string, name: string, lastName: string, birth?: SafeAny | null | undefined, phone?: string | null | undefined, direction?: string | null | undefined, sex: Sex, mode: ModeRegiser, photo?: { __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined } };
+export type GetClientsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetClientsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetClientsQuery = { __typename?: 'Query', clients: Array<{ __typename?: 'Client', id: string, code: string, dni: string, createdAt: SafeAny, email: string, name: string, lastName: string, birth?: SafeAny | null | undefined, phone?: string | null | undefined, direction?: string | null | undefined, sex: Sex, mode: ModeRegiser, photo?: { __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined }> };
+export type GetClientsQuery = {
+  __typename?: 'Query';
+  clients: Array<{
+    __typename?: 'Client';
+    id: string;
+    code: string;
+    dni: string;
+    createdAt: SafeAny;
+    email: string;
+    name: string;
+    lastName: string;
+    birth?: SafeAny | null | undefined;
+    phone?: string | null | undefined;
+    direction?: string | null | undefined;
+    sex: Sex;
+    mode: ModeRegiser;
+    photo?:
+      | {
+          __typename?: 'Asset';
+          name: string;
+          size?: number | null | undefined;
+          previewUrl?: string | null | undefined;
+          id: string;
+          createdAt: SafeAny;
+          updateAt: SafeAny;
+        }
+      | null
+      | undefined;
+  }>;
+};
 
 export type GetClientQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
-
-export type GetClientQuery = { __typename?: 'Query', client: { __typename?: 'Client', id: string, code: string, dni: string, createdAt: SafeAny, email: string, name: string, lastName: string, birth?: SafeAny | null | undefined, phone?: string | null | undefined, direction?: string | null | undefined, sex: Sex, mode: ModeRegiser, photo?: { __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined } };
+export type GetClientQuery = {
+  __typename?: 'Query';
+  client: {
+    __typename?: 'Client';
+    id: string;
+    code: string;
+    dni: string;
+    createdAt: SafeAny;
+    email: string;
+    name: string;
+    lastName: string;
+    birth?: SafeAny | null | undefined;
+    phone?: string | null | undefined;
+    direction?: string | null | undefined;
+    sex: Sex;
+    mode: ModeRegiser;
+    photo?:
+      | {
+          __typename?: 'Asset';
+          name: string;
+          size?: number | null | undefined;
+          previewUrl?: string | null | undefined;
+          id: string;
+          createdAt: SafeAny;
+          updateAt: SafeAny;
+        }
+      | null
+      | undefined;
+  };
+};
 
 export type OpenAndCloseMutationVariables = Exact<{
   input: FichaInput;
 }>;
 
-
-export type OpenAndCloseMutation = { __typename?: 'Mutation', openAndCloseFicha: { __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny | null | undefined, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string | null | undefined, note?: string | null | undefined, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } | null | undefined }> } };
+export type OpenAndCloseMutation = {
+  __typename?: 'Mutation';
+  openAndCloseFicha: {
+    __typename?: 'Ficha';
+    id: string;
+    createdAt: SafeAny;
+    closedAt?: SafeAny | null | undefined;
+    closed: boolean;
+    updateAt: SafeAny;
+    details: Array<{
+      __typename?: 'DetailFicha';
+      id: string;
+      open: boolean;
+      createdAt: SafeAny;
+      updateAt: SafeAny;
+      weight: number;
+      objective?: string | null | undefined;
+      note?: string | null | undefined;
+      asset?:
+        | {
+            __typename?: 'AssetBoot';
+            id: string;
+            createdAt: SafeAny;
+            updateAt: SafeAny;
+            assets: Array<
+              | {
+                  __typename?: 'Asset';
+                  name: string;
+                  size?: number | null | undefined;
+                  previewUrl?: string | null | undefined;
+                  id: string;
+                  createdAt: SafeAny;
+                  updateAt: SafeAny;
+                }
+              | null
+              | undefined
+            >;
+          }
+        | null
+        | undefined;
+    }>;
+  };
+};
 
 export type GetFichaQueryVariables = Exact<{
   userId: Scalars['Int'];
 }>;
 
-
-export type GetFichaQuery = { __typename?: 'Query', getFicha?: { __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny | null | undefined, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string | null | undefined, note?: string | null | undefined, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } | null | undefined }> } | null | undefined };
+export type GetFichaQuery = {
+  __typename?: 'Query';
+  getFicha?:
+    | {
+        __typename?: 'Ficha';
+        id: string;
+        createdAt: SafeAny;
+        closedAt?: SafeAny | null | undefined;
+        closed: boolean;
+        updateAt: SafeAny;
+        details: Array<{
+          __typename?: 'DetailFicha';
+          id: string;
+          open: boolean;
+          createdAt: SafeAny;
+          updateAt: SafeAny;
+          weight: number;
+          objective?: string | null | undefined;
+          note?: string | null | undefined;
+          asset?:
+            | {
+                __typename?: 'AssetBoot';
+                id: string;
+                createdAt: SafeAny;
+                updateAt: SafeAny;
+                assets: Array<
+                  | {
+                      __typename?: 'Asset';
+                      name: string;
+                      size?: number | null | undefined;
+                      previewUrl?: string | null | undefined;
+                      id: string;
+                      createdAt: SafeAny;
+                      updateAt: SafeAny;
+                    }
+                  | null
+                  | undefined
+                >;
+              }
+            | null
+            | undefined;
+        }>;
+      }
+    | null
+    | undefined;
+};
 
 export type GetFichasQueryVariables = Exact<{
   userId: Scalars['Int'];
 }>;
 
-
-export type GetFichasQuery = { __typename?: 'Query', getFichas?: Array<{ __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny | null | undefined, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string | null | undefined, note?: string | null | undefined, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } | null | undefined }> }> | null | undefined };
+export type GetFichasQuery = {
+  __typename?: 'Query';
+  getFichas?:
+    | Array<{
+        __typename?: 'Ficha';
+        id: string;
+        createdAt: SafeAny;
+        closedAt?: SafeAny | null | undefined;
+        closed: boolean;
+        updateAt: SafeAny;
+        details: Array<{
+          __typename?: 'DetailFicha';
+          id: string;
+          open: boolean;
+          createdAt: SafeAny;
+          updateAt: SafeAny;
+          weight: number;
+          objective?: string | null | undefined;
+          note?: string | null | undefined;
+          asset?:
+            | {
+                __typename?: 'AssetBoot';
+                id: string;
+                createdAt: SafeAny;
+                updateAt: SafeAny;
+                assets: Array<
+                  | {
+                      __typename?: 'Asset';
+                      name: string;
+                      size?: number | null | undefined;
+                      previewUrl?: string | null | undefined;
+                      id: string;
+                      createdAt: SafeAny;
+                      updateAt: SafeAny;
+                    }
+                  | null
+                  | undefined
+                >;
+              }
+            | null
+            | undefined;
+        }>;
+      }>
+    | null
+    | undefined;
+};
 
 export type UpdateFichaMutationVariables = Exact<{
   input: FichaInput;
   detailId: Scalars['Int'];
 }>;
 
-
-export type UpdateFichaMutation = { __typename?: 'Mutation', updateFicha: { __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny | null | undefined, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string | null | undefined, note?: string | null | undefined, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } | null | undefined }> } };
+export type UpdateFichaMutation = {
+  __typename?: 'Mutation';
+  updateFicha: {
+    __typename?: 'Ficha';
+    id: string;
+    createdAt: SafeAny;
+    closedAt?: SafeAny | null | undefined;
+    closed: boolean;
+    updateAt: SafeAny;
+    details: Array<{
+      __typename?: 'DetailFicha';
+      id: string;
+      open: boolean;
+      createdAt: SafeAny;
+      updateAt: SafeAny;
+      weight: number;
+      objective?: string | null | undefined;
+      note?: string | null | undefined;
+      asset?:
+        | {
+            __typename?: 'AssetBoot';
+            id: string;
+            createdAt: SafeAny;
+            updateAt: SafeAny;
+            assets: Array<
+              | {
+                  __typename?: 'Asset';
+                  name: string;
+                  size?: number | null | undefined;
+                  previewUrl?: string | null | undefined;
+                  id: string;
+                  createdAt: SafeAny;
+                  updateAt: SafeAny;
+                }
+              | null
+              | undefined
+            >;
+          }
+        | null
+        | undefined;
+    }>;
+  };
+};
 
 export type DeleteFichaMutationVariables = Exact<{
   fichaId: Scalars['Int'];
 }>;
 
+export type DeleteFichaMutation = {
+  __typename?: 'Mutation';
+  deleteFicha: {
+    __typename?: 'Ficha';
+    id: string;
+    createdAt: SafeAny;
+    closedAt?: SafeAny | null | undefined;
+    closed: boolean;
+    updateAt: SafeAny;
+    details: Array<{
+      __typename?: 'DetailFicha';
+      id: string;
+      open: boolean;
+      createdAt: SafeAny;
+      updateAt: SafeAny;
+      weight: number;
+      objective?: string | null | undefined;
+      note?: string | null | undefined;
+      asset?:
+        | {
+            __typename?: 'AssetBoot';
+            id: string;
+            createdAt: SafeAny;
+            updateAt: SafeAny;
+            assets: Array<
+              | {
+                  __typename?: 'Asset';
+                  name: string;
+                  size?: number | null | undefined;
+                  previewUrl?: string | null | undefined;
+                  id: string;
+                  createdAt: SafeAny;
+                  updateAt: SafeAny;
+                }
+              | null
+              | undefined
+            >;
+          }
+        | null
+        | undefined;
+    }>;
+  };
+};
 
-export type DeleteFichaMutation = { __typename?: 'Mutation', deleteFicha: { __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny | null | undefined, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string | null | undefined, note?: string | null | undefined, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } | null | undefined }> } };
+export type AsistenceFragmentFragment = {
+  __typename?: 'Asistence';
+  id: string;
+  createdAt: SafeAny;
+  updateAt: SafeAny;
+  note: string;
+};
 
-export type AsistenceFragmentFragment = { __typename?: 'Asistence', id: string, createdAt: SafeAny, updateAt: SafeAny, note: string };
+export type AssetFragmentFragment = {
+  __typename?: 'Asset';
+  name: string;
+  size?: number | null | undefined;
+  previewUrl?: string | null | undefined;
+  id: string;
+  createdAt: SafeAny;
+  updateAt: SafeAny;
+};
 
-export type AssetFragmentFragment = { __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny };
+export type AssetBootFragment = {
+  __typename?: 'AssetBoot';
+  id: string;
+  createdAt: SafeAny;
+  updateAt: SafeAny;
+  assets: Array<
+    | {
+        __typename?: 'Asset';
+        name: string;
+        size?: number | null | undefined;
+        previewUrl?: string | null | undefined;
+        id: string;
+        createdAt: SafeAny;
+        updateAt: SafeAny;
+      }
+    | null
+    | undefined
+  >;
+};
 
-export type AssetBootFragment = { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> };
+export type ClientFragmentFragment = {
+  __typename?: 'Client';
+  id: string;
+  code: string;
+  dni: string;
+  createdAt: SafeAny;
+  email: string;
+  name: string;
+  lastName: string;
+  birth?: SafeAny | null | undefined;
+  phone?: string | null | undefined;
+  direction?: string | null | undefined;
+  sex: Sex;
+  mode: ModeRegiser;
+  photo?:
+    | {
+        __typename?: 'Asset';
+        name: string;
+        size?: number | null | undefined;
+        previewUrl?: string | null | undefined;
+        id: string;
+        createdAt: SafeAny;
+        updateAt: SafeAny;
+      }
+    | null
+    | undefined;
+};
 
-export type ClientFragmentFragment = { __typename?: 'Client', id: string, code: string, dni: string, createdAt: SafeAny, email: string, name: string, lastName: string, birth?: SafeAny | null | undefined, phone?: string | null | undefined, direction?: string | null | undefined, sex: Sex, mode: ModeRegiser, photo?: { __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined };
+export type FichaFragmentFragment = {
+  __typename?: 'Ficha';
+  id: string;
+  createdAt: SafeAny;
+  closedAt?: SafeAny | null | undefined;
+  closed: boolean;
+  updateAt: SafeAny;
+  details: Array<{
+    __typename?: 'DetailFicha';
+    id: string;
+    open: boolean;
+    createdAt: SafeAny;
+    updateAt: SafeAny;
+    weight: number;
+    objective?: string | null | undefined;
+    note?: string | null | undefined;
+    asset?:
+      | {
+          __typename?: 'AssetBoot';
+          id: string;
+          createdAt: SafeAny;
+          updateAt: SafeAny;
+          assets: Array<
+            | {
+                __typename?: 'Asset';
+                name: string;
+                size?: number | null | undefined;
+                previewUrl?: string | null | undefined;
+                id: string;
+                createdAt: SafeAny;
+                updateAt: SafeAny;
+              }
+            | null
+            | undefined
+          >;
+        }
+      | null
+      | undefined;
+  }>;
+};
 
-export type FichaFragmentFragment = { __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny | null | undefined, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string | null | undefined, note?: string | null | undefined, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } | null | undefined }> };
+export type DetailFragmentFragment = {
+  __typename?: 'Detail';
+  name: string;
+  description: string;
+  price: number;
+};
 
-export type DetailFragmentFragment = { __typename?: 'Detail', name: string, description: string, price: number };
+export type PlanFragmentFragment = {
+  __typename?: 'Plan';
+  id: string;
+  createdAt: SafeAny;
+  updateAt: SafeAny;
+  visible: boolean;
+  detail: {
+    __typename?: 'Detail';
+    name: string;
+    description: string;
+    price: number;
+  };
+};
 
-export type PlanFragmentFragment = { __typename?: 'Plan', id: string, createdAt: SafeAny, updateAt: SafeAny, visible: boolean, detail: { __typename?: 'Detail', name: string, description: string, price: number } };
+export type ActivityFragmentFragment = {
+  __typename?: 'Activity';
+  id: string;
+  createdAt: SafeAny;
+  updateAt: SafeAny;
+  detail: {
+    __typename?: 'Detail';
+    name: string;
+    description: string;
+    price: number;
+  };
+};
 
-export type ActivityFragmentFragment = { __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number } };
+export type PingQueryQueryVariables = Exact<{ [key: string]: never }>;
 
-export type PingQueryQueryVariables = Exact<{ [key: string]: never; }>;
+export type PingQueryQuery = { __typename?: 'Query'; ping: string };
 
+export type GetActivitiesQueryVariables = Exact<{ [key: string]: never }>;
 
-export type PingQueryQuery = { __typename?: 'Query', ping: string };
-
-export type GetActivitiesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetActivitiesQuery = { __typename?: 'Query', getActivities: Array<{ __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number } }> };
+export type GetActivitiesQuery = {
+  __typename?: 'Query';
+  getActivities: Array<{
+    __typename?: 'Activity';
+    id: string;
+    createdAt: SafeAny;
+    updateAt: SafeAny;
+    detail: {
+      __typename?: 'Detail';
+      name: string;
+      description: string;
+      price: number;
+    };
+  }>;
+};
 
 export type CreateActivityMutationVariables = Exact<{
   input: ActivityInput;
 }>;
 
+export type CreateActivityMutation = {
+  __typename?: 'Mutation';
+  createActivity: {
+    __typename?: 'Activity';
+    id: string;
+    createdAt: SafeAny;
+    updateAt: SafeAny;
+    detail: {
+      __typename?: 'Detail';
+      name: string;
+      description: string;
+      price: number;
+    };
+  };
+};
 
-export type CreateActivityMutation = { __typename?: 'Mutation', createActivity: { __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number } } };
+export type GetPlansQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetPlansQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetPlansQuery = {
+  __typename?: 'Query';
+  getPlans: Array<{
+    __typename?: 'Plan';
+    id: string;
+    createdAt: SafeAny;
+    updateAt: SafeAny;
+    visible: boolean;
+    detail: {
+      __typename?: 'Detail';
+      name: string;
+      description: string;
+      price: number;
+    };
+  }>;
+};
 
+export type GetActivityQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
 
-export type GetPlansQuery = { __typename?: 'Query', getPlans: Array<{ __typename?: 'Plan', id: string, createdAt: SafeAny, updateAt: SafeAny, visible: boolean, detail: { __typename?: 'Detail', name: string, description: string, price: number } }> };
+export type GetActivityQuery = {
+  __typename?: 'Query';
+  getActivity: {
+    __typename?: 'Activity';
+    id: string;
+    createdAt: SafeAny;
+    updateAt: SafeAny;
+    detail: {
+      __typename?: 'Detail';
+      name: string;
+      description: string;
+      price: number;
+    };
+  };
+};
 
 export const AsistenceFragmentFragmentDoc = gql`
-    fragment asistenceFragment on Asistence {
-  id
-  createdAt
-  updateAt
-  note
-}
-    `;
-export const AssetFragmentFragmentDoc = gql`
-    fragment AssetFragment on Asset {
-  name
-  size
-  previewUrl
-  id
-  createdAt
-  updateAt
-}
-    `;
-export const ClientFragmentFragmentDoc = gql`
-    fragment ClientFragment on Client {
-  id
-  code
-  dni
-  createdAt
-  email
-  name
-  lastName
-  birth
-  phone
-  direction
-  sex
-  mode
-  photo {
-    ...AssetFragment
-  }
-}
-    ${AssetFragmentFragmentDoc}`;
-export const AssetBootFragmentDoc = gql`
-    fragment AssetBoot on AssetBoot {
-  id
-  createdAt
-  updateAt
-  assets {
-    ...AssetFragment
-  }
-}
-    ${AssetFragmentFragmentDoc}`;
-export const FichaFragmentFragmentDoc = gql`
-    fragment fichaFragment on Ficha {
-  id
-  createdAt
-  closedAt
-  closed
-  updateAt
-  details {
+  fragment asistenceFragment on Asistence {
     id
-    open
     createdAt
     updateAt
-    weight
-    objective
     note
-    asset {
-      ...AssetBoot
+  }
+`;
+export const AssetFragmentFragmentDoc = gql`
+  fragment AssetFragment on Asset {
+    name
+    size
+    previewUrl
+    id
+    createdAt
+    updateAt
+  }
+`;
+export const ClientFragmentFragmentDoc = gql`
+  fragment ClientFragment on Client {
+    id
+    code
+    dni
+    createdAt
+    email
+    name
+    lastName
+    birth
+    phone
+    direction
+    sex
+    mode
+    photo {
+      ...AssetFragment
     }
   }
-}
-    ${AssetBootFragmentDoc}`;
+  ${AssetFragmentFragmentDoc}
+`;
+export const AssetBootFragmentDoc = gql`
+  fragment AssetBoot on AssetBoot {
+    id
+    createdAt
+    updateAt
+    assets {
+      ...AssetFragment
+    }
+  }
+  ${AssetFragmentFragmentDoc}
+`;
+export const FichaFragmentFragmentDoc = gql`
+  fragment fichaFragment on Ficha {
+    id
+    createdAt
+    closedAt
+    closed
+    updateAt
+    details {
+      id
+      open
+      createdAt
+      updateAt
+      weight
+      objective
+      note
+      asset {
+        ...AssetBoot
+      }
+    }
+  }
+  ${AssetBootFragmentDoc}
+`;
 export const DetailFragmentFragmentDoc = gql`
-    fragment DetailFragment on Detail {
-  name
-  description
-  price
-}
-    `;
+  fragment DetailFragment on Detail {
+    name
+    description
+    price
+  }
+`;
 export const PlanFragmentFragmentDoc = gql`
-    fragment PlanFragment on Plan {
-  id
-  createdAt
-  updateAt
-  detail {
-    ...DetailFragment
+  fragment PlanFragment on Plan {
+    id
+    createdAt
+    updateAt
+    detail {
+      ...DetailFragment
+    }
+    visible
   }
-  visible
-}
-    ${DetailFragmentFragmentDoc}`;
+  ${DetailFragmentFragmentDoc}
+`;
 export const ActivityFragmentFragmentDoc = gql`
-    fragment ActivityFragment on Activity {
-  id
-  createdAt
-  updateAt
-  detail {
-    ...DetailFragment
+  fragment ActivityFragment on Activity {
+    id
+    createdAt
+    updateAt
+    detail {
+      ...DetailFragment
+    }
   }
-}
-    ${DetailFragmentFragmentDoc}`;
+  ${DetailFragmentFragmentDoc}
+`;
 export const CreateAsistenceDocument = gql`
-    mutation createAsistence($asistence: InputAsistence!) {
-  createAsistence(asistence: $asistence) {
-    ...asistenceFragment
+  mutation createAsistence($asistence: InputAsistence!) {
+    createAsistence(asistence: $asistence) {
+      ...asistenceFragment
+    }
   }
-}
-    ${AsistenceFragmentFragmentDoc}`;
-export type CreateAsistenceMutationFn = Apollo.MutationFunction<CreateAsistenceMutation, CreateAsistenceMutationVariables>;
+  ${AsistenceFragmentFragmentDoc}
+`;
+export type CreateAsistenceMutationFn = Apollo.MutationFunction<
+  CreateAsistenceMutation,
+  CreateAsistenceMutationVariables
+>;
 
 /**
  * __useCreateAsistenceMutation__
@@ -635,21 +1206,39 @@ export type CreateAsistenceMutationFn = Apollo.MutationFunction<CreateAsistenceM
  *   },
  * });
  */
-export function useCreateAsistenceMutation(baseOptions?: Apollo.MutationHookOptions<CreateAsistenceMutation, CreateAsistenceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateAsistenceMutation, CreateAsistenceMutationVariables>(CreateAsistenceDocument, options);
-      }
-export type CreateAsistenceMutationHookResult = ReturnType<typeof useCreateAsistenceMutation>;
-export type CreateAsistenceMutationResult = Apollo.MutationResult<CreateAsistenceMutation>;
-export type CreateAsistenceMutationOptions = Apollo.BaseMutationOptions<CreateAsistenceMutation, CreateAsistenceMutationVariables>;
-export const UpdateAsistenceDocument = gql`
-    mutation updateAsistence($input: InputAsistence!, $id: ID!) {
-  updateAsistence(input: $input, id: $id) {
-    ...asistenceFragment
-  }
+export function useCreateAsistenceMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateAsistenceMutation,
+    CreateAsistenceMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateAsistenceMutation,
+    CreateAsistenceMutationVariables
+  >(CreateAsistenceDocument, options);
 }
-    ${AsistenceFragmentFragmentDoc}`;
-export type UpdateAsistenceMutationFn = Apollo.MutationFunction<UpdateAsistenceMutation, UpdateAsistenceMutationVariables>;
+export type CreateAsistenceMutationHookResult = ReturnType<
+  typeof useCreateAsistenceMutation
+>;
+export type CreateAsistenceMutationResult =
+  Apollo.MutationResult<CreateAsistenceMutation>;
+export type CreateAsistenceMutationOptions = Apollo.BaseMutationOptions<
+  CreateAsistenceMutation,
+  CreateAsistenceMutationVariables
+>;
+export const UpdateAsistenceDocument = gql`
+  mutation updateAsistence($input: InputAsistence!, $id: ID!) {
+    updateAsistence(input: $input, id: $id) {
+      ...asistenceFragment
+    }
+  }
+  ${AsistenceFragmentFragmentDoc}
+`;
+export type UpdateAsistenceMutationFn = Apollo.MutationFunction<
+  UpdateAsistenceMutation,
+  UpdateAsistenceMutationVariables
+>;
 
 /**
  * __useUpdateAsistenceMutation__
@@ -669,21 +1258,39 @@ export type UpdateAsistenceMutationFn = Apollo.MutationFunction<UpdateAsistenceM
  *   },
  * });
  */
-export function useUpdateAsistenceMutation(baseOptions?: Apollo.MutationHookOptions<UpdateAsistenceMutation, UpdateAsistenceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateAsistenceMutation, UpdateAsistenceMutationVariables>(UpdateAsistenceDocument, options);
-      }
-export type UpdateAsistenceMutationHookResult = ReturnType<typeof useUpdateAsistenceMutation>;
-export type UpdateAsistenceMutationResult = Apollo.MutationResult<UpdateAsistenceMutation>;
-export type UpdateAsistenceMutationOptions = Apollo.BaseMutationOptions<UpdateAsistenceMutation, UpdateAsistenceMutationVariables>;
-export const DeleteAsistenceDocument = gql`
-    mutation deleteAsistence($id: ID!) {
-  deleteAsistence(id: $id) {
-    ...asistenceFragment
-  }
+export function useUpdateAsistenceMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateAsistenceMutation,
+    UpdateAsistenceMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateAsistenceMutation,
+    UpdateAsistenceMutationVariables
+  >(UpdateAsistenceDocument, options);
 }
-    ${AsistenceFragmentFragmentDoc}`;
-export type DeleteAsistenceMutationFn = Apollo.MutationFunction<DeleteAsistenceMutation, DeleteAsistenceMutationVariables>;
+export type UpdateAsistenceMutationHookResult = ReturnType<
+  typeof useUpdateAsistenceMutation
+>;
+export type UpdateAsistenceMutationResult =
+  Apollo.MutationResult<UpdateAsistenceMutation>;
+export type UpdateAsistenceMutationOptions = Apollo.BaseMutationOptions<
+  UpdateAsistenceMutation,
+  UpdateAsistenceMutationVariables
+>;
+export const DeleteAsistenceDocument = gql`
+  mutation deleteAsistence($id: ID!) {
+    deleteAsistence(id: $id) {
+      ...asistenceFragment
+    }
+  }
+  ${AsistenceFragmentFragmentDoc}
+`;
+export type DeleteAsistenceMutationFn = Apollo.MutationFunction<
+  DeleteAsistenceMutation,
+  DeleteAsistenceMutationVariables
+>;
 
 /**
  * __useDeleteAsistenceMutation__
@@ -702,20 +1309,35 @@ export type DeleteAsistenceMutationFn = Apollo.MutationFunction<DeleteAsistenceM
  *   },
  * });
  */
-export function useDeleteAsistenceMutation(baseOptions?: Apollo.MutationHookOptions<DeleteAsistenceMutation, DeleteAsistenceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteAsistenceMutation, DeleteAsistenceMutationVariables>(DeleteAsistenceDocument, options);
-      }
-export type DeleteAsistenceMutationHookResult = ReturnType<typeof useDeleteAsistenceMutation>;
-export type DeleteAsistenceMutationResult = Apollo.MutationResult<DeleteAsistenceMutation>;
-export type DeleteAsistenceMutationOptions = Apollo.BaseMutationOptions<DeleteAsistenceMutation, DeleteAsistenceMutationVariables>;
-export const FindAsistencesDocument = gql`
-    query findAsistences($cliendId: ID!) {
-  finAsistences(cliendId: $cliendId) {
-    ...asistenceFragment
-  }
+export function useDeleteAsistenceMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteAsistenceMutation,
+    DeleteAsistenceMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    DeleteAsistenceMutation,
+    DeleteAsistenceMutationVariables
+  >(DeleteAsistenceDocument, options);
 }
-    ${AsistenceFragmentFragmentDoc}`;
+export type DeleteAsistenceMutationHookResult = ReturnType<
+  typeof useDeleteAsistenceMutation
+>;
+export type DeleteAsistenceMutationResult =
+  Apollo.MutationResult<DeleteAsistenceMutation>;
+export type DeleteAsistenceMutationOptions = Apollo.BaseMutationOptions<
+  DeleteAsistenceMutation,
+  DeleteAsistenceMutationVariables
+>;
+export const FindAsistencesDocument = gql`
+  query findAsistences($cliendId: ID!) {
+    finAsistences(cliendId: $cliendId) {
+      ...asistenceFragment
+    }
+  }
+  ${AsistenceFragmentFragmentDoc}
+`;
 
 /**
  * __useFindAsistencesQuery__
@@ -733,26 +1355,52 @@ export const FindAsistencesDocument = gql`
  *   },
  * });
  */
-export function useFindAsistencesQuery(baseOptions: Apollo.QueryHookOptions<FindAsistencesQuery, FindAsistencesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAsistencesQuery, FindAsistencesQueryVariables>(FindAsistencesDocument, options);
-      }
-export function useFindAsistencesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAsistencesQuery, FindAsistencesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAsistencesQuery, FindAsistencesQueryVariables>(FindAsistencesDocument, options);
-        }
-export type FindAsistencesQueryHookResult = ReturnType<typeof useFindAsistencesQuery>;
-export type FindAsistencesLazyQueryHookResult = ReturnType<typeof useFindAsistencesLazyQuery>;
-export type FindAsistencesQueryResult = Apollo.QueryResult<FindAsistencesQuery, FindAsistencesQueryVariables>;
-export const GenerateSignatureDocument = gql`
-    mutation generateSignature($publicId: String) {
-  signature(publicId: $publicId) {
-    signature
-    timestamp
-  }
+export function useFindAsistencesQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FindAsistencesQuery,
+    FindAsistencesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FindAsistencesQuery, FindAsistencesQueryVariables>(
+    FindAsistencesDocument,
+    options
+  );
 }
-    `;
-export type GenerateSignatureMutationFn = Apollo.MutationFunction<GenerateSignatureMutation, GenerateSignatureMutationVariables>;
+export function useFindAsistencesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FindAsistencesQuery,
+    FindAsistencesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FindAsistencesQuery, FindAsistencesQueryVariables>(
+    FindAsistencesDocument,
+    options
+  );
+}
+export type FindAsistencesQueryHookResult = ReturnType<
+  typeof useFindAsistencesQuery
+>;
+export type FindAsistencesLazyQueryHookResult = ReturnType<
+  typeof useFindAsistencesLazyQuery
+>;
+export type FindAsistencesQueryResult = Apollo.QueryResult<
+  FindAsistencesQuery,
+  FindAsistencesQueryVariables
+>;
+export const GenerateSignatureDocument = gql`
+  mutation generateSignature($publicId: String) {
+    signature(publicId: $publicId) {
+      signature
+      timestamp
+    }
+  }
+`;
+export type GenerateSignatureMutationFn = Apollo.MutationFunction<
+  GenerateSignatureMutation,
+  GenerateSignatureMutationVariables
+>;
 
 /**
  * __useGenerateSignatureMutation__
@@ -771,30 +1419,48 @@ export type GenerateSignatureMutationFn = Apollo.MutationFunction<GenerateSignat
  *   },
  * });
  */
-export function useGenerateSignatureMutation(baseOptions?: Apollo.MutationHookOptions<GenerateSignatureMutation, GenerateSignatureMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<GenerateSignatureMutation, GenerateSignatureMutationVariables>(GenerateSignatureDocument, options);
-      }
-export type GenerateSignatureMutationHookResult = ReturnType<typeof useGenerateSignatureMutation>;
-export type GenerateSignatureMutationResult = Apollo.MutationResult<GenerateSignatureMutation>;
-export type GenerateSignatureMutationOptions = Apollo.BaseMutationOptions<GenerateSignatureMutation, GenerateSignatureMutationVariables>;
+export function useGenerateSignatureMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    GenerateSignatureMutation,
+    GenerateSignatureMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    GenerateSignatureMutation,
+    GenerateSignatureMutationVariables
+  >(GenerateSignatureDocument, options);
+}
+export type GenerateSignatureMutationHookResult = ReturnType<
+  typeof useGenerateSignatureMutation
+>;
+export type GenerateSignatureMutationResult =
+  Apollo.MutationResult<GenerateSignatureMutation>;
+export type GenerateSignatureMutationOptions = Apollo.BaseMutationOptions<
+  GenerateSignatureMutation,
+  GenerateSignatureMutationVariables
+>;
 export const DeleteResourceDocument = gql`
-    mutation deleteResource($input: DeleteAssetInput!) {
-  deleteResource(input: $input) {
-    __typename
-    ... on Asset {
-      ...AssetFragment
-    }
-    ... on AssetBoot {
-      id
-      assets {
+  mutation deleteResource($input: DeleteAssetInput!) {
+    deleteResource(input: $input) {
+      __typename
+      ... on Asset {
         ...AssetFragment
+      }
+      ... on AssetBoot {
+        id
+        assets {
+          ...AssetFragment
+        }
       }
     }
   }
-}
-    ${AssetFragmentFragmentDoc}`;
-export type DeleteResourceMutationFn = Apollo.MutationFunction<DeleteResourceMutation, DeleteResourceMutationVariables>;
+  ${AssetFragmentFragmentDoc}
+`;
+export type DeleteResourceMutationFn = Apollo.MutationFunction<
+  DeleteResourceMutation,
+  DeleteResourceMutationVariables
+>;
 
 /**
  * __useDeleteResourceMutation__
@@ -813,30 +1479,48 @@ export type DeleteResourceMutationFn = Apollo.MutationFunction<DeleteResourceMut
  *   },
  * });
  */
-export function useDeleteResourceMutation(baseOptions?: Apollo.MutationHookOptions<DeleteResourceMutation, DeleteResourceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteResourceMutation, DeleteResourceMutationVariables>(DeleteResourceDocument, options);
-      }
-export type DeleteResourceMutationHookResult = ReturnType<typeof useDeleteResourceMutation>;
-export type DeleteResourceMutationResult = Apollo.MutationResult<DeleteResourceMutation>;
-export type DeleteResourceMutationOptions = Apollo.BaseMutationOptions<DeleteResourceMutation, DeleteResourceMutationVariables>;
+export function useDeleteResourceMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteResourceMutation,
+    DeleteResourceMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    DeleteResourceMutation,
+    DeleteResourceMutationVariables
+  >(DeleteResourceDocument, options);
+}
+export type DeleteResourceMutationHookResult = ReturnType<
+  typeof useDeleteResourceMutation
+>;
+export type DeleteResourceMutationResult =
+  Apollo.MutationResult<DeleteResourceMutation>;
+export type DeleteResourceMutationOptions = Apollo.BaseMutationOptions<
+  DeleteResourceMutation,
+  DeleteResourceMutationVariables
+>;
 export const CreateResourceDocument = gql`
-    mutation createResource($resource: AssetInput!) {
-  createResource(resource: $resource) {
-    __typename
-    ... on Asset {
-      ...AssetFragment
-    }
-    ... on AssetBoot {
-      id
-      assets {
+  mutation createResource($resource: AssetInput!) {
+    createResource(resource: $resource) {
+      __typename
+      ... on Asset {
         ...AssetFragment
+      }
+      ... on AssetBoot {
+        id
+        assets {
+          ...AssetFragment
+        }
       }
     }
   }
-}
-    ${AssetFragmentFragmentDoc}`;
-export type CreateResourceMutationFn = Apollo.MutationFunction<CreateResourceMutation, CreateResourceMutationVariables>;
+  ${AssetFragmentFragmentDoc}
+`;
+export type CreateResourceMutationFn = Apollo.MutationFunction<
+  CreateResourceMutation,
+  CreateResourceMutationVariables
+>;
 
 /**
  * __useCreateResourceMutation__
@@ -855,21 +1539,39 @@ export type CreateResourceMutationFn = Apollo.MutationFunction<CreateResourceMut
  *   },
  * });
  */
-export function useCreateResourceMutation(baseOptions?: Apollo.MutationHookOptions<CreateResourceMutation, CreateResourceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateResourceMutation, CreateResourceMutationVariables>(CreateResourceDocument, options);
-      }
-export type CreateResourceMutationHookResult = ReturnType<typeof useCreateResourceMutation>;
-export type CreateResourceMutationResult = Apollo.MutationResult<CreateResourceMutation>;
-export type CreateResourceMutationOptions = Apollo.BaseMutationOptions<CreateResourceMutation, CreateResourceMutationVariables>;
-export const RegisterClientDocument = gql`
-    mutation registerClient($client: ClientInput!) {
-  registerClient(client: $client) {
-    ...ClientFragment
-  }
+export function useCreateResourceMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateResourceMutation,
+    CreateResourceMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateResourceMutation,
+    CreateResourceMutationVariables
+  >(CreateResourceDocument, options);
 }
-    ${ClientFragmentFragmentDoc}`;
-export type RegisterClientMutationFn = Apollo.MutationFunction<RegisterClientMutation, RegisterClientMutationVariables>;
+export type CreateResourceMutationHookResult = ReturnType<
+  typeof useCreateResourceMutation
+>;
+export type CreateResourceMutationResult =
+  Apollo.MutationResult<CreateResourceMutation>;
+export type CreateResourceMutationOptions = Apollo.BaseMutationOptions<
+  CreateResourceMutation,
+  CreateResourceMutationVariables
+>;
+export const RegisterClientDocument = gql`
+  mutation registerClient($client: ClientInput!) {
+    registerClient(client: $client) {
+      ...ClientFragment
+    }
+  }
+  ${ClientFragmentFragmentDoc}
+`;
+export type RegisterClientMutationFn = Apollo.MutationFunction<
+  RegisterClientMutation,
+  RegisterClientMutationVariables
+>;
 
 /**
  * __useRegisterClientMutation__
@@ -888,20 +1590,35 @@ export type RegisterClientMutationFn = Apollo.MutationFunction<RegisterClientMut
  *   },
  * });
  */
-export function useRegisterClientMutation(baseOptions?: Apollo.MutationHookOptions<RegisterClientMutation, RegisterClientMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RegisterClientMutation, RegisterClientMutationVariables>(RegisterClientDocument, options);
-      }
-export type RegisterClientMutationHookResult = ReturnType<typeof useRegisterClientMutation>;
-export type RegisterClientMutationResult = Apollo.MutationResult<RegisterClientMutation>;
-export type RegisterClientMutationOptions = Apollo.BaseMutationOptions<RegisterClientMutation, RegisterClientMutationVariables>;
-export const GetClientsDocument = gql`
-    query getClients {
-  clients {
-    ...ClientFragment
-  }
+export function useRegisterClientMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RegisterClientMutation,
+    RegisterClientMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    RegisterClientMutation,
+    RegisterClientMutationVariables
+  >(RegisterClientDocument, options);
 }
-    ${ClientFragmentFragmentDoc}`;
+export type RegisterClientMutationHookResult = ReturnType<
+  typeof useRegisterClientMutation
+>;
+export type RegisterClientMutationResult =
+  Apollo.MutationResult<RegisterClientMutation>;
+export type RegisterClientMutationOptions = Apollo.BaseMutationOptions<
+  RegisterClientMutation,
+  RegisterClientMutationVariables
+>;
+export const GetClientsDocument = gql`
+  query getClients {
+    clients {
+      ...ClientFragment
+    }
+  }
+  ${ClientFragmentFragmentDoc}
+`;
 
 /**
  * __useGetClientsQuery__
@@ -918,24 +1635,46 @@ export const GetClientsDocument = gql`
  *   },
  * });
  */
-export function useGetClientsQuery(baseOptions?: Apollo.QueryHookOptions<GetClientsQuery, GetClientsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetClientsQuery, GetClientsQueryVariables>(GetClientsDocument, options);
-      }
-export function useGetClientsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetClientsQuery, GetClientsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetClientsQuery, GetClientsQueryVariables>(GetClientsDocument, options);
-        }
-export type GetClientsQueryHookResult = ReturnType<typeof useGetClientsQuery>;
-export type GetClientsLazyQueryHookResult = ReturnType<typeof useGetClientsLazyQuery>;
-export type GetClientsQueryResult = Apollo.QueryResult<GetClientsQuery, GetClientsQueryVariables>;
-export const GetClientDocument = gql`
-    query getClient($id: ID!) {
-  client(id: $id) {
-    ...ClientFragment
-  }
+export function useGetClientsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetClientsQuery,
+    GetClientsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetClientsQuery, GetClientsQueryVariables>(
+    GetClientsDocument,
+    options
+  );
 }
-    ${ClientFragmentFragmentDoc}`;
+export function useGetClientsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetClientsQuery,
+    GetClientsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetClientsQuery, GetClientsQueryVariables>(
+    GetClientsDocument,
+    options
+  );
+}
+export type GetClientsQueryHookResult = ReturnType<typeof useGetClientsQuery>;
+export type GetClientsLazyQueryHookResult = ReturnType<
+  typeof useGetClientsLazyQuery
+>;
+export type GetClientsQueryResult = Apollo.QueryResult<
+  GetClientsQuery,
+  GetClientsQueryVariables
+>;
+export const GetClientDocument = gql`
+  query getClient($id: ID!) {
+    client(id: $id) {
+      ...ClientFragment
+    }
+  }
+  ${ClientFragmentFragmentDoc}
+`;
 
 /**
  * __useGetClientQuery__
@@ -953,25 +1692,47 @@ export const GetClientDocument = gql`
  *   },
  * });
  */
-export function useGetClientQuery(baseOptions: Apollo.QueryHookOptions<GetClientQuery, GetClientQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetClientQuery, GetClientQueryVariables>(GetClientDocument, options);
-      }
-export function useGetClientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetClientQuery, GetClientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetClientQuery, GetClientQueryVariables>(GetClientDocument, options);
-        }
-export type GetClientQueryHookResult = ReturnType<typeof useGetClientQuery>;
-export type GetClientLazyQueryHookResult = ReturnType<typeof useGetClientLazyQuery>;
-export type GetClientQueryResult = Apollo.QueryResult<GetClientQuery, GetClientQueryVariables>;
-export const OpenAndCloseDocument = gql`
-    mutation openAndClose($input: FichaInput!) {
-  openAndCloseFicha(input: $input) {
-    ...fichaFragment
-  }
+export function useGetClientQuery(
+  baseOptions: Apollo.QueryHookOptions<GetClientQuery, GetClientQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetClientQuery, GetClientQueryVariables>(
+    GetClientDocument,
+    options
+  );
 }
-    ${FichaFragmentFragmentDoc}`;
-export type OpenAndCloseMutationFn = Apollo.MutationFunction<OpenAndCloseMutation, OpenAndCloseMutationVariables>;
+export function useGetClientLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetClientQuery,
+    GetClientQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetClientQuery, GetClientQueryVariables>(
+    GetClientDocument,
+    options
+  );
+}
+export type GetClientQueryHookResult = ReturnType<typeof useGetClientQuery>;
+export type GetClientLazyQueryHookResult = ReturnType<
+  typeof useGetClientLazyQuery
+>;
+export type GetClientQueryResult = Apollo.QueryResult<
+  GetClientQuery,
+  GetClientQueryVariables
+>;
+export const OpenAndCloseDocument = gql`
+  mutation openAndClose($input: FichaInput!) {
+    openAndCloseFicha(input: $input) {
+      ...fichaFragment
+    }
+  }
+  ${FichaFragmentFragmentDoc}
+`;
+export type OpenAndCloseMutationFn = Apollo.MutationFunction<
+  OpenAndCloseMutation,
+  OpenAndCloseMutationVariables
+>;
 
 /**
  * __useOpenAndCloseMutation__
@@ -990,20 +1751,35 @@ export type OpenAndCloseMutationFn = Apollo.MutationFunction<OpenAndCloseMutatio
  *   },
  * });
  */
-export function useOpenAndCloseMutation(baseOptions?: Apollo.MutationHookOptions<OpenAndCloseMutation, OpenAndCloseMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<OpenAndCloseMutation, OpenAndCloseMutationVariables>(OpenAndCloseDocument, options);
-      }
-export type OpenAndCloseMutationHookResult = ReturnType<typeof useOpenAndCloseMutation>;
-export type OpenAndCloseMutationResult = Apollo.MutationResult<OpenAndCloseMutation>;
-export type OpenAndCloseMutationOptions = Apollo.BaseMutationOptions<OpenAndCloseMutation, OpenAndCloseMutationVariables>;
-export const GetFichaDocument = gql`
-    query getFicha($userId: Int!) {
-  getFicha(userId: $userId) {
-    ...fichaFragment
-  }
+export function useOpenAndCloseMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    OpenAndCloseMutation,
+    OpenAndCloseMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    OpenAndCloseMutation,
+    OpenAndCloseMutationVariables
+  >(OpenAndCloseDocument, options);
 }
-    ${FichaFragmentFragmentDoc}`;
+export type OpenAndCloseMutationHookResult = ReturnType<
+  typeof useOpenAndCloseMutation
+>;
+export type OpenAndCloseMutationResult =
+  Apollo.MutationResult<OpenAndCloseMutation>;
+export type OpenAndCloseMutationOptions = Apollo.BaseMutationOptions<
+  OpenAndCloseMutation,
+  OpenAndCloseMutationVariables
+>;
+export const GetFichaDocument = gql`
+  query getFicha($userId: Int!) {
+    getFicha(userId: $userId) {
+      ...fichaFragment
+    }
+  }
+  ${FichaFragmentFragmentDoc}
+`;
 
 /**
  * __useGetFichaQuery__
@@ -1021,24 +1797,43 @@ export const GetFichaDocument = gql`
  *   },
  * });
  */
-export function useGetFichaQuery(baseOptions: Apollo.QueryHookOptions<GetFichaQuery, GetFichaQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetFichaQuery, GetFichaQueryVariables>(GetFichaDocument, options);
-      }
-export function useGetFichaLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFichaQuery, GetFichaQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetFichaQuery, GetFichaQueryVariables>(GetFichaDocument, options);
-        }
-export type GetFichaQueryHookResult = ReturnType<typeof useGetFichaQuery>;
-export type GetFichaLazyQueryHookResult = ReturnType<typeof useGetFichaLazyQuery>;
-export type GetFichaQueryResult = Apollo.QueryResult<GetFichaQuery, GetFichaQueryVariables>;
-export const GetFichasDocument = gql`
-    query getFichas($userId: Int!) {
-  getFichas(userId: $userId) {
-    ...fichaFragment
-  }
+export function useGetFichaQuery(
+  baseOptions: Apollo.QueryHookOptions<GetFichaQuery, GetFichaQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetFichaQuery, GetFichaQueryVariables>(
+    GetFichaDocument,
+    options
+  );
 }
-    ${FichaFragmentFragmentDoc}`;
+export function useGetFichaLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetFichaQuery,
+    GetFichaQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetFichaQuery, GetFichaQueryVariables>(
+    GetFichaDocument,
+    options
+  );
+}
+export type GetFichaQueryHookResult = ReturnType<typeof useGetFichaQuery>;
+export type GetFichaLazyQueryHookResult = ReturnType<
+  typeof useGetFichaLazyQuery
+>;
+export type GetFichaQueryResult = Apollo.QueryResult<
+  GetFichaQuery,
+  GetFichaQueryVariables
+>;
+export const GetFichasDocument = gql`
+  query getFichas($userId: Int!) {
+    getFichas(userId: $userId) {
+      ...fichaFragment
+    }
+  }
+  ${FichaFragmentFragmentDoc}
+`;
 
 /**
  * __useGetFichasQuery__
@@ -1056,25 +1851,47 @@ export const GetFichasDocument = gql`
  *   },
  * });
  */
-export function useGetFichasQuery(baseOptions: Apollo.QueryHookOptions<GetFichasQuery, GetFichasQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetFichasQuery, GetFichasQueryVariables>(GetFichasDocument, options);
-      }
-export function useGetFichasLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFichasQuery, GetFichasQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetFichasQuery, GetFichasQueryVariables>(GetFichasDocument, options);
-        }
-export type GetFichasQueryHookResult = ReturnType<typeof useGetFichasQuery>;
-export type GetFichasLazyQueryHookResult = ReturnType<typeof useGetFichasLazyQuery>;
-export type GetFichasQueryResult = Apollo.QueryResult<GetFichasQuery, GetFichasQueryVariables>;
-export const UpdateFichaDocument = gql`
-    mutation updateFicha($input: FichaInput!, $detailId: Int!) {
-  updateFicha(input: $input, detailId: $detailId) {
-    ...fichaFragment
-  }
+export function useGetFichasQuery(
+  baseOptions: Apollo.QueryHookOptions<GetFichasQuery, GetFichasQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetFichasQuery, GetFichasQueryVariables>(
+    GetFichasDocument,
+    options
+  );
 }
-    ${FichaFragmentFragmentDoc}`;
-export type UpdateFichaMutationFn = Apollo.MutationFunction<UpdateFichaMutation, UpdateFichaMutationVariables>;
+export function useGetFichasLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetFichasQuery,
+    GetFichasQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetFichasQuery, GetFichasQueryVariables>(
+    GetFichasDocument,
+    options
+  );
+}
+export type GetFichasQueryHookResult = ReturnType<typeof useGetFichasQuery>;
+export type GetFichasLazyQueryHookResult = ReturnType<
+  typeof useGetFichasLazyQuery
+>;
+export type GetFichasQueryResult = Apollo.QueryResult<
+  GetFichasQuery,
+  GetFichasQueryVariables
+>;
+export const UpdateFichaDocument = gql`
+  mutation updateFicha($input: FichaInput!, $detailId: Int!) {
+    updateFicha(input: $input, detailId: $detailId) {
+      ...fichaFragment
+    }
+  }
+  ${FichaFragmentFragmentDoc}
+`;
+export type UpdateFichaMutationFn = Apollo.MutationFunction<
+  UpdateFichaMutation,
+  UpdateFichaMutationVariables
+>;
 
 /**
  * __useUpdateFichaMutation__
@@ -1094,21 +1911,39 @@ export type UpdateFichaMutationFn = Apollo.MutationFunction<UpdateFichaMutation,
  *   },
  * });
  */
-export function useUpdateFichaMutation(baseOptions?: Apollo.MutationHookOptions<UpdateFichaMutation, UpdateFichaMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateFichaMutation, UpdateFichaMutationVariables>(UpdateFichaDocument, options);
-      }
-export type UpdateFichaMutationHookResult = ReturnType<typeof useUpdateFichaMutation>;
-export type UpdateFichaMutationResult = Apollo.MutationResult<UpdateFichaMutation>;
-export type UpdateFichaMutationOptions = Apollo.BaseMutationOptions<UpdateFichaMutation, UpdateFichaMutationVariables>;
-export const DeleteFichaDocument = gql`
-    mutation deleteFicha($fichaId: Int!) {
-  deleteFicha(fichaId: $fichaId) {
-    ...fichaFragment
-  }
+export function useUpdateFichaMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateFichaMutation,
+    UpdateFichaMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateFichaMutation, UpdateFichaMutationVariables>(
+    UpdateFichaDocument,
+    options
+  );
 }
-    ${FichaFragmentFragmentDoc}`;
-export type DeleteFichaMutationFn = Apollo.MutationFunction<DeleteFichaMutation, DeleteFichaMutationVariables>;
+export type UpdateFichaMutationHookResult = ReturnType<
+  typeof useUpdateFichaMutation
+>;
+export type UpdateFichaMutationResult =
+  Apollo.MutationResult<UpdateFichaMutation>;
+export type UpdateFichaMutationOptions = Apollo.BaseMutationOptions<
+  UpdateFichaMutation,
+  UpdateFichaMutationVariables
+>;
+export const DeleteFichaDocument = gql`
+  mutation deleteFicha($fichaId: Int!) {
+    deleteFicha(fichaId: $fichaId) {
+      ...fichaFragment
+    }
+  }
+  ${FichaFragmentFragmentDoc}
+`;
+export type DeleteFichaMutationFn = Apollo.MutationFunction<
+  DeleteFichaMutation,
+  DeleteFichaMutationVariables
+>;
 
 /**
  * __useDeleteFichaMutation__
@@ -1127,18 +1962,32 @@ export type DeleteFichaMutationFn = Apollo.MutationFunction<DeleteFichaMutation,
  *   },
  * });
  */
-export function useDeleteFichaMutation(baseOptions?: Apollo.MutationHookOptions<DeleteFichaMutation, DeleteFichaMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteFichaMutation, DeleteFichaMutationVariables>(DeleteFichaDocument, options);
-      }
-export type DeleteFichaMutationHookResult = ReturnType<typeof useDeleteFichaMutation>;
-export type DeleteFichaMutationResult = Apollo.MutationResult<DeleteFichaMutation>;
-export type DeleteFichaMutationOptions = Apollo.BaseMutationOptions<DeleteFichaMutation, DeleteFichaMutationVariables>;
-export const PingQueryDocument = gql`
-    query pingQuery {
-  ping
+export function useDeleteFichaMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteFichaMutation,
+    DeleteFichaMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<DeleteFichaMutation, DeleteFichaMutationVariables>(
+    DeleteFichaDocument,
+    options
+  );
 }
-    `;
+export type DeleteFichaMutationHookResult = ReturnType<
+  typeof useDeleteFichaMutation
+>;
+export type DeleteFichaMutationResult =
+  Apollo.MutationResult<DeleteFichaMutation>;
+export type DeleteFichaMutationOptions = Apollo.BaseMutationOptions<
+  DeleteFichaMutation,
+  DeleteFichaMutationVariables
+>;
+export const PingQueryDocument = gql`
+  query pingQuery {
+    ping
+  }
+`;
 
 /**
  * __usePingQueryQuery__
@@ -1155,24 +2004,43 @@ export const PingQueryDocument = gql`
  *   },
  * });
  */
-export function usePingQueryQuery(baseOptions?: Apollo.QueryHookOptions<PingQueryQuery, PingQueryQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PingQueryQuery, PingQueryQueryVariables>(PingQueryDocument, options);
-      }
-export function usePingQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PingQueryQuery, PingQueryQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PingQueryQuery, PingQueryQueryVariables>(PingQueryDocument, options);
-        }
-export type PingQueryQueryHookResult = ReturnType<typeof usePingQueryQuery>;
-export type PingQueryLazyQueryHookResult = ReturnType<typeof usePingQueryLazyQuery>;
-export type PingQueryQueryResult = Apollo.QueryResult<PingQueryQuery, PingQueryQueryVariables>;
-export const GetActivitiesDocument = gql`
-    query getActivities {
-  getActivities {
-    ...ActivityFragment
-  }
+export function usePingQueryQuery(
+  baseOptions?: Apollo.QueryHookOptions<PingQueryQuery, PingQueryQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<PingQueryQuery, PingQueryQueryVariables>(
+    PingQueryDocument,
+    options
+  );
 }
-    ${ActivityFragmentFragmentDoc}`;
+export function usePingQueryLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    PingQueryQuery,
+    PingQueryQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<PingQueryQuery, PingQueryQueryVariables>(
+    PingQueryDocument,
+    options
+  );
+}
+export type PingQueryQueryHookResult = ReturnType<typeof usePingQueryQuery>;
+export type PingQueryLazyQueryHookResult = ReturnType<
+  typeof usePingQueryLazyQuery
+>;
+export type PingQueryQueryResult = Apollo.QueryResult<
+  PingQueryQuery,
+  PingQueryQueryVariables
+>;
+export const GetActivitiesDocument = gql`
+  query getActivities {
+    getActivities {
+      ...ActivityFragment
+    }
+  }
+  ${ActivityFragmentFragmentDoc}
+`;
 
 /**
  * __useGetActivitiesQuery__
@@ -1189,25 +2057,52 @@ export const GetActivitiesDocument = gql`
  *   },
  * });
  */
-export function useGetActivitiesQuery(baseOptions?: Apollo.QueryHookOptions<GetActivitiesQuery, GetActivitiesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetActivitiesQuery, GetActivitiesQueryVariables>(GetActivitiesDocument, options);
-      }
-export function useGetActivitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetActivitiesQuery, GetActivitiesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetActivitiesQuery, GetActivitiesQueryVariables>(GetActivitiesDocument, options);
-        }
-export type GetActivitiesQueryHookResult = ReturnType<typeof useGetActivitiesQuery>;
-export type GetActivitiesLazyQueryHookResult = ReturnType<typeof useGetActivitiesLazyQuery>;
-export type GetActivitiesQueryResult = Apollo.QueryResult<GetActivitiesQuery, GetActivitiesQueryVariables>;
-export const CreateActivityDocument = gql`
-    mutation createActivity($input: ActivityInput!) {
-  createActivity(input: $input) {
-    ...ActivityFragment
-  }
+export function useGetActivitiesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetActivitiesQuery,
+    GetActivitiesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetActivitiesQuery, GetActivitiesQueryVariables>(
+    GetActivitiesDocument,
+    options
+  );
 }
-    ${ActivityFragmentFragmentDoc}`;
-export type CreateActivityMutationFn = Apollo.MutationFunction<CreateActivityMutation, CreateActivityMutationVariables>;
+export function useGetActivitiesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetActivitiesQuery,
+    GetActivitiesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetActivitiesQuery, GetActivitiesQueryVariables>(
+    GetActivitiesDocument,
+    options
+  );
+}
+export type GetActivitiesQueryHookResult = ReturnType<
+  typeof useGetActivitiesQuery
+>;
+export type GetActivitiesLazyQueryHookResult = ReturnType<
+  typeof useGetActivitiesLazyQuery
+>;
+export type GetActivitiesQueryResult = Apollo.QueryResult<
+  GetActivitiesQuery,
+  GetActivitiesQueryVariables
+>;
+export const CreateActivityDocument = gql`
+  mutation createActivity($input: ActivityInput!) {
+    createActivity(input: $input) {
+      ...ActivityFragment
+    }
+  }
+  ${ActivityFragmentFragmentDoc}
+`;
+export type CreateActivityMutationFn = Apollo.MutationFunction<
+  CreateActivityMutation,
+  CreateActivityMutationVariables
+>;
 
 /**
  * __useCreateActivityMutation__
@@ -1226,20 +2121,35 @@ export type CreateActivityMutationFn = Apollo.MutationFunction<CreateActivityMut
  *   },
  * });
  */
-export function useCreateActivityMutation(baseOptions?: Apollo.MutationHookOptions<CreateActivityMutation, CreateActivityMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateActivityMutation, CreateActivityMutationVariables>(CreateActivityDocument, options);
-      }
-export type CreateActivityMutationHookResult = ReturnType<typeof useCreateActivityMutation>;
-export type CreateActivityMutationResult = Apollo.MutationResult<CreateActivityMutation>;
-export type CreateActivityMutationOptions = Apollo.BaseMutationOptions<CreateActivityMutation, CreateActivityMutationVariables>;
-export const GetPlansDocument = gql`
-    query getPlans {
-  getPlans {
-    ...PlanFragment
-  }
+export function useCreateActivityMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateActivityMutation,
+    CreateActivityMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateActivityMutation,
+    CreateActivityMutationVariables
+  >(CreateActivityDocument, options);
 }
-    ${PlanFragmentFragmentDoc}`;
+export type CreateActivityMutationHookResult = ReturnType<
+  typeof useCreateActivityMutation
+>;
+export type CreateActivityMutationResult =
+  Apollo.MutationResult<CreateActivityMutation>;
+export type CreateActivityMutationOptions = Apollo.BaseMutationOptions<
+  CreateActivityMutation,
+  CreateActivityMutationVariables
+>;
+export const GetPlansDocument = gql`
+  query getPlans {
+    getPlans {
+      ...PlanFragment
+    }
+  }
+  ${PlanFragmentFragmentDoc}
+`;
 
 /**
  * __useGetPlansQuery__
@@ -1256,65 +2166,210 @@ export const GetPlansDocument = gql`
  *   },
  * });
  */
-export function useGetPlansQuery(baseOptions?: Apollo.QueryHookOptions<GetPlansQuery, GetPlansQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPlansQuery, GetPlansQueryVariables>(GetPlansDocument, options);
-      }
-export function useGetPlansLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPlansQuery, GetPlansQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPlansQuery, GetPlansQueryVariables>(GetPlansDocument, options);
-        }
+export function useGetPlansQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetPlansQuery, GetPlansQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetPlansQuery, GetPlansQueryVariables>(
+    GetPlansDocument,
+    options
+  );
+}
+export function useGetPlansLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetPlansQuery,
+    GetPlansQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetPlansQuery, GetPlansQueryVariables>(
+    GetPlansDocument,
+    options
+  );
+}
 export type GetPlansQueryHookResult = ReturnType<typeof useGetPlansQuery>;
-export type GetPlansLazyQueryHookResult = ReturnType<typeof useGetPlansLazyQuery>;
-export type GetPlansQueryResult = Apollo.QueryResult<GetPlansQuery, GetPlansQueryVariables>;
+export type GetPlansLazyQueryHookResult = ReturnType<
+  typeof useGetPlansLazyQuery
+>;
+export type GetPlansQueryResult = Apollo.QueryResult<
+  GetPlansQuery,
+  GetPlansQueryVariables
+>;
+export const GetActivityDocument = gql`
+  query getActivity($id: ID!) {
+    getActivity(id: $id) {
+      ...ActivityFragment
+    }
+  }
+  ${ActivityFragmentFragmentDoc}
+`;
+
+/**
+ * __useGetActivityQuery__
+ *
+ * To run a query within a React component, call `useGetActivityQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetActivityQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetActivityQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetActivityQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetActivityQuery,
+    GetActivityQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetActivityQuery, GetActivityQueryVariables>(
+    GetActivityDocument,
+    options
+  );
+}
+export function useGetActivityLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetActivityQuery,
+    GetActivityQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetActivityQuery, GetActivityQueryVariables>(
+    GetActivityDocument,
+    options
+  );
+}
+export type GetActivityQueryHookResult = ReturnType<typeof useGetActivityQuery>;
+export type GetActivityLazyQueryHookResult = ReturnType<
+  typeof useGetActivityLazyQuery
+>;
+export type GetActivityQueryResult = Apollo.QueryResult<
+  GetActivityQuery,
+  GetActivityQueryVariables
+>;
 type DiscriminateUnion<T, U> = T extends U ? T : never;
 
 export type CreateAsistenceVariables = CreateAsistenceMutationVariables;
-export type CreateAsistenceCreateAsistence = (NonNullable<CreateAsistenceMutation['createAsistence']>);
+export type CreateAsistenceCreateAsistence = NonNullable<
+  CreateAsistenceMutation['createAsistence']
+>;
 export type UpdateAsistenceVariables = UpdateAsistenceMutationVariables;
-export type UpdateAsistenceUpdateAsistence = (NonNullable<UpdateAsistenceMutation['updateAsistence']>);
+export type UpdateAsistenceUpdateAsistence = NonNullable<
+  UpdateAsistenceMutation['updateAsistence']
+>;
 export type DeleteAsistenceVariables = DeleteAsistenceMutationVariables;
-export type DeleteAsistenceDeleteAsistence = (NonNullable<DeleteAsistenceMutation['deleteAsistence']>);
+export type DeleteAsistenceDeleteAsistence = NonNullable<
+  DeleteAsistenceMutation['deleteAsistence']
+>;
 export type FindAsistencesVariables = FindAsistencesQueryVariables;
-export type FindAsistencesFinAsistences = NonNullable<(NonNullable<FindAsistencesQuery['finAsistences']>)[number]>;
+export type FindAsistencesFinAsistences = NonNullable<
+  NonNullable<FindAsistencesQuery['finAsistences']>[number]
+>;
 export type GenerateSignatureVariables = GenerateSignatureMutationVariables;
-export type GenerateSignatureSignature = (NonNullable<GenerateSignatureMutation['signature']>);
+export type GenerateSignatureSignature = NonNullable<
+  GenerateSignatureMutation['signature']
+>;
 export type DeleteResourceVariables = DeleteResourceMutationVariables;
-export type DeleteResourceDeleteResource = (NonNullable<DeleteResourceMutation['deleteResource']>);
-export type DeleteResourceAssetInlineFragment = (DiscriminateUnion<(NonNullable<DeleteResourceMutation['deleteResource']>), { __typename?: 'Asset' }>);
-export type DeleteResourceAssetBootInlineFragment = (DiscriminateUnion<(NonNullable<DeleteResourceMutation['deleteResource']>), { __typename?: 'AssetBoot' }>);
-export type DeleteResourceAssets = NonNullable<(NonNullable<(DiscriminateUnion<(NonNullable<DeleteResourceMutation['deleteResource']>), { __typename?: 'AssetBoot' }>)['assets']>)[number]>;
+export type DeleteResourceDeleteResource = NonNullable<
+  DeleteResourceMutation['deleteResource']
+>;
+export type DeleteResourceAssetInlineFragment = DiscriminateUnion<
+  NonNullable<DeleteResourceMutation['deleteResource']>,
+  { __typename?: 'Asset' }
+>;
+export type DeleteResourceAssetBootInlineFragment = DiscriminateUnion<
+  NonNullable<DeleteResourceMutation['deleteResource']>,
+  { __typename?: 'AssetBoot' }
+>;
+export type DeleteResourceAssets = NonNullable<
+  NonNullable<
+    DiscriminateUnion<
+      NonNullable<DeleteResourceMutation['deleteResource']>,
+      { __typename?: 'AssetBoot' }
+    >['assets']
+  >[number]
+>;
 export type CreateResourceVariables = CreateResourceMutationVariables;
-export type CreateResourceCreateResource = (NonNullable<CreateResourceMutation['createResource']>);
-export type CreateResourceAssetInlineFragment = (DiscriminateUnion<(NonNullable<CreateResourceMutation['createResource']>), { __typename?: 'Asset' }>);
-export type CreateResourceAssetBootInlineFragment = (DiscriminateUnion<(NonNullable<CreateResourceMutation['createResource']>), { __typename?: 'AssetBoot' }>);
-export type CreateResourceAssets = NonNullable<(NonNullable<(DiscriminateUnion<(NonNullable<CreateResourceMutation['createResource']>), { __typename?: 'AssetBoot' }>)['assets']>)[number]>;
+export type CreateResourceCreateResource = NonNullable<
+  CreateResourceMutation['createResource']
+>;
+export type CreateResourceAssetInlineFragment = DiscriminateUnion<
+  NonNullable<CreateResourceMutation['createResource']>,
+  { __typename?: 'Asset' }
+>;
+export type CreateResourceAssetBootInlineFragment = DiscriminateUnion<
+  NonNullable<CreateResourceMutation['createResource']>,
+  { __typename?: 'AssetBoot' }
+>;
+export type CreateResourceAssets = NonNullable<
+  NonNullable<
+    DiscriminateUnion<
+      NonNullable<CreateResourceMutation['createResource']>,
+      { __typename?: 'AssetBoot' }
+    >['assets']
+  >[number]
+>;
 export type RegisterClientVariables = RegisterClientMutationVariables;
-export type RegisterClientRegisterClient = (NonNullable<RegisterClientMutation['registerClient']>);
+export type RegisterClientRegisterClient = NonNullable<
+  RegisterClientMutation['registerClient']
+>;
 export type GetClientsVariables = GetClientsQueryVariables;
-export type GetClientsClients = NonNullable<(NonNullable<GetClientsQuery['clients']>)[number]>;
+export type GetClientsClients = NonNullable<
+  NonNullable<GetClientsQuery['clients']>[number]
+>;
 export type GetClientVariables = GetClientQueryVariables;
-export type GetClientClient = (NonNullable<GetClientQuery['client']>);
+export type GetClientClient = NonNullable<GetClientQuery['client']>;
 export type OpenAndCloseVariables = OpenAndCloseMutationVariables;
-export type OpenAndCloseOpenAndCloseFicha = (NonNullable<OpenAndCloseMutation['openAndCloseFicha']>);
+export type OpenAndCloseOpenAndCloseFicha = NonNullable<
+  OpenAndCloseMutation['openAndCloseFicha']
+>;
 export type GetFichaVariables = GetFichaQueryVariables;
-export type GetFichaGetFicha = (NonNullable<GetFichaQuery['getFicha']>);
+export type GetFichaGetFicha = NonNullable<GetFichaQuery['getFicha']>;
 export type GetFichasVariables = GetFichasQueryVariables;
-export type GetFichasGetFichas = NonNullable<(NonNullable<GetFichasQuery['getFichas']>)[number]>;
+export type GetFichasGetFichas = NonNullable<
+  NonNullable<GetFichasQuery['getFichas']>[number]
+>;
 export type UpdateFichaVariables = UpdateFichaMutationVariables;
-export type UpdateFichaUpdateFicha = (NonNullable<UpdateFichaMutation['updateFicha']>);
+export type UpdateFichaUpdateFicha = NonNullable<
+  UpdateFichaMutation['updateFicha']
+>;
 export type DeleteFichaVariables = DeleteFichaMutationVariables;
-export type DeleteFichaDeleteFicha = (NonNullable<DeleteFichaMutation['deleteFicha']>);
-export type AssetBootAssets = NonNullable<(NonNullable<AssetBootFragment['assets']>)[number]>;
-export type ClientFragmentPhoto = (NonNullable<ClientFragmentFragment['photo']>);
-export type FichaFragmentDetails = NonNullable<(NonNullable<FichaFragmentFragment['details']>)[number]>;
-export type FichaFragmentAsset = (NonNullable<NonNullable<(NonNullable<FichaFragmentFragment['details']>)[number]>['asset']>);
-export type PlanFragmentDetail = (NonNullable<PlanFragmentFragment['detail']>);
-export type ActivityFragmentDetail = (NonNullable<ActivityFragmentFragment['detail']>);
+export type DeleteFichaDeleteFicha = NonNullable<
+  DeleteFichaMutation['deleteFicha']
+>;
+export type AssetBootAssets = NonNullable<
+  NonNullable<AssetBootFragment['assets']>[number]
+>;
+export type ClientFragmentPhoto = NonNullable<ClientFragmentFragment['photo']>;
+export type FichaFragmentDetails = NonNullable<
+  NonNullable<FichaFragmentFragment['details']>[number]
+>;
+export type FichaFragmentAsset = NonNullable<
+  NonNullable<NonNullable<FichaFragmentFragment['details']>[number]>['asset']
+>;
+export type PlanFragmentDetail = NonNullable<PlanFragmentFragment['detail']>;
+export type ActivityFragmentDetail = NonNullable<
+  ActivityFragmentFragment['detail']
+>;
 export type PingQueryVariables = PingQueryQueryVariables;
 export type GetActivitiesVariables = GetActivitiesQueryVariables;
-export type GetActivitiesGetActivities = NonNullable<(NonNullable<GetActivitiesQuery['getActivities']>)[number]>;
+export type GetActivitiesGetActivities = NonNullable<
+  NonNullable<GetActivitiesQuery['getActivities']>[number]
+>;
 export type CreateActivityVariables = CreateActivityMutationVariables;
-export type CreateActivityCreateActivity = (NonNullable<CreateActivityMutation['createActivity']>);
+export type CreateActivityCreateActivity = NonNullable<
+  CreateActivityMutation['createActivity']
+>;
 export type GetPlansVariables = GetPlansQueryVariables;
-export type GetPlansGetPlans = NonNullable<(NonNullable<GetPlansQuery['getPlans']>)[number]>;
+export type GetPlansGetPlans = NonNullable<
+  NonNullable<GetPlansQuery['getPlans']>[number]
+>;
+export type GetActivityVariables = GetActivityQueryVariables;
+export type GetActivityGetActivity = NonNullable<
+  GetActivityQuery['getActivity']
+>;

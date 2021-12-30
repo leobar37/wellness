@@ -123,6 +123,7 @@ type Query {
   finAsistences(cliendId: ID!): [Asistence!]!
   getPlans: [Plan!]!
   getActivities: [Activity!]!
+  getActivity(id: ID!): Activity!
   getFicha(userId: Int!): Ficha
   getFichas(userId: Int!): [Ficha!]
 }

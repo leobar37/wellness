@@ -22,3 +22,11 @@ export const getPlans = gql`
     }
   }
 `;
+
+export const getActivity = gql`
+  query getActivity($id: ID!) {
+    getActivity(id: $id) {
+      ...ActivityFragment
+    }
+  }
+`;

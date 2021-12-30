@@ -1,17 +1,9 @@
-import { makeToggle } from '@wellness/admin-ui/utils';
-import _create from 'zustand';
-import { useState } from 'react';
-import {
-  useCreateAsistenceMutation,
-  InputAsistence,
-  useFindAsistencesQuery,
-  Ficha,
-} from '@wellness/admin-ui/common';
-import { IClientStore } from '../domain/client.store';
-import { ID, SafeAny } from '@wellness/common';
-import { pipe } from '@wellness/admin-ui/utils';
+import { Ficha } from '@wellness/admin-ui/common';
 import { immer } from '@wellness/admin-ui/lib/zuztand';
-import _ from 'lodash.mergewith/node_modules/@types/lodash';
+import { makeToggle, pipe } from '@wellness/admin-ui/utils';
+import { SafeAny } from '@wellness/common';
+import _create from 'zustand';
+import { IClientStore } from '../domain/client.store';
 
 const create = pipe(immer, _create) as typeof _create;
 

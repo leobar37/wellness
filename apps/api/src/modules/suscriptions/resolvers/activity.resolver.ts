@@ -23,9 +23,15 @@ export class ActivityResolver {
   ) {
     return this.activityService.joinActivity(contract);
   }
+
   // find activities
   @Query((type) => [Activity])
   public getActivities() {
     return this.activityService.findActivities();
+  }
+
+  @Query((type) => Activity)
+  public getActivity(@Args('id', { type: () => ID }) id: number) {
+    return this.activityService.findActivity(id);
   }
 }

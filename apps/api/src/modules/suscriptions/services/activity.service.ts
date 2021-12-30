@@ -29,7 +29,7 @@ export class ActivityService {
 
     let finishedAt = null;
     if (input.mode == ModeSuscription.FIXED) {
-      finishedAt = add(new Date(), {
+      finishedAt = add(input.startAt, {
         days: input.duration,
       });
     }
@@ -120,5 +120,10 @@ export class ActivityService {
       })
       .getMany();
     return activities;
+  }
+
+  async findActivity(id: number) {
+    const activity = await this.repository.findOne(id);
+    return activity;
   }
 }
