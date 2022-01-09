@@ -44,7 +44,7 @@ export class Suscription extends WellnessEntity {
   mode: ModeSuscription;
 
   @Column('date', { nullable: true })
-  @Field((type) => Date)
+  @Field((type) => Date, { nullable: true })
   finishedAt: Date | null;
 
   @Column('date', { nullable: true })

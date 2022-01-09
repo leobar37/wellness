@@ -92,6 +92,7 @@ export const DatePicker: FunctionComponent<DatePickerProps> = ({
     },
     [meta]
   );
+
   return (
     <DatePickerProvider
       value={{

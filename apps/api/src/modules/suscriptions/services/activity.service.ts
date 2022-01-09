@@ -11,6 +11,7 @@ import { CRUD, ModeSuscription, omit } from '@wellness/common';
 import { add } from 'date-fns';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
+import { WelnessLogger } from '@wellness/core/logger';
 import {
   ContractEvent,
   EventBus,
@@ -22,7 +23,8 @@ export class ActivityService {
   constructor(
     @InjectRepository(Activity) private repository: Repository<Activity>,
     @InjectEntityManager() private manager: EntityManager,
-    private eventBus: EventBus
+    private eventBus: EventBus,
+    private logger: WelnessLogger
   ) {}
   async createActivity(input: ActivityInput) {
     const activity = new Activity(omit(input, ['startAt', 'mode', 'duration']));
@@ -44,7 +46,7 @@ export class ActivityService {
       })
     );
 
-    activity.suscription = suscription;
+    activity.suscription = Promise.resolve(suscription);
 
     const activitySaved = await this.repository.save(activity);
 
@@ -67,14 +69,14 @@ export class ActivityService {
   async deleteActivity(id: number) {
     const activity = await this.existActivity(id);
     await this.repository.delete(id);
-
     this.eventBus.publish(
       new SuscriptionEvent({
         operation: CRUD.DELETE,
         source: activity,
       })
     );
-    return Activity;
+
+    return activity;
   }
   async joinActivity(contractInput: ContractInput) {
     // verify if client have a active plan
@@ -84,11 +86,12 @@ export class ActivityService {
         id: contractInput.activityId,
       },
     });
+    const sub = await activity.suscription;
     const contract = await this.manager.save(
       Contract,
       new Contract({
         clientId: contractInput.clientId,
-        suscriptionId: activity.suscription.id,
+        suscriptionId: sub.id,
         paid: contractInput.paid,
         note: contractInput.note,
         price: contractInput.price,
@@ -122,8 +125,30 @@ export class ActivityService {
     return activities;
   }
 
+  async updateActivity(id: number, input: ActivityInput) {
+    const activity = await this.existActivity(id);
+    try {
+      await this.repository.update(id, {
+        detail: input.detail,
+      });
+      await this.manager.update(Suscription, activity.suscriptionId, {
+        duration: input.duration,
+        mode: input.mode,
+        active: input.visible,
+        startAt: input.startAt,
+      });
+
+      return this.repository.findOne(activity.id);
+    } catch (error) {
+      const humanText = 'No se ha podido editar la actividad';
+      this.logger.error(humanText, error);
+      throw new BussinessError(humanText);
+    }
+  }
+
   async findActivity(id: number) {
     const activity = await this.repository.findOne(id);
+
     return activity;
   }
 }

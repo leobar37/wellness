@@ -1,6 +1,6 @@
 import type { NextPageWithLayout, Activity } from '@wellness/admin-ui/common';
 import { BaseLayout, Layout } from '@wellness/admin-ui/components';
-import { TableInstanceProps } from '@wellness/admin-ui/ui';
+import { TableInstanceProps, ButtonIcon } from '@wellness/admin-ui/ui';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import {
@@ -16,10 +16,15 @@ import { useInitActivitiesController } from '../controller';
 import { CreateActivityModal } from '../components';
 import { useSubscriptionsStore } from '../data';
 import { SafeAny } from '@wellness/common';
-import { DeleteIcon } from '@wellness/admin-ui/icons';
-
+import { DeleteIcon, EyeIcon, EditIcon } from '@wellness/admin-ui/icons';
+import { useModalConfirm } from '@wellness/admin-ui/ui';
+import { useActivityModal } from '../data';
 export const ActivitiesPage: NextPageWithLayout = () => {
   const { activities, isLoading } = useInitActivitiesController();
+  console.log(activities);
+
+  const confirm = useModalConfirm();
+  const { openModal } = useActivityModal();
   const { toggleActivitiesCrudModal, patch, selectDeleteActivities } =
     useSubscriptionsStore();
   const router = useRouter();
@@ -34,13 +39,16 @@ export const ActivitiesPage: NextPageWithLayout = () => {
   const onSelectActivity = (activity: Activity) => {
     router.push(`./activities/${activity.id}`);
   };
+
+  // on delete activities
+  const onDeleteActivities = () => {
+    confirm({});
+  };
   return (
     <>
       <Layout
         backText="Actividades"
-        actions={
-          <Button onClick={() => toggleActivitiesCrudModal(true)}>Crear</Button>
-        }
+        actions={<Button onClick={() => openModal()}>Crear</Button>}
       >
         <HStack>
           <Badgebg name="Total de actividades" value={50} />
@@ -49,7 +57,11 @@ export const ActivitiesPage: NextPageWithLayout = () => {
           {table && <GlobalFilter table={table} />}
           <HStack>
             {showDeleteIcon && (
-              <Button variant="red" leftIcon={<DeleteIcon fontSize="large" />}>
+              <Button
+                variant="red"
+                leftIcon={<DeleteIcon fontSize="large" />}
+                onClick={() => onDeleteActivities()}
+              >
                 {selectDeleteActivities.length}
               </Button>
             )}
@@ -65,7 +77,6 @@ export const ActivitiesPage: NextPageWithLayout = () => {
             });
           }}
           rowProps={({ original }) => ({
-            onClick: () => onSelectActivity(original as SafeAny),
             sx: {
               _hover: {
                 cursor: 'pointer',
@@ -84,11 +95,37 @@ export const ActivitiesPage: NextPageWithLayout = () => {
               return <Price>{original.detail.price}</Price>;
             }}
           />
+          <ColTable
+            id="actions"
+            Header="Actions"
+            Cell={(props: SafeAny) => {
+              const { original } = prepareCellProps<Activity>(props);
+              return (
+                <HStack>
+                  <ButtonIcon
+                    bg={'brown'}
+                    onClick={() => {
+                      onSelectActivity(original as SafeAny);
+                    }}
+                  >
+                    <EyeIcon />
+                  </ButtonIcon>
+                  {/* <ButtonIcon bg={'gray.600'}>
+                    <EditIcon />
+                  </ButtonIcon> */}
+                </HStack>
+              );
+            }}
+          />
         </Table>
       </Layout>
-      <CreateActivityModal />
     </>
   );
 };
 
-ActivitiesPage.getLayout = (page) => <BaseLayout>{page}</BaseLayout>;
+ActivitiesPage.getLayout = (page) => (
+  <BaseLayout>
+    {page}
+    <CreateActivityModal />
+  </BaseLayout>
+);

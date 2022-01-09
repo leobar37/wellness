@@ -30,3 +30,19 @@ export const getActivity = gql`
     }
   }
 `;
+
+export const updateActivity = gql`
+  mutation updateActivity($input: ActivityInput!, $id: ID!) {
+    updateActivity(id: $id, input: $input) {
+      ...ActivityFragment
+    }
+  }
+`;
+
+export const deleteActivity = gql`
+  mutation deleteActivity($id: ID!) {
+    deleteActivity(id: $id) {
+      ...ActivityFragment
+    }
+  }
+`;

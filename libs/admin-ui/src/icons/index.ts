@@ -9,3 +9,5 @@ export * from './Filter';
 export * from './Edit';
 export * from './File';
 export * from './Dumbell';
+export * from './Eye';
+export * from './Warning';

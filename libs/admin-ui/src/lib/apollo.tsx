@@ -12,7 +12,6 @@ import { isEqual } from 'lodash';
 import { AppProps } from 'next/app';
 import { PropsWithChildren, useEffect, useMemo, useState } from 'react';
 import { isServer } from '../utils';
-import { Box, BoxProps } from '@chakra-ui/react';
 const APOLLO_PROP_NAME = '__APOLLO__STATE';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
@@ -31,7 +30,7 @@ const linkError = onError(({ graphQLErrors, networkError }) => {
 }) as unknown as ApolloLink;
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost:3333/graphql',
+  uri: 'http://localhost:3500/graphql',
 });
 
 export const createApolloClient = (

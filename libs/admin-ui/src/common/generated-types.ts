@@ -33,6 +33,7 @@ export type Activity = {
   createdAt: Scalars['DateTime'];
   detail: Detail;
   id: Scalars['ID'];
+  suscription: Suscription;
   updateAt: Scalars['DateTime'];
 };
 
@@ -217,6 +218,7 @@ export type Mutation = {
   openAndCloseFicha: Ficha;
   registerClient: Client;
   signature: ResponseSignature;
+  updateActivity: Activity;
   updateAsistence: Asistence;
   updateCLient: Client;
   updateFicha: Ficha;
@@ -280,6 +282,11 @@ export type MutationRegisterClientArgs = {
 
 export type MutationSignatureArgs = {
   publicId?: InputMaybe<Scalars['String']>;
+};
+
+export type MutationUpdateActivityArgs = {
+  id: Scalars['ID'];
+  input: ActivityInput;
 };
 
 export type MutationUpdateAsistenceArgs = {
@@ -358,6 +365,19 @@ export enum Sex {
   OTHER = 'OTHER',
   WOMEN = 'WOMEN',
 }
+
+export type Suscription = {
+  __typename?: 'Suscription';
+  active: Scalars['Boolean'];
+  contracts: Array<Maybe<Contract>>;
+  createdAt: Scalars['DateTime'];
+  duration: Scalars['Int'];
+  finishedAt?: Maybe<Scalars['DateTime']>;
+  id: Scalars['ID'];
+  mode: ModeSuscription;
+  startAt?: Maybe<Scalars['DateTime']>;
+  updateAt: Scalars['DateTime'];
+};
 
 export type CreateAsistenceMutationVariables = Exact<{
   asistence: InputAsistence;
@@ -981,6 +1001,18 @@ export type PlanFragmentFragment = {
   };
 };
 
+export type SubscriptionFragmentFragment = {
+  __typename?: 'Suscription';
+  id: string;
+  createdAt: SafeAny;
+  updateAt: SafeAny;
+  duration: number;
+  active: boolean;
+  mode: ModeSuscription;
+  startAt?: SafeAny | null | undefined;
+  finishedAt?: SafeAny | null | undefined;
+};
+
 export type ActivityFragmentFragment = {
   __typename?: 'Activity';
   id: string;
@@ -991,6 +1023,17 @@ export type ActivityFragmentFragment = {
     name: string;
     description: string;
     price: number;
+  };
+  suscription: {
+    __typename?: 'Suscription';
+    id: string;
+    createdAt: SafeAny;
+    updateAt: SafeAny;
+    duration: number;
+    active: boolean;
+    mode: ModeSuscription;
+    startAt?: SafeAny | null | undefined;
+    finishedAt?: SafeAny | null | undefined;
   };
 };
 
@@ -1013,6 +1056,17 @@ export type GetActivitiesQuery = {
       description: string;
       price: number;
     };
+    suscription: {
+      __typename?: 'Suscription';
+      id: string;
+      createdAt: SafeAny;
+      updateAt: SafeAny;
+      duration: number;
+      active: boolean;
+      mode: ModeSuscription;
+      startAt?: SafeAny | null | undefined;
+      finishedAt?: SafeAny | null | undefined;
+    };
   }>;
 };
 
@@ -1032,6 +1086,17 @@ export type CreateActivityMutation = {
       name: string;
       description: string;
       price: number;
+    };
+    suscription: {
+      __typename?: 'Suscription';
+      id: string;
+      createdAt: SafeAny;
+      updateAt: SafeAny;
+      duration: number;
+      active: boolean;
+      mode: ModeSuscription;
+      startAt?: SafeAny | null | undefined;
+      finishedAt?: SafeAny | null | undefined;
     };
   };
 };
@@ -1071,6 +1136,80 @@ export type GetActivityQuery = {
       name: string;
       description: string;
       price: number;
+    };
+    suscription: {
+      __typename?: 'Suscription';
+      id: string;
+      createdAt: SafeAny;
+      updateAt: SafeAny;
+      duration: number;
+      active: boolean;
+      mode: ModeSuscription;
+      startAt?: SafeAny | null | undefined;
+      finishedAt?: SafeAny | null | undefined;
+    };
+  };
+};
+
+export type UpdateActivityMutationVariables = Exact<{
+  input: ActivityInput;
+  id: Scalars['ID'];
+}>;
+
+export type UpdateActivityMutation = {
+  __typename?: 'Mutation';
+  updateActivity: {
+    __typename?: 'Activity';
+    id: string;
+    createdAt: SafeAny;
+    updateAt: SafeAny;
+    detail: {
+      __typename?: 'Detail';
+      name: string;
+      description: string;
+      price: number;
+    };
+    suscription: {
+      __typename?: 'Suscription';
+      id: string;
+      createdAt: SafeAny;
+      updateAt: SafeAny;
+      duration: number;
+      active: boolean;
+      mode: ModeSuscription;
+      startAt?: SafeAny | null | undefined;
+      finishedAt?: SafeAny | null | undefined;
+    };
+  };
+};
+
+export type DeleteActivityMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type DeleteActivityMutation = {
+  __typename?: 'Mutation';
+  deleteActivity: {
+    __typename?: 'Activity';
+    id: string;
+    createdAt: SafeAny;
+    updateAt: SafeAny;
+    detail: {
+      __typename?: 'Detail';
+      name: string;
+      description: string;
+      price: number;
+    };
+    suscription: {
+      __typename?: 'Suscription';
+      id: string;
+      createdAt: SafeAny;
+      updateAt: SafeAny;
+      duration: number;
+      active: boolean;
+      mode: ModeSuscription;
+      startAt?: SafeAny | null | undefined;
+      finishedAt?: SafeAny | null | undefined;
     };
   };
 };
@@ -1165,6 +1304,19 @@ export const PlanFragmentFragmentDoc = gql`
   }
   ${DetailFragmentFragmentDoc}
 `;
+export const SubscriptionFragmentFragmentDoc = gql`
+  fragment SubscriptionFragment on Suscription {
+    id
+    createdAt
+    updateAt
+    duration
+    active
+    mode
+    startAt
+    finishedAt
+    startAt
+  }
+`;
 export const ActivityFragmentFragmentDoc = gql`
   fragment ActivityFragment on Activity {
     id
@@ -1173,8 +1325,12 @@ export const ActivityFragmentFragmentDoc = gql`
     detail {
       ...DetailFragment
     }
+    suscription {
+      ...SubscriptionFragment
+    }
   }
   ${DetailFragmentFragmentDoc}
+  ${SubscriptionFragmentFragmentDoc}
 `;
 export const CreateAsistenceDocument = gql`
   mutation createAsistence($asistence: InputAsistence!) {
@@ -2252,6 +2408,109 @@ export type GetActivityQueryResult = Apollo.QueryResult<
   GetActivityQuery,
   GetActivityQueryVariables
 >;
+export const UpdateActivityDocument = gql`
+  mutation updateActivity($input: ActivityInput!, $id: ID!) {
+    updateActivity(id: $id, input: $input) {
+      ...ActivityFragment
+    }
+  }
+  ${ActivityFragmentFragmentDoc}
+`;
+export type UpdateActivityMutationFn = Apollo.MutationFunction<
+  UpdateActivityMutation,
+  UpdateActivityMutationVariables
+>;
+
+/**
+ * __useUpdateActivityMutation__
+ *
+ * To run a mutation, you first call `useUpdateActivityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateActivityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateActivityMutation, { data, loading, error }] = useUpdateActivityMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUpdateActivityMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateActivityMutation,
+    UpdateActivityMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateActivityMutation,
+    UpdateActivityMutationVariables
+  >(UpdateActivityDocument, options);
+}
+export type UpdateActivityMutationHookResult = ReturnType<
+  typeof useUpdateActivityMutation
+>;
+export type UpdateActivityMutationResult =
+  Apollo.MutationResult<UpdateActivityMutation>;
+export type UpdateActivityMutationOptions = Apollo.BaseMutationOptions<
+  UpdateActivityMutation,
+  UpdateActivityMutationVariables
+>;
+export const DeleteActivityDocument = gql`
+  mutation deleteActivity($id: ID!) {
+    deleteActivity(id: $id) {
+      ...ActivityFragment
+    }
+  }
+  ${ActivityFragmentFragmentDoc}
+`;
+export type DeleteActivityMutationFn = Apollo.MutationFunction<
+  DeleteActivityMutation,
+  DeleteActivityMutationVariables
+>;
+
+/**
+ * __useDeleteActivityMutation__
+ *
+ * To run a mutation, you first call `useDeleteActivityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteActivityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteActivityMutation, { data, loading, error }] = useDeleteActivityMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteActivityMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteActivityMutation,
+    DeleteActivityMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    DeleteActivityMutation,
+    DeleteActivityMutationVariables
+  >(DeleteActivityDocument, options);
+}
+export type DeleteActivityMutationHookResult = ReturnType<
+  typeof useDeleteActivityMutation
+>;
+export type DeleteActivityMutationResult =
+  Apollo.MutationResult<DeleteActivityMutation>;
+export type DeleteActivityMutationOptions = Apollo.BaseMutationOptions<
+  DeleteActivityMutation,
+  DeleteActivityMutationVariables
+>;
 type DiscriminateUnion<T, U> = T extends U ? T : never;
 
 export type CreateAsistenceVariables = CreateAsistenceMutationVariables;
@@ -2356,6 +2615,9 @@ export type PlanFragmentDetail = NonNullable<PlanFragmentFragment['detail']>;
 export type ActivityFragmentDetail = NonNullable<
   ActivityFragmentFragment['detail']
 >;
+export type ActivityFragmentSuscription = NonNullable<
+  ActivityFragmentFragment['suscription']
+>;
 export type PingQueryVariables = PingQueryQueryVariables;
 export type GetActivitiesVariables = GetActivitiesQueryVariables;
 export type GetActivitiesGetActivities = NonNullable<
@@ -2372,4 +2634,12 @@ export type GetPlansGetPlans = NonNullable<
 export type GetActivityVariables = GetActivityQueryVariables;
 export type GetActivityGetActivity = NonNullable<
   GetActivityQuery['getActivity']
+>;
+export type UpdateActivityVariables = UpdateActivityMutationVariables;
+export type UpdateActivityUpdateActivity = NonNullable<
+  UpdateActivityMutation['updateActivity']
+>;
+export type DeleteActivityVariables = DeleteActivityMutationVariables;
+export type DeleteActivityDeleteActivity = NonNullable<
+  DeleteActivityMutation['deleteActivity']
 >;

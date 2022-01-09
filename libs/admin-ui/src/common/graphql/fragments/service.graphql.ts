@@ -19,6 +19,20 @@ export const PlanFragment = gql`
     visible
   }
 `;
+
+export const SuscriptionFragment = gql`
+  fragment SubscriptionFragment on Suscription {
+    id
+    createdAt
+    updateAt
+    duration
+    active
+    mode
+    startAt
+    finishedAt
+    startAt
+  }
+`;
 export const ActivityFragment = gql`
   ${DetailFragment}
   fragment ActivityFragment on Activity {
@@ -27,6 +41,9 @@ export const ActivityFragment = gql`
     updateAt
     detail {
       ...DetailFragment
+    }
+    suscription {
+      ...SubscriptionFragment
     }
   }
 `;

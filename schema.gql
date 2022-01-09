@@ -96,11 +96,33 @@ type Contract {
   price: Float!
 }
 
+type Suscription {
+  id: ID!
+  createdAt: DateTime!
+  updateAt: DateTime!
+  duration: Int!
+  active: Boolean!
+  mode: ModeSuscription!
+  finishedAt: DateTime
+  startAt: DateTime
+  contracts: [Contract]!
+}
+
+"""This enum determine the mode of a suscription"""
+enum ModeSuscription {
+  """"""
+  FIXED
+
+  """"""
+  DINAMIC
+}
+
 type Activity {
   id: ID!
   createdAt: DateTime!
   updateAt: DateTime!
   detail: Detail!
+  suscription: Suscription!
 }
 
 type Plan {
@@ -141,6 +163,7 @@ type Mutation {
   createActivity(input: ActivityInput!): Activity!
   deleteActivity(id: ID!): Activity!
   joinActivity(contract: ContractInput!): Contract!
+  updateActivity(input: ActivityInput!, id: ID!): Activity!
   signature(publicId: String): ResponseSignature!
   deleteResource(input: DeleteAssetInput!): ResourceUnion!
   createResource(resource: AssetInput!): ResourceUnion!
@@ -196,15 +219,6 @@ input ActivityInput {
   duration: Int!
   mode: ModeSuscription!
   startAt: DateTime
-}
-
-"""This enum determine the mode of a suscription"""
-enum ModeSuscription {
-  """"""
-  FIXED
-
-  """"""
-  DINAMIC
 }
 
 union ResourceUnion = AssetBoot | Asset

@@ -5,3 +5,6 @@ export * from './display';
 export * from './button';
 export * from './detail';
 export * from './price';
+export * from './dialogs';
+export * from './badge';
+export * from './card';

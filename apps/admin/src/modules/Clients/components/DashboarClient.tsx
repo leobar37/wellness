@@ -14,32 +14,8 @@ import format from 'date-fns/format';
  * - Move this to the client folder
  */
 
-type BadgeDisplayProps = {
-  title: string;
-  value: string;
-};
 import { useClientsStore } from '../data/client-store';
-
-const BadgeDisplay = ({ title, value }: BadgeDisplayProps) => {
-  const [blackAlpha300] = useToken('colors', ['blackAlpha.300']);
-
-  return (
-    <VStack
-      align="start"
-      justify="center"
-      width="250px"
-      height="90px"
-      pl="4"
-      borderRadius="sm"
-      border={`1.5px solid ${blackAlpha300}`}
-    >
-      <Text fontWeight="bold">{title}</Text>
-      <Text fontSize="sm" color="blackAlpha.600">
-        {value}
-      </Text>
-    </VStack>
-  );
-};
+import { BadgeDisplay } from '@wellness/admin-ui';
 
 export const DashboardClient = () => {
   const { selectClient } = useClientsStore();

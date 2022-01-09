@@ -1,10 +1,17 @@
 import { Box, SystemStyleObject, Text } from '@chakra-ui/react';
+import { ReactNode } from 'react';
 import { matVa } from '../../utils';
+import { ChildrenOrText, TextOrChild } from '../../components/children';
 export type DetailProps = {
-  title: string;
-  value: string;
+  /* Title */
+  title: TextOrChild;
+  value: TextOrChild;
   direction?: 'horizontal' | 'vertical';
 };
+/**
+ *
+ *
+ */
 export const Detail = ({
   title,
   value,
@@ -26,10 +33,30 @@ export const Detail = ({
       },
     },
   });
+  const stylesSubtitle: SystemStyleObject = matVa<
+    SystemStyleObject,
+    Exclude<DetailProps['direction'], undefined>
+  >(direction)({
+    vertical: {
+      pt: '8px',
+    },
+    horizontal: {},
+  });
+
   return (
     <Box fontSize="sm" sx={stylesDetail}>
-      <Text fontWeight="bold">{title}:</Text>
-      <Text>{value}</Text>
+      <Text as="b" fontWeight="bold">
+        {title}:
+      </Text>
+      <ChildrenOrText
+        onText={(text) => (
+          <Text as="p" sx={{ ...stylesSubtitle }}>
+            {text}
+          </Text>
+        )}
+      >
+        {value}
+      </ChildrenOrText>
     </Box>
   );
 };

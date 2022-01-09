@@ -1,4 +1,4 @@
-import { SetState } from 'zustand';
+import { SetState, UseBoundStore, State } from 'zustand';
 import { TObject, SafeAny } from '@wellness/common';
 
 export const makeToggle = <T extends TObject>(
@@ -11,3 +11,12 @@ export const makeToggle = <T extends TObject>(
     );
   };
 };
+
+// export const makeArrApi = <T extends TObject, TState extends State, R>(
+//   prop: keyof T,
+//   hook: UseBoundStore<TState>,
+//   indentifier?: keyof R
+// ) => {
+
+//   const use
+// };

@@ -1,13 +1,27 @@
-import { ReactChildren, FunctionComponent, ReactElement } from 'react';
+import {
+  ReactChildren,
+  FunctionComponent,
+  ReactElement,
+  FC,
+  ReactNode,
+} from 'react';
 import { isElement } from 'react-is';
 import { warn } from '@chakra-ui/utils';
-export type TextOrChild = string | ReactChildren;
 
-export const ChildrenOrText: FunctionComponent<{
+export type TextOrChild = string | ReactNode;
+export type ChildrenOrTextProps = {
   children: TextOrChild;
+  /** if children is a text */
   onText?: (text: string) => JSX.Element;
+  /** if children is a element */
   onElement?: (children: ReactChildren) => JSX.Element;
-}> = ({ children, onElement, onText }) => {
+};
+
+export const ChildrenOrText: FC<ChildrenOrTextProps> = ({
+  children,
+  onElement,
+  onText,
+}) => {
   const isReactElemet = typeof children !== 'string';
   warn({
     condition: !children,

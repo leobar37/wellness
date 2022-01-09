@@ -12,9 +12,6 @@ export function normalizeEmailAddress(input: string): string {
   return input.trim().toLowerCase();
 }
 
-// export function enumToArray<T>(enumSource: T) : [...ke] {
-
-// }
 export const pluck = <D extends unknown>(data: SafeAny, path: string): D => {
   return get(data, path) as D;
 };

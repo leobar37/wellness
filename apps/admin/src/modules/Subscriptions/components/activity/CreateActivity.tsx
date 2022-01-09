@@ -2,6 +2,7 @@ import { ModalCrud } from '@wellness/admin-ui/components';
 import { useDisclosure, HStack, Button, Radio } from '@chakra-ui/react';
 import { ChackraForm } from '@wellness/admin-ui/components';
 import { Formik, useFormikContext } from 'formik';
+import { useActivityModal } from '../../data';
 import {
   NumberInputControl,
   InputControl,
@@ -15,9 +16,25 @@ import { useActivityController } from '../../controller/activities.controller';
 import { DatePicker } from '@wellness/admin-ui/ui';
 import { ModeSuscription } from '@wellness/admin-ui';
 import { useSubscriptionsStore } from '../../data';
+import { useEffect } from 'react';
 
 const Form = () => {
-  const { handleSubmit } = useFormikContext();
+  const { handleSubmit, setValues } = useFormikContext<CreateActivity>();
+  const { activity, mode } = useActivityModal();
+  useEffect(() => {
+    if (mode == 'edit' && activity) {
+      setValues({
+        description: activity.detail.description,
+        price: activity.detail.price,
+        duration: activity.suscription.duration,
+        mode: activity.suscription.mode,
+        startAt: activity.suscription.startAt,
+        name: activity.detail.name,
+        visible: activity.suscription.active,
+      });
+    }
+  }, [activity, mode, setValues]);
+
   return (
     <ChackraForm submit={handleSubmit}>
       <CheckboxSingleControl name="visible">Visible</CheckboxSingleControl>
@@ -39,14 +56,16 @@ const Form = () => {
 };
 
 export const CreateActivityModal = () => {
-  const { createActivity } = useActivityController();
+  const { createActivity, updateActivity } = useActivityController();
+  const { activity, mode, closeModal, openModal } = useActivityModal();
   const { activitiesCrudModal, toggleActivitiesCrudModal } =
     useSubscriptionsStore();
   const { isOpen, onClose } = useDisclosure({
-    isOpen: activitiesCrudModal,
-    onClose: () => toggleActivitiesCrudModal(false),
-    onOpen: () => toggleActivitiesCrudModal(true),
+    isOpen: activitiesCrudModal.isOpen,
+    onClose: () => closeModal(),
+    onOpen: () => openModal(),
   });
+
   const cancelOperation = () => {
     onClose();
   };
@@ -63,8 +82,16 @@ export const CreateActivityModal = () => {
         visible: true,
       }}
       onSubmit={async (values) => {
-        console.log(values);
-        await createActivity(values);
+        switch (mode) {
+          case 'create': {
+            await createActivity(values);
+            break;
+          }
+          case 'edit': {
+            await updateActivity(values);
+            break;
+          }
+        }
       }}
     >
       {({ submitForm }) => (

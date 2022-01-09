@@ -63,13 +63,8 @@ const FichaForm: React.FC<{
   isOpen: boolean;
   onClose: () => void;
 }> = ({ isOpen, onClose }) => {
-  const {
-    modalCrudFicha,
-    ficha,
-    modeModalFicha,
-    stateModalFicha,
-    currentDetail,
-  } = useClientsStore();
+  const { ficha, modeModalFicha, stateModalFicha, currentDetail } =
+    useClientsStore();
   const { handleSubmit, submitForm, setValues } = useFormikContext();
 
   const detail = currentDetail();
@@ -86,7 +81,6 @@ const FichaForm: React.FC<{
         weight: detail.weight,
       });
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ficha, stateModalFicha]);
   return (
@@ -134,8 +128,6 @@ export const CreateFicha: React.FunctionComponent<CreateFichaProps> = () => {
       onSubmit={async (values) => {
         if (modeModalFicha === 'open') {
           if (stateModalFicha == 'edit') {
-            console.log('I am editing');
-
             await editFicha(values);
           }
           if (stateModalFicha == 'create') {
@@ -144,7 +136,6 @@ export const CreateFicha: React.FunctionComponent<CreateFichaProps> = () => {
         } else {
           await closeFicha(values);
         }
-
         onClose();
       }}
     >
