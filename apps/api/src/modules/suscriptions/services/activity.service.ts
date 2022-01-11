@@ -18,6 +18,8 @@ import {
   SuscriptionEvent,
 } from '@wellness/core/event-bus';
 import { ContractInput } from '../dto/contract.input';
+import addDays from 'date-fns/addDays';
+import { FiltersActivity } from '../dto/filters.input';
 @Injectable()
 export class ActivityService {
   constructor(
@@ -79,14 +81,14 @@ export class ActivityService {
     return activity;
   }
   async joinActivity(contractInput: ContractInput) {
-    // verify if client have a active plan
-
-    const activity = await this.repository.findOne({
-      where: {
-        id: contractInput.activityId,
-      },
-    });
+    const activity = await this.existActivity(contractInput.activityId);
     const sub = await activity.suscription;
+    let finishedAt = null;
+    if (sub.mode == ModeSuscription.FIXED) {
+      finishedAt = sub.finishedAt;
+    } else {
+      finishedAt = addDays(new Date(), sub.duration);
+    }
     const contract = await this.manager.save(
       Contract,
       new Contract({
@@ -95,6 +97,7 @@ export class ActivityService {
         paid: contractInput.paid,
         note: contractInput.note,
         price: contractInput.price,
+        finishedAt: finishedAt,
       })
     );
     this.eventBus.publish(
@@ -107,9 +110,17 @@ export class ActivityService {
     return contract;
   }
 
-  async findActivities() {
-    const activities = await this.repository.find({});
-    return activities;
+  async findActivities(filter: FiltersActivity) {
+    let builder = this.repository
+      .createQueryBuilder('act')
+      .innerJoin('act.suscription', 'sub');
+
+    if (filter?.active) {
+      builder = builder.where('sub.active = :active', {
+        active: filter.active,
+      });
+    }
+    return builder.getMany();
   }
 
   // find activities by client and date

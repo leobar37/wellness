@@ -1,7 +1,9 @@
 import { Resolver, Mutation, Args, ID, Query } from '@nestjs/graphql';
 import { Activity, Contract } from '@wellness/core/entity';
+import { filter } from 'rxjs';
 import { ActivityInput } from '../dto/activity.input';
 import { ContractInput } from '../dto/contract.input';
+import { FiltersActivity } from '../dto/filters.input';
 import { ActivityService } from '../services/activity.service';
 
 @Resolver()
@@ -34,8 +36,11 @@ export class ActivityResolver {
   }
   // find activities
   @Query((type) => [Activity])
-  public getActivities() {
-    return this.activityService.findActivities();
+  public getActivities(
+    @Args('filters', { type: () => FiltersActivity, nullable: true })
+    filters: FiltersActivity
+  ) {
+    return this.activityService.findActivities(filters);
   }
 
   @Query((type) => Activity)

@@ -92,8 +92,11 @@ type Contract {
   id: ID!
   createdAt: DateTime!
   updateAt: DateTime!
+  note: String!
   paid: Boolean!
   price: Float!
+  finishedAt: DateTime!
+  suscription: Suscription!
 }
 
 type Suscription {
@@ -144,12 +147,20 @@ type Query {
   clients: [Client!]!
   client(id: ID!): Client!
   finAsistences(cliendId: ID!): [Asistence!]!
-  getPlans: [Plan!]!
+  getPlans(filters: FiltersPlan): [Plan!]!
   getPlan(id: ID!): Plan!
-  getActivities: [Activity!]!
+  getActivities(filters: FiltersActivity): [Activity!]!
   getActivity(id: ID!): Activity!
   getFicha(userId: Int!): Ficha
   getFichas(userId: Int!): [Ficha!]
+}
+
+input FiltersPlan {
+  active: Boolean
+}
+
+input FiltersActivity {
+  active: Boolean
 }
 
 type Mutation {
@@ -161,7 +172,7 @@ type Mutation {
   updateAsistence(input: InputAsistence!, id: ID!): Asistence!
   createPlan(input: PlanInput!): Plan!
   deletePlan(id: ID!): Plan!
-  joinPlan(contract: ContractInput!): Boolean!
+  joinPlan(contract: ContractInput!): Contract!
   updatePlan(input: PlanInput!, id: ID!): Plan!
   createActivity(input: ActivityInput!): Activity!
   deleteActivity(id: ID!): Activity!

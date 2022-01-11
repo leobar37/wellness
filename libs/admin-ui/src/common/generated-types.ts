@@ -111,9 +111,12 @@ export type ClientInput = {
 export type Contract = {
   __typename?: 'Contract';
   createdAt: Scalars['DateTime'];
+  finishedAt: Scalars['DateTime'];
   id: Scalars['ID'];
+  note: Scalars['String'];
   paid: Scalars['Boolean'];
   price: Scalars['Float'];
+  suscription: Suscription;
   updateAt: Scalars['DateTime'];
 };
 
@@ -179,6 +182,14 @@ export type FichaInput = {
   weight: Scalars['Float'];
 };
 
+export type FiltersActivity = {
+  active?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type FiltersPlan = {
+  active?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type InputAsistence = {
   clientId: Scalars['ID'];
   note?: InputMaybe<Scalars['String']>;
@@ -208,7 +219,7 @@ export type Mutation = {
   deletePlan: Plan;
   deleteResource: ResourceUnion;
   joinActivity: Contract;
-  joinPlan: Scalars['Boolean'];
+  joinPlan: Contract;
   openAndCloseFicha: Ficha;
   registerClient: Client;
   signature: ResponseSignature;
@@ -368,6 +379,11 @@ export type QueryFinAsistencesArgs = {
 };
 
 
+export type QueryGetActivitiesArgs = {
+  filters?: InputMaybe<FiltersActivity>;
+};
+
+
 export type QueryGetActivityArgs = {
   id: Scalars['ID'];
 };
@@ -385,6 +401,11 @@ export type QueryGetFichasArgs = {
 
 export type QueryGetPlanArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryGetPlansArgs = {
+  filters?: InputMaybe<FiltersPlan>;
 };
 
 export type ResourceUnion = Asset | AssetBoot;
@@ -537,12 +558,16 @@ export type SubscriptionFragmentFragment = { __typename?: 'Suscription', id: str
 
 export type ActivityFragmentFragment = { __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } };
 
+export type ContractFragmentFragment = { __typename?: 'Contract', id: string, createdAt: SafeAny, updateAt: SafeAny, note: string, paid: boolean, price: number, finishedAt: SafeAny, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } };
+
 export type PingQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type PingQueryQuery = { __typename?: 'Query', ping: string };
 
-export type GetActivitiesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetActivitiesQueryVariables = Exact<{
+  filters?: Maybe<FiltersActivity>;
+}>;
 
 
 export type GetActivitiesQuery = { __typename?: 'Query', getActivities: Array<{ __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } }> };
@@ -576,7 +601,9 @@ export type DeleteActivityMutationVariables = Exact<{
 
 export type DeleteActivityMutation = { __typename?: 'Mutation', deleteActivity: { __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } } };
 
-export type GetPlansQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetPlansQueryVariables = Exact<{
+  filters?: Maybe<FiltersPlan>;
+}>;
 
 
 export type GetPlansQuery = { __typename?: 'Query', getPlans: Array<{ __typename?: 'Plan', id: string, createdAt: SafeAny, updateAt: SafeAny, visible: boolean, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } }> };
@@ -609,6 +636,20 @@ export type CreatePlanMutationVariables = Exact<{
 
 
 export type CreatePlanMutation = { __typename?: 'Mutation', createPlan: { __typename?: 'Plan', id: string, createdAt: SafeAny, updateAt: SafeAny, visible: boolean, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } } };
+
+export type JoinPlanMutationVariables = Exact<{
+  contract: ContractInput;
+}>;
+
+
+export type JoinPlanMutation = { __typename?: 'Mutation', joinPlan: { __typename?: 'Contract', id: string, createdAt: SafeAny, updateAt: SafeAny, note: string, paid: boolean, price: number, finishedAt: SafeAny, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } } };
+
+export type JoinActivityMutationVariables = Exact<{
+  contract: ContractInput;
+}>;
+
+
+export type JoinActivityMutation = { __typename?: 'Mutation', joinActivity: { __typename?: 'Contract', id: string, createdAt: SafeAny, updateAt: SafeAny, note: string, paid: boolean, price: number, finishedAt: SafeAny, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } } };
 
 export const AsistenceFragmentFragmentDoc = gql`
     fragment asistenceFragment on Asistence {
@@ -727,6 +768,20 @@ export const ActivityFragmentFragmentDoc = gql`
 }
     ${DetailFragmentFragmentDoc}
 ${SubscriptionFragmentFragmentDoc}`;
+export const ContractFragmentFragmentDoc = gql`
+    fragment ContractFragment on Contract {
+  id
+  createdAt
+  updateAt
+  note
+  paid
+  price
+  finishedAt
+  suscription {
+    ...SubscriptionFragment
+  }
+}
+    ${SubscriptionFragmentFragmentDoc}`;
 export const CreateAsistenceDocument = gql`
     mutation createAsistence($asistence: InputAsistence!) {
   createAsistence(asistence: $asistence) {
@@ -1285,8 +1340,8 @@ export type PingQueryQueryHookResult = ReturnType<typeof usePingQueryQuery>;
 export type PingQueryLazyQueryHookResult = ReturnType<typeof usePingQueryLazyQuery>;
 export type PingQueryQueryResult = Apollo.QueryResult<PingQueryQuery, PingQueryQueryVariables>;
 export const GetActivitiesDocument = gql`
-    query getActivities {
-  getActivities {
+    query getActivities($filters: FiltersActivity) {
+  getActivities(filters: $filters) {
     ...ActivityFragment
   }
 }
@@ -1304,6 +1359,7 @@ export const GetActivitiesDocument = gql`
  * @example
  * const { data, loading, error } = useGetActivitiesQuery({
  *   variables: {
+ *      filters: // value for 'filters'
  *   },
  * });
  */
@@ -1454,8 +1510,8 @@ export type DeleteActivityMutationHookResult = ReturnType<typeof useDeleteActivi
 export type DeleteActivityMutationResult = Apollo.MutationResult<DeleteActivityMutation>;
 export type DeleteActivityMutationOptions = Apollo.BaseMutationOptions<DeleteActivityMutation, DeleteActivityMutationVariables>;
 export const GetPlansDocument = gql`
-    query getPlans {
-  getPlans {
+    query getPlans($filters: FiltersPlan) {
+  getPlans(filters: $filters) {
     ...PlanFragment
   }
 }
@@ -1473,6 +1529,7 @@ export const GetPlansDocument = gql`
  * @example
  * const { data, loading, error } = useGetPlansQuery({
  *   variables: {
+ *      filters: // value for 'filters'
  *   },
  * });
  */
@@ -1622,6 +1679,72 @@ export function useCreatePlanMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreatePlanMutationHookResult = ReturnType<typeof useCreatePlanMutation>;
 export type CreatePlanMutationResult = Apollo.MutationResult<CreatePlanMutation>;
 export type CreatePlanMutationOptions = Apollo.BaseMutationOptions<CreatePlanMutation, CreatePlanMutationVariables>;
+export const JoinPlanDocument = gql`
+    mutation joinPlan($contract: ContractInput!) {
+  joinPlan(contract: $contract) {
+    ...ContractFragment
+  }
+}
+    ${ContractFragmentFragmentDoc}`;
+export type JoinPlanMutationFn = Apollo.MutationFunction<JoinPlanMutation, JoinPlanMutationVariables>;
+
+/**
+ * __useJoinPlanMutation__
+ *
+ * To run a mutation, you first call `useJoinPlanMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useJoinPlanMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [joinPlanMutation, { data, loading, error }] = useJoinPlanMutation({
+ *   variables: {
+ *      contract: // value for 'contract'
+ *   },
+ * });
+ */
+export function useJoinPlanMutation(baseOptions?: Apollo.MutationHookOptions<JoinPlanMutation, JoinPlanMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<JoinPlanMutation, JoinPlanMutationVariables>(JoinPlanDocument, options);
+      }
+export type JoinPlanMutationHookResult = ReturnType<typeof useJoinPlanMutation>;
+export type JoinPlanMutationResult = Apollo.MutationResult<JoinPlanMutation>;
+export type JoinPlanMutationOptions = Apollo.BaseMutationOptions<JoinPlanMutation, JoinPlanMutationVariables>;
+export const JoinActivityDocument = gql`
+    mutation JoinActivity($contract: ContractInput!) {
+  joinActivity(contract: $contract) {
+    ...ContractFragment
+  }
+}
+    ${ContractFragmentFragmentDoc}`;
+export type JoinActivityMutationFn = Apollo.MutationFunction<JoinActivityMutation, JoinActivityMutationVariables>;
+
+/**
+ * __useJoinActivityMutation__
+ *
+ * To run a mutation, you first call `useJoinActivityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useJoinActivityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [joinActivityMutation, { data, loading, error }] = useJoinActivityMutation({
+ *   variables: {
+ *      contract: // value for 'contract'
+ *   },
+ * });
+ */
+export function useJoinActivityMutation(baseOptions?: Apollo.MutationHookOptions<JoinActivityMutation, JoinActivityMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<JoinActivityMutation, JoinActivityMutationVariables>(JoinActivityDocument, options);
+      }
+export type JoinActivityMutationHookResult = ReturnType<typeof useJoinActivityMutation>;
+export type JoinActivityMutationResult = Apollo.MutationResult<JoinActivityMutation>;
+export type JoinActivityMutationOptions = Apollo.BaseMutationOptions<JoinActivityMutation, JoinActivityMutationVariables>;
 type DiscriminateUnion<T, U> = T extends U ? T : never;
 
 export type CreateAsistenceVariables = CreateAsistenceMutationVariables;
@@ -1668,6 +1791,7 @@ export type PlanFragmentDetail = (NonNullable<PlanFragmentFragment['detail']>);
 export type PlanFragmentSuscription = (NonNullable<PlanFragmentFragment['suscription']>);
 export type ActivityFragmentDetail = (NonNullable<ActivityFragmentFragment['detail']>);
 export type ActivityFragmentSuscription = (NonNullable<ActivityFragmentFragment['suscription']>);
+export type ContractFragmentSuscription = (NonNullable<ContractFragmentFragment['suscription']>);
 export type PingQueryVariables = PingQueryQueryVariables;
 export type GetActivitiesVariables = GetActivitiesQueryVariables;
 export type GetActivitiesGetActivities = NonNullable<(NonNullable<GetActivitiesQuery['getActivities']>)[number]>;
@@ -1689,3 +1813,7 @@ export type UpdatePlanVariables = UpdatePlanMutationVariables;
 export type UpdatePlanUpdatePlan = (NonNullable<UpdatePlanMutation['updatePlan']>);
 export type CreatePlanVariables = CreatePlanMutationVariables;
 export type CreatePlanCreatePlan = (NonNullable<CreatePlanMutation['createPlan']>);
+export type JoinPlanVariables = JoinPlanMutationVariables;
+export type JoinPlanJoinPlan = (NonNullable<JoinPlanMutation['joinPlan']>);
+export type JoinActivityVariables = JoinActivityMutationVariables;
+export type JoinActivityJoinActivity = (NonNullable<JoinActivityMutation['joinActivity']>);

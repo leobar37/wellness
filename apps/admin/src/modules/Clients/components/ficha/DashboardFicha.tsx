@@ -93,7 +93,7 @@ const FichaPreview = ({ ficha }: { ficha: Ficha }) => {
         </Swiper>
       </Box>
       <Text fontWeight="semibold" color="gray.400">
-        {format(new Date(ficha.createdAt), 'dd/MM/yyyy')}
+        {/* {format(new Date(ficha.createdAt), 'dd/MM/yyyy')} */}
       </Text>
       <VStack spacing={1} mt={4} align="start">
         <Detail title="Peso" value={detail.weight + ''} />
@@ -154,7 +154,8 @@ const _ListFichas = () => {
             Cell={(props: SafeAny) => {
               const { original } = prepareCellProps<Ficha>(props);
               return original.createdAt
-                ? format(new Date(original.createdAt), 'dd/MM/yyyy:HH:mm')
+                ? // ? format(new Date(original.createdAt), 'dd/MM/yyyy:HH:mm')
+                  '??'
                 : '----';
             }}
           />
@@ -164,7 +165,8 @@ const _ListFichas = () => {
             Cell={(props: SafeAny) => {
               const { original } = prepareCellProps<Ficha>(props);
               return original.closedAt
-                ? format(new Date(original.closedAt), 'dd/MM/yyyy')
+                ? // ? format(new Date(original.closedAt), 'dd/MM/yyyy')
+                  '???'
                 : '----';
             }}
           />

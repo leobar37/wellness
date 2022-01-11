@@ -18,6 +18,7 @@ export class Contract extends WellnessEntity implements HasNote {
   }
 
   @Column('text', { nullable: true })
+  @Field()
   note: string;
 
   @Column('boolean', { default: false })
@@ -29,6 +30,7 @@ export class Contract extends WellnessEntity implements HasNote {
   price: number;
 
   @Column('date', { nullable: true })
+  @Field()
   finishedAt: Date | null;
 
   @Column('boolean', { default: false })
@@ -41,6 +43,7 @@ export class Contract extends WellnessEntity implements HasNote {
   clientId: number;
 
   @ManyToOne((type) => Suscription, (sub) => sub.contracts)
+  @Field((type) => Suscription)
   suscription: Promise<Subscription>;
 
   @ManyToOne((type) => Client, (cl) => cl.contracts)

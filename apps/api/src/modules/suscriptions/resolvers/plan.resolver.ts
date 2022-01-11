@@ -3,7 +3,8 @@ import { Plan } from '@wellness/core/entity';
 import { PlanInput } from '../dto/plan.input';
 import { PlanService } from '../services/plan.service';
 import { ContractInput } from '../dto/contract.input';
-
+import { Contract } from '@wellness/core';
+import { FiltersPlan } from '../dto/filters.input';
 @Resolver()
 export class PlanResolver {
   constructor(private planService: PlanService) {}
@@ -17,7 +18,7 @@ export class PlanResolver {
     return this.planService.deletePLan(id);
   }
 
-  @Mutation((type) => Boolean)
+  @Mutation((type) => Contract)
   joinPlan(
     @Args('contract', { type: () => ContractInput }) input: ContractInput
   ) {
@@ -25,8 +26,11 @@ export class PlanResolver {
   }
   // find activities
   @Query((type) => [Plan])
-  public getPlans() {
-    return this.planService.findPlans();
+  public getPlans(
+    @Args('filters', { type: () => FiltersPlan, nullable: true })
+    filters: FiltersPlan
+  ) {
+    return this.planService.findPlans(filters);
   }
 
   @Query((type) => Plan)

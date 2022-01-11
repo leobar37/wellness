@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const getActivities = gql`
-  query getActivities {
-    getActivities {
+  query getActivities($filters: FiltersActivity) {
+    getActivities(filters: $filters) {
       ...ActivityFragment
     }
   }
@@ -45,8 +45,8 @@ export const deleteActivity = gql`
  */
 
 export const getPlans = gql`
-  query getPlans {
-    getPlans {
+  query getPlans($filters: FiltersPlan) {
+    getPlans(filters: $filters) {
       ...PlanFragment
     }
   }
@@ -80,6 +80,22 @@ export const createPlan = gql`
   mutation createPlan($input: PlanInput!) {
     createPlan(input: $input) {
       ...PlanFragment
+    }
+  }
+`;
+
+export const joinPlan = gql`
+  mutation joinPlan($contract: ContractInput!) {
+    joinPlan(contract: $contract) {
+      ...ContractFragment
+    }
+  }
+`;
+
+export const JoinActivity = gql`
+  mutation JoinActivity($contract: ContractInput!) {
+    joinActivity(contract: $contract) {
+      ...ContractFragment
     }
   }
 `;

@@ -29,3 +29,13 @@ export const detailFichaSchema = yup.object({
 });
 
 export type DetailFichaT = Asserts<typeof detailFichaSchema>;
+
+export const createContractSchema = yup.object({
+  paid: yup.boolean().default(true).required(),
+  price: yup.number().required(),
+  note: yup.string().nullable(),
+  serviceId: yup.number().required(),
+  typeService: yup.number().required(),
+});
+
+export type CreateContract = Asserts<typeof createContractSchema>;

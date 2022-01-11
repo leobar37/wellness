@@ -5,7 +5,7 @@ import { SubmitButton, TextareaControl } from 'formik-chakra-ui';
 import * as React from 'react';
 import {} from '../../controller';
 import { useClientsStore } from '../../data/client-store';
-import { CreateAsistenceT } from '../../data/schemas';
+import { CreateAsistenceT } from '../../domain/schemas';
 import { useAsistenceController } from '../../controller/use-asistence-controller';
 // eslint-disable-next-line @typescript-eslint/ban-types
 type CreateAsistenceProps = {};

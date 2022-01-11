@@ -33,7 +33,6 @@ export const Page: NextPageWithLayout<SafeAny> = () => {
       actions={<Button onClick={() => toggleClientModal(true)}>Crear</Button>}
       py={4}
     >
-      <RegisterClientModal />
       <HStack spacing={4} my={3}>
         <Badgebg name="Cantidad de clientes" value={clients.length} />
       </HStack>
@@ -98,5 +97,10 @@ export const Page: NextPageWithLayout<SafeAny> = () => {
 };
 
 Page.getLayout = (page) => {
-  return <BaseLayout>{page}</BaseLayout>;
+  return (
+    <BaseLayout>
+      {page}
+      <RegisterClientModal />
+    </BaseLayout>
+  );
 };

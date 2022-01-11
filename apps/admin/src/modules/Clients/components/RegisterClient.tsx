@@ -20,7 +20,7 @@ import {
 } from 'formik-chakra-ui';
 import { useClientsController } from '../controller';
 import { useClientsStore } from '../data/client-store';
-import { SaveClientSchena } from '../data/schemas';
+import { SaveClientSchena } from '../domain/schemas';
 import { useToast, useTheme } from '@chakra-ui/react';
 const { toggleClientModal } = useClientsStore.getState();
 export const RegisterClientModal = () => {

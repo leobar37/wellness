@@ -10,7 +10,7 @@ import {
 import { useAssetService } from '@wellness/admin-ui/services';
 import { useCallback, useEffect } from 'react';
 import { useClientsStore } from '../data/client-store';
-import { DetailFichaT } from '../data/schemas';
+import { DetailFichaT } from '../domain/schemas';
 import { difference } from '@wellness/common';
 
 const { patch, addFicha } = useClientsStore.getState();

@@ -14,10 +14,12 @@ import { AsistenceTab } from '../components/asistence/AsistenceTab';
 import { DashboardClient } from '../components/DashboarClient';
 import { DashboardFicha } from '../components/ficha';
 import { useClientController } from '../controller';
-
+import { ServicesSection } from '../components/service';
+import { CreateContractForm } from '../components/service';
+import { useModalConfirm } from '@wellness/admin-ui';
 export const ClientPage: NextPageWithLayout<SafeAny> = () => {
   const { query } = useRouter();
-
+  const confirm = useModalConfirm();
   const { client } = useClientController({
     clientId: query.clientId as string,
   });
@@ -31,7 +33,14 @@ export const ClientPage: NextPageWithLayout<SafeAny> = () => {
       backText={client.name}
       actions={
         <>
-          <ButtonIcon variant="red">
+          <ButtonIcon
+            variant="red"
+            onClick={() => {
+              confirm({
+                title: '¿Esta seguro de eliminar este cliente?',
+              });
+            }}
+          >
             <DeleteIcon />
           </ButtonIcon>
           <ButtonIcon bg="brown.300" variant="link">
@@ -40,7 +49,7 @@ export const ClientPage: NextPageWithLayout<SafeAny> = () => {
         </>
       }
     >
-      <Tabs defaultIndex={4} variant="unstyled">
+      <Tabs defaultIndex={2} variant="unstyled">
         <TabList>
           <TabWellness>Dashboard</TabWellness>
           <TabWellness>Asistencias</TabWellness>
@@ -48,13 +57,13 @@ export const ClientPage: NextPageWithLayout<SafeAny> = () => {
           <TabWellness>fichas</TabWellness>
         </TabList>
         <TabPanels overflowY="scroll" maxHeight="500px">
-          <TabContent>
-            <DashboardClient />
-          </TabContent>
+          <TabContent>{/* <DashboardClient /> */}</TabContent>
           <TabContent>
             <AsistenceTab />
           </TabContent>
-          <TabContent></TabContent>
+          <TabContent>
+            <ServicesSection />
+          </TabContent>
           <TabContent>
             <DashboardFicha />
           </TabContent>
@@ -65,5 +74,10 @@ export const ClientPage: NextPageWithLayout<SafeAny> = () => {
 };
 
 ClientPage.getLayout = (page) => {
-  return <BaseLayout>{page}</BaseLayout>;
+  return (
+    <BaseLayout>
+      {page}
+      <CreateContractForm />
+    </BaseLayout>
+  );
 };

@@ -6,7 +6,7 @@ import {
   useDeleteAsistenceMutation,
 } from '@wellness/admin-ui/common';
 import { ID, SafeAny } from '@wellness/common';
-import { CreateAsistenceT } from '../data/schemas';
+import { CreateAsistenceT } from '../domain/schemas';
 import { useClientsStore } from '../data/client-store';
 import { useEffect } from 'react';
 

@@ -5,7 +5,7 @@ import {
 import { Asset } from '@wellness/admin-ui';
 import { isValid, pluck } from '@wellness/common';
 import { useAssetService, ModeRegiser, Client } from '@wellness/admin-ui';
-import { SaveClientSchena } from '../data/schemas';
+import { SaveClientSchena } from '../domain/schemas';
 import { useClientsStore } from '../data/client-store';
 
 import * as React from 'react';

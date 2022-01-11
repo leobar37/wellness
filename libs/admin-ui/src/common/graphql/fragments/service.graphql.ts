@@ -50,3 +50,18 @@ export const ActivityFragment = gql`
     }
   }
 `;
+
+export const ContractFragment = gql`
+  fragment ContractFragment on Contract {
+    id
+    createdAt
+    updateAt
+    note
+    paid
+    price
+    finishedAt
+    suscription {
+      ...SubscriptionFragment
+    }
+  }
+`;

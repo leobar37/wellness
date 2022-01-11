@@ -4,11 +4,9 @@ import { makeToggle, pipe } from '@wellness/admin-ui/utils';
 import { SafeAny } from '@wellness/common';
 import _create from 'zustand';
 import { IClientStore } from '../domain/client.store';
-
 const create = pipe(immer, _create) as typeof _create;
 
 export const useClientsStore = create<IClientStore>((set, get) => {
-  // const [value, setvalue] = useState(true);
   return {
     // state
     // clients
@@ -27,6 +25,13 @@ export const useClientsStore = create<IClientStore>((set, get) => {
     toggleModalShowFicha: makeToggle('modalShowFicha', set),
     ficha: null,
     fichas: null,
+    // contract modal
+    contractsFeature: {
+      modalContract: {
+        isOpen: true,
+        state: 'create',
+      },
+    },
     selectFicha: (ficha: Ficha) => {
       set((state) => {
         state.selectedFicha = ficha;

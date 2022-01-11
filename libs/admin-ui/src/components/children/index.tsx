@@ -7,6 +7,7 @@ import {
 } from 'react';
 import { isElement } from 'react-is';
 import { warn } from '@chakra-ui/utils';
+import { SafeAny } from '@wellness/common';
 
 export type TextOrChild = string | ReactNode;
 export type ChildrenOrTextProps = {
@@ -22,7 +23,8 @@ export const ChildrenOrText: FC<ChildrenOrTextProps> = ({
   onElement,
   onText,
 }) => {
-  const isReactElemet = typeof children !== 'string';
+  const isReactElemet = isElement(children);
+
   warn({
     condition: !children,
     message: 'Children has not been provided',
@@ -35,7 +37,7 @@ export const ChildrenOrText: FC<ChildrenOrTextProps> = ({
       ? onText(children as string)
       : null
     : onElement
-    ? onElement(children as ReactChildren)
+    ? onElement(children as SafeAny)
     : null;
 };
 

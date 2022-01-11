@@ -11,12 +11,14 @@ import { EntityManager, Repository } from 'typeorm';
 import { CRUD, ModeSuscription, omit } from '@wellness/common';
 import { Suscription, Contract } from '@wellness/core';
 import { PlanHelper } from '../helpers/plan.helper';
+import { FindManyOptions } from 'typeorm';
+import addDays from 'date-fns/addDays';
 import {
   BussinessError,
   EntityNotFoundError,
 } from '@wellness/core/common/error';
 import { ContractInput } from '../dto/contract.input';
-
+import { FiltersPlan } from '../dto/filters.input';
 @Injectable()
 export class PlanService {
   constructor(
@@ -95,6 +97,7 @@ export class PlanService {
         id: contractInput.planId,
       },
     });
+
     const sub = await plan.suscription;
     const contract = await this.manager.save(
       Contract,
@@ -104,6 +107,7 @@ export class PlanService {
         paid: contractInput.paid,
         note: contractInput.note,
         price: contractInput.price,
+        finishedAt: addDays(new Date(), sub.duration),
       })
     );
     this.eventBus.publish(
@@ -117,9 +121,18 @@ export class PlanService {
   }
 
   // find plans
-  public async findPlans() {
-    const plans = await this.repository.find({});
-    return plans;
+  public async findPlans(filter: FiltersPlan) {
+    let builder = this.repository
+      .createQueryBuilder('plan')
+      .innerJoin('plan.suscription', 'sub');
+
+    if (filter?.active) {
+      builder = builder.where('sub.active = :active', {
+        active: filter.active,
+      });
+    }
+
+    return builder.getMany();
   }
 
   // TODO: add date filter

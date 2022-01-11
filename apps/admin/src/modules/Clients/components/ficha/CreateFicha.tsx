@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect } from 'react';
-import { DetailFichaT } from '../../data/schemas';
+import { DetailFichaT } from '../../domain/schemas';
 import { Formik } from 'formik';
 import { useDisclosure, HStack, Button } from '@chakra-ui/react';
 import { ModalCrud, ChackraForm } from '@wellness/admin-ui/components';

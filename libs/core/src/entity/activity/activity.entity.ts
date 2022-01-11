@@ -6,6 +6,8 @@ import { Detail } from '../detail-plan';
 import { Suscription } from '../suscription/suscription.entity';
 /**
  * @description
+ * TODO:
+ * - The management logic is missing, whether the activity is active or not
  */
 @Entity()
 @ObjectType()

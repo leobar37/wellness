@@ -21,7 +21,13 @@ export interface IClientStore {
   selectedFicha: Ficha | null;
   modalShowFicha: boolean;
   selectFicha(ficha: Ficha): void;
-
+  // contract modal
+  contractsFeature: {
+    modalContract: {
+      isOpen: boolean;
+      state: ModeAction;
+    };
+  };
   // asistences
   createAsistencesModal: boolean;
   asistences: Asistence[];
