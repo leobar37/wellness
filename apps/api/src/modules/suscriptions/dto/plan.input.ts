@@ -5,7 +5,7 @@ import { ModeSuscription } from '@wellness/common';
 
 @InputType()
 export class PlanInput implements Partial<Plan> {
-  @Field()
+  @Field({ description: 'Determine if this plan is visible for the users' })
   visible: boolean;
 
   @Field((type) => DetailInput)
@@ -13,4 +13,7 @@ export class PlanInput implements Partial<Plan> {
 
   @Field((type) => Int)
   duration: number;
+
+  @Field((type) => Boolean, { description: 'Determine if a plan is active' })
+  active: boolean;
 }

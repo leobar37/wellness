@@ -28,4 +28,16 @@ export class PlanResolver {
   public getPlans() {
     return this.planService.findPlans();
   }
+
+  @Query((type) => Plan)
+  public getPlan(@Args('id', { type: () => ID }) id: number) {
+    return this.planService.getPlan(id);
+  }
+  @Mutation((type) => Plan)
+  updatePlan(
+    @Args('id', { type: () => ID }) id: number,
+    @Args('input', { type: () => PlanInput }) plan: PlanInput
+  ) {
+    return this.planService.updatePlan(id, plan);
+  }
 }

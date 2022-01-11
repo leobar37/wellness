@@ -16,6 +16,7 @@ import {
   EntityNotFoundError,
 } from '@wellness/core/common/error';
 import { ContractInput } from '../dto/contract.input';
+
 @Injectable()
 export class PlanService {
   constructor(
@@ -36,7 +37,7 @@ export class PlanService {
       })
     );
 
-    plan.suscription = suscription;
+    plan.suscription = Promise.resolve(suscription);
 
     const planSaved = await this.repository.save(plan);
     this.eventBus.publish(
@@ -47,6 +48,20 @@ export class PlanService {
     );
     return planSaved;
   }
+  async updatePlan(id: number, input: PlanInput) {
+    const plan = await this.existPlan(id);
+    await this.repository.update(plan.id, {
+      detail: input.detail,
+      visible: input.visible,
+    });
+    const sub = await plan.suscription;
+    await this.manager.update(Suscription, sub.id, {
+      duration: input.duration,
+      active: input.active,
+    });
+    return this.repository.findOne(plan.id);
+  }
+
   private async existPlan(id: number) {
     const plan = await this.repository.findOne(id);
     if (!plan) {
@@ -80,12 +95,12 @@ export class PlanService {
         id: contractInput.planId,
       },
     });
-
+    const sub = await plan.suscription;
     const contract = await this.manager.save(
       Contract,
       new Contract({
         clientId: contractInput.clientId,
-        suscriptionId: plan.suscription.id,
+        suscriptionId: sub.id,
         paid: contractInput.paid,
         note: contractInput.note,
         price: contractInput.price,
@@ -119,5 +134,9 @@ export class PlanService {
       .printSql()
       .getMany();
     return plans;
+  }
+
+  public async getPlan(id: number) {
+    return this.repository.findOne(id);
   }
 }

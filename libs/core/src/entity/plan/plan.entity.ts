@@ -28,6 +28,7 @@ export class Plan extends WellnessEntity {
     cascade: true,
     onDelete: 'CASCADE',
   })
+  @Field((type) => Suscription)
   @JoinColumn()
-  suscription: Suscription;
+  suscription: Promise<Suscription>;
 }

@@ -73,6 +73,7 @@ export const Table: FunctionComponent<TableProps> = ({
       };
       _columns.push(selectColumn);
     }
+
     return [
       ..._columns,
       ...convertChildrenToColumns(children as ReactChildren),

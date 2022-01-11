@@ -17,6 +17,9 @@ export const PlanFragment = gql`
       ...DetailFragment
     }
     visible
+    suscription {
+      ...SubscriptionFragment
+    }
   }
 `;
 

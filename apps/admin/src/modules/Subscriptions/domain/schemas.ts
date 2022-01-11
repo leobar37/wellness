@@ -13,3 +13,14 @@ export const createActivitySchema = yup.object({
 });
 
 export type CreateActivity = Asserts<typeof createActivitySchema>;
+
+export const createPlanSchema = yup.object({
+  visible: yup.boolean().required().default(true),
+  name: yup.string().required(),
+  description: yup.string().required(),
+  price: yup.number().required(),
+  duration: yup.number().required(),
+  active: yup.boolean().required().default(true),
+});
+
+export type CreatePlan = Asserts<typeof createPlanSchema>;

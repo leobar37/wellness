@@ -131,6 +131,7 @@ type Plan {
   updateAt: DateTime!
   detail: Detail!
   visible: Boolean!
+  suscription: Suscription!
 }
 
 type ResponseSignature {
@@ -144,6 +145,7 @@ type Query {
   client(id: ID!): Client!
   finAsistences(cliendId: ID!): [Asistence!]!
   getPlans: [Plan!]!
+  getPlan(id: ID!): Plan!
   getActivities: [Activity!]!
   getActivity(id: ID!): Activity!
   getFicha(userId: Int!): Ficha
@@ -160,6 +162,7 @@ type Mutation {
   createPlan(input: PlanInput!): Plan!
   deletePlan(id: ID!): Plan!
   joinPlan(contract: ContractInput!): Boolean!
+  updatePlan(input: PlanInput!, id: ID!): Plan!
   createActivity(input: ActivityInput!): Activity!
   deleteActivity(id: ID!): Activity!
   joinActivity(contract: ContractInput!): Contract!
@@ -193,9 +196,13 @@ input InputAsistence {
 }
 
 input PlanInput {
+  """Determine if this plan is visible for the users"""
   visible: Boolean!
   detail: DetailInput!
   duration: Int!
+
+  """Determine if a plan is active"""
+  active: Boolean!
 }
 
 input DetailInput {

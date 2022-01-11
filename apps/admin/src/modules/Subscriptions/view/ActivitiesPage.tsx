@@ -21,12 +21,9 @@ import { useModalConfirm } from '@wellness/admin-ui/ui';
 import { useActivityModal } from '../data';
 export const ActivitiesPage: NextPageWithLayout = () => {
   const { activities, isLoading } = useInitActivitiesController();
-  console.log(activities);
-
   const confirm = useModalConfirm();
   const { openModal } = useActivityModal();
-  const { toggleActivitiesCrudModal, patch, selectDeleteActivities } =
-    useSubscriptionsStore();
+  const { patch, selectDeleteActivities } = useSubscriptionsStore();
   const router = useRouter();
   const [table, setTable] = useState<TableInstanceProps | null>();
 
@@ -40,7 +37,6 @@ export const ActivitiesPage: NextPageWithLayout = () => {
     router.push(`./activities/${activity.id}`);
   };
 
-  // on delete activities
   const onDeleteActivities = () => {
     confirm({});
   };
@@ -48,10 +44,10 @@ export const ActivitiesPage: NextPageWithLayout = () => {
     <>
       <Layout
         backText="Actividades"
-        actions={<Button onClick={() => openModal()}>Crear</Button>}
+        actions={<Button onClick={() => openModal(true)}>Crear</Button>}
       >
         <HStack>
-          <Badgebg name="Total de actividades" value={50} />
+          <Badgebg name="Total de actividades" value={activities.length} />
         </HStack>
         <HStack justify="space-between" mt={10}>
           {table && <GlobalFilter table={table} />}
@@ -110,9 +106,6 @@ export const ActivitiesPage: NextPageWithLayout = () => {
                   >
                     <EyeIcon />
                   </ButtonIcon>
-                  {/* <ButtonIcon bg={'gray.600'}>
-                    <EditIcon />
-                  </ButtonIcon> */}
                 </HStack>
               );
             }}
