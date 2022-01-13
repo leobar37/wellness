@@ -3,7 +3,11 @@ import { SetState } from 'zustand';
 
 export interface IClientStore {
   clients: Client[];
-  clientModal: boolean;
+  clientModal: {
+    isOpen: boolean;
+    selectClient: Client | null;
+    mode: ModeAction;
+  };
   selectDeleteClients: Client[];
 
   selectClient: Client | null;

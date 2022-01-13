@@ -44,3 +44,11 @@ export const createResource = gql`
     }
   }
 `;
+
+export const updateResource = gql`
+  mutation editResource($resource: AssetEditInput!) {
+    editResource(resource: $resource) {
+      ...AssetFragment
+    }
+  }
+`;

@@ -3,6 +3,8 @@ import type { Client, NextPageWithLayout } from '@wellness/admin-ui/common';
 import { BaseLayout, Layout } from '@wellness/admin-ui/components';
 import { DeleteIcon, DotsVertical, Filter } from '@wellness/admin-ui/icons';
 import { Badgebg, ColTable, Table } from '@wellness/admin-ui/ui';
+import { ButtonIcon } from '@wellness/admin-ui';
+import { EyeIcon } from '@wellness/admin-ui';
 import {
   GlobalFilter,
   prepareCellProps,
@@ -11,26 +13,24 @@ import {
 import { SafeAny } from '@wellness/common';
 import { useState } from 'react';
 import { RegisterClientModal } from '../components';
-import { useClientsController } from '../controller';
+import { useInitClientsController } from '../controller';
 import { useClientsStore } from '../data/client-store';
 import { useRouter } from 'next/router';
-
+import { useClientCrudModal } from '../data';
 export const Page: NextPageWithLayout<SafeAny> = () => {
-  const { clients } = useClientsController();
+  const { clients } = useInitClientsController();
   const [table, setTable] = useState<TableInstanceProps | null>();
-
-  const { toggleClientModal, setDeleteClients } = useClientsStore.getState();
-  const { selectDeleteClients } = useClientsStore();
+  const { openModal } = useClientCrudModal();
   const router = useRouter();
-  const showDeleteIcon = selectDeleteClients && selectDeleteClients.length > 0;
 
   const onSelectClient = (client: Client) => {
     router.push(`./clients/${client.id}`);
   };
+
   return (
     <Layout
       backText="Clientes"
-      actions={<Button onClick={() => toggleClientModal(true)}>Crear</Button>}
+      actions={<Button onClick={() => openModal()}>Crear</Button>}
       py={4}
     >
       <HStack spacing={4} my={3}>
@@ -43,29 +43,13 @@ export const Page: NextPageWithLayout<SafeAny> = () => {
           <Button leftIcon={<Filter />} variant="ghost">
             Filtros
           </Button>
-          {showDeleteIcon && (
-            <Button variant="red" leftIcon={<DeleteIcon fontSize="large" />}>
-              {selectDeleteClients.length}
-            </Button>
-          )}
         </HStack>
       </HStack>
       <Table
+        isSelecteable={false}
         onTable={(table) => {
           setTable(table);
         }}
-        onChangueTable={(result) => {
-          setDeleteClients(result.selection.nodes);
-        }}
-        rowProps={({ original }) => ({
-          onClick: () => onSelectClient(original as SafeAny),
-          sx: {
-            _hover: {
-              cursor: 'pointer',
-              bg: 'gray.100',
-            },
-          },
-        })}
         data={clients}
         variant="simple"
         size="sm"
@@ -76,7 +60,7 @@ export const Page: NextPageWithLayout<SafeAny> = () => {
         <ColTable Header="Correo" accessor="email" />
         <ColTable Header="Dni" accessor="dni" />
         <ColTable
-          Header="Selcción"
+          Header="Aciones"
           id="menu"
           cellStyles={{
             textAlign: 'center',
@@ -85,9 +69,16 @@ export const Page: NextPageWithLayout<SafeAny> = () => {
           Cell={(props: SafeAny) => {
             const { original } = prepareCellProps<Client>(props);
             return (
-              <Box as="button" onClick={() => onSelectClient(original)}>
-                <DotsVertical />
-              </Box>
+              <HStack>
+                <ButtonIcon
+                  bg={'brown'}
+                  onClick={() => {
+                    onSelectClient(original as SafeAny);
+                  }}
+                >
+                  <EyeIcon />
+                </ButtonIcon>
+              </HStack>
             );
           }}
         />

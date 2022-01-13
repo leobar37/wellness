@@ -13,21 +13,23 @@ import { useRouter } from 'next/router';
 import { AsistenceTab } from '../components/asistence/AsistenceTab';
 import { DashboardClient } from '../components/DashboarClient';
 import { DashboardFicha } from '../components/ficha';
-import { useClientController } from '../controller';
+import { useInitClientController } from '../controller';
 import { ServicesSection } from '../components/service';
 import { CreateContractForm } from '../components/service';
+import { RegisterClientModal } from '../components';
 import { useModalConfirm } from '@wellness/admin-ui';
+import { useClientCrudModal } from '../data';
 export const ClientPage: NextPageWithLayout<SafeAny> = () => {
   const { query } = useRouter();
   const confirm = useModalConfirm();
-  const { client } = useClientController({
+  const { openModal } = useClientCrudModal();
+  const { client, isLoading } = useInitClientController({
     clientId: query.clientId as string,
   });
 
-  if (!client) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
-
   return (
     <Layout
       backText={client.name}
@@ -43,7 +45,11 @@ export const ClientPage: NextPageWithLayout<SafeAny> = () => {
           >
             <DeleteIcon />
           </ButtonIcon>
-          <ButtonIcon bg="brown.300" variant="link">
+          <ButtonIcon
+            onClick={() => openModal(true)}
+            bg="brown.300"
+            variant="link"
+          >
             <EditIcon color="white" />
           </ButtonIcon>
         </>
@@ -57,7 +63,9 @@ export const ClientPage: NextPageWithLayout<SafeAny> = () => {
           <TabWellness>fichas</TabWellness>
         </TabList>
         <TabPanels overflowY="scroll" maxHeight="500px">
-          <TabContent>{/* <DashboardClient /> */}</TabContent>
+          <TabContent>
+            <DashboardClient />
+          </TabContent>
           <TabContent>
             <AsistenceTab />
           </TabContent>
@@ -78,6 +86,7 @@ ClientPage.getLayout = (page) => {
     <BaseLayout>
       {page}
       <CreateContractForm />
+      <RegisterClientModal />
     </BaseLayout>
   );
 };

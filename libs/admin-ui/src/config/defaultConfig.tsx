@@ -10,16 +10,17 @@ export const defaultConfig: WellnessConfig = {
         icon: <UsersIcon fontSize="xl" />,
       },
       {
-        name: 'Gymnasios',
+        name: 'Servicios',
         icon: <Dumbell fontSize="xl" />,
+        path: '',
         subItems: [
           {
             name: 'Planes',
-            path: '',
+            path: '/app/services/plans',
           },
           {
-            name: 'Servicios',
-            path: '',
+            name: 'Actividades',
+            path: '/app/services/activities',
           },
         ],
       },

@@ -8,3 +8,4 @@ export * from './price';
 export * from './dialogs';
 export * from './badge';
 export * from './card';
+export * from './toast';

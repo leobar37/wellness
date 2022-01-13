@@ -1,10 +1,10 @@
-import { Resolver } from '@nestjs/graphql';
-import { AssetService } from '../services/asset.service';
-import { Mutation, Query, Args, createUnionType } from '@nestjs/graphql';
-import { ResponseSignature } from '../dto/signature.dto';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { AssetInput } from '../dto/createAsset.input';
 import { DeleteAssetInput } from '../dto/deleteAsset.input';
+import { AssetEditInput } from '../dto/editAsset.input';
+import { ResponseSignature } from '../dto/signature.dto';
 import { ResourceUnion } from '../internal';
+import { AssetService } from '../services/asset.service';
 
 @Resolver()
 export class AssetResolver {
@@ -31,5 +31,12 @@ export class AssetResolver {
     @Args('resource', { type: () => AssetInput }) resource: AssetInput
   ): Promise<typeof ResourceUnion> {
     return this.assetService.createResource(resource);
+  }
+
+  @Mutation((type) => ResourceUnion)
+  async editResource(
+    @Args('resource', { type: () => AssetEditInput }) resource: AssetEditInput
+  ) {
+    return this.assetService.editResource(resource);
   }
 }

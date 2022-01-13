@@ -1,26 +1,14 @@
-import {
-  Avatar,
-  Box,
-  Center,
-  Divider,
-  HStack,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Divider, HStack, VStack } from '@chakra-ui/react';
+import { FunctionComponent, PropsWithChildren } from 'react';
 import { Logo } from '../../components';
-import { Left, Search } from '../../icons';
-
-import { PropsWithChildren, ReactNode, FunctionComponent } from 'react';
 import { config } from './internal';
 
 export const SidebarHeader = () => {
   return (
     <VStack spacing="6">
-      <HStack width="100%" justify="space-between">
+      <HStack width="100%" justify="end">
         <Logo />
-        <Center
+        {/* <Center
           as="button"
           width="30px"
           height="30px"
@@ -28,7 +16,7 @@ export const SidebarHeader = () => {
           bg="whiteAlpha.600"
         >
           <Left color="white" />
-        </Center>
+        </Center> */}
       </HStack>
       <Divider></Divider>
     </VStack>

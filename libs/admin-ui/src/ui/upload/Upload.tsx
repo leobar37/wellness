@@ -1,13 +1,17 @@
-import { Center, chakra, SystemStyleObject, useToken } from '@chakra-ui/react';
+import {
+  Center,
+  chakra,
+  Img,
+  SystemStyleObject,
+  useToken,
+} from '@chakra-ui/react';
 import { isValid } from '@wellness/common';
-import { useField } from 'formik';
-import NextImage from 'next/image';
+import { isString } from 'lodash';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { UploadImageConfig, useConfig } from '../../config';
 import { FileIcon } from '../../icons';
 import { ImageUploadProps, MFile } from './types';
-
 /**
  * TODO:
  * - add validation
@@ -21,6 +25,7 @@ export const ImageUpload: FC<ImageUploadProps> = ({
   onFile,
   width,
   height,
+  image,
   ...extraProps
 }) => {
   const [gray500, gray600] = useToken('colors', ['gray.500', 'gray.600']);
@@ -87,9 +92,9 @@ export const ImageUpload: FC<ImageUploadProps> = ({
         return null;
       }
       return (
-        <NextImage
+        <Img
           objectFit="contain"
-          src={file.preview}
+          src={isString(file) ? file : file.preview}
           width={config.width}
           height={config.height}
         />
@@ -131,9 +136,12 @@ export const ImageUpload: FC<ImageUploadProps> = ({
       return placeHolderElment();
     }
     if ((files === null || files === undefined) && placeHolderElment) {
+      if (isValid(image)) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return renderPreview(image!);
+      }
       return placeHolderElment();
     }
-
     if (preview && placeHolderElment) {
       return renderPreview(files as MFile);
     }

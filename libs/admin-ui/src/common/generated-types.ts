@@ -67,6 +67,11 @@ export type AssetBoot = {
   updateAt: Scalars['DateTime'];
 };
 
+export type AssetEditInput = {
+  id: Scalars['ID'];
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+};
+
 export type AssetInput = {
   bootId?: InputMaybe<Scalars['String']>;
   isMultiple: Scalars['Boolean'];
@@ -102,7 +107,6 @@ export type ClientInput = {
   lastName: Scalars['String'];
   modeRegister: ModeRegiser;
   name: Scalars['String'];
-  note: Scalars['String'];
   phone: Scalars['String'];
   photoId?: InputMaybe<Scalars['Int']>;
   sex: Sex;
@@ -218,6 +222,7 @@ export type Mutation = {
   deleteFicha: Ficha;
   deletePlan: Plan;
   deleteResource: ResourceUnion;
+  editResource: ResourceUnion;
   joinActivity: Contract;
   joinPlan: Contract;
   openAndCloseFicha: Ficha;
@@ -278,6 +283,11 @@ export type MutationDeletePlanArgs = {
 
 export type MutationDeleteResourceArgs = {
   input: DeleteAssetInput;
+};
+
+
+export type MutationEditResourceArgs = {
+  resource: AssetEditInput;
 };
 
 
@@ -485,6 +495,13 @@ export type CreateResourceMutationVariables = Exact<{
 
 export type CreateResourceMutation = { __typename?: 'Mutation', createResource: { __typename: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | { __typename: 'AssetBoot', id: string, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } };
 
+export type EditResourceMutationVariables = Exact<{
+  resource: AssetEditInput;
+}>;
+
+
+export type EditResourceMutation = { __typename?: 'Mutation', editResource: { __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | { __typename?: 'AssetBoot' } };
+
 export type RegisterClientMutationVariables = Exact<{
   client: ClientInput;
 }>;
@@ -503,6 +520,14 @@ export type GetClientQueryVariables = Exact<{
 
 
 export type GetClientQuery = { __typename?: 'Query', client: { __typename?: 'Client', id: string, code: string, dni: string, createdAt: SafeAny, email: string, name: string, lastName: string, birth?: SafeAny | null | undefined, phone?: string | null | undefined, direction?: string | null | undefined, sex: Sex, mode: ModeRegiser, photo?: { __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined } };
+
+export type UpdateClientMutationVariables = Exact<{
+  input: ClientInput;
+  id: Scalars['ID'];
+}>;
+
+
+export type UpdateClientMutation = { __typename?: 'Mutation', updateCLient: { __typename?: 'Client', id: string, code: string, dni: string, createdAt: SafeAny, email: string, name: string, lastName: string, birth?: SafeAny | null | undefined, phone?: string | null | undefined, direction?: string | null | undefined, sex: Sex, mode: ModeRegiser, photo?: { __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined } };
 
 export type OpenAndCloseMutationVariables = Exact<{
   input: FichaInput;
@@ -1035,6 +1060,39 @@ export function useCreateResourceMutation(baseOptions?: Apollo.MutationHookOptio
 export type CreateResourceMutationHookResult = ReturnType<typeof useCreateResourceMutation>;
 export type CreateResourceMutationResult = Apollo.MutationResult<CreateResourceMutation>;
 export type CreateResourceMutationOptions = Apollo.BaseMutationOptions<CreateResourceMutation, CreateResourceMutationVariables>;
+export const EditResourceDocument = gql`
+    mutation editResource($resource: AssetEditInput!) {
+  editResource(resource: $resource) {
+    ...AssetFragment
+  }
+}
+    ${AssetFragmentFragmentDoc}`;
+export type EditResourceMutationFn = Apollo.MutationFunction<EditResourceMutation, EditResourceMutationVariables>;
+
+/**
+ * __useEditResourceMutation__
+ *
+ * To run a mutation, you first call `useEditResourceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditResourceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editResourceMutation, { data, loading, error }] = useEditResourceMutation({
+ *   variables: {
+ *      resource: // value for 'resource'
+ *   },
+ * });
+ */
+export function useEditResourceMutation(baseOptions?: Apollo.MutationHookOptions<EditResourceMutation, EditResourceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditResourceMutation, EditResourceMutationVariables>(EditResourceDocument, options);
+      }
+export type EditResourceMutationHookResult = ReturnType<typeof useEditResourceMutation>;
+export type EditResourceMutationResult = Apollo.MutationResult<EditResourceMutation>;
+export type EditResourceMutationOptions = Apollo.BaseMutationOptions<EditResourceMutation, EditResourceMutationVariables>;
 export const RegisterClientDocument = gql`
     mutation registerClient($client: ClientInput!) {
   registerClient(client: $client) {
@@ -1137,6 +1195,40 @@ export function useGetClientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type GetClientQueryHookResult = ReturnType<typeof useGetClientQuery>;
 export type GetClientLazyQueryHookResult = ReturnType<typeof useGetClientLazyQuery>;
 export type GetClientQueryResult = Apollo.QueryResult<GetClientQuery, GetClientQueryVariables>;
+export const UpdateClientDocument = gql`
+    mutation updateClient($input: ClientInput!, $id: ID!) {
+  updateCLient(id: $id, input: $input) {
+    ...ClientFragment
+  }
+}
+    ${ClientFragmentFragmentDoc}`;
+export type UpdateClientMutationFn = Apollo.MutationFunction<UpdateClientMutation, UpdateClientMutationVariables>;
+
+/**
+ * __useUpdateClientMutation__
+ *
+ * To run a mutation, you first call `useUpdateClientMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateClientMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateClientMutation, { data, loading, error }] = useUpdateClientMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUpdateClientMutation(baseOptions?: Apollo.MutationHookOptions<UpdateClientMutation, UpdateClientMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateClientMutation, UpdateClientMutationVariables>(UpdateClientDocument, options);
+      }
+export type UpdateClientMutationHookResult = ReturnType<typeof useUpdateClientMutation>;
+export type UpdateClientMutationResult = Apollo.MutationResult<UpdateClientMutation>;
+export type UpdateClientMutationOptions = Apollo.BaseMutationOptions<UpdateClientMutation, UpdateClientMutationVariables>;
 export const OpenAndCloseDocument = gql`
     mutation openAndClose($input: FichaInput!) {
   openAndCloseFicha(input: $input) {
@@ -1767,12 +1859,16 @@ export type CreateResourceCreateResource = (NonNullable<CreateResourceMutation['
 export type CreateResourceAssetInlineFragment = (DiscriminateUnion<(NonNullable<CreateResourceMutation['createResource']>), { __typename?: 'Asset' }>);
 export type CreateResourceAssetBootInlineFragment = (DiscriminateUnion<(NonNullable<CreateResourceMutation['createResource']>), { __typename?: 'AssetBoot' }>);
 export type CreateResourceAssets = NonNullable<(NonNullable<(DiscriminateUnion<(NonNullable<CreateResourceMutation['createResource']>), { __typename?: 'AssetBoot' }>)['assets']>)[number]>;
+export type EditResourceVariables = EditResourceMutationVariables;
+export type EditResourceEditResource = (NonNullable<EditResourceMutation['editResource']>);
 export type RegisterClientVariables = RegisterClientMutationVariables;
 export type RegisterClientRegisterClient = (NonNullable<RegisterClientMutation['registerClient']>);
 export type GetClientsVariables = GetClientsQueryVariables;
 export type GetClientsClients = NonNullable<(NonNullable<GetClientsQuery['clients']>)[number]>;
 export type GetClientVariables = GetClientQueryVariables;
 export type GetClientClient = (NonNullable<GetClientQuery['client']>);
+export type UpdateClientVariables = UpdateClientMutationVariables;
+export type UpdateClientUpdateCLient = (NonNullable<UpdateClientMutation['updateCLient']>);
 export type OpenAndCloseVariables = OpenAndCloseMutationVariables;
 export type OpenAndCloseOpenAndCloseFicha = (NonNullable<OpenAndCloseMutation['openAndCloseFicha']>);
 export type GetFichaVariables = GetFichaQueryVariables;

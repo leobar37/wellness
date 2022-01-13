@@ -31,8 +31,10 @@ export const CreateAsistence: React.FunctionComponent<CreateAsistenceProps> =
         initialValues={{
           note: '',
         }}
-        onSubmit={async (values, {}) => {
+        onSubmit={async (values, { resetForm }) => {
           await createAsistence(values);
+          resetForm();
+          onClose();
         }}
       >
         {({ handleSubmit, submitForm }) => {

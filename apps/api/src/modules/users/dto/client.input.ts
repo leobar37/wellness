@@ -30,9 +30,6 @@ export class ClientInput implements Partial<Client> {
   @IsEmail()
   email: string;
 
-  @Field()
-  note: string;
-
   @Field((type) => Sex)
   sex: Sex;
 

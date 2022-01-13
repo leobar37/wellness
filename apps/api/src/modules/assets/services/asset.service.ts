@@ -1,15 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
+import { CloudinaryResponse, CRUD, SafeAny } from '@wellness/common';
 import { CloudinaryService } from '@wellness/core';
-import { InjectRepository, InjectEntityManager } from '@nestjs/typeorm';
-import { Asset, AssetBoot } from '@wellness/core/entity';
-import { Repository, EntityManager } from 'typeorm';
-import { AssetInput } from '../dto/createAsset.input';
-import { CloudinaryResponse, SafeAny, CRUD } from '@wellness/common';
-import { EventBus, AssetEvent } from '@wellness/core/event-bus';
-import { ResourceUnionType } from '../internal';
-import { isValid } from '@wellness/common';
 import { EntityNotFoundError } from '@wellness/core/common/error';
+import { Asset, AssetBoot } from '@wellness/core/entity';
+import { AssetEvent, EventBus } from '@wellness/core/event-bus';
+import { EntityManager, Repository } from 'typeorm';
+import { AssetInput } from '../dto/createAsset.input';
 import { DeleteAssetInput } from '../dto/deleteAsset.input';
+import { AssetEditInput } from '../dto/editAsset.input';
 @Injectable()
 export class AssetService {
   constructor(
@@ -23,14 +22,24 @@ export class AssetService {
     return this.cloudinary.generateSignature(options);
   }
 
-  public deleteFile(public_id: string) {
+  public async deleteFile(public_id: string) {
     return this.cloudinary.deleteFile(public_id);
   }
-  /**
-   *
-   * TODO:
-   * - Emit asset envent when create a asset or AssetBoot
-   */
+
+  async editResource(input: AssetEditInput) {
+    const asset = await this.assetRepository.findOne(input.id);
+    if (!asset) {
+      throw new EntityNotFoundError('Asset', asset.id);
+    }
+    await this.assetRepository.update(input.id, {
+      metadata: input.metadata as SafeAny,
+      name: input.metadata.original_filename,
+      size: input.metadata.height,
+    });
+    await this.deleteFile((asset.metadata as CloudinaryResponse).public_id);
+
+    return this.assetRepository.findOne(input.id);
+  }
 
   async createResource(inputAsset: AssetInput): Promise<Asset | AssetBoot> {
     // is multiple

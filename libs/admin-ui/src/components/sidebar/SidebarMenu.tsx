@@ -16,6 +16,7 @@ import {
   AccordionButton,
   AccordionPanel,
 } from '@chakra-ui/react';
+import { useCallback } from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-types
 type SidebarMenuProps = {};
 export const SidebarMenu = ({
@@ -32,7 +33,7 @@ export const SidebarMenu = ({
 
 export type SubItemProps = PropsWithChildren<{
   active?: boolean;
-  href: string;
+  href?: string;
 }>;
 export const SubItem: FunctionComponent<SubItemProps> = ({
   children,
@@ -40,7 +41,8 @@ export const SubItem: FunctionComponent<SubItemProps> = ({
   href,
 }) => {
   return (
-    <NextLink passHref href={href}>
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    <NextLink passHref href={href!}>
       <Text
         fontSize="small"
         p={1.5}
@@ -75,8 +77,8 @@ export const MenuItem = ({ icon, children, subItems, path }: MenuItemProps) => {
     condition: isValid(path) && isValid(subItems),
     message: 'When using path, subItems is ignored',
   });
-  console.log('Hello sub items');
-  console.log(subItems);
+
+  const hasSubItems = subItems && subItems?.length;
 
   const mapSubItems = useMemo(() => {
     if (!subItems) {
@@ -99,27 +101,39 @@ export const MenuItem = ({ icon, children, subItems, path }: MenuItemProps) => {
     );
   }, [subItems]);
 
+  const renderItem = useCallback(() => {
+    return (
+      <HStack
+        spacing="4"
+        as="a"
+        color="white"
+        borderRadius="8px"
+        padding="10px 15px"
+        _hover={{
+          bg: 'whiteAlpha.300',
+        }}
+        justify={!hasIcon ? 'center' : 'start'}
+        width={`${config.width - 30}px`}
+      >
+        {hasIcon && <Box>{icon}</Box>}
+        <Text fontSize="md">{children}</Text>
+      </HStack>
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [children]);
+
+  if (!hasSubItems) {
+    return (
+      <NextLink href={path || ''} passHref>
+        {renderItem()}
+      </NextLink>
+    );
+  }
   return (
     <AccordionItem border="none">
       {({ isExpanded }) => (
         <>
-          <AccordionButton>
-            <HStack
-              spacing="4"
-              as="button"
-              color="white"
-              borderRadius="8px"
-              padding="10px 15px"
-              _hover={{
-                bg: 'whiteAlpha.300',
-              }}
-              justify={!hasIcon ? 'center' : 'start'}
-              width={`${config.width - 30}px`}
-            >
-              {hasIcon && <Box>{icon}</Box>}
-              <Text fontSize="md">{children}</Text>
-            </HStack>
-          </AccordionButton>
+          <AccordionButton>{renderItem()}</AccordionButton>
           {mapSubItems}
         </>
       )}

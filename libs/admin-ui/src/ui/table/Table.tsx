@@ -7,18 +7,14 @@ import {
   Th,
   Thead,
   Tr,
-  usePrevious,
 } from '@chakra-ui/react';
 import { SafeAny } from '@wellness/common';
-import { count } from 'console';
 import { get, isFunction } from 'lodash';
 import React, {
   FunctionComponent,
   ReactChildren,
-  useCallback,
   useEffect,
   useMemo,
-  useRef,
 } from 'react';
 import {
   useFilters,
@@ -30,7 +26,11 @@ import {
 import { ColTableProps } from './Column';
 import { TableInstanceProps, TableProps } from './internals';
 import { convertChildrenToColumns } from './utils';
-
+/**
+ * TOOD:
+ * - add the way how to get the id
+ *  https://react-table.tanstack.com/docs/api/useTable
+ */
 export const Table: FunctionComponent<TableProps> = ({
   data,
   children,

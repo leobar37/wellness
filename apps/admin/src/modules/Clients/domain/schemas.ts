@@ -9,7 +9,6 @@ export const saveClientSchema = yup.object({
   birth: yup.date().nullable(),
   phone: yup.string().nullable(),
   direction: yup.string().nullable(),
-  note: yup.string().required(),
   dni: yup.string().required(),
   lastName: yup.string().required(),
   sex: yup.mixed().oneOf([Sex.MEN, Sex.OTHER, Sex.WOMEN]),

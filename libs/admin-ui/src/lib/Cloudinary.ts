@@ -1,16 +1,16 @@
 // see https://github.com/chickenLeobar/storeapp/blob/stagging/nimo/projects/shared/src/common/cloudinary/upload-cloudinary.service.ts
+import { useApolloClient } from '@apollo/client';
+import { CloudinaryResponse } from '@wellness/common';
+import Axios from 'axios';
+import { get } from 'lodash';
+import { useCallback } from 'react';
 import {
   GenerateSignatureDocument,
-  GenerateSignatureMutationVariables,
   GenerateSignatureMutation,
+  GenerateSignatureMutationVariables,
   ResponseSignature,
-} from '@wellness/admin-ui/common';
-import { useApolloClient } from '@apollo/client';
-import { useConfig, CloudinaryConfig } from '@wellness/admin-ui/config';
-import { get, isNull } from 'lodash';
-import { useCallback } from 'react';
-import Axios from 'axios';
-import { isValid, CloudinaryResponse } from '@wellness/common';
+} from '../common';
+import { CloudinaryConfig, useConfig } from '../config';
 
 type GenerateSignatureParams = {
   publicId?: string;

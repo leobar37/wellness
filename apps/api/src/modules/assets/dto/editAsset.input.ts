@@ -1,6 +1,12 @@
-import { InputType, Field, OmitType } from '@nestjs/graphql';
-
-import { Asset } from '@wellness/core';
+import { InputType, Field, OmitType, Int, ID } from '@nestjs/graphql';
+import { CloudinaryResponse } from '@wellness/common';
+import { GraphQLJSONObject } from 'graphql-scalars';
 
 @InputType()
-export class AssetEditInput extends OmitType(Asset, ['boot'] as const) {}
+export class AssetEditInput {
+  @Field((type) => ID)
+  id: number;
+
+  @Field((type) => GraphQLJSONObject, { nullable: true })
+  metadata: CloudinaryResponse;
+}

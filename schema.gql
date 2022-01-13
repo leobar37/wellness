@@ -181,6 +181,7 @@ type Mutation {
   signature(publicId: String): ResponseSignature!
   deleteResource(input: DeleteAssetInput!): ResourceUnion!
   createResource(resource: AssetInput!): ResourceUnion!
+  editResource(resource: AssetEditInput!): ResourceUnion!
   openAndCloseFicha(input: FichaInput!): Ficha!
   updateFicha(detailId: Int!, input: FichaInput!): Ficha!
   deleteFicha(fichaId: Int!): Ficha!
@@ -195,7 +196,6 @@ input ClientInput {
   birthday: DateTime
   direction: String!
   email: String!
-  note: String!
   sex: Sex!
   modeRegister: ModeRegiser!
   photoId: Int
@@ -257,6 +257,11 @@ input AssetInput {
 The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
 scalar JSONObject
+
+input AssetEditInput {
+  id: ID!
+  metadata: JSONObject
+}
 
 input FichaInput {
   weight: Float!

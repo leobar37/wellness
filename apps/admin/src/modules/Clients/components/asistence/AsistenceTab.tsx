@@ -8,13 +8,15 @@ import {
   useToken,
   VStack,
 } from '@chakra-ui/react';
-import { DeleteIcon } from '@wellness/admin-ui/icons';
+import { useModalConfirm } from '@wellness/admin-ui';
 import { Asistence } from '@wellness/admin-ui/common';
+import { DeleteIcon } from '@wellness/admin-ui/icons';
 import { Badgebg, ButtonIcon } from '@wellness/admin-ui/ui';
-import { CreateAsistence } from '../asistence/CreateAsistence';
-import { useClientsStore } from '../../data/client-store';
-import { useAsistenceController } from '../../controller';
 import { SafeAny } from '@wellness/common';
+import { useAsistenceController } from '../../controller';
+import { useClientsStore } from '../../data/client-store';
+import { CreateAsistence } from '../asistence/CreateAsistence';
+
 const { toggleClientAsistenceModal } = useClientsStore.getState();
 
 type AsistenceItemProps = {
@@ -23,7 +25,7 @@ type AsistenceItemProps = {
 };
 const AsistenceItem = ({ asistence, onDelete }: AsistenceItemProps) => {
   const [blackAlpha300] = useToken('colors', ['blackAlpha.300']);
-
+  const onComfirm = useModalConfirm();
   return (
     <ListItem
       justifyContent="space-between"
@@ -41,7 +43,17 @@ const AsistenceItem = ({ asistence, onDelete }: AsistenceItemProps) => {
         </Text>
         <Text>{asistence.note}</Text>
       </VStack>
-      <ButtonIcon variant="red" onClick={() => onDelete(asistence)}>
+      <ButtonIcon
+        variant="red"
+        onClick={() => {
+          onComfirm({
+            onConfirm: () => {
+              onDelete(asistence);
+              toggleClientAsistenceModal(false);
+            },
+          });
+        }}
+      >
         <DeleteIcon />
       </ButtonIcon>
     </ListItem>

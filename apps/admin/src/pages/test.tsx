@@ -1,25 +1,36 @@
-import { Button } from '@chakra-ui/react';
+import { Button, useToast, Wrap, WrapItem } from '@chakra-ui/react';
 import { useModalConfirm } from '@wellness/admin-ui/ui/dialogs';
 import React from 'react';
 
+function ToastStatusExample() {
+  const toast = useToast();
+  const statuses = ['success', 'error', 'warning', 'info'] as const;
+
+  return (
+    <Wrap>
+      {statuses.map((status, i) => (
+        <WrapItem key={i}>
+          <Button
+            onClick={() =>
+              toast({
+                title: `${status} toast`,
+                status: status,
+                isClosable: true,
+              })
+            }
+          >
+            Show {status} toast
+          </Button>
+        </WrapItem>
+      ))}
+    </Wrap>
+  );
+}
+
 function Test() {
-  const confirm = useModalConfirm();
   return (
     <div>
-      <Button
-        onClick={() => {
-          confirm({
-            onClose: () => {
-              console.log('close modal');
-            },
-            onConfirm: () => {
-              console.log('confirm modal');
-            },
-          });
-        }}
-      >
-        Click me
-      </Button>
+      <ToastStatusExample></ToastStatusExample>
     </div>
   );
 }

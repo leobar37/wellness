@@ -10,7 +10,11 @@ export const useClientsStore = create<IClientStore>((set, get) => {
   return {
     // state
     // clients
-    clientModal: false,
+    clientModal: {
+      isOpen: false,
+      selectClient: null,
+      mode: 'create',
+    },
     selectDeleteClients: [],
     clients: [],
     selectClient: null,
@@ -28,7 +32,7 @@ export const useClientsStore = create<IClientStore>((set, get) => {
     // contract modal
     contractsFeature: {
       modalContract: {
-        isOpen: true,
+        isOpen: false,
         state: 'create',
       },
     },
@@ -77,3 +81,32 @@ export const useClientsStore = create<IClientStore>((set, get) => {
     },
   };
 });
+
+export const useClientCrudModal = () => {
+  const { patch, clientModal, selectClient } = useClientsStore();
+  const openModal = (edit = false) => {
+    patch((state) => {
+      const _clientModal = state.clientModal;
+      _clientModal.isOpen = true;
+      if (edit) {
+        _clientModal.selectClient = selectClient;
+        _clientModal.mode = 'edit';
+      }
+    });
+  };
+
+  const closeModal = () => {
+    patch((state) => {
+      state.clientModal.isOpen = false;
+      state.clientModal.selectClient = null;
+    });
+  };
+
+  return {
+    isOpen: clientModal.isOpen,
+    openModal,
+    closeModal,
+    mode: clientModal.mode,
+    client: clientModal?.selectClient,
+  };
+};

@@ -19,6 +19,7 @@ export const UploadOne: FC<UploadOneProps> = ({ name, ...extraProps }) => {
           helpers.setValue(source);
         }
       }}
+      image={meta.value}
       {...extraProps}
     />
   );

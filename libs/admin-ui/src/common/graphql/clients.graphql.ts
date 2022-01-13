@@ -27,3 +27,11 @@ export const getClient = gql`
     }
   }
 `;
+
+export const updateClient = gql`
+  mutation updateClient($input: ClientInput!, $id: ID!) {
+    updateCLient(id: $id, input: $input) {
+      ...ClientFragment
+    }
+  }
+`;

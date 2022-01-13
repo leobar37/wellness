@@ -3,13 +3,15 @@ import {
   Button,
   Grid,
   GridItem,
+  GridItemProps,
   Heading,
   HStack,
   SystemStyleObject,
   Text,
-  GridItemProps,
 } from '@chakra-ui/react';
-import { useConfig, SidebarConfig } from '../../config';
+import { useRouter } from 'next/router';
+import * as React from 'react';
+import { FunctionComponent, PropsWithChildren } from 'react';
 import {
   MenuItem,
   Sidebar,
@@ -17,11 +19,9 @@ import {
   SidebarHeader,
   SidebarMenu,
 } from '../../components';
-import { Left, UsersIcon } from '../../icons';
-import * as React from 'react';
+import { SidebarConfig, useConfig } from '../../config';
+import { Left } from '../../icons';
 import { ClientOnly } from '../../lib';
-import { PropsWithChildren, FunctionComponent } from 'react';
-import { useRouter } from 'next/router';
 const layoutGrid: SystemStyleObject = {
   height: '100vh',
   bg: 'gray.200',

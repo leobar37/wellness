@@ -5,7 +5,7 @@ export type ImageUploadProps = {
   preview?: boolean;
   /** allow multiples images; by default is false */
   multiples?: boolean;
-
+  image?: string;
   /**
    * placeholder image
    */
