@@ -137,6 +137,28 @@ type Plan {
   suscription: Suscription!
 }
 
+"""This is a view table for show a resume of contract"""
+type ContractView {
+  clientId: ID!
+  suscriptionId: ID!
+  contractId: ID!
+  note: String!
+  finished: Boolean!
+  paid: Boolean!
+  createdAt: DateTime!
+  finishedAt: DateTime!
+  price: Float
+  name: String
+  type: ServiceType
+  serviceId: ID
+}
+
+"""Type of the service (plan, activity)"""
+enum ServiceType {
+  plan
+  activity
+}
+
 type ResponseSignature {
   signature: String!
   timestamp: Float!
@@ -151,6 +173,7 @@ type Query {
   getPlan(id: ID!): Plan!
   getActivities(filters: FiltersActivity): [Activity!]!
   getActivity(id: ID!): Activity!
+  getViewContracts(filters: FiContractsView): [ContractView!]!
   getFicha(userId: Int!): Ficha
   getFichas(userId: Int!): [Ficha!]
 }
@@ -161,6 +184,10 @@ input FiltersPlan {
 
 input FiltersActivity {
   active: Boolean
+}
+
+input FiContractsView {
+  clientId: ID
 }
 
 type Mutation {

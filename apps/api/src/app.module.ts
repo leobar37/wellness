@@ -14,7 +14,7 @@ import { UserModule } from './modules/users';
 import { AssetsModule } from './modules/assets';
 import { FichaModule } from './modules/ficha';
 import { ConfigModule } from '@nestjs/config';
-
+import { ContractView } from '../../../libs/core/src/entity/contract/Contract.view';
 const BUSINESS_MODULES = [
   PingModule,
   UserModule,

@@ -10,6 +10,11 @@ export enum Role {
   ADMINSTRATOR = 'ADMINISTRATOR',
 }
 
+export enum ServiceType {
+  plan = 'plan',
+  activity = 'activity',
+}
+
 export enum Sex {
   WOMEN = 'WOMEN',
   MEN = 'MEN',

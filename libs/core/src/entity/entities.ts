@@ -10,7 +10,7 @@ import { Ficha } from './ficha/ficha.entity';
 import { Plan } from './plan/plan.entity';
 import { Suscription } from './suscription/suscription.entity';
 import { User } from './user/user.entity';
-
+import { ContractView } from './contract/Contract.view';
 export const coreEntitiesMap = {
   Activity,
   Administrator,
@@ -24,4 +24,5 @@ export const coreEntitiesMap = {
   Plan,
   Suscription,
   User,
+  ContractView,
 };

@@ -1,5 +1,22 @@
 import { gql } from '@apollo/client';
 
+export const ContractViewFragment = gql`
+  fragment ContractViewFragment on ContractView {
+    name
+    serviceId
+    price
+    type
+    clientId
+    suscriptionId
+    finished
+    note
+    createdAt
+    finishedAt
+    contractId
+    paid
+  }
+`;
+
 export const DetailFragment = gql`
   fragment DetailFragment on Detail {
     name

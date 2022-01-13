@@ -31,6 +31,7 @@ export interface IClientStore {
       isOpen: boolean;
       state: ModeAction;
     };
+    refetch: null | (() => void);
   };
   // asistences
   createAsistencesModal: boolean;

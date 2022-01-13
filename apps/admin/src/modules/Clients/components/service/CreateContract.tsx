@@ -6,7 +6,13 @@ import {
   Select,
   useDisclosure,
 } from '@chakra-ui/react';
-import { Activity, ChackraForm, ModalCrud, Plan } from '@wellness/admin-ui';
+import {
+  Activity,
+  ChackraForm,
+  ModalCrud,
+  Plan,
+  useWellnessToast,
+} from '@wellness/admin-ui';
 import { SafeAny } from '@wellness/common';
 import { Formik, useField, useFormikContext } from 'formik';
 import {
@@ -85,6 +91,7 @@ export const CreateContractForm = () => {
   const { isOpen: modalIsOpen, closeModal } = useContractModal();
   const { isLoading, joinPlan, plans, activities, joinActivity } =
     useSubContracts();
+  const toast = useWellnessToast();
   const { isOpen, onClose } = useDisclosure({
     isOpen: modalIsOpen,
     onClose: closeModal,
@@ -104,15 +111,21 @@ export const CreateContractForm = () => {
         typeService: EnumService.PLAN,
       }}
       onSubmit={async (values, { resetForm }) => {
-        console.log(values);
-
+        onClose();
+        resetForm();
         switch (Number(values.typeService)) {
           case EnumService.PLAN: {
             await joinPlan(values);
+            toast({
+              title: 'Plan correctamente creado',
+            });
             break;
           }
           case EnumService.ACTIVITY: {
             await joinActivity(values);
+            toast({
+              title: 'Actividad correctamente creada',
+            });
             break;
           }
         }

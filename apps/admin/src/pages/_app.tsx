@@ -5,7 +5,6 @@ import { useApollo } from '@wellness/admin-ui/lib';
 import { AppPropsWithLayout } from '@wellness/admin-ui/common';
 import { DialogsProvider } from '@wellness/admin-ui/ui';
 import 'react-datepicker/dist/react-datepicker.css';
-
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';

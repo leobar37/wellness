@@ -35,6 +35,7 @@ export const useClientsStore = create<IClientStore>((set, get) => {
         isOpen: false,
         state: 'create',
       },
+      refetch: null,
     },
     selectFicha: (ficha: Ficha) => {
       set((state) => {

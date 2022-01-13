@@ -9,5 +9,5 @@
     "esModuleInterop": true
   },
   "exclude": ["**/*.spec.ts"],
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "../../libs/core/src/entity/contract/Contract.view.ts"]
 }

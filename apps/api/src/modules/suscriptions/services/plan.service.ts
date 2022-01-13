@@ -1,24 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository, InjectEntityManager } from '@nestjs/typeorm';
+import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
+import { CRUD, ModeSuscription, omit } from '@wellness/common';
+import { Contract, Suscription } from '@wellness/core';
+import {
+  BussinessError,
+  EntityNotFoundError,
+} from '@wellness/core/common/error';
 import { Plan } from '@wellness/core/entity';
 import {
   ContractEvent,
   EventBus,
   SuscriptionEvent,
 } from '@wellness/core/event-bus';
-import { PlanInput } from '../dto/plan.input';
-import { EntityManager, Repository } from 'typeorm';
-import { CRUD, ModeSuscription, omit } from '@wellness/common';
-import { Suscription, Contract } from '@wellness/core';
-import { PlanHelper } from '../helpers/plan.helper';
-import { FindManyOptions } from 'typeorm';
 import addDays from 'date-fns/addDays';
-import {
-  BussinessError,
-  EntityNotFoundError,
-} from '@wellness/core/common/error';
+import { EntityManager, Repository } from 'typeorm';
 import { ContractInput } from '../dto/contract.input';
 import { FiltersPlan } from '../dto/filters.input';
+import { PlanInput } from '../dto/plan.input';
+import { PlanHelper } from '../helpers/plan.helper';
 @Injectable()
 export class PlanService {
   constructor(

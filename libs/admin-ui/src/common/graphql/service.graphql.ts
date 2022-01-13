@@ -99,3 +99,13 @@ export const JoinActivity = gql`
     }
   }
 `;
+
+// contracts
+
+export const getViewContracts = gql`
+  query getViewContracts($filters: FiContractsView) {
+    getViewContracts(filters: $filters) {
+      ...ContractViewFragment
+    }
+  }
+`;

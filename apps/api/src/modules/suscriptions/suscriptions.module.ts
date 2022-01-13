@@ -7,6 +7,8 @@ import { PlanService } from './services/plan.service';
 import { ActivityService } from './services/activity.service';
 import { PlanHelper } from './helpers/plan.helper';
 import { SuscriptionsScheduler } from './helpers/Contract-scheduler';
+import { ContractViewResolver } from './resolvers/contract-view.resolver';
+import { ContractsViewService } from './services/contracts.service';
 @Module({
   providers: [
     ActivityService,
@@ -15,6 +17,8 @@ import { SuscriptionsScheduler } from './helpers/Contract-scheduler';
     ActivityResolver,
     PlanHelper,
     SuscriptionsScheduler,
+    ContractViewResolver,
+    ContractsViewService,
   ],
   imports: [TypeOrmModule.forFeature([Activity, Plan])],
 })
