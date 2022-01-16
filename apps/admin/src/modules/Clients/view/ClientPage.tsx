@@ -8,7 +8,7 @@ import {
 } from '@wellness/admin-ui/components';
 import { DeleteIcon, EditIcon } from '@wellness/admin-ui/icons';
 import { ButtonIcon } from '@wellness/admin-ui/ui';
-import { SafeAny } from '@wellness/common';
+import { SafeAny, isValid } from '@wellness/common';
 import { useRouter } from 'next/router';
 import { AsistenceTab } from '../components/asistence/AsistenceTab';
 import { DashboardClient } from '../components/DashboarClient';
@@ -19,6 +19,10 @@ import { CreateContractForm } from '../components/service';
 import { RegisterClientModal } from '../components';
 import { useModalConfirm } from '@wellness/admin-ui';
 import { useClientCrudModal } from '../data';
+import { ShowContractModal } from '../components/service';
+
+const mapProperties = {};
+
 export const ClientPage: NextPageWithLayout<SafeAny> = () => {
   const { query } = useRouter();
   const confirm = useModalConfirm();
@@ -26,7 +30,11 @@ export const ClientPage: NextPageWithLayout<SafeAny> = () => {
   const { client, isLoading } = useInitClientController({
     clientId: query.clientId as string,
   });
-
+  const tab = query.tab;
+  let defaulIndex = 0;
+  if (isValid(tab)) {
+    defaulIndex = Number(tab);
+  }
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -55,7 +63,7 @@ export const ClientPage: NextPageWithLayout<SafeAny> = () => {
         </>
       }
     >
-      <Tabs defaultIndex={2} variant="unstyled">
+      <Tabs defaultIndex={defaulIndex} variant="unstyled">
         <TabList>
           <TabWellness>Dashboard</TabWellness>
           <TabWellness>Asistencias</TabWellness>
@@ -87,6 +95,7 @@ ClientPage.getLayout = (page) => {
       {page}
       <CreateContractForm />
       <RegisterClientModal />
+      <ShowContractModal />
     </BaseLayout>
   );
 };

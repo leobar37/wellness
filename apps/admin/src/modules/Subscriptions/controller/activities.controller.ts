@@ -45,11 +45,11 @@ const mapActivity = (input: CreateActivity) => {
 };
 
 export const useActivityController = () => {
-  const { activity, closeModal } = useActivityModal();
+  const { closeModal } = useActivityModal();
   const [createActivityMutation] = useCreateActivityMutation();
   const [updateActivityMutation] = useUpdateActivityMutation();
   const [deleteActivityMutation] = useDeleteActivityMutation();
-  const { addActivity } = useSubscriptionsStore();
+  const { addActivity, activity } = useSubscriptionsStore();
   const createActivity = async (input: CreateActivity) => {
     const data = await createActivityMutation({
       variables: {

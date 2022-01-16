@@ -3,7 +3,7 @@ import { makeToggle, pipe } from '@wellness/admin-ui/utils';
 import { Activity } from '@wellness/admin-ui/common';
 import _create from 'zustand';
 import { combine } from 'zustand/middleware';
-import { ModeAction, Plan } from '@wellness/admin-ui';
+import { ModeAction, Plan, ContractView } from '@wellness/admin-ui';
 const create = pipe(immer, _create) as typeof _create;
 
 const initialState = {
@@ -11,6 +11,11 @@ const initialState = {
     isOpen: false,
     mode: 'edit' as ModeAction,
   },
+  showContract: {
+    isOpen: false,
+    contract: null as ContractView | null,
+  },
+  contracts: [] as ContractView[],
   activity: null as Activity | null,
   activities: [] as Activity[],
   selectDeleteActivities: [] as Activity[],

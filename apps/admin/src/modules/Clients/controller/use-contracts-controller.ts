@@ -7,6 +7,8 @@ import {
   Activity,
   useGetViewContractsQuery,
   ContractView,
+  useEditContractMutation,
+  useDeleteContractMutation,
 } from '@wellness/admin-ui/common';
 import { useSomeTruthy } from '@wellness/admin-ui';
 import { CreateContract } from '../domain';
@@ -23,6 +25,7 @@ export const useInitSubContracts = ({ clientId }: InitOptions) => {
         clientId: clientId,
       },
     },
+    fetchPolicy: 'network-only',
   });
   const [, { patchContractsStore }] = useContractsFeature();
   useEffect(() => {
@@ -41,9 +44,10 @@ export const useInitSubContracts = ({ clientId }: InitOptions) => {
 export const useSubContracts = () => {
   const [joinPlanMutation] = useJoinPlanMutation();
   const [joinActivityMutation] = useJoinActivityMutation();
+  const [editContractMutation] = useEditContractMutation();
+  const [deleteContractMutation] = useDeleteContractMutation();
   const { selectClient } = useClientsStore();
   const [{ refetch }] = useContractsFeature();
-
   const { data: dataPlans, loading: loadingPlan } = useGetPlansQuery({
     variables: {
       filters: {
@@ -89,11 +93,36 @@ export const useSubContracts = () => {
     refetch();
   };
 
+  const editContract = async (id: string, values: CreateContract) => {
+    const result = await editContractMutation({
+      variables: {
+        input: {
+          contractId: id,
+          paid: values.paid,
+          price: Number(values.price),
+          note: values.note,
+        },
+      },
+    });
+    return result.data.editContract as ContractView;
+  };
+
+  const deleteContract = async (id: string) => {
+    const result = await deleteContractMutation({
+      variables: {
+        id: id,
+      },
+    });
+    return result.data.deleteContract as ContractView;
+  };
+
   return {
     plans: dataPlans?.getPlans as Plan[],
     activities: dataActivities?.getActivities as Activity[],
     joinPlan,
     isLoading,
     joinActivity,
+    editContract,
+    deleteContract,
   };
 };

@@ -11,3 +11,4 @@ export * from './File';
 export * from './Dumbell';
 export * from './Eye';
 export * from './Warning';
+export * from './Printer';

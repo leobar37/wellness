@@ -1,30 +1,59 @@
-import { Box, HStack, Text, Badge, SystemStyleObject } from '@chakra-ui/react';
+import { Badge, Box, HStack, SystemStyleObject, Text } from '@chakra-ui/react';
 import {
   ButtonIcon,
+  ColTable,
+  ContractView,
+  DeleteIcon,
+  EditIcon,
+  EyeIcon,
+  prepareCellProps,
   Price,
   ProgressBadge,
+  Table,
   Time,
-  ContractView,
+  useModalConfirm,
+  useWellnessToast,
 } from '@wellness/admin-ui';
-import { useInitSubContracts } from '../../controller';
-import { ServiceType } from '@wellness/common';
-import { useClientsStore, useContractModal } from '../../data';
-import { Table, ColTable, prepareCellProps, matVa } from '@wellness/admin-ui';
+import { SafeAny, ServiceType } from '@wellness/common';
+import { useInitSubContracts, useSubContracts } from '../../controller';
+import {
+  useClientsStore,
+  useContractModal,
+  useShowContractModal,
+} from '../../data';
 
-import { SafeAny } from '@wellness/common';
 export const ServicesSection = () => {
   const { openModal } = useContractModal();
+  const { openModal: openShowModal } = useShowContractModal();
   const { selectClient } = useClientsStore();
-  const { contracts, isloading } = useInitSubContracts({
+  const { contracts, isloading, refetchContracts } = useInitSubContracts({
     clientId: selectClient.id,
   });
+  const toast = useWellnessToast();
+  const { deleteContract } = useSubContracts();
+  const confirm = useModalConfirm();
 
+  const onConfirm = (contract: ContractView) => {
+    confirm({
+      title: 'Desea eliminar este contrato',
+      onConfirm: async () => {
+        await deleteContract(contract.contractId);
+        refetchContracts();
+        toast({
+          title: 'Contrato eliminado correctamente',
+          status: 'success',
+        });
+      },
+    });
+  };
   if (isloading) {
     return null;
   }
 
+  console.log(contracts);
+
   return (
-    <Box width={'700px'}>
+    <Box width={'750px'}>
       <HStack justify={'space-between'}>
         <ProgressBadge
           title="Plan"
@@ -67,12 +96,12 @@ export const ServicesSection = () => {
               const { original } = prepareCellProps<ContractView>(props);
               const styles: SystemStyleObject = original.paid
                 ? {
-                    bg: 'brown.300',
+                    bg: 'brown',
                     color: 'white',
                   }
                 : {
                     bg: 'primary',
-                    color: 'brown.300',
+                    color: 'brown',
                   };
               const text = original.paid ? 'Pagado' : 'Deuda';
               return (
@@ -90,12 +119,12 @@ export const ServicesSection = () => {
               const styles: SystemStyleObject =
                 original.type == ServiceType.activity
                   ? {
-                      bg: 'brown.300',
+                      bg: 'brown',
                       color: 'white',
                     }
                   : {
                       bg: 'primary',
-                      color: 'brown.300',
+                      color: 'brown',
                     };
               const text =
                 original.type == ServiceType.activity ? 'Actividad' : 'Plan';
@@ -103,6 +132,45 @@ export const ServicesSection = () => {
                 <Badge sx={styles} py={1} px={2} rounded={'md'}>
                   {text}
                 </Badge>
+              );
+            }}
+          />
+          <ColTable
+            id="selection"
+            Header="Acción"
+            Cell={(props) => {
+              const { original } = prepareCellProps<ContractView>(
+                props as SafeAny
+              );
+
+              return (
+                <>
+                  <HStack>
+                    <ButtonIcon
+                      onClick={() => {
+                        openModal(original);
+                      }}
+                    >
+                      <EditIcon />
+                    </ButtonIcon>
+                    <ButtonIcon
+                      bg={'red'}
+                      onClick={() => {
+                        onConfirm(original);
+                      }}
+                    >
+                      <DeleteIcon />
+                    </ButtonIcon>
+                    <ButtonIcon
+                      bg={'green.300'}
+                      onClick={() => {
+                        openShowModal(original);
+                      }}
+                    >
+                      <EyeIcon />
+                    </ButtonIcon>
+                  </HStack>
+                </>
               );
             }}
           />

@@ -5,11 +5,13 @@ import { SafeAny } from '@wellness/common';
  * TODO:
  * - add diferents presentation for this component
  */
+
 export type TimeProps = {
   children: Date | string | number;
   format?: string;
   variant?: 'ago' | 'date' | 'time' | 'timeAndDate';
 };
+
 export const Time: FC<TimeProps> = ({ children, format, variant }) => {
   let date: SafeAny = children;
   const isNorm = date instanceof Date;

@@ -14,7 +14,7 @@ export const useActivityModal = () => {
         }
         state.activitiesCrudModal = {
           isOpen: true,
-          mode: !clean ? 'edit' : 'create',
+          mode: clean ? 'create' : 'edit',
         };
       });
     },

@@ -9,11 +9,14 @@ import {
 import {
   Activity,
   ChackraForm,
+  ContractView,
   ModalCrud,
   Plan,
+  ServiceType,
+  Time,
   useWellnessToast,
 } from '@wellness/admin-ui';
-import { SafeAny } from '@wellness/common';
+import { ID, isValid, SafeAny } from '@wellness/common';
 import { Formik, useField, useFormikContext } from 'formik';
 import {
   NumberInputControl,
@@ -22,7 +25,7 @@ import {
   SwitchControl,
   TextareaControl,
 } from 'formik-chakra-ui';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useSubContracts } from '../../controller';
 import { useContractModal } from '../../data';
 import { CreateContract } from '../../domain';
@@ -45,11 +48,68 @@ const formMapper = {
       display: 'Seleccione un plan',
     },
   },
+  mode: {
+    edit: {
+      heading: (contract: ContractView) => (
+        <>
+          Editando: <Time>{contract.createdAt}</Time>
+          {'-'}
+          <Time>{contract.finishedAt}</Time>
+        </>
+      ),
+      button: 'Guardar cambios',
+    },
+    create: {
+      heading: (contract?: ContractView) => `Crear Contrato`,
+      button: 'Guardar cambios',
+    },
+  },
 };
 const Form: FC<FormProps> = ({ plans, activities }) => {
   const [typeService, setTypeService] = useState<EnumService>(EnumService.PLAN);
+  const {
+    isOpen: modalIsOpen,
+    closeModal,
+    contract,
+    state,
+  } = useContractModal();
   const [, , { setValue }] = useField<EnumService>('typeService');
-  const { handleSubmit } = useFormikContext();
+  const { handleSubmit, setValues, resetForm, values, setFieldValue } =
+    useFormikContext<CreateContract>();
+
+  useEffect(() => {
+    if (isValid(contract) && state == 'edit') {
+      const isActity = contract.type === ServiceType.activity;
+      setValues({
+        note: contract.note,
+        paid: contract.paid,
+        price: contract.price,
+        serviceId: Number(contract.serviceId),
+        typeService: isActity ? EnumService.ACTIVITY : EnumService.PLAN,
+      });
+      setTypeService(isActity ? EnumService.ACTIVITY : EnumService.PLAN);
+    } else {
+      resetForm();
+    }
+  }, [contract, state, setValues, resetForm]);
+
+  useEffect(() => {
+    if (values.serviceId) {
+      const findByid = (id: ID) => (data: SafeAny) =>
+        Number(data.id) === Number(id);
+      const serviceId = values.serviceId;
+      const isActivity = typeService === EnumService.ACTIVITY;
+      const validArr = (arr: SafeAny) => arr || [];
+      const price = (isActivity ? validArr(activities) : validArr(plans)).find(
+        findByid(serviceId)
+      )?.detail?.price;
+      if (price) {
+        setFieldValue('price', price);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values?.serviceId]);
+  const isEdit = state === 'edit';
 
   const optionsService = (
     typeService == EnumService.ACTIVITY ? activities : plans
@@ -62,12 +122,12 @@ const Form: FC<FormProps> = ({ plans, activities }) => {
   const selectServiceProperties = formMapper.selectService[typeService];
   return (
     <ChackraForm submit={handleSubmit}>
-      <NumberInputControl name="price" label="Precio" />
       <SwitchControl name="paid" label="Pagado" />
       <FormControl>
         <FormLabel>Servicio:</FormLabel>
         <Select
           value={typeService}
+          isDisabled={isEdit}
           onChange={(val) => {
             const value = Number(val.target.value) as unknown as EnumService;
             setTypeService(value);
@@ -77,10 +137,16 @@ const Form: FC<FormProps> = ({ plans, activities }) => {
           <option value={EnumService.ACTIVITY}>Actividad</option>
           <option value={EnumService.PLAN}>Plan</option>
         </Select>
-        <SelectControl name="serviceId" label={selectServiceProperties.name}>
+        <SelectControl
+          name="serviceId"
+          isDisabled={isEdit}
+          defaultValue={isEdit && contract?.serviceId}
+          label={selectServiceProperties.name}
+        >
           <option value={-1}>{selectServiceProperties.display}</option>
           {optionsService}
         </SelectControl>
+        <NumberInputControl name="price" label="Precio" />
         <TextareaControl name="note" label="Nota:" />
       </FormControl>
     </ChackraForm>
@@ -88,14 +154,22 @@ const Form: FC<FormProps> = ({ plans, activities }) => {
 };
 
 export const CreateContractForm = () => {
-  const { isOpen: modalIsOpen, closeModal } = useContractModal();
-  const { isLoading, joinPlan, plans, activities, joinActivity } =
+  const {
+    isOpen: modalIsOpen,
+    closeModal,
+    state,
+    contract,
+    refetch,
+  } = useContractModal();
+  const { isLoading, joinPlan, plans, activities, joinActivity, editContract } =
     useSubContracts();
   const toast = useWellnessToast();
+
   const { isOpen, onClose } = useDisclosure({
     isOpen: modalIsOpen,
     onClose: closeModal,
   });
+  const stateProperties = formMapper.mode[state];
 
   if (isLoading) {
     return null;
@@ -111,8 +185,13 @@ export const CreateContractForm = () => {
         typeService: EnumService.PLAN,
       }}
       onSubmit={async (values, { resetForm }) => {
-        onClose();
-        resetForm();
+        if (state == 'edit') {
+          await editContract(contract.contractId, values);
+          toast({
+            title: 'Plan editado correctamente',
+          });
+          return;
+        }
         switch (Number(values.typeService)) {
           case EnumService.PLAN: {
             await joinPlan(values);
@@ -129,17 +208,25 @@ export const CreateContractForm = () => {
             break;
           }
         }
+        resetForm();
+        onClose();
       }}
     >
-      {({ submitForm }) => (
+      {({ submitForm, resetForm }) => (
         <ModalCrud
           isOpen={isOpen}
-          onClose={onClose}
-          textHeader="Crear Contrato"
+          onClose={async () => {
+            refetch();
+            resetForm();
+            onClose();
+          }}
+          textHeader={stateProperties.heading(contract)}
           footer={
             <HStack>
               <Button variant="ghost">Cancelar</Button>
-              <SubmitButton onClick={submitForm}>Guardar</SubmitButton>
+              <SubmitButton onClick={submitForm}>
+                {stateProperties.button}
+              </SubmitButton>
             </HStack>
           }
         >

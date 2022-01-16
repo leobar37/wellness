@@ -18,7 +18,7 @@ export class Contract extends WellnessEntity implements HasNote {
   }
 
   @Column('text', { nullable: true })
-  @Field()
+  @Field({ nullable: true })
   note: string;
 
   @Column('boolean', { default: false })
@@ -29,9 +29,9 @@ export class Contract extends WellnessEntity implements HasNote {
   @Field((type) => Float)
   price: number;
 
-  @Column('date', { nullable: true })
-  @Field()
-  finishedAt: Date | null;
+  @Column('date')
+  @Field((type) => Date)
+  finishedAt: Date;
 
   @Column('boolean', { default: false })
   finished: boolean;

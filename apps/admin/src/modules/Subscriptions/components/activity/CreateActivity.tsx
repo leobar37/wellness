@@ -22,7 +22,15 @@ const Form = () => {
   const { handleSubmit, setValues } = useFormikContext<CreateActivity>();
   const { activity, mode } = useActivityModal();
   useEffect(() => {
+    console.log('pass here');
+    console.log({
+      mode,
+      activity,
+    });
+
     if (mode == 'edit' && activity) {
+      console.log('pass here');
+
       setValues({
         description: activity.detail.description,
         price: activity.detail.price,

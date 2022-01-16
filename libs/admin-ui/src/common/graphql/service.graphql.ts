@@ -109,3 +109,19 @@ export const getViewContracts = gql`
     }
   }
 `;
+
+export const editContract = gql`
+  mutation editContract($input: ContractEditInput!) {
+    editContract(input: $input) {
+      ...ContractViewFragment
+    }
+  }
+`;
+
+export const deleteContract = gql`
+  mutation deleteContract($id: ID!) {
+    deleteContract(id: $id) {
+      ...ContractViewFragment
+    }
+  }
+`;

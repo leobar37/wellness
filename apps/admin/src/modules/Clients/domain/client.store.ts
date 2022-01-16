@@ -1,4 +1,10 @@
-import { Client, Asistence, Ficha, ModeAction } from '@wellness/admin-ui';
+import {
+  Client,
+  Asistence,
+  Ficha,
+  ModeAction,
+  ContractView,
+} from '@wellness/admin-ui';
 import { SetState } from 'zustand';
 
 export interface IClientStore {
@@ -30,6 +36,11 @@ export interface IClientStore {
     modalContract: {
       isOpen: boolean;
       state: ModeAction;
+      contract: ContractView | null;
+    };
+    showModal: {
+      isOpen: boolean;
+      contract: ContractView | null;
     };
     refetch: null | (() => void);
   };

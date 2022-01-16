@@ -92,7 +92,7 @@ type Contract {
   id: ID!
   createdAt: DateTime!
   updateAt: DateTime!
-  note: String!
+  note: String
   paid: Boolean!
   price: Float!
   finishedAt: DateTime!
@@ -142,6 +142,10 @@ type ContractView {
   clientId: ID!
   suscriptionId: ID!
   contractId: ID!
+  clientName: String!
+  clientLastName: String!
+  dni: String!
+  realPrice: Float!
   note: String!
   finished: Boolean!
   paid: Boolean!
@@ -151,6 +155,7 @@ type ContractView {
   name: String
   type: ServiceType
   serviceId: ID
+  description: String
 }
 
 """Type of the service (plan, activity)"""
@@ -188,6 +193,8 @@ input FiltersActivity {
 
 input FiContractsView {
   clientId: ID
+  serviceId: ID
+  type: ServiceType
 }
 
 type Mutation {
@@ -205,6 +212,8 @@ type Mutation {
   deleteActivity(id: ID!): Activity!
   joinActivity(contract: ContractInput!): Contract!
   updateActivity(input: ActivityInput!, id: ID!): Activity!
+  editContract(input: ContractEditInput!): ContractView!
+  deleteContract(id: ID!): ContractView!
   signature(publicId: String): ResponseSignature!
   deleteResource(input: DeleteAssetInput!): ResourceUnion!
   createResource(resource: AssetInput!): ResourceUnion!
@@ -264,6 +273,13 @@ input ActivityInput {
   duration: Int!
   mode: ModeSuscription!
   startAt: DateTime
+}
+
+input ContractEditInput {
+  contractId: ID!
+  paid: Boolean!
+  price: Float!
+  note: String
 }
 
 union ResourceUnion = AssetBoot | Asset

@@ -1,34 +1,31 @@
-import type { NextPageWithLayout, Activity } from '@wellness/admin-ui/common';
+import { Button, HStack } from '@chakra-ui/react';
+import type { Activity, NextPageWithLayout } from '@wellness/admin-ui/common';
 import { BaseLayout, Layout } from '@wellness/admin-ui/components';
-import { TableInstanceProps, ButtonIcon } from '@wellness/admin-ui/ui';
-import { useState } from 'react';
-import { useRouter } from 'next/router';
+import { DeleteIcon, EyeIcon } from '@wellness/admin-ui/icons';
 import {
   Badgebg,
-  Table,
+  ButtonIcon,
   ColTable,
+  GlobalFilter,
   prepareCellProps,
   Price,
-  GlobalFilter,
+  Table,
+  TableInstanceProps,
+  useModalConfirm,
 } from '@wellness/admin-ui/ui';
-import { HStack, Button } from '@chakra-ui/react';
-import { useInitActivitiesController } from '../controller';
-import { CreateActivityModal } from '../components';
-import { useSubscriptionsStore } from '../data';
 import { SafeAny } from '@wellness/common';
-import { DeleteIcon, EyeIcon, EditIcon } from '@wellness/admin-ui/icons';
-import { useModalConfirm } from '@wellness/admin-ui/ui';
-import { useActivityModal } from '../data';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { CreateActivityModal } from '../components';
+import { useInitActivitiesController } from '../controller';
+import { useActivityModal, useSubscriptionsStore } from '../data';
 export const ActivitiesPage: NextPageWithLayout = () => {
   const { activities, isLoading } = useInitActivitiesController();
   const confirm = useModalConfirm();
   const { openModal } = useActivityModal();
-  const { patch, selectDeleteActivities } = useSubscriptionsStore();
+  const { patch } = useSubscriptionsStore();
   const router = useRouter();
   const [table, setTable] = useState<TableInstanceProps | null>();
-
-  const showDeleteIcon =
-    selectDeleteActivities && selectDeleteActivities.length > 0;
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -37,9 +34,6 @@ export const ActivitiesPage: NextPageWithLayout = () => {
     router.push(`./activities/${activity.id}`);
   };
 
-  const onDeleteActivities = () => {
-    confirm({});
-  };
   return (
     <>
       <Layout
@@ -51,27 +45,12 @@ export const ActivitiesPage: NextPageWithLayout = () => {
         </HStack>
         <HStack justify="space-between" mt={10}>
           {table && <GlobalFilter table={table} />}
-          <HStack>
-            {showDeleteIcon && (
-              <Button
-                variant="red"
-                leftIcon={<DeleteIcon fontSize="large" />}
-                onClick={() => onDeleteActivities()}
-              >
-                {selectDeleteActivities.length}
-              </Button>
-            )}
-          </HStack>
         </HStack>
         <Table
+          isSelecteable={false}
           data={activities}
           mt={8}
           onTable={setTable}
-          onChangueTable={(result) => {
-            patch((state) => {
-              state.selectDeleteActivities = result.selection.nodes;
-            });
-          }}
           rowProps={({ original }) => ({
             sx: {
               _hover: {

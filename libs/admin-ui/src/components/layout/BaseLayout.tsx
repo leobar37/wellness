@@ -70,61 +70,59 @@ export const Layout: FunctionComponent<
   };
 
   return (
-    <ClientOnly>
-      <GridItem
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        gridArea="content"
-        {...boxProps}
+    <GridItem
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      gridArea="content"
+      {...boxProps}
+    >
+      <Box
+        overflowY="scroll"
+        overflowX="hidden"
+        width="90%"
+        bg="white"
+        height="90%"
+        borderRadius="10px"
+        sx={contentLayoutGrid}
       >
-        <Box
-          overflowY="scroll"
-          overflowX="hidden"
-          width="90%"
-          bg="white"
-          height="90%"
-          borderRadius="10px"
-          sx={contentLayoutGrid}
-        >
-          {showHeader && (
-            <HStack
-              gridRow="1"
-              gridColumn="1 / 5"
-              justify="space-between"
-              px={10}
-              pt={5}
-              align="center"
-            >
-              <HStack spacing={5}>
-                <Button
-                  onClick={() => onBack()}
-                  width="45px"
-                  height="45px"
-                  bg="brown.500"
-                >
-                  <Box fontSize="18px">
-                    <Left color="white" fontSize="xl" />
-                  </Box>
-                </Button>
-                <Heading size="lg">{backText}</Heading>
-              </HStack>
-              {/* Actions */}
-              {actions && <HStack pr="20px">{actions}</HStack>}
-            </HStack>
-          )}
-          <Box
+        {showHeader && (
+          <HStack
+            gridRow="1"
             gridColumn="1 / 5"
-            gridRow={`${showHeader ? '2 / 4' : '1 /4'}  `}
-            my={2}
-            p={4}
-            overflowY="scroll"
+            justify="space-between"
+            px={10}
+            pt={5}
+            align="center"
           >
-            {children}
-          </Box>
+            <HStack spacing={5}>
+              <Button
+                onClick={() => onBack()}
+                width="45px"
+                height="45px"
+                bg="brown.500"
+              >
+                <Box fontSize="18px">
+                  <Left color="white" fontSize="xl" />
+                </Box>
+              </Button>
+              <Heading size="lg">{backText}</Heading>
+            </HStack>
+            {/* Actions */}
+            {actions && <HStack pr="20px">{actions}</HStack>}
+          </HStack>
+        )}
+        <Box
+          gridColumn="1 / 5"
+          gridRow={`${showHeader ? '2 / 4' : '1 /4'}  `}
+          my={2}
+          p={4}
+          overflowY="scroll"
+        >
+          {children}
         </Box>
-      </GridItem>
-    </ClientOnly>
+      </Box>
+    </GridItem>
   );
 };
 
@@ -135,19 +133,21 @@ const BaseLayout: React.FunctionComponent<BaseLayoutProps> = ({
   header,
 }) => {
   return (
-    <Grid sx={layoutGrid}>
-      <GridItem gridArea="sidebar">{sidebar}</GridItem>
-      {/* Content */}
-      {children}
-      <GridItem
-        gridArea="footer"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        {footer}
-      </GridItem>
-    </Grid>
+    <ClientOnly>
+      <Grid sx={layoutGrid}>
+        <GridItem gridArea="sidebar">{sidebar}</GridItem>
+        {/* Content */}
+        {children}
+        <GridItem
+          gridArea="footer"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          {footer}
+        </GridItem>
+      </Grid>
+    </ClientOnly>
   );
 };
 

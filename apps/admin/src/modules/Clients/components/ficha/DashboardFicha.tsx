@@ -132,6 +132,7 @@ const _ListFichas = () => {
     <Box>
       {fichas && (
         <Table
+          isSelecteable={false}
           data={fichas}
           rowProps={({ original }) => {
             return {

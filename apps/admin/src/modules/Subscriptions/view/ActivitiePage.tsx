@@ -1,30 +1,31 @@
 import { TabList, TabPanels, Tabs } from '@chakra-ui/react';
-import { ButtonIcon } from '@wellness/admin-ui';
+import { ButtonIcon, useModalConfirm } from '@wellness/admin-ui';
 import { NextPageWithLayout } from '@wellness/admin-ui/common';
-import { useModalConfirm } from '@wellness/admin-ui';
-import { SafeAny } from '@wellness/common';
 import {
   BaseLayout,
   Layout,
   TabContent,
   TabWellness,
 } from '@wellness/admin-ui/components';
-
 import { DeleteIcon, EditIcon } from '@wellness/admin-ui/icons';
 import { useRouter } from 'next/router';
 import * as React from 'react';
+import { ListContracts } from '../components';
 import { CreateActivityModal, DashBoardActivity } from '../components/activity';
-import { useInitActivyController, useActivityController } from '../controller';
+import { useActivityController, useInitActivyController } from '../controller';
 import { useActivityModal } from '../data';
+import { ShowContractModal } from '../components';
 export const ActivitiePage: NextPageWithLayout = () => {
   const router = useRouter();
   const { openModal } = useActivityModal();
   const confirm = useModalConfirm();
   const { activityId } = router.query;
+
   const { deleteActivity } = useActivityController();
   const { activity, isLoading } = useInitActivyController({
-    activityId: Number(activityId),
+    activityId: activityId as string,
   });
+
   if (isLoading) {
     return null;
   }
@@ -51,7 +52,7 @@ export const ActivitiePage: NextPageWithLayout = () => {
             bg="brown.300"
             variant="link"
             onClick={() => {
-              openModal(activity as SafeAny);
+              openModal();
             }}
           >
             <EditIcon color="white" />
@@ -59,15 +60,17 @@ export const ActivitiePage: NextPageWithLayout = () => {
         </>
       }
     >
-      {/* <pre>{JSON.stringify(activity, null, 2)}</pre> */}
       <Tabs variant="unstyled" defaultIndex={0}>
         <TabList>
           <TabWellness>Dashboard</TabWellness>
-          <TabWellness>Usuarios</TabWellness>
+          <TabWellness>Contratos</TabWellness>
         </TabList>
         <TabPanels>
           <TabContent>
             <DashBoardActivity activity={activity} />
+          </TabContent>
+          <TabContent>
+            <ListContracts />
           </TabContent>
         </TabPanels>
       </Tabs>
@@ -79,6 +82,7 @@ ActivitiePage.getLayout = (page) => (
   <BaseLayout>
     {page}
     <CreateActivityModal />
+    <ShowContractModal />
   </BaseLayout>
 );
 

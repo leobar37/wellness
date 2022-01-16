@@ -20,6 +20,7 @@ import {
 import { ContractInput } from '../dto/contract.input';
 import addDays from 'date-fns/addDays';
 import { FiltersActivity } from '../dto/filters.input';
+import { isValid } from '@wellness/common';
 @Injectable()
 export class ActivityService {
   constructor(
@@ -33,6 +34,11 @@ export class ActivityService {
 
     let finishedAt = null;
     if (input.mode == ModeSuscription.FIXED) {
+      if (!isValid(input?.startAt)) {
+        throw new BussinessError(
+          'Cuando la subscripción es fija, la fecha de inicio es obligatoria'
+        );
+      }
       finishedAt = add(input.startAt, {
         days: input.duration,
       });
@@ -85,7 +91,7 @@ export class ActivityService {
     const sub = await activity.suscription;
     let finishedAt = null;
     if (sub.mode == ModeSuscription.FIXED) {
-      finishedAt = sub.finishedAt;
+      finishedAt = new Date(sub.finishedAt);
     } else {
       finishedAt = addDays(new Date(), sub.duration);
     }
@@ -107,6 +113,8 @@ export class ActivityService {
         planOrActivity: activity,
       })
     );
+    console.log(contract);
+
     return contract;
   }
 

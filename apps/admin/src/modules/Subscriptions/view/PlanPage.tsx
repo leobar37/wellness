@@ -1,19 +1,20 @@
-import React from 'react';
-import { useRouter } from 'next/router';
-import {
-  NextPageWithLayout,
-  BaseLayout,
-  Layout,
-  ButtonIcon,
-  useModalConfirm,
-  TabWellness,
-  TabContent,
-} from '@wellness/admin-ui';
-import { useInitPlanController, usePlansController } from '../controller';
-import { DeleteIcon, EditIcon } from '@wellness/admin-ui/icons';
-import { usePlanModal } from '../data';
 import { TabList, TabPanels, Tabs } from '@chakra-ui/react';
+import {
+  BaseLayout,
+  ButtonIcon,
+  Layout,
+  NextPageWithLayout,
+  TabContent,
+  TabWellness,
+  useModalConfirm,
+} from '@wellness/admin-ui';
+import { DeleteIcon, EditIcon } from '@wellness/admin-ui/icons';
+import { useRouter } from 'next/router';
+import React from 'react';
 import { CrudPlanModal, DashBoardPlan } from '../components/plan';
+import { useInitPlanController, usePlansController } from '../controller';
+import { usePlanModal } from '../data';
+import { ListContracts, ShowContractModal } from '../components/shared';
 export const PlanPage: NextPageWithLayout = () => {
   const { query } = useRouter();
   const { planId } = query as { planId: string };
@@ -60,11 +61,14 @@ export const PlanPage: NextPageWithLayout = () => {
       <Tabs variant="unstyled" defaultIndex={0}>
         <TabList>
           <TabWellness>Dashboard</TabWellness>
-          <TabWellness>Usuarios</TabWellness>
+          <TabWellness>Contratos</TabWellness>
         </TabList>
         <TabPanels>
           <TabContent>
             <DashBoardPlan plan={plan} />
+          </TabContent>
+          <TabContent>
+            <ListContracts />
           </TabContent>
         </TabPanels>
       </Tabs>
@@ -77,6 +81,7 @@ PlanPage.getLayout = (page) => {
     <BaseLayout>
       {page}
       <CrudPlanModal />
+      <ShowContractModal />
     </BaseLayout>
   );
 };

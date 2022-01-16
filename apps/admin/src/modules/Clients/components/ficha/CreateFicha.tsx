@@ -1,18 +1,22 @@
-import * as React from 'react';
-import { useEffect } from 'react';
-import { DetailFichaT } from '../../domain/schemas';
-import { Formik } from 'formik';
-import { useDisclosure, HStack, Button } from '@chakra-ui/react';
-import { ModalCrud, ChackraForm } from '@wellness/admin-ui/components';
-import { UploadMultiple, ModeAction } from '@wellness/admin-ui';
-import { useClientsStore } from '../../data/client-store';
-import { useFichaController } from '../../controller';
+import { Button, HStack, useDisclosure } from '@chakra-ui/react';
 import {
+  ModeAction,
+  UploadMultiple,
+  useWellnessToast,
+} from '@wellness/admin-ui';
+import { ChackraForm, ModalCrud } from '@wellness/admin-ui/components';
+import { Formik, useFormikContext } from 'formik';
+import {
+  NumberInputControl,
   SubmitButton,
   TextareaControl,
-  NumberInputControl,
 } from 'formik-chakra-ui';
-import { useFormikContext } from 'formik';
+
+import * as React from 'react';
+import { useEffect } from 'react';
+import { useFichaController } from '../../controller';
+import { useClientsStore } from '../../data/client-store';
+import { DetailFichaT } from '../../domain/schemas';
 type CreateFichaProps = {
   mode: 'open' | 'close';
 };
@@ -111,7 +115,7 @@ const FichaForm: React.FC<{
 export const CreateFicha: React.FunctionComponent<CreateFichaProps> = () => {
   const { createFicha, closeFicha, editFicha } = useFichaController();
   const { modalCrudFicha, modeModalFicha, stateModalFicha } = useClientsStore();
-
+  const toast = useWellnessToast();
   const { isOpen, onClose } = useDisclosure({
     isOpen: modalCrudFicha,
     onClose: () => toggleModalFicha(false),
@@ -129,12 +133,21 @@ export const CreateFicha: React.FunctionComponent<CreateFichaProps> = () => {
         if (modeModalFicha === 'open') {
           if (stateModalFicha == 'edit') {
             await editFicha(values);
+            toast({
+              title: 'Ficha editada correctamente',
+            });
           }
           if (stateModalFicha == 'create') {
             await createFicha(values);
+            toast({
+              title: 'Ficha creada correctamente',
+            });
           }
         } else {
           await closeFicha(values);
+          toast({
+            title: 'La ficha se ha cerrado correctamente',
+          });
         }
         onClose();
       }}

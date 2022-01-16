@@ -13,6 +13,10 @@ export const ContractViewFragment = gql`
     createdAt
     finishedAt
     contractId
+    clientName
+    description
+    realPrice
+    clientLastName
     paid
   }
 `;

@@ -1,17 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
   Ficha,
+  useDeleteFichaMutation,
   useGetFichaQuery,
   useGetFichasQuery,
   useOpenAndCloseMutation,
   useUpdateFichaMutation,
-  useDeleteFichaMutation,
 } from '@wellness/admin-ui/common';
 import { useAssetService } from '@wellness/admin-ui/services';
+import { difference } from '@wellness/common';
 import { useCallback, useEffect } from 'react';
 import { useClientsStore } from '../data/client-store';
 import { DetailFichaT } from '../domain/schemas';
-import { difference } from '@wellness/common';
 
 const { patch, addFicha } = useClientsStore.getState();
 
@@ -29,6 +29,7 @@ export const useFichaController = () => {
     variables: {
       userId: Number(selectClient.id),
     },
+    fetchPolicy: 'network-only',
   });
 
   const { data: fichaData } = useGetFichaQuery({

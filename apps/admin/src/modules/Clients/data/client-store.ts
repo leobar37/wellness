@@ -34,6 +34,11 @@ export const useClientsStore = create<IClientStore>((set, get) => {
       modalContract: {
         isOpen: false,
         state: 'create',
+        contract: null,
+      },
+      showModal: {
+        contract: null,
+        isOpen: true,
       },
       refetch: null,
     },

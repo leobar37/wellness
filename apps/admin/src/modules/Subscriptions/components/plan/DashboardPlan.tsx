@@ -14,7 +14,7 @@ export const DashBoardPlan: FC<DashBoardActivityProps> = ({ plan }) => {
         <BadgeDisplay title="Usuarios activos" value="150" />
       </VStack>
       <Card>
-        <Detail title="Nombre:" value={plan.detail.name} />
+        <Detail title="Nombre" value={plan.detail.name} />
         <Detail title="Precio" value={<Price>{plan.detail.price}</Price>} />
         <Detail
           title="Descripción"
