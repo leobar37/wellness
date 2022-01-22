@@ -1,12 +1,9 @@
-import { Task } from './Task';
-import * as scheduler from 'node-schedule';
-import { OnModuleDestroy } from '@nestjs/common';
-import { filter, Observable, Subject, takeUntil } from 'rxjs';
-import { Type } from '@nestjs/common';
-import { SafeAny } from '@wellness/common';
-
+import { OnModuleDestroy, Type } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
-import { CronJob } from 'cron';
+import { SafeAny } from '@wellness/common';
+import * as scheduler from 'node-schedule';
+import { filter, Observable, Subject, takeUntil } from 'rxjs';
+import { Task } from './Task';
 
 export abstract class Scheduler implements OnModuleDestroy {
   protected destroy$ = new Subject<void>();

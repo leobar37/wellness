@@ -39,6 +39,19 @@ export type ActivityInput = {
   visible: Scalars['Boolean'];
 };
 
+export type Administrator = {
+  __typename?: 'Administrator';
+  createdAt: Scalars['DateTime'];
+  description: Scalars['String'];
+  email: Scalars['String'];
+  id: Scalars['ID'];
+  lastName: Scalars['String'];
+  name: Scalars['String'];
+  rol: Role;
+  temportalToken?: Maybe<Scalars['String']>;
+  updateAt: Scalars['DateTime'];
+};
+
 export type Asistence = {
   __typename?: 'Asistence';
   client?: Maybe<Client>;
@@ -229,6 +242,11 @@ export type FiltersPlan = {
   active?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type GenerateTokenInput = {
+  email: Scalars['String'];
+  role: Role;
+};
+
 export type InputAsistence = {
   clientId: Scalars['ID'];
   note?: InputMaybe<Scalars['String']>;
@@ -260,9 +278,12 @@ export type Mutation = {
   deleteResource: ResourceUnion;
   editContract: ContractView;
   editResource: ResourceUnion;
+  generateTokenForAdmin: Administrator;
   joinActivity: Contract;
   joinPlan: Contract;
   openAndCloseFicha: Ficha;
+  regeneratedNewToken: Administrator;
+  registerAdmin: Administrator;
   registerClient: Client;
   signature: ResponseSignature;
   updateActivity: Activity;
@@ -338,6 +359,11 @@ export type MutationEditResourceArgs = {
 };
 
 
+export type MutationGenerateTokenForAdminArgs = {
+  input: GenerateTokenInput;
+};
+
+
 export type MutationJoinActivityArgs = {
   contract: ContractInput;
 };
@@ -350,6 +376,16 @@ export type MutationJoinPlanArgs = {
 
 export type MutationOpenAndCloseFichaArgs = {
   input: FichaInput;
+};
+
+
+export type MutationRegeneratedNewTokenArgs = {
+  input: GenerateTokenInput;
+};
+
+
+export type MutationRegisterAdminArgs = {
+  input: RegisterAdminInput;
 };
 
 
@@ -418,6 +454,7 @@ export type Query = {
   finAsistences: Array<Asistence>;
   getActivities: Array<Activity>;
   getActivity: Activity;
+  getAdministrators: Array<Administrator>;
   getFicha?: Maybe<Ficha>;
   getFichas?: Maybe<Array<Ficha>>;
   getPlan: Plan;
@@ -471,6 +508,12 @@ export type QueryGetViewContractsArgs = {
   filters?: InputMaybe<FiContractsView>;
 };
 
+export type RegisterAdminInput = {
+  lastName: Scalars['String'];
+  name: Scalars['String'];
+  temporalToken: Scalars['String'];
+};
+
 export type ResourceUnion = Asset | AssetBoot;
 
 export type ResponseSignature = {
@@ -478,6 +521,13 @@ export type ResponseSignature = {
   signature: Scalars['String'];
   timestamp: Scalars['Float'];
 };
+
+/** Describe the role of a administrator */
+export enum Role {
+  ADMIN = 'ADMIN',
+  CLIENT = 'CLIENT',
+  STAFF = 'STAFF'
+}
 
 /** Type of the service (plan, activity) */
 export enum ServiceType {

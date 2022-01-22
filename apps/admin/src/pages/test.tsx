@@ -1,7 +1,17 @@
 import { Button, useToast, Wrap, WrapItem } from '@chakra-ui/react';
-import { useModalConfirm } from '@wellness/admin-ui/ui/dialogs';
+import { useModalConfirm, useNoticeModal } from '@wellness/admin-ui/ui/dialogs';
 import React from 'react';
-
+import {
+  Modal,
+  useDisclosure,
+  ModalOverlay,
+  CloseButton,
+  ModalContent,
+  ModalCloseButton,
+  ModalBody,
+  Text,
+  Heading,
+} from '@chakra-ui/react';
 function ToastStatusExample() {
   const toast = useToast();
   const statuses = ['success', 'error', 'warning', 'info'] as const;
@@ -28,9 +38,18 @@ function ToastStatusExample() {
 }
 
 function Test() {
+  const showNotice = useNoticeModal();
   return (
     <div>
-      <ToastStatusExample></ToastStatusExample>
+      <Button
+        onClick={() => {
+          showNotice({
+            description: 'Open the modal plis',
+          });
+        }}
+      >
+        click me
+      </Button>
     </div>
   );
 }

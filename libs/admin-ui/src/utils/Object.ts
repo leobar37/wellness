@@ -1,5 +1,4 @@
 import { SafeAny } from '@wellness/common';
-import { get } from 'lodash';
 
 export const matVa = <Val, T extends string | number | symbol>(
   val?: T,
@@ -13,6 +12,7 @@ export const matVa = <Val, T extends string | number | symbol>(
     if (!result) {
       return fallback || null;
     }
+
     return result;
   };
 };

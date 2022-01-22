@@ -128,6 +128,25 @@ type Activity {
   suscription: Suscription!
 }
 
+type Administrator {
+  id: ID!
+  createdAt: DateTime!
+  updateAt: DateTime!
+  name: String!
+  lastName: String!
+  email: String!
+  description: String!
+  temportalToken: String
+  rol: Role!
+}
+
+"""Describe the role of a administrator"""
+enum Role {
+  ADMIN
+  CLIENT
+  STAFF
+}
+
 type Plan {
   id: ID!
   createdAt: DateTime!
@@ -171,6 +190,7 @@ type ResponseSignature {
 
 type Query {
   ping: String!
+  getAdministrators: [Administrator!]!
   clients: [Client!]!
   client(id: ID!): Client!
   finAsistences(cliendId: ID!): [Asistence!]!
@@ -198,6 +218,9 @@ input FiContractsView {
 }
 
 type Mutation {
+  generateTokenForAdmin(input: GenerateTokenInput!): Administrator!
+  registerAdmin(input: RegisterAdminInput!): Administrator!
+  regeneratedNewToken(input: GenerateTokenInput!): Administrator!
   registerClient(client: ClientInput!): Client!
   updateCLient(input: ClientInput!, id: ID!): Client!
   deleteCLient(id: ID!): Client!
@@ -221,6 +244,17 @@ type Mutation {
   openAndCloseFicha(input: FichaInput!): Ficha!
   updateFicha(detailId: Int!, input: FichaInput!): Ficha!
   deleteFicha(fichaId: Int!): Ficha!
+}
+
+input GenerateTokenInput {
+  email: String!
+  role: Role!
+}
+
+input RegisterAdminInput {
+  name: String!
+  lastName: String!
+  temporalToken: String!
 }
 
 input ClientInput {

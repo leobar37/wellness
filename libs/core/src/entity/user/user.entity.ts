@@ -12,6 +12,7 @@ export class User extends WellnessEntity {
   constructor(input: DeepPartial<User>) {
     super(input);
   }
+
   @Column()
   indentifier: string;
 
@@ -25,5 +26,5 @@ export class User extends WellnessEntity {
     type: 'varchar',
     array: true,
   })
-  roles: Role[];
+  roles: Role;
 }

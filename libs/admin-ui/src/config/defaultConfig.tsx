@@ -1,5 +1,5 @@
 import { WellnessConfig } from './Wellness-config';
-import { Dumbell, UsersIcon } from '../icons';
+import { Dumbell, UsersIcon, Settings } from '../icons';
 
 export const defaultConfig: WellnessConfig = {
   sidebar: {
@@ -21,6 +21,16 @@ export const defaultConfig: WellnessConfig = {
           {
             name: 'Actividades',
             path: '/app/services/activities',
+          },
+        ],
+      },
+      {
+        name: 'Configuraciones',
+        icon: <Settings fontSize={'xl'} />,
+        subItems: [
+          {
+            name: 'Administradores',
+            path: '',
           },
         ],
       },
