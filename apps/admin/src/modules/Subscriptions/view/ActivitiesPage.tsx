@@ -1,7 +1,7 @@
 import { Button, HStack } from '@chakra-ui/react';
 import type { Activity, NextPageWithLayout } from '@wellness/admin-ui/common';
 import { BaseLayout, Layout } from '@wellness/admin-ui/components';
-import { DeleteIcon, EyeIcon } from '@wellness/admin-ui/icons';
+import { EyeIcon } from '@wellness/admin-ui/icons';
 import {
   Badgebg,
   ButtonIcon,

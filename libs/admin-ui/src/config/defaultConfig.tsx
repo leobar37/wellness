@@ -30,7 +30,7 @@ export const defaultConfig: WellnessConfig = {
         subItems: [
           {
             name: 'Administradores',
-            path: '',
+            path: '/app/admin',
           },
         ],
       },

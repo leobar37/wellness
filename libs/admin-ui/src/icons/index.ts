@@ -13,3 +13,5 @@ export * from './Eye';
 export * from './Warning';
 export * from './Printer';
 export * from './Settings';
+export * from './OutlineMore';
+export * from './Exit';

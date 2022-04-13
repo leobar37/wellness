@@ -11,6 +11,7 @@ import { SafeAny, someBoolean } from '@wellness/common';
 import { useActivityModal } from '../data';
 import { useEffect } from 'react';
 const { patch } = useSubscriptionsStore.getState();
+
 export const useInitActivitiesController = () => {
   const { data, loading } = useGetActivitiesQuery({
     fetchPolicy: 'network-only',

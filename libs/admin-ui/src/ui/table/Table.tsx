@@ -26,12 +26,13 @@ import {
 import { ColTableProps } from './Column';
 import { TableInstanceProps, TableProps } from './internals';
 import { convertChildrenToColumns } from './utils';
+import { memo } from 'react';
 /**
  * TOOD:
  * - add the way how to get the id
  *  https://react-table.tanstack.com/docs/api/useTable
  */
-export const Table: FunctionComponent<TableProps> = ({
+const _Table: FunctionComponent<TableProps> = ({
   data,
   children,
   onTable,
@@ -169,6 +170,8 @@ export const Table: FunctionComponent<TableProps> = ({
   );
 };
 
-Table.defaultProps = {
+_Table.defaultProps = {
   isSelecteable: true,
 };
+
+export const Table = memo(_Table);

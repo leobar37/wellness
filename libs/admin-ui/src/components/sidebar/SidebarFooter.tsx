@@ -1,26 +1,80 @@
-import { Avatar, Box, Text, VStack, Wrap, WrapItem } from '@chakra-ui/react';
+import {
+  Box,
+  HStack,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
+import { OutlineMore } from '../../icons';
+import { useAuth } from '../../services';
+import { ButtonIcon } from '../../ui/button';
 import { config } from './internal';
+import { Exit, User } from '../../icons';
+import { useRouter } from 'next/router';
+
 export const SidebarFooter = () => {
+  const { user, logout, isLoggedIn } = useAuth();
+  const router = useRouter();
+  const exitOption = () => {
+    logout();
+    router.push('/auth/login');
+  };
+
+  const viewProfile = () => {
+    router.push('/app/admin/profile');
+  };
+
+  if (!isLoggedIn) {
+    return null;
+  }
+
   return (
     <Box position="absolute" bottom="10px" left="0">
       {/* Footer */}
-      <Wrap spacing="4" width={config.width} py={3} bg="blackAlpha.700">
-        <WrapItem>
-          <Avatar
-            name="Segun Adebayo"
-            size="sm"
-            src="https://bit.ly/sage-adebayo"
-          />
-        </WrapItem>
-        <WrapItem color="white">
-          <VStack spacing={0} align="start">
-            <Text fontSize="sm">Alberto Huaman</Text>
+      <HStack
+        spacing="4"
+        justifyContent={'space-between'}
+        px="4"
+        width={config.width}
+        py={3}
+        bg="blackAlpha.700"
+      >
+        <Box color="white">
+          <VStack spacing={0} ml={3} align="start">
+            <Text fontSize="sm">{user.name}</Text>
             <Text fontSize="sm" color="whiteAlpha.600">
-              albertohuaman@gmail.com
+              {user.lastName}
             </Text>
           </VStack>
-        </WrapItem>
-      </Wrap>
+        </Box>
+
+        <Box>
+          <Menu placement="top-start" offset={[150, 50]}>
+            <MenuButton>
+              <ButtonIcon fontSize={'3xl'}>
+                <OutlineMore
+                  color="white"
+                  sx={{
+                    transform: 'scale(1.6)',
+                  }}
+                />
+              </ButtonIcon>
+            </MenuButton>
+
+            <MenuList>
+              <MenuItem icon={<Exit />} onClick={() => exitOption()}>
+                Salir
+              </MenuItem>
+              <MenuItem icon={<User />} onClick={() => viewProfile()}>
+                Ver Perfil
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </Box>
+      </HStack>
     </Box>
   );
 };

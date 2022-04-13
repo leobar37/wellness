@@ -5,6 +5,7 @@ import { Activity } from '@wellness/admin-ui';
 export const useActivityModal = () => {
   const { patch, activitiesCrudModal, activity } = useSubscriptionsStore();
   const [act, setAct] = useState<Activity | null>(activity);
+
   const openModal = useCallback(
     (clean = false) => {
       patch((state) => {

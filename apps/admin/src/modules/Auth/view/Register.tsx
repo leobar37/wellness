@@ -53,10 +53,6 @@ const PasswordForm = () => {
     </>
   );
 };
-// let forms = {
-//   0: DetailUser,
-//   1: PasswordForm,
-// };
 
 const Form = () => {
   return (

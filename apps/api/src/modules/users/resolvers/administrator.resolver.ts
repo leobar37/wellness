@@ -1,18 +1,11 @@
-import { Resolver, Mutation, Query, Args } from '@nestjs/graphql';
-import { GenerateTokenInput, RegisterAdminInput } from '../dto/admin.input';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Administrator } from '@wellness/core';
+import { RegisterAdminInput } from '../dto/admin.input';
 import { AdministratorService } from '../services';
 @Resolver()
 export class AdminstratorResolver {
   constructor(private administratorService: AdministratorService) {}
   // register user
-
-  @Mutation((type) => Administrator)
-  async generateTokenForAdmin(
-    @Args('input', { type: () => GenerateTokenInput }) input: GenerateTokenInput
-  ) {
-    return this.administratorService.generateTokenForAdmin(input);
-  }
 
   @Mutation((type) => Administrator)
   async registerAdmin(
@@ -21,15 +14,17 @@ export class AdminstratorResolver {
     return this.administratorService.registerAdmin(input);
   }
 
-  @Query((type) => [Administrator])
-  async getAdministrators() {
-    return this.administratorService.getAdministrators();
+  @Mutation((type) => Administrator)
+  async editAdministrator(
+    @Args('id', { type: () => ID }) id: string,
+    @Args('input', { type: () => RegisterAdminInput }) input: RegisterAdminInput
+  ) {
+    return this.administratorService.updateAdmin(id, input);
   }
 
-  @Mutation((type) => Administrator)
-  async regeneratedNewToken(
-    @Args('input', { type: () => GenerateTokenInput }) input: GenerateTokenInput
-  ) {
-    return this.administratorService.resendToken(input);
+  @Query((type) => [Administrator])
+  // @Auth(Role.ADMIN)
+  async getAdministrators() {
+    return this.administratorService.getAdministrators();
   }
 }

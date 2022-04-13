@@ -7,7 +7,7 @@ export const SidebarHeader = () => {
   return (
     <VStack spacing="6">
       <HStack width="100%" justify="end">
-        <Logo />
+        <Logo size="md" />
         {/* <Center
           as="button"
           width="30px"

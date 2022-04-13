@@ -22,6 +22,11 @@ export type Scalars = {
   JSONObject: SafeAny;
 };
 
+export type AccessTokenResponse = {
+  __typename?: 'AccessTokenResponse';
+  access_token: Scalars['String'];
+};
+
 export type Activity = {
   __typename?: 'Activity';
   createdAt: Scalars['DateTime'];
@@ -42,13 +47,13 @@ export type ActivityInput = {
 export type Administrator = {
   __typename?: 'Administrator';
   createdAt: Scalars['DateTime'];
-  description: Scalars['String'];
+  dni: Scalars['String'];
   email: Scalars['String'];
   id: Scalars['ID'];
   lastName: Scalars['String'];
   name: Scalars['String'];
+  password: Scalars['String'];
   rol: Role;
-  temportalToken?: Maybe<Scalars['String']>;
   updateAt: Scalars['DateTime'];
 };
 
@@ -242,14 +247,14 @@ export type FiltersPlan = {
   active?: InputMaybe<Scalars['Boolean']>;
 };
 
-export type GenerateTokenInput = {
-  email: Scalars['String'];
-  role: Role;
-};
-
 export type InputAsistence = {
   clientId: Scalars['ID'];
   note?: InputMaybe<Scalars['String']>;
+};
+
+export type LoginAdminInput = {
+  email: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export enum ModeRegiser {
@@ -276,13 +281,13 @@ export type Mutation = {
   deleteFicha: Ficha;
   deletePlan: Plan;
   deleteResource: ResourceUnion;
+  editAdministrator: Administrator;
   editContract: ContractView;
   editResource: ResourceUnion;
-  generateTokenForAdmin: Administrator;
   joinActivity: Contract;
   joinPlan: Contract;
+  login: AccessTokenResponse;
   openAndCloseFicha: Ficha;
-  regeneratedNewToken: Administrator;
   registerAdmin: Administrator;
   registerClient: Client;
   signature: ResponseSignature;
@@ -349,6 +354,12 @@ export type MutationDeleteResourceArgs = {
 };
 
 
+export type MutationEditAdministratorArgs = {
+  id: Scalars['ID'];
+  input: RegisterAdminInput;
+};
+
+
 export type MutationEditContractArgs = {
   input: ContractEditInput;
 };
@@ -356,11 +367,6 @@ export type MutationEditContractArgs = {
 
 export type MutationEditResourceArgs = {
   resource: AssetEditInput;
-};
-
-
-export type MutationGenerateTokenForAdminArgs = {
-  input: GenerateTokenInput;
 };
 
 
@@ -374,13 +380,13 @@ export type MutationJoinPlanArgs = {
 };
 
 
-export type MutationOpenAndCloseFichaArgs = {
-  input: FichaInput;
+export type MutationLoginArgs = {
+  input: LoginAdminInput;
 };
 
 
-export type MutationRegeneratedNewTokenArgs = {
-  input: GenerateTokenInput;
+export type MutationOpenAndCloseFichaArgs = {
+  input: FichaInput;
 };
 
 
@@ -509,9 +515,12 @@ export type QueryGetViewContractsArgs = {
 };
 
 export type RegisterAdminInput = {
+  dni: Scalars['String'];
+  email: Scalars['String'];
   lastName: Scalars['String'];
   name: Scalars['String'];
-  temporalToken: Scalars['String'];
+  password: Scalars['String'];
+  role: Role;
 };
 
 export type ResourceUnion = Asset | AssetBoot;
@@ -553,6 +562,21 @@ export type Suscription = {
   startAt?: Maybe<Scalars['DateTime']>;
   updateAt: Scalars['DateTime'];
 };
+
+export type RegisterAdminMutationVariables = Exact<{
+  input: RegisterAdminInput;
+}>;
+
+
+export type RegisterAdminMutation = { __typename?: 'Mutation', registerAdmin: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password: string } };
+
+export type EditAdministratorMutationVariables = Exact<{
+  input: RegisterAdminInput;
+  id: Scalars['ID'];
+}>;
+
+
+export type EditAdministratorMutation = { __typename?: 'Mutation', editAdministrator: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password: string } };
 
 export type CreateAsistenceMutationVariables = Exact<{
   asistence: InputAsistence;
@@ -610,6 +634,13 @@ export type EditResourceMutationVariables = Exact<{
 
 
 export type EditResourceMutation = { __typename?: 'Mutation', editResource: { __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | { __typename?: 'AssetBoot' } };
+
+export type LoginMutationVariables = Exact<{
+  input: LoginAdminInput;
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AccessTokenResponse', access_token: string } };
 
 export type RegisterClientMutationVariables = Exact<{
   client: ClientInput;
@@ -673,6 +704,13 @@ export type DeleteFichaMutationVariables = Exact<{
 
 
 export type DeleteFichaMutation = { __typename?: 'Mutation', deleteFicha: { __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny | null | undefined, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string | null | undefined, note?: string | null | undefined, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } | null | undefined }> } };
+
+export type AdministratorFragmentFragment = { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password: string };
+
+export type GetAdministratorsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAdministratorsQuery = { __typename?: 'Query', getAdministrators: Array<{ __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password: string }> };
 
 export type AsistenceFragmentFragment = { __typename?: 'Asistence', id: string, createdAt: SafeAny, updateAt: SafeAny, note: string };
 
@@ -808,6 +846,19 @@ export type DeleteContractMutationVariables = Exact<{
 
 export type DeleteContractMutation = { __typename?: 'Mutation', deleteContract: { __typename?: 'ContractView', name?: string | null | undefined, serviceId?: string | null | undefined, price?: number | null | undefined, type?: ServiceType | null | undefined, clientId: string, suscriptionId: string, finished: boolean, note: string, createdAt: SafeAny, finishedAt: SafeAny, contractId: string, clientName: string, description?: string | null | undefined, realPrice: number, clientLastName: string, paid: boolean } };
 
+export const AdministratorFragmentFragmentDoc = gql`
+    fragment administratorFragment on Administrator {
+  id
+  createdAt
+  updateAt
+  name
+  lastName
+  email
+  rol
+  dni
+  password
+}
+    `;
 export const AsistenceFragmentFragmentDoc = gql`
     fragment asistenceFragment on Asistence {
   id
@@ -959,6 +1010,73 @@ export const ContractFragmentFragmentDoc = gql`
   }
 }
     ${SubscriptionFragmentFragmentDoc}`;
+export const RegisterAdminDocument = gql`
+    mutation registerAdmin($input: RegisterAdminInput!) {
+  registerAdmin(input: $input) {
+    ...administratorFragment
+  }
+}
+    ${AdministratorFragmentFragmentDoc}`;
+export type RegisterAdminMutationFn = Apollo.MutationFunction<RegisterAdminMutation, RegisterAdminMutationVariables>;
+
+/**
+ * __useRegisterAdminMutation__
+ *
+ * To run a mutation, you first call `useRegisterAdminMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterAdminMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerAdminMutation, { data, loading, error }] = useRegisterAdminMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRegisterAdminMutation(baseOptions?: Apollo.MutationHookOptions<RegisterAdminMutation, RegisterAdminMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterAdminMutation, RegisterAdminMutationVariables>(RegisterAdminDocument, options);
+      }
+export type RegisterAdminMutationHookResult = ReturnType<typeof useRegisterAdminMutation>;
+export type RegisterAdminMutationResult = Apollo.MutationResult<RegisterAdminMutation>;
+export type RegisterAdminMutationOptions = Apollo.BaseMutationOptions<RegisterAdminMutation, RegisterAdminMutationVariables>;
+export const EditAdministratorDocument = gql`
+    mutation editAdministrator($input: RegisterAdminInput!, $id: ID!) {
+  editAdministrator(input: $input, id: $id) {
+    ...administratorFragment
+  }
+}
+    ${AdministratorFragmentFragmentDoc}`;
+export type EditAdministratorMutationFn = Apollo.MutationFunction<EditAdministratorMutation, EditAdministratorMutationVariables>;
+
+/**
+ * __useEditAdministratorMutation__
+ *
+ * To run a mutation, you first call `useEditAdministratorMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditAdministratorMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editAdministratorMutation, { data, loading, error }] = useEditAdministratorMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useEditAdministratorMutation(baseOptions?: Apollo.MutationHookOptions<EditAdministratorMutation, EditAdministratorMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditAdministratorMutation, EditAdministratorMutationVariables>(EditAdministratorDocument, options);
+      }
+export type EditAdministratorMutationHookResult = ReturnType<typeof useEditAdministratorMutation>;
+export type EditAdministratorMutationResult = Apollo.MutationResult<EditAdministratorMutation>;
+export type EditAdministratorMutationOptions = Apollo.BaseMutationOptions<EditAdministratorMutation, EditAdministratorMutationVariables>;
 export const CreateAsistenceDocument = gql`
     mutation createAsistence($asistence: InputAsistence!) {
   createAsistence(asistence: $asistence) {
@@ -1245,6 +1363,39 @@ export function useEditResourceMutation(baseOptions?: Apollo.MutationHookOptions
 export type EditResourceMutationHookResult = ReturnType<typeof useEditResourceMutation>;
 export type EditResourceMutationResult = Apollo.MutationResult<EditResourceMutation>;
 export type EditResourceMutationOptions = Apollo.BaseMutationOptions<EditResourceMutation, EditResourceMutationVariables>;
+export const LoginDocument = gql`
+    mutation login($input: LoginAdminInput!) {
+  login(input: $input) {
+    access_token
+  }
+}
+    `;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
+
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
+      }
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const RegisterClientDocument = gql`
     mutation registerClient($client: ClientInput!) {
   registerClient(client: $client) {
@@ -1551,6 +1702,40 @@ export function useDeleteFichaMutation(baseOptions?: Apollo.MutationHookOptions<
 export type DeleteFichaMutationHookResult = ReturnType<typeof useDeleteFichaMutation>;
 export type DeleteFichaMutationResult = Apollo.MutationResult<DeleteFichaMutation>;
 export type DeleteFichaMutationOptions = Apollo.BaseMutationOptions<DeleteFichaMutation, DeleteFichaMutationVariables>;
+export const GetAdministratorsDocument = gql`
+    query getAdministrators {
+  getAdministrators {
+    ...administratorFragment
+  }
+}
+    ${AdministratorFragmentFragmentDoc}`;
+
+/**
+ * __useGetAdministratorsQuery__
+ *
+ * To run a query within a React component, call `useGetAdministratorsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAdministratorsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAdministratorsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAdministratorsQuery(baseOptions?: Apollo.QueryHookOptions<GetAdministratorsQuery, GetAdministratorsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAdministratorsQuery, GetAdministratorsQueryVariables>(GetAdministratorsDocument, options);
+      }
+export function useGetAdministratorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAdministratorsQuery, GetAdministratorsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAdministratorsQuery, GetAdministratorsQueryVariables>(GetAdministratorsDocument, options);
+        }
+export type GetAdministratorsQueryHookResult = ReturnType<typeof useGetAdministratorsQuery>;
+export type GetAdministratorsLazyQueryHookResult = ReturnType<typeof useGetAdministratorsLazyQuery>;
+export type GetAdministratorsQueryResult = Apollo.QueryResult<GetAdministratorsQuery, GetAdministratorsQueryVariables>;
 export const PingQueryDocument = gql`
     query pingQuery {
   ping
@@ -2092,6 +2277,10 @@ export type DeleteContractMutationResult = Apollo.MutationResult<DeleteContractM
 export type DeleteContractMutationOptions = Apollo.BaseMutationOptions<DeleteContractMutation, DeleteContractMutationVariables>;
 type DiscriminateUnion<T, U> = T extends U ? T : never;
 
+export type RegisterAdminVariables = RegisterAdminMutationVariables;
+export type RegisterAdminRegisterAdmin = (NonNullable<RegisterAdminMutation['registerAdmin']>);
+export type EditAdministratorVariables = EditAdministratorMutationVariables;
+export type EditAdministratorEditAdministrator = (NonNullable<EditAdministratorMutation['editAdministrator']>);
 export type CreateAsistenceVariables = CreateAsistenceMutationVariables;
 export type CreateAsistenceCreateAsistence = (NonNullable<CreateAsistenceMutation['createAsistence']>);
 export type UpdateAsistenceVariables = UpdateAsistenceMutationVariables;
@@ -2114,6 +2303,8 @@ export type CreateResourceAssetBootInlineFragment = (DiscriminateUnion<(NonNulla
 export type CreateResourceAssets = NonNullable<(NonNullable<(DiscriminateUnion<(NonNullable<CreateResourceMutation['createResource']>), { __typename?: 'AssetBoot' }>)['assets']>)[number]>;
 export type EditResourceVariables = EditResourceMutationVariables;
 export type EditResourceEditResource = (NonNullable<EditResourceMutation['editResource']>);
+export type LoginVariables = LoginMutationVariables;
+export type LoginLogin = (NonNullable<LoginMutation['login']>);
 export type RegisterClientVariables = RegisterClientMutationVariables;
 export type RegisterClientRegisterClient = (NonNullable<RegisterClientMutation['registerClient']>);
 export type GetClientsVariables = GetClientsQueryVariables;
@@ -2132,6 +2323,8 @@ export type UpdateFichaVariables = UpdateFichaMutationVariables;
 export type UpdateFichaUpdateFicha = (NonNullable<UpdateFichaMutation['updateFicha']>);
 export type DeleteFichaVariables = DeleteFichaMutationVariables;
 export type DeleteFichaDeleteFicha = (NonNullable<DeleteFichaMutation['deleteFicha']>);
+export type GetAdministratorsVariables = GetAdministratorsQueryVariables;
+export type GetAdministratorsGetAdministrators = NonNullable<(NonNullable<GetAdministratorsQuery['getAdministrators']>)[number]>;
 export type AssetBootAssets = NonNullable<(NonNullable<AssetBootFragment['assets']>)[number]>;
 export type ClientFragmentPhoto = (NonNullable<ClientFragmentFragment['photo']>);
 export type FichaFragmentDetails = NonNullable<(NonNullable<FichaFragmentFragment['details']>)[number]>;

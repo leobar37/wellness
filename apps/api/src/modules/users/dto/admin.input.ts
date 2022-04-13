@@ -16,8 +16,17 @@ export class RegisterAdminInput {
   name: string;
 
   @Field()
+  dni: string;
+
+  @Field()
   lastName: string;
 
   @Field()
-  temporalToken: string;
+  email: string;
+
+  @Field()
+  password: string;
+
+  @Field((type) => Role)
+  role: Role;
 }

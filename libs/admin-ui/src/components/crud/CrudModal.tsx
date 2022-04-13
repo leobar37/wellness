@@ -33,9 +33,9 @@ export type UdpateActionsProps = {
  *
  */
 export const ChackraForm: FunctionComponent<{ submit?: SafeAny } & BoxProps> =
-  ({ submit, children }) => {
+  ({ submit, children, ...props }) => {
     return (
-      <Box as="form" onSubmit={submit}>
+      <Box as="form" onSubmit={submit} {...props}>
         {children}
       </Box>
     );

@@ -1,92 +1,72 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
-import {
-  Administrator,
-  BussinessError,
-  EntityNotFoundError,
-} from '@wellness/core';
-import jwt from 'jsonwebtoken';
+import { CRUD, ID } from '@wellness/common';
+import { Administrator, BussinessError } from '@wellness/core';
+import { AdministratorEvent, EventBus } from '@wellness/core/event-bus';
 import { EntityManager, Repository } from 'typeorm';
-import { GenerateTokenInput, RegisterAdminInput } from '../dto/admin.input';
-import { TokenPayload } from '../model';
+import { RegisterAdminInput } from '../dto/admin.input';
+
+import { BycriptService } from '@wellness/core';
 
 @Injectable()
 export class AdministratorService {
   constructor(
     @InjectEntityManager() private manager: EntityManager,
-    private configService: ConfigService,
     @InjectRepository(Administrator)
-    private administratorRepository: Repository<Administrator>
+    private administratorRepository: Repository<Administrator>,
+    private eventBus: EventBus,
+    private readonly bcryptService: BycriptService
   ) {}
 
-  generateToken({ email, role }: GenerateTokenInput) {
-    const privateKey = this.configService.get('TEMPORAL_TOKEN_KEY');
-    const generatedToken = jwt.sign(
-      { email: email, rol: role } as TokenPayload,
-      privateKey,
-      {
-        expiresIn: '6h',
-      }
-    );
-    return generatedToken;
-  }
-  async generateTokenForAdmin({ email, role }: GenerateTokenInput) {
-    const generatedToken = this.generateToken({ email, role });
-    const administrator = this.manager.create(Administrator, {
-      email: email,
-      temportalToken: generatedToken,
-      verified: false,
-      rol: role,
-    });
-    return this.manager.save(administrator);
-  }
-
   async registerAdmin(input: RegisterAdminInput) {
-    const privateKey = this.configService.get('TEMPORAL_TOKEN_KEY');
-    let payload = null;
-    try {
-      payload = jwt.verify(input.temporalToken, privateKey) as TokenPayload;
-    } catch (error) {
-      throw new BussinessError(
-        'Su token ha expirado, solicite a un administrador que reenvie su invitación'
-      );
-    }
     const admin = await this.manager
       .getRepository(Administrator)
-      .findOne({ email: payload.email });
+      .findOne({ email: input.email });
 
-    if (!admin) {
-      throw new EntityNotFoundError('Administrator', payload.email);
+    if (admin) {
+      throw new BussinessError('Este administrador ya existe');
     }
-    const updatedAdmin = this.manager.merge(Administrator, admin, {
-      name: input.name,
-      lastName: input.lastName,
-      verified: true,
-    });
 
-    await this.manager.update(Administrator, admin.id, updatedAdmin);
-    return updatedAdmin;
+    // this password hashed
+
+    const hash = await this.bcryptService.hash(input.password);
+    const adminstratorData = await this.manager.save(
+      Administrator,
+      new Administrator({
+        name: input.name,
+        lastName: input.lastName,
+        password: hash,
+        dni: input.dni,
+        email: input.email,
+        rol: input.role,
+      })
+    );
+    return adminstratorData;
+  }
+
+  public async updateAdmin(id: ID, input: RegisterAdminInput) {
+    const admin = await this.manager.getRepository(Administrator).findOne(id);
+    if (!admin) {
+      throw new BussinessError('Este administador no existe');
+    }
+    const adminForUpdate = this.manager.merge(Administrator, admin, {
+      ...admin,
+      rol: input.role,
+    });
+    await this.manager.update(Administrator, id, adminForUpdate);
+
+    this.eventBus.publish(
+      new AdministratorEvent({
+        source: adminForUpdate,
+        operation: CRUD.UPDATE,
+      })
+    );
+
+    return adminForUpdate;
   }
 
   // list administrators
   async getAdministrators() {
     return this.administratorRepository.find();
-  }
-
-  async resendToken(input: GenerateTokenInput) {
-    const generatedToken = this.generateToken(input);
-    const admin = await this.administratorRepository.findOne({
-      email: input.email,
-    });
-    if (!admin) {
-      throw new EntityNotFoundError('Administrator', input.email);
-    }
-    const refreshAdmin = this.administratorRepository.merge(admin, {
-      temportalToken: generatedToken,
-    });
-    await this.administratorRepository.update(admin.id, refreshAdmin);
-
-    return refreshAdmin;
   }
 }

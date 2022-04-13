@@ -1,5 +1,7 @@
 import { extendTheme } from '@chakra-ui/react';
+import { theme as chakraTheme } from '@chakra-ui/theme';
 import { SystemStyleObject } from '@chakra-ui/react';
+
 const Button = {
   // Styles for the base style
   baseStyle: {} as SystemStyleObject,
@@ -13,7 +15,7 @@ const Button = {
       _hover: {
         bg: 'brown.500',
         color: 'white',
-        transform: 'scale(1.08)',
+        transform: 'scale(1.04)',
       },
       _active: {
         transform: 'scale(0.9)',
@@ -24,8 +26,6 @@ const Button = {
       color: 'white',
     },
   },
-  // The default `size` or `variant` values
-  defaultProps: {},
 };
 
 const Form = {
@@ -56,7 +56,6 @@ export const theme = extendTheme({
       900: '#120b0c',
     },
   },
-
   fonts: {
     body: "'Roboto', sans-serif",
     heading: "'Roboto', sans-serif",

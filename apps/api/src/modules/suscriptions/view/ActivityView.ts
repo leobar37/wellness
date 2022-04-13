@@ -13,4 +13,10 @@ import { ViewColumn, ViewEntity, Connection } from 'typeorm';
       .addSelect('sub.duration', 'duration')
       .innerJoin('sub.contracts', 'contract'),
 })
-export class ActivityView {}
+export class ActivityView {
+  @ViewColumn({ name: 'name' })
+  name: string;
+
+  @ViewColumn({ name: 'activityId' })
+  activityId: string;
+}

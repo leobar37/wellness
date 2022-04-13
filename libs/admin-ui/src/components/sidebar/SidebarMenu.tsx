@@ -93,8 +93,12 @@ export const MenuItem = ({ icon, children, subItems, path }: MenuItemProps) => {
           pl="4"
           ml="8"
         >
-          {subItems.map((subItem) => {
-            return <SubItem href={subItem.path}>{subItem.name}</SubItem>;
+          {subItems.map((subItem, idx) => {
+            return (
+              <SubItem key={idx} href={subItem.path}>
+                {subItem.name}
+              </SubItem>
+            );
           })}
         </VStack>
       </AccordionPanel>

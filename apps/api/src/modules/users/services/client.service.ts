@@ -7,9 +7,11 @@ import { CRUD, ID, normalizeEmailAddress } from '@wellness/common';
 import { EntityNotFoundError } from '@wellness/core/common/error';
 import { EventBus, ClientEvent } from '@wellness/core/event-bus';
 import * as faker from 'faker';
+
 const temporalId = () => {
   return faker.lorem.word(3) + faker.datatype.number(10);
 };
+
 @Injectable()
 export class ClientService {
   constructor(
@@ -22,6 +24,7 @@ export class ClientService {
     if (!input.code) {
       input.code = temporalId();
     }
+
     const client = new Client(input);
     client.birth = input.birthday;
     // client has been saved
@@ -34,11 +37,7 @@ export class ClientService {
     );
     return createdClient;
   }
-  /**
-   * TODO:
-   * - Filters per date
-   * - FIlters for name
-   */
+
   public async findAll() {
     return this.repository.find({});
   }

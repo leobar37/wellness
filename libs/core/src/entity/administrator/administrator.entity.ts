@@ -23,6 +23,10 @@ export class Administrator extends WellnessEntity {
 
   @Column({ nullable: true })
   @Field((type) => String)
+  dni: string;
+
+  @Column({ nullable: true })
+  @Field((type) => String)
   lastName: string;
 
   @Column({
@@ -33,18 +37,7 @@ export class Administrator extends WellnessEntity {
 
   @Column({ nullable: true })
   @Field((type) => String)
-  description: string;
-
-  // this is a temporal toke wich serves to validate user before be converted into a user
-  @Column({ nullable: true })
-  @Field((type) => String, { nullable: true })
-  temportalToken: string;
-
-  @Column({ nullable: true })
   password: string;
-
-  @Column()
-  verified: boolean;
 
   @Column({ type: 'varchar' })
   @Field((type) => Role)

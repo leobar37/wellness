@@ -3,9 +3,11 @@ import { Entity, Column, ManyToOne } from 'typeorm';
 import { ObjectType, Field, Float } from '@nestjs/graphql';
 import { DeepPartial, SafeAny } from '@wellness/common';
 import { AssetBoot } from './relation-asset.entity';
+
 /**
  * @description
  */
+
 @Entity()
 @ObjectType()
 export class Asset extends WellnessEntity {

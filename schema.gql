@@ -133,10 +133,10 @@ type Administrator {
   createdAt: DateTime!
   updateAt: DateTime!
   name: String!
+  dni: String!
   lastName: String!
   email: String!
-  description: String!
-  temportalToken: String
+  password: String!
   rol: Role!
 }
 
@@ -188,6 +188,10 @@ type ResponseSignature {
   timestamp: Float!
 }
 
+type AccessTokenResponse {
+  access_token: String!
+}
+
 type Query {
   ping: String!
   getAdministrators: [Administrator!]!
@@ -218,9 +222,8 @@ input FiContractsView {
 }
 
 type Mutation {
-  generateTokenForAdmin(input: GenerateTokenInput!): Administrator!
   registerAdmin(input: RegisterAdminInput!): Administrator!
-  regeneratedNewToken(input: GenerateTokenInput!): Administrator!
+  editAdministrator(input: RegisterAdminInput!, id: ID!): Administrator!
   registerClient(client: ClientInput!): Client!
   updateCLient(input: ClientInput!, id: ID!): Client!
   deleteCLient(id: ID!): Client!
@@ -244,17 +247,16 @@ type Mutation {
   openAndCloseFicha(input: FichaInput!): Ficha!
   updateFicha(detailId: Int!, input: FichaInput!): Ficha!
   deleteFicha(fichaId: Int!): Ficha!
-}
-
-input GenerateTokenInput {
-  email: String!
-  role: Role!
+  login(input: LoginAdminInput!): AccessTokenResponse!
 }
 
 input RegisterAdminInput {
   name: String!
+  dni: String!
   lastName: String!
-  temporalToken: String!
+  email: String!
+  password: String!
+  role: Role!
 }
 
 input ClientInput {
@@ -352,4 +354,9 @@ input FichaInput {
   fichaId: ID
   clientId: Int
   open: Boolean
+}
+
+input LoginAdminInput {
+  email: String!
+  password: String!
 }

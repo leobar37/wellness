@@ -22,6 +22,7 @@ import {
 import { SidebarConfig, useConfig } from '../../config';
 import { Left } from '../../icons';
 import { ClientOnly } from '../../lib';
+
 const layoutGrid: SystemStyleObject = {
   height: '100vh',
   bg: 'gray.200',
@@ -154,20 +155,26 @@ const BaseLayout: React.FunctionComponent<BaseLayoutProps> = ({
 const DefaulSidebar = () => {
   const sidebar = useConfig<SidebarConfig>('sidebar');
 
-  const renderItems = () => {
-    return sidebar.items.map((item) => {
+  const items = React.useMemo(() => {
+    return sidebar.items.map((item, idx) => {
       return (
-        <MenuItem path={item.path} icon={item.icon} subItems={item.subItems}>
+        <MenuItem
+          key={String(idx)}
+          path={item.path}
+          icon={item.icon}
+          subItems={item.subItems}
+        >
           {item.name}
         </MenuItem>
       );
     });
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Sidebar>
       <SidebarHeader />
-      <SidebarMenu>{renderItems()}</SidebarMenu>
+      <SidebarMenu>{items}</SidebarMenu>
       <SidebarFooter />
     </Sidebar>
   );

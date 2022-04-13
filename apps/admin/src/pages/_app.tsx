@@ -5,6 +5,7 @@ import { useApollo } from '@wellness/admin-ui/lib';
 import { AppPropsWithLayout } from '@wellness/admin-ui/common';
 import { DialogsProvider } from '@wellness/admin-ui/ui';
 import 'react-datepicker/dist/react-datepicker.css';
+import { AuthProvider } from '@wellness/admin-ui';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -17,7 +18,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
     <ApolloProvider client={apolloClient}>
       <ChakraProvider theme={theme}>
         <DialogsProvider>
-          {getLayout(<Component {...pageProps} />)}
+          <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
         </DialogsProvider>
       </ChakraProvider>
     </ApolloProvider>
