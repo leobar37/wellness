@@ -5,7 +5,8 @@ import { Administrator, BussinessError } from '@wellness/core';
 import { AdministratorEvent, EventBus } from '@wellness/core/event-bus';
 import { EntityManager, Repository } from 'typeorm';
 import { RegisterAdminInput } from '../dto/admin.input';
-
+import { ResetPasswordInput } from '../dto/ResetPassword.input';
+import { omit } from 'lodash';
 import { BycriptService } from '@wellness/core';
 
 @Injectable()
@@ -44,15 +45,37 @@ export class AdministratorService {
     return adminstratorData;
   }
 
-  public async updateAdmin(id: ID, input: RegisterAdminInput) {
-    const admin = await this.manager.getRepository(Administrator).findOne(id);
+  // reset password
+
+  public async resetPassword(input: ResetPasswordInput) {
+    const admin = await this.manager
+      .getRepository(Administrator)
+      .findOne(input.id);
     if (!admin) {
       throw new BussinessError('Este administador no existe');
     }
+    const hash = await this.bcryptService.hash(input.newPassword);
+
     const adminForUpdate = this.manager.merge(Administrator, admin, {
-      ...admin,
+      password: hash,
+    });
+    await this.manager.update(Administrator, input.id, adminForUpdate);
+
+    return adminForUpdate;
+  }
+
+  public async updateAdmin(id: ID, input: RegisterAdminInput) {
+    const admin = await this.manager.getRepository(Administrator).findOne(id);
+
+    if (!admin) {
+      throw new BussinessError('Este administador no existe');
+    }
+
+    const adminForUpdate = this.manager.merge(Administrator, admin, {
+      ...omit(input, ['password']),
       rol: input.role,
     });
+
     await this.manager.update(Administrator, id, adminForUpdate);
 
     this.eventBus.publish(

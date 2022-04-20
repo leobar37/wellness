@@ -4,7 +4,7 @@ import { combine } from 'zustand/middleware';
 import { pipe } from '@wellness/admin-ui/utils';
 import { ModeAction, Administrator } from '@wellness/admin-ui';
 import { Updater } from 'use-immer';
-
+import { ID } from '@wellness/common';
 const create = pipe(immer, _create) as typeof _create;
 
 const initialState = {
@@ -12,6 +12,10 @@ const initialState = {
     isOpen: false,
     mode: 'edit' as ModeAction,
     temporal: null as Administrator,
+  },
+  changePasswordModal: {
+    isOpen: false,
+    idUser: null as ID,
   },
 };
 
@@ -49,4 +53,24 @@ export const useAdministratorCrud = () => {
   };
 
   return { closeModal, openModal, openEditModal, ...administratorModal };
+};
+
+export const useChangePasswordModal = () => {
+  const { patch, changePasswordModal } = useAdministratorStore();
+
+  const openModal = (id: ID) => {
+    patch(({ changePasswordModal }) => {
+      changePasswordModal.isOpen = true;
+      changePasswordModal.idUser = id;
+    });
+  };
+
+  const closeModal = () => {
+    patch(({ changePasswordModal }) => {
+      changePasswordModal.isOpen = false;
+      changePasswordModal.idUser = null;
+    });
+  };
+
+  return { openModal, closeModal, ...changePasswordModal };
 };

@@ -36,7 +36,7 @@ export class Administrator extends WellnessEntity {
   email: string;
 
   @Column({ nullable: true })
-  @Field((type) => String)
+  @Field((type) => String, { nullable: true })
   password: string;
 
   @Column({ type: 'varchar' })

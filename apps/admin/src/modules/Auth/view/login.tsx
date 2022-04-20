@@ -1,11 +1,10 @@
-import { Flex, FormControl, FormLabel, Input, Link } from '@chakra-ui/react';
+import { Flex, FormControl, FormLabel, Link, useToast } from '@chakra-ui/react';
 import { ChackraForm, NextPageWithLayout, useAuth } from '@wellness/admin-ui';
 import { Formik, useFormikContext } from 'formik';
 import { InputControl, SubmitButton } from 'formik-chakra-ui';
-import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { Authlayout } from '../components';
 import { LoginInputType } from '../domain';
-import { useRouter } from 'next/router';
 const Form = () => {
   const { handleSubmit } = useFormikContext();
 
@@ -14,7 +13,12 @@ const Form = () => {
       <InputControl label="Correo" name="email" />
       <FormControl>
         <FormLabel>Contraseña</FormLabel>
-        <Input type={'password'} name="password" />
+        <InputControl
+          inputProps={{
+            type: 'password',
+          }}
+          name="password"
+        />
       </FormControl>
       <Flex w={'full'} direction={'column'} alignItems={'center'} gridGap={'4'}>
         <Link as="a" color={'blackAlpha.700'}>
@@ -29,14 +33,8 @@ const Form = () => {
 };
 export const LoginPage: NextPageWithLayout = () => {
   const { login, user, isLoggedIn } = useAuth();
-
+  const toast = useToast();
   const router = useRouter();
-  useEffect(() => {
-    if (isLoggedIn) {
-      router.push('/app');
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoggedIn]);
 
   return (
     <Formik<LoginInputType>
@@ -45,7 +43,17 @@ export const LoginPage: NextPageWithLayout = () => {
         password: '',
       }}
       onSubmit={async (values) => {
-        await login(values.email, values.password);
+        try {
+          console.log(values);
+
+          await login(values.email, values.password);
+          router.push('/app');
+        } catch (error) {
+          toast({
+            status: 'error',
+            description: 'Usuario o contraseña incorrectos',
+          });
+        }
       }}
     >
       <Form />

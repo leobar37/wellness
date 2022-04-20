@@ -34,7 +34,7 @@ export class ClientResolver {
   }
 
   @Query((type) => Client)
-  client(@Args('id', { type: () => ID }) id: number) {
+  async client(@Args('id', { type: () => ID }) id: number) {
     return this.clientService.findOne(id);
   }
 }

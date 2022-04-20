@@ -3,10 +3,12 @@ import {
   Role,
   useGetAdministratorsQuery,
   useEditAdministratorMutation,
+  useResetPasswordMutation,
 } from '@wellness/admin-ui/common';
 import { useSomeTruthy } from '@wellness/admin-ui/hooks';
-import { CreateAdminT } from '../domain';
+import { CreateAdminT, ChangePasswordSchema } from '../domain';
 import { useAdministratorCrud } from '../data';
+import { ID } from '@wellness/common';
 
 export const useAdministratorInit = () => {
   const { data: administratorsData, loading } = useGetAdministratorsQuery();
@@ -21,8 +23,10 @@ export const useAdministratorInit = () => {
 export const useAdministratorController = () => {
   const [registerAdminMutation] = useRegisterAdminMutation();
   const [editAdministratorMutation] = useEditAdministratorMutation();
+  const [resetPasswordMutation] = useResetPasswordMutation();
   const { refetch } = useGetAdministratorsQuery();
   const { temporal } = useAdministratorCrud();
+
   const registerAdmin = async (input: CreateAdminT) => {
     const result = await registerAdminMutation({
       variables: {
@@ -61,5 +65,19 @@ export const useAdministratorController = () => {
     return null;
   };
 
-  return { registerAdmin, editAdministrator };
+  const resetPassword = async (
+    values: ChangePasswordSchema & { userId: ID }
+  ) => {
+    const result = await resetPasswordMutation({
+      variables: {
+        input: {
+          id: String(values.userId),
+          newPassword: values.password,
+        },
+      },
+    });
+    return result.data.resetPassword;
+  };
+
+  return { registerAdmin, editAdministrator, resetPassword };
 };

@@ -12,3 +12,21 @@ export const createAdminSchem = yup.object({
 });
 
 export type CreateAdminT = Asserts<typeof createAdminSchem>;
+
+export const updateAdminSchema = yup.object({
+  name: yup.string().required(),
+  lastName: yup.string().required(),
+  email: yup.string().email().required(),
+});
+
+export type UpdateAdminT = Asserts<typeof updateAdminSchema>;
+
+export const changePasswordSchema = yup.object({
+  password: yup
+    .string()
+    .min(8, 'Se requieren mínimo 8 carácteres')
+    .required('Este campo es requerido'),
+  repeatPassword: yup.string().required('Este campo es requerido'),
+});
+
+export type ChangePasswordSchema = Asserts<typeof changePasswordSchema>;

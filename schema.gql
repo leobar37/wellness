@@ -136,7 +136,7 @@ type Administrator {
   dni: String!
   lastName: String!
   email: String!
-  password: String!
+  password: String
   rol: Role!
 }
 
@@ -224,6 +224,7 @@ input FiContractsView {
 type Mutation {
   registerAdmin(input: RegisterAdminInput!): Administrator!
   editAdministrator(input: RegisterAdminInput!, id: ID!): Administrator!
+  resetPassword(input: ResetPasswordInput!): Administrator!
   registerClient(client: ClientInput!): Client!
   updateCLient(input: ClientInput!, id: ID!): Client!
   deleteCLient(id: ID!): Client!
@@ -255,8 +256,14 @@ input RegisterAdminInput {
   dni: String!
   lastName: String!
   email: String!
-  password: String!
+  password: String
   role: Role!
+}
+
+input ResetPasswordInput {
+  """Administratror id"""
+  id: ID!
+  newPassword: String!
 }
 
 input ClientInput {

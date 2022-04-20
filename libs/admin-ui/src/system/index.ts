@@ -1,8 +1,7 @@
 import { extendTheme } from '@chakra-ui/react';
 import { theme as chakraTheme } from '@chakra-ui/theme';
-import { SystemStyleObject } from '@chakra-ui/react';
-
-const Button = {
+import { StyleConfig, SystemStyleObject } from '@chakra-ui/theme-tools';
+const Button: StyleConfig = {
   // Styles for the base style
   baseStyle: {} as SystemStyleObject,
   // Styles for the size variations
@@ -10,10 +9,8 @@ const Button = {
   // Styles for the visual style variations
   variants: {
     solid: {
-      bg: 'brown.500',
       color: 'white',
       _hover: {
-        bg: 'brown.500',
         color: 'white',
         transform: 'scale(1.04)',
       },
@@ -25,6 +22,10 @@ const Button = {
       bg: 'red.500',
       color: 'white',
     },
+  },
+
+  defaultProps: {
+    colorScheme: 'brown2',
   },
 };
 
@@ -42,6 +43,18 @@ export const theme = extendTheme({
     brown: {
       300: '#212121',
       500: '#212121',
+    },
+    brown2: {
+      50: '#f8f0f2',
+      100: '#d9d9d9',
+      200: '#bfbfbf',
+      300: '#a6a6a6',
+      400: '#8c8c8c',
+      500: '#1E1E1E',
+      600: '#595959',
+      700: '#404040',
+      800: '#262626',
+      900: '#1E1E1E',
     },
     panda: {
       50: '#f8f1f0',

@@ -17,3 +17,11 @@ export const editAdministrator = gql`
     }
   }
 `;
+
+export const resetPassword = gql`
+  mutation resetPassword($input: ResetPasswordInput!) {
+    resetPassword(input: $input) {
+      ...administratorFragment
+    }
+  }
+`;

@@ -63,8 +63,6 @@ export const AuthProvider: FC = ({ children }) => {
     });
     const token = result.data?.login.access_token;
     if (token) {
-      console.log('saved token', token);
-
       tokenManager.set(token);
     }
     return token;

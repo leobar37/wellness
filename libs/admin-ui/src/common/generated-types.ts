@@ -52,7 +52,7 @@ export type Administrator = {
   id: Scalars['ID'];
   lastName: Scalars['String'];
   name: Scalars['String'];
-  password: Scalars['String'];
+  password?: Maybe<Scalars['String']>;
   rol: Role;
   updateAt: Scalars['DateTime'];
 };
@@ -290,6 +290,7 @@ export type Mutation = {
   openAndCloseFicha: Ficha;
   registerAdmin: Administrator;
   registerClient: Client;
+  resetPassword: Administrator;
   signature: ResponseSignature;
   updateActivity: Activity;
   updateAsistence: Asistence;
@@ -397,6 +398,11 @@ export type MutationRegisterAdminArgs = {
 
 export type MutationRegisterClientArgs = {
   client: ClientInput;
+};
+
+
+export type MutationResetPasswordArgs = {
+  input: ResetPasswordInput;
 };
 
 
@@ -519,8 +525,14 @@ export type RegisterAdminInput = {
   email: Scalars['String'];
   lastName: Scalars['String'];
   name: Scalars['String'];
-  password: Scalars['String'];
+  password?: InputMaybe<Scalars['String']>;
   role: Role;
+};
+
+export type ResetPasswordInput = {
+  /** Administratror id */
+  id: Scalars['ID'];
+  newPassword: Scalars['String'];
 };
 
 export type ResourceUnion = Asset | AssetBoot;
@@ -568,7 +580,7 @@ export type RegisterAdminMutationVariables = Exact<{
 }>;
 
 
-export type RegisterAdminMutation = { __typename?: 'Mutation', registerAdmin: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password: string } };
+export type RegisterAdminMutation = { __typename?: 'Mutation', registerAdmin: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string | null | undefined } };
 
 export type EditAdministratorMutationVariables = Exact<{
   input: RegisterAdminInput;
@@ -576,7 +588,14 @@ export type EditAdministratorMutationVariables = Exact<{
 }>;
 
 
-export type EditAdministratorMutation = { __typename?: 'Mutation', editAdministrator: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password: string } };
+export type EditAdministratorMutation = { __typename?: 'Mutation', editAdministrator: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string | null | undefined } };
+
+export type ResetPasswordMutationVariables = Exact<{
+  input: ResetPasswordInput;
+}>;
+
+
+export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string | null | undefined } };
 
 export type CreateAsistenceMutationVariables = Exact<{
   asistence: InputAsistence;
@@ -705,12 +724,12 @@ export type DeleteFichaMutationVariables = Exact<{
 
 export type DeleteFichaMutation = { __typename?: 'Mutation', deleteFicha: { __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny | null | undefined, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string | null | undefined, note?: string | null | undefined, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } | null | undefined }> } };
 
-export type AdministratorFragmentFragment = { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password: string };
+export type AdministratorFragmentFragment = { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string | null | undefined };
 
 export type GetAdministratorsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAdministratorsQuery = { __typename?: 'Query', getAdministrators: Array<{ __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password: string }> };
+export type GetAdministratorsQuery = { __typename?: 'Query', getAdministrators: Array<{ __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string | null | undefined }> };
 
 export type AsistenceFragmentFragment = { __typename?: 'Asistence', id: string, createdAt: SafeAny, updateAt: SafeAny, note: string };
 
@@ -1077,6 +1096,39 @@ export function useEditAdministratorMutation(baseOptions?: Apollo.MutationHookOp
 export type EditAdministratorMutationHookResult = ReturnType<typeof useEditAdministratorMutation>;
 export type EditAdministratorMutationResult = Apollo.MutationResult<EditAdministratorMutation>;
 export type EditAdministratorMutationOptions = Apollo.BaseMutationOptions<EditAdministratorMutation, EditAdministratorMutationVariables>;
+export const ResetPasswordDocument = gql`
+    mutation resetPassword($input: ResetPasswordInput!) {
+  resetPassword(input: $input) {
+    ...administratorFragment
+  }
+}
+    ${AdministratorFragmentFragmentDoc}`;
+export type ResetPasswordMutationFn = Apollo.MutationFunction<ResetPasswordMutation, ResetPasswordMutationVariables>;
+
+/**
+ * __useResetPasswordMutation__
+ *
+ * To run a mutation, you first call `useResetPasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useResetPasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [resetPasswordMutation, { data, loading, error }] = useResetPasswordMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useResetPasswordMutation(baseOptions?: Apollo.MutationHookOptions<ResetPasswordMutation, ResetPasswordMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ResetPasswordMutation, ResetPasswordMutationVariables>(ResetPasswordDocument, options);
+      }
+export type ResetPasswordMutationHookResult = ReturnType<typeof useResetPasswordMutation>;
+export type ResetPasswordMutationResult = Apollo.MutationResult<ResetPasswordMutation>;
+export type ResetPasswordMutationOptions = Apollo.BaseMutationOptions<ResetPasswordMutation, ResetPasswordMutationVariables>;
 export const CreateAsistenceDocument = gql`
     mutation createAsistence($asistence: InputAsistence!) {
   createAsistence(asistence: $asistence) {
@@ -2281,6 +2333,8 @@ export type RegisterAdminVariables = RegisterAdminMutationVariables;
 export type RegisterAdminRegisterAdmin = (NonNullable<RegisterAdminMutation['registerAdmin']>);
 export type EditAdministratorVariables = EditAdministratorMutationVariables;
 export type EditAdministratorEditAdministrator = (NonNullable<EditAdministratorMutation['editAdministrator']>);
+export type ResetPasswordVariables = ResetPasswordMutationVariables;
+export type ResetPasswordResetPassword = (NonNullable<ResetPasswordMutation['resetPassword']>);
 export type CreateAsistenceVariables = CreateAsistenceMutationVariables;
 export type CreateAsistenceCreateAsistence = (NonNullable<CreateAsistenceMutation['createAsistence']>);
 export type UpdateAsistenceVariables = UpdateAsistenceMutationVariables;

@@ -13,6 +13,7 @@ import {
   rolMapper,
   Table,
 } from '@wellness/admin-ui';
+import { ChangePasswordModal } from '../components';
 import { SafeAny } from '@wellness/common';
 import { CreateAdminModal } from '../components';
 import { useAdministratorInit } from '../controllers';
@@ -108,6 +109,7 @@ ListAdmins.getLayout = (page) => {
     <BaseLayout>
       {page}
       <CreateAdminModal />
+      <ChangePasswordModal />
     </BaseLayout>
   );
 };

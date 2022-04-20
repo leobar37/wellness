@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useAdministratorController } from '../controllers';
 import { useAdministratorCrud } from '../data';
 import { CreateAdminT } from '../domain/schema';
-
+import { useChangePasswordModal } from '../data';
 const modeMapper = {
   edit: {
     button: 'Editar',
@@ -20,21 +20,39 @@ const AdminForm = () => {
   const { handleSubmit, setValues } = useFormikContext<CreateAdminT>();
   const adminCrudStore = useAdministratorCrud();
 
+  const passwordModal = useChangePasswordModal();
   useEffect(() => {
     if (adminCrudStore.mode === 'edit' && adminCrudStore.temporal) {
       const temporal = adminCrudStore.temporal;
-
       setValues({
         dni: temporal.dni || '',
         email: temporal.email,
         lastName: temporal.lastName,
         name: temporal.name,
-        password: temporal.password,
+        password: null,
         role: temporal.rol,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [adminCrudStore.mode, adminCrudStore.temporal]);
+
+  const passwordElement =
+    adminCrudStore.mode === 'create' ? (
+      <InputControl
+        inputProps={{
+          type: 'password',
+        }}
+        name="password"
+        label="Contraseña"
+      />
+    ) : (
+      <Button
+        colorScheme={'teal'}
+        onClick={() => passwordModal.openModal(adminCrudStore.temporal?.id)}
+      >
+        Cambiar contraseña
+      </Button>
+    );
 
   return (
     <ChackraForm submit={handleSubmit}>
@@ -42,11 +60,11 @@ const AdminForm = () => {
       <InputControl name="name" label="Nombre" />
       <InputControl name="lastName" label="Apellido" />
       <InputControl name="dni" label="DNI" />
-      <InputControl name="password" label="Contraseña" />
       <SelectControl name="role" label="Rol">
         <option value={Role.STAFF}>Empleado</option>
         <option value={Role.ADMIN}>Admin</option>
       </SelectControl>
+      {passwordElement}
     </ChackraForm>
   );
 };
@@ -87,7 +105,7 @@ export const CreateAdminModal = () => {
         adminCrudStore.closeModal();
       }}
     >
-      {({ handleSubmit, submitForm, resetForm }) => {
+      {({ submitForm, resetForm }) => {
         return (
           <ModalCrud
             isOpen={isOpen}

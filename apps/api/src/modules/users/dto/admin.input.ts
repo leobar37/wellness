@@ -24,7 +24,7 @@ export class RegisterAdminInput {
   @Field()
   email: string;
 
-  @Field()
+  @Field({ nullable: true })
   password: string;
 
   @Field((type) => Role)

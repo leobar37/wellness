@@ -19,7 +19,9 @@ export class AuthAdminService {
     const admin = await this.manager
       .getRepository(Administrator)
       .findOne({ email });
-    if (admin && this.bcryptService.compare(password, admin.password)) {
+
+    const isValid = await this.bcryptService.compare(password, admin.password);
+    if (admin && isValid) {
       return admin;
     }
     return null;
