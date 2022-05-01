@@ -14,9 +14,7 @@ COPY . .
 
 RUN ls -al
 
-RUN npm install -g @nrwl/cli
-
-RUN nx build admin 
+RUN ./node_modules/.bin/nx build admin 
 
 RUN ls ./dist
 
@@ -28,5 +26,5 @@ RUN ls -al
 
 EXPOSE ${PORT}
 
-CMD ["nx" , "serve" , "admin"]
+CMD ["./node_modules/.bin/nx" , "serve" , "admin"]
 
