@@ -14,7 +14,9 @@ COPY . .
 
 RUN ls -al
 
-RUN yarn nx build admin 
+RUN npm install -g @nrwl/cli
+
+RUN nx build admin 
 
 RUN ls ./dist
 
@@ -26,5 +28,5 @@ RUN ls -al
 
 EXPOSE ${PORT}
 
-CMD ["yarn", "nx" , "serve" , "admin"]
+CMD ["nx" , "serve" , "admin"]
 
