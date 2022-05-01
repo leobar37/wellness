@@ -12,7 +12,7 @@ export type DetailProps = {
  *
  *
  */
-export const Detail = ({
+export const DetailInfo = ({
   title,
   value,
   direction = 'horizontal',

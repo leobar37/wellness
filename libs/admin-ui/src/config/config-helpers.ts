@@ -1,8 +1,7 @@
-import { defaultConfig } from './defaultConfig';
-import { PartialWellnessConfig, WellnessConfig } from './Wellness-config';
-import { mergeConfig } from './mergeConfig';
-import { Paths } from '@wellness/common';
 import { get } from 'lodash';
+import { defaultConfig } from './defaultConfig';
+import { mergeConfig } from './mergeConfig';
+import { PartialWellnessConfig } from './Wellness-config';
 
 let activeConfig = defaultConfig;
 
@@ -10,9 +9,7 @@ export const setConfig = (userConfig: PartialWellnessConfig) => {
   activeConfig = mergeConfig(activeConfig, userConfig);
 };
 
-export const getConfig = <T extends unknown>(
-  path?: Paths<typeof activeConfig>
-) => {
+export const getConfig = <T extends unknown>(path?: string) => {
   if (!path) {
     return activeConfig;
   }
@@ -23,8 +20,6 @@ export const useConfigApi = () => {
   return { getConfig, setConfig };
 };
 
-export const useConfig = <T extends unknown>(
-  path?: Paths<typeof activeConfig>
-): T => {
+export const useConfig = <T extends unknown>(path?: string): T => {
   return getConfig(path) as unknown as T;
 };

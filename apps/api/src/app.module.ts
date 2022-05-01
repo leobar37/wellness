@@ -27,21 +27,32 @@ const BUSINESS_MODULES = [
   AuthModule,
 ];
 
+const devDatabaseConfig = {
+  password: 'alfk3458',
+  username: 'postgres',
+  type: 'postgres',
+  host: 'localhost',
+  database: 'wellness',
+  port: 5432,
+  entities: [...Object.values(coreEntitiesMap)],
+  synchronize: true,
+};
 @Module({
   imports: [
     /*
       Include module configuration for control configuration like this
     */
     TypeOrmModule.forRoot({
-      password: 'alfk3458',
       username: 'postgres',
+      password: '182457Almeas45',
       type: 'postgres',
-      host: 'localhost',
-      database: 'wellness',
+      host: 'database-1.cofmqlq6md3c.us-east-1.rds.amazonaws.com',
       port: 5432,
+      database: 'wellnessprobd',
       entities: [...Object.values(coreEntitiesMap)],
       synchronize: true,
     }),
+
     GraphQLModule.forRoot({
       playground: true,
       debug: true,

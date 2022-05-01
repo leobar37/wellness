@@ -84,7 +84,7 @@ const _Table: FunctionComponent<TableProps> = ({
   const memoizedData = useMemo(() => data ?? [], [data]);
 
   const props = useTable(
-    { data: memoizedData, columns },
+    { data: memoizedData, columns: columns as SafeAny },
     useFilters,
     useGlobalFilter,
     useRowSelect

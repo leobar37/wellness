@@ -4,7 +4,7 @@ import { isValid, SafeAny } from '@wellness/common';
 import { isFunction } from '@chakra-ui/utils';
 import { useShowContractModal } from '../../data';
 import { ContractView, Price, ButtonIcon, Printer } from '@wellness/admin-ui';
-import { Detail } from '@wellness/admin-ui/ui';
+import { DetailInfo } from '@wellness/admin-ui/ui';
 import { get } from 'lodash';
 import { ReactNode } from 'react';
 
@@ -78,7 +78,9 @@ export const ShowContractModal = () => {
             ? properties.format(value, prop)
             : value;
 
-          return <Detail key={key} title={properties.name} value={_value} />;
+          return (
+            <DetailInfo key={key} title={properties.name} value={_value} />
+          );
         })}
       </VStack>
     </ModalCrud>

@@ -6,7 +6,7 @@ import {
   useDeleteResourceMutation,
   useEditResourceMutation,
 } from '../common';
-import { pluck, ID, isValid } from '@wellness/common';
+import { pluck, SafeAny, isValid } from '@wellness/common';
 import { useCallback } from 'react';
 export const useAssetService = () => {
   const { uploadFile } = useCloudinaryApi();
@@ -74,7 +74,7 @@ export const useAssetService = () => {
       return null;
     }
     if (!isString) {
-      const response = await uploadFile(source);
+      const response = await uploadFile(source as SafeAny);
       const result = await mutateEditResource({
         variables: {
           resource: {

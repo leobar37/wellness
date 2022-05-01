@@ -13,7 +13,7 @@ import {
   Img,
   CloseButton,
 } from '@chakra-ui/react';
-import { Detail } from '@wellness/admin-ui/ui';
+import { DetailInfo } from '@wellness/admin-ui/ui';
 import { Ficha } from '@wellness/admin-ui/common';
 import { get } from 'lodash';
 type ViewFichaModalProps = {
@@ -49,8 +49,8 @@ const Side = ({ detail }: { detail: Ficha['details'][0] }) => {
         {renderAssets}
       </Swiper>
       <VStack align={'start'} ml="4" w="full">
-        <Detail title="Peso" value={String(detail.weight) + 'kg'} />
-        <Detail
+        <DetailInfo title="Peso" value={String(detail.weight) + 'kg'} />
+        <DetailInfo
           title="Objetivo"
           value={detail.objective}
           direction="vertical"

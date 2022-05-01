@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { TabContent } from '@wellness/admin-ui';
 import { Ficha } from '@wellness/admin-ui/common';
-import { Detail } from '@wellness/admin-ui/ui';
+import { DetailInfo } from '@wellness/admin-ui/ui';
 import { ColTable, prepareCellProps, Table } from '@wellness/admin-ui/ui/table';
 import { SafeAny } from '@wellness/common';
 import format from 'date-fns/format';
@@ -96,8 +96,8 @@ const FichaPreview = ({ ficha }: { ficha: Ficha }) => {
         {/* {format(new Date(ficha.createdAt), 'dd/MM/yyyy')} */}
       </Text>
       <VStack spacing={1} mt={4} align="start">
-        <Detail title="Peso" value={detail.weight + ''} />
-        <Detail
+        <DetailInfo title="Peso" value={detail.weight + ''} />
+        <DetailInfo
           direction="vertical"
           title="Objetivo"
           value={detail.objective}

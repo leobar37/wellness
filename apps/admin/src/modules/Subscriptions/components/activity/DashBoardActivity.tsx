@@ -3,7 +3,7 @@ import {
   Activity,
   BadgeDisplay,
   Card,
-  Detail,
+  DetailInfo,
   Price,
 } from '@wellness/admin-ui';
 import { FC } from 'react';
@@ -20,14 +20,14 @@ export const DashBoardActivity: FC<DashBoardActivityProps> = ({ activity }) => {
         <BadgeDisplay title="Usuarios activos" value="150" />
       </VStack>
       <Card>
-        <Detail title="Nombre:" value={activity.detail.name} />
-        <Detail title="Precio" value={<Price>50</Price>} />
-        <Detail
+        <DetailInfo title="Nombre:" value={activity.detail.name} />
+        <DetailInfo title="Precio" value={<Price>50</Price>} />
+        <DetailInfo
           title="Descripción"
           value={activity.detail.description}
           direction="vertical"
         />
-        <Detail title="Duración" value="20 dias" />
+        <DetailInfo title="Duración" value="20 dias" />
       </Card>
     </HStack>
   );
