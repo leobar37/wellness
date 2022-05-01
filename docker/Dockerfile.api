@@ -10,13 +10,20 @@ RUN yarn install
 
 COPY . .
 
-RUN yarn nx build api --configuration=production
+RUN yarn nx build api
 
-ENV PORT=3500
+
+ENV PORT=3000
 
 ENV NODE_ENV=production
 
+WORKDIR /usr/src/app
+
+COPY --from=dependeces /build/dist/apps/api .
+
+COPY --from=dependeces /build/node_modules node_modules 
+
 EXPOSE ${PORT}
 
-CMD ["yarn", "nx" ,"serve" , ""]
+CMD ["yarn", "start"]
 
