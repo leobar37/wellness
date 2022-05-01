@@ -13,6 +13,7 @@ RUN rm -r node_modules/@next/swc-linux-x64-gnu
 COPY . .
 
 RUN ls -al
+RUN ls node_modules
 
 RUN yarn nx reset
 
