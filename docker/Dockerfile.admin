@@ -14,7 +14,7 @@ COPY . .
 
 RUN yarn nx build admin 
 
-RUN ld ./dist
+RUN ls ./dist
 
 ENV PORT=3000
 
