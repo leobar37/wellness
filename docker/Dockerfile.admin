@@ -1,0 +1,31 @@
+FROM node:16-alpine AS dependeces
+
+WORKDIR /usr/src/app
+
+COPY package.json ./
+
+COPY yarn.lock ./
+
+RUN yarn install
+
+RUN rm -r node_modules/@next/swc-linux-x64-gnu
+
+COPY . .
+
+RUN yarn nx build admin
+
+FROM node:16-alpine as production
+
+ENV PORT=3000
+ENV NODE_ENV=production
+
+WORKDIR /usr/src/app
+
+COPY --from=dependeces /usr/src/app/dist/apps/admin .
+
+COPY --from=dependeces /usr/src/app/node_modules node_modules 
+
+EXPOSE ${PORT}
+
+CMD ["yarn", "start"]
+
