@@ -12,7 +12,9 @@ RUN rm -r node_modules/@next/swc-linux-x64-gnu
 
 COPY . .
 
-RUN yarn nx build admin --configuration=production
+RUN yarn nx build admin 
+
+RUN ld ./dist
 
 ENV PORT=3000
 
