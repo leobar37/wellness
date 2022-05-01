@@ -14,7 +14,9 @@ COPY . .
 
 RUN ls -al
 
-RUN ./node_modules/.bin/nx build admin 
+RUN yarn nx reset
+
+RUN yarn nx build admin 
 
 ENV PORT=3000
 
