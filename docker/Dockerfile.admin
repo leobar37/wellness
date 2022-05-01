@@ -1,4 +1,4 @@
-FROM node:16-alpine AS dependeces
+FROM node:16-alpine
 
 WORKDIR /build
 
@@ -12,25 +12,13 @@ RUN rm -r node_modules/@next/swc-linux-x64-gnu
 
 COPY . .
 
-RUN ls -al
-
-RUN yarn nx build admin
-
-RUN ls -al
-
-FROM node:16-alpine as production
+RUN yarn nx build admin --configuration=production
 
 ENV PORT=3000
 
 ENV NODE_ENV=production
 
-WORKDIR /usr/src/app
-
-COPY --from=dependeces /build/dist/apps/admin .
-
-COPY --from=dependeces /build/node_modules node_modules 
-
 EXPOSE ${PORT}
 
-CMD ["yarn", "start"]
+CMD ["yarn", "nx" , "serve" , "admin" ,"--configuration=production"]
 
