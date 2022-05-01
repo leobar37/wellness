@@ -12,6 +12,8 @@ RUN rm -r node_modules/@next/swc-linux-x64-gnu
 
 COPY . .
 
+RUN ls -al
+
 RUN yarn nx build admin 
 
 RUN ls ./dist
