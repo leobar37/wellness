@@ -6,6 +6,8 @@ import {
   NextPageWithLayout,
   rolMapper,
   useAuth,
+  TokenUser,
+  useWellnessToast,
 } from '@wellness/admin-ui';
 import { Formik, useFormikContext } from 'formik';
 import { InputControl } from 'formik-chakra-ui';
@@ -13,27 +15,36 @@ import { useEffect, useState } from 'react';
 import { UpdateAdminT } from '../domain';
 import { useChangePasswordModal } from '../data';
 import { ChangePasswordModal } from '../components';
+import { useAdministratorController } from '../controllers';
+import { FC } from 'react';
 
-const Form = () => {
-  const { user } = useAuth();
+const Form: FC<{ user: TokenUser }> = ({ user }) => {
   const changePasswordModal = useChangePasswordModal();
+
   const [reset, setReset] = useState(false);
-  const { handleSubmit, setValues, isValid, touched, setTouched } =
-    useFormikContext<UpdateAdminT>();
+  const {
+    handleSubmit,
+    setValues,
+    isValid,
+    touched,
+    setTouched,
+    dirty,
+    submitForm,
+  } = useFormikContext<UpdateAdminT>();
 
   const buttonIsValid =
-    Object.entries(touched).some(([, value]) => value) && isValid;
+    Object.entries(touched).some(([, value]) => value) && isValid && dirty;
 
   useEffect(() => {
     setValues({
       name: user.name,
-      email: user.email,
       lastName: user.lastName,
+      email: user.email,
     });
     setTouched({
-      email: false,
-      lastName: false,
       name: false,
+      lastName: false,
+      email: false,
     });
   }, [setValues, user, setTouched, reset]);
 
@@ -62,13 +73,23 @@ const Form = () => {
         >
           Descartar cambios
         </Button>
-        <Button disabled={!buttonIsValid}>Guardar cambios</Button>
+        <Button onClick={submitForm} disabled={!buttonIsValid}>
+          Guardar cambios
+        </Button>
       </Stack>
     </ChackraForm>
   );
 };
 
 export const AdminProfile: NextPageWithLayout = () => {
+  const { user } = useAuth();
+  const { editAdminstratorSelf } = useAdministratorController();
+  const toast = useWellnessToast();
+
+  if (!user) {
+    return null;
+  }
+
   return (
     <Layout backText="Perfil de usuario">
       <Formik<UpdateAdminT>
@@ -77,11 +98,21 @@ export const AdminProfile: NextPageWithLayout = () => {
           lastName: '',
           name: '',
         }}
-        onSubmit={(values) => {
-          console.log(values);
+        onSubmit={async (values) => {
+          await editAdminstratorSelf({
+            dni: user.dni,
+            lastName: values.lastName,
+            email: values.email,
+            name: values.name,
+            role: user.rol,
+            userId: user.id,
+          });
+          toast({
+            description: 'Datos actualizados correctamente',
+          });
         }}
       >
-        <Form />
+        <Form user={user} />
       </Formik>
     </Layout>
   );

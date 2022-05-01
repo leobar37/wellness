@@ -44,7 +44,7 @@ export const useAdministratorController = () => {
     return result.data.registerAdmin;
   };
 
-  const editAdministrator = async (input: CreateAdminT) => {
+  const editAdministrator = async (input: Partial<CreateAdminT>) => {
     if (temporal) {
       const result = await editAdministratorMutation({
         variables: {
@@ -54,7 +54,6 @@ export const useAdministratorController = () => {
             email: input.email,
             lastName: input.lastName,
             name: input.name,
-            password: input.password,
             role: input.role as Role,
           },
         },
@@ -65,6 +64,23 @@ export const useAdministratorController = () => {
     return null;
   };
 
+  const editAdminstratorSelf = async (
+    input: Partial<CreateAdminT> & { userId: string }
+  ) => {
+    const result = await editAdministratorMutation({
+      variables: {
+        id: input.userId,
+        input: {
+          dni: input.dni,
+          email: input.email,
+          lastName: input.lastName,
+          name: input.name,
+          role: input.role as Role,
+        },
+      },
+    });
+    return result.data.editAdministrator;
+  };
   const resetPassword = async (
     values: ChangePasswordSchema & { userId: ID }
   ) => {
@@ -79,5 +95,10 @@ export const useAdministratorController = () => {
     return result.data.resetPassword;
   };
 
-  return { registerAdmin, editAdministrator, resetPassword };
+  return {
+    registerAdmin,
+    editAdministrator,
+    resetPassword,
+    editAdminstratorSelf,
+  };
 };

@@ -17,7 +17,7 @@ export class RolGuard implements CanActivate {
   canActivate(
     context: ExecutionContext
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const { req, res } = parseContext(context);
+    const { req } = parseContext(context);
     const roles = this.reflector.getAllAndOverride<Role[]>(ROL_KEY, [
       context.getHandler(),
       context.getClass(),
@@ -30,6 +30,7 @@ export class RolGuard implements CanActivate {
       return null;
     }
     const hasRole = roles.some((rol) => rol == user.rol);
+
     if (!hasRole) {
       throw new UnauthorizedException(
         {},

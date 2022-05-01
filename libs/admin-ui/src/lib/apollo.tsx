@@ -5,6 +5,7 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 import { onError } from 'apollo-link-error';
 import merge from 'deepmerge';
 import { IncomingHttpHeaders } from 'http';
@@ -12,7 +13,25 @@ import { isEqual } from 'lodash';
 import { AppProps } from 'next/app';
 import { PropsWithChildren, useEffect, useMemo, useState } from 'react';
 import { isServer } from '../utils';
+
 const APOLLO_PROP_NAME = '__APOLLO__STATE';
+
+// authorization
+
+const authLink = setContext((_, { headers }) => {
+  /**
+   * TODO:
+   * - The "token" should be a constant
+   */
+  const token = localStorage.getItem('token');
+
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
@@ -39,7 +58,7 @@ export const createApolloClient = (
   return new ApolloClient({
     ssrMode: isServer,
     // https://www.apollographql.com/docs/react/api/link/introduction/
-    link: ApolloLink.from([linkError, httpLink]),
+    link: ApolloLink.from([authLink, linkError, httpLink]),
     cache: new InMemoryCache({}),
   });
 };
@@ -59,7 +78,6 @@ export const inializeApollo = ({
 
   if (initialState && apolloClient) {
     const existingCache = apolloClient.extract();
-
     const data = merge(initialState, existingCache, {
       arrayMerge: (target, source) => {
         return [

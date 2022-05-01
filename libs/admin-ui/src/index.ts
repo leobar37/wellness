@@ -7,3 +7,4 @@ export * from './services';
 export * from './common';
 export * from './icons';
 export * from './utils';
+export * from './auth';

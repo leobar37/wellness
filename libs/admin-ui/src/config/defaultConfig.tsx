@@ -1,34 +1,40 @@
 import { WellnessConfig } from './Wellness-config';
 import { Dumbell, UsersIcon, Settings } from '../icons';
-
+import { Role } from '../common';
 export const defaultConfig: WellnessConfig = {
   sidebar: {
     items: [
       {
         name: 'Clientes',
         path: '/app/clients',
+        rol: [Role.STAFF, Role.ADMIN],
         icon: <UsersIcon fontSize="xl" />,
       },
       {
         name: 'Servicios',
         icon: <Dumbell fontSize="xl" />,
+        rol: [Role.STAFF, Role.ADMIN],
         path: '',
         subItems: [
           {
             name: 'Planes',
             path: '/app/services/plans',
+            rol: [Role.STAFF, Role.ADMIN],
           },
           {
             name: 'Actividades',
             path: '/app/services/activities',
+            rol: [Role.STAFF, Role.ADMIN],
           },
         ],
       },
       {
         name: 'Configuraciones',
         icon: <Settings fontSize={'xl'} />,
+        rol: [Role.ADMIN],
         subItems: [
           {
+            rol: [Role.ADMIN],
             name: 'Administradores',
             path: '/app/admin',
           },

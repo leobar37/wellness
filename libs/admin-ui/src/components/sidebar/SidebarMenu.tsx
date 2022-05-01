@@ -17,6 +17,7 @@ import {
   AccordionPanel,
 } from '@chakra-ui/react';
 import { useCallback } from 'react';
+import { ShowByRol } from '@wellness/admin-ui/auth';
 // eslint-disable-next-line @typescript-eslint/ban-types
 type SidebarMenuProps = {};
 export const SidebarMenu = ({
@@ -95,9 +96,9 @@ export const MenuItem = ({ icon, children, subItems, path }: MenuItemProps) => {
         >
           {subItems.map((subItem, idx) => {
             return (
-              <SubItem key={idx} href={subItem.path}>
-                {subItem.name}
-              </SubItem>
+              <ShowByRol key={idx} roles={subItem.rol}>
+                <SubItem href={subItem.path}>{subItem.name}</SubItem>
+              </ShowByRol>
             );
           })}
         </VStack>

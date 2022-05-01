@@ -12,6 +12,8 @@ import {
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { FunctionComponent, PropsWithChildren } from 'react';
+import { ShowByRol } from '../../auth';
+import { WithAuth } from '../../auth';
 import {
   MenuItem,
   Sidebar,
@@ -127,7 +129,7 @@ export const Layout: FunctionComponent<
   );
 };
 
-const BaseLayout: React.FunctionComponent<BaseLayoutProps> = ({
+const _BaseLayout: React.FunctionComponent<BaseLayoutProps> = ({
   sidebar,
   footer,
   children,
@@ -158,14 +160,11 @@ const DefaulSidebar = () => {
   const items = React.useMemo(() => {
     return sidebar.items.map((item, idx) => {
       return (
-        <MenuItem
-          key={String(idx)}
-          path={item.path}
-          icon={item.icon}
-          subItems={item.subItems}
-        >
-          {item.name}
-        </MenuItem>
+        <ShowByRol key={String(idx)} roles={item.rol}>
+          <MenuItem path={item.path} icon={item.icon} subItems={item.subItems}>
+            {item.name}
+          </MenuItem>
+        </ShowByRol>
       );
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -180,9 +179,11 @@ const DefaulSidebar = () => {
   );
 };
 
-BaseLayout.defaultProps = {
+_BaseLayout.defaultProps = {
   sidebar: <DefaulSidebar />,
   footer: <Text>Developed by @vide</Text>,
 };
 
-export { BaseLayout };
+export const BaseLayout = WithAuth(_BaseLayout, {
+  refirect: '/auth/login',
+});

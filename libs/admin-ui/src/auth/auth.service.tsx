@@ -1,9 +1,10 @@
 import { createContext } from '@chakra-ui/react-utils';
 import { FC, useEffect } from 'react';
-import { useJwt } from 'react-jwt';
+import { useJwt, isExpired, decodeToken } from 'react-jwt';
 import { useLoginMutation } from '../common';
 import { Administrator } from '../common/generated-types';
 import { isServer } from '../utils';
+import { useRouter } from 'next/router';
 
 export type TokenUser = Pick<
   Administrator,
@@ -14,7 +15,9 @@ type AuthType = {
   login: (username: string, password: string) => Promise<string | undefined>;
   logout: () => Promise<void>;
   isLoggedIn: boolean;
+  isLoggedInFn: () => boolean;
   user: TokenUser;
+  redirect: (path: string) => void;
 };
 
 const [Provider, useAuthContext] = createContext<AuthType>({
@@ -28,6 +31,7 @@ const useManageToken = () => {
   };
 
   const { reEvaluateToken, isExpired, decodedToken } = useJwt(get());
+
   useEffect(() => {
     reEvaluateToken(get());
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -51,7 +55,7 @@ const useManageToken = () => {
 export const AuthProvider: FC = ({ children }) => {
   const [loginMutation] = useLoginMutation();
   const tokenManager = useManageToken();
-
+  const router = useRouter();
   const login = async (email: string, password: string) => {
     const result = await loginMutation({
       variables: {
@@ -73,6 +77,14 @@ export const AuthProvider: FC = ({ children }) => {
       tokenManager.remove();
     }
   };
+  const redirect = (path: string) => {
+    router.push(path);
+  };
+
+  const isAuthenticated = () => {
+    const token = tokenManager.get();
+    return !isExpired(token);
+  };
 
   return (
     <Provider
@@ -81,6 +93,8 @@ export const AuthProvider: FC = ({ children }) => {
         isLoggedIn: tokenManager.isValid,
         user: tokenManager.decodedToken as TokenUser,
         logout,
+        redirect,
+        isLoggedInFn: isAuthenticated,
       }}
     >
       {children}

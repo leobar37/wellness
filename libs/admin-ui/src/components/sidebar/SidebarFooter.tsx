@@ -9,7 +9,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { OutlineMore } from '../../icons';
-import { useAuth } from '../../services';
+import { useAuth } from '../../auth';
 import { ButtonIcon } from '../../ui/button';
 import { config } from './internal';
 import { Exit, User } from '../../icons';
@@ -19,8 +19,8 @@ export const SidebarFooter = () => {
   const { user, logout, isLoggedIn } = useAuth();
   const router = useRouter();
   const exitOption = () => {
-    logout();
     router.push('/auth/login');
+    logout();
   };
 
   const viewProfile = () => {

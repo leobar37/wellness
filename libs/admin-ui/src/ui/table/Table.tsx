@@ -81,7 +81,7 @@ const _Table: FunctionComponent<TableProps> = ({
     ];
   }, [children, isSelecteable]);
 
-  const memoizedData = useMemo(() => data, [data]);
+  const memoizedData = useMemo(() => data ?? [], [data]);
 
   const props = useTable(
     { data: memoizedData, columns },
