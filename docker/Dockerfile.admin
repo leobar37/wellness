@@ -4,6 +4,8 @@ WORKDIR /usr/src/app
 
 COPY package.json ./
 
+RUN SET NODE_OPTIONS=--max_old_space_size=8048
+
 RUN yarn install
 
 RUN rm -r node_modules/@next/swc-linux-x64-gnu
@@ -12,7 +14,6 @@ COPY . .
 
 RUN ls -al
 
-RUN SET NODE_OPTIONS=--max_old_space_size=8048
 
 RUN yarn nx build admin --skip-nx-cache
 
