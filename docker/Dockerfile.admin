@@ -12,6 +12,8 @@ COPY . .
 
 RUN ls -al
 
+RUN SET NODE_OPITONS=--max-old-space-size=8048
+
 RUN yarn nx build admin --skip-nx-cache
 
 ENV PORT=3000
@@ -20,5 +22,5 @@ RUN ls -al
 
 EXPOSE ${PORT}
 
-CMD ["./node_modules/.bin/nx" , "serve" , "admin"]
+CMD ["yarn" , "nx" , "serve" , "admin"]
 
