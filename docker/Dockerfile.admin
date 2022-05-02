@@ -12,7 +12,7 @@ COPY . .
 
 RUN ls -al
 
-RUN SET NODE_OPITONS=--max-old-space-size=8048
+RUN SET NODE_OPTIONS=--max_old_space_size=8048
 
 RUN yarn nx build admin --skip-nx-cache
 
