@@ -1,0 +1,15 @@
+FROM node:16-alpine 
+
+WORKDIR /my-project
+
+COPY package.json  ./
+
+RUN yarn install --frozen-lockfile
+
+RUN yarn add @emotion/react @emotion/styled 
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["yarn", "start"]

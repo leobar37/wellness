@@ -3,6 +3,12 @@
   "sourceRoot": "apps/admin",
   "projectType": "application",
   "targets": {
+    "deploy": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["yarn nx build admin --prod"]
+      }
+    },
     "build": {
       "executor": "@nrwl/next:build",
       "outputs": ["{options.outputPath}"],
@@ -19,7 +25,8 @@
       "executor": "@nrwl/next:server",
       "options": {
         "buildTarget": "admin:build",
-        "dev": true
+        "dev": true,
+        "port": 4200
       },
       "configurations": {
         "production": {
