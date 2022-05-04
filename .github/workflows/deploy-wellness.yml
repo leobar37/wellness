@@ -1,31 +1,51 @@
+# name: Nx wellness Application
+# on:
+#   push:
+#     branches: [develop]
+
+# jobs:
+#   setup:
+#     runs-on: ubuntu-20.04
+
+#     steps:
+#       - name: Checkout repo
+#         uses: actions/checkout@v3
+
+#       - name: Install Node.js, NPM and yarn
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 14
+
+#       - name: Yarn cache
+#         uses: actions/cache@v2
+#         id: yarn-cache
+#         with:
+#           path: |
+#             .yarn/cache
+#           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+#           restore-keys: |
+#             ${{ runner.os }}-yarn-
+
+#       - name: Install dependeces
+#         run: yarn install
+#       - name: deploy
+#         run: yarn nx affected:deploy
+
 name: Nx wellness Application
 on:
   push:
     branches: [develop]
 
 jobs:
-  setup:
-    runs-on: self-hosted
-
+  build:
+    name: build
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Install Node.js, NPM and yarn
-        uses: actions/setup-node@v3
+      - name: executing remote ssh commands
+        uses: invi5H/ssh-action@v1
         with:
-          node-version: 14
-
-      - name: Yarn cache
-        uses: actions/cache@v2
-        id: yarn-cache
-        with:
-          path: |
-            .yarn/cache
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: Install dependeces
-        run: yarn
-      - name: dokku sample
-        run: dokku --help
+          SSH_HOST: ${{ secrets.HOST_SSH_DOKKU }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SSH_USER: ${{ secrets.USER_SSH_DOKKU }}
+          SSH_KEY: ${{ secrets.SECRET_SSH }}
+        run: ssh ${{ steps.ssh.outputs.SERVER }} pwd
