@@ -48,4 +48,4 @@ jobs:
           SSH_PORT: ${{ secrets.SSH_PORT }}
           SSH_USER: ${{ secrets.USER_SSH_DOKKU }}
           SSH_KEY: ${{ secrets.SECRET_SSH }}
-        run: ssh ${{ steps.ssh.outputs.SERVER }} pwd
+      - run: ssh ${{ steps.ssh.outputs.SERVER }} pwd
