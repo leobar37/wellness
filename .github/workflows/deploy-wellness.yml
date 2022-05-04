@@ -41,11 +41,11 @@ jobs:
     name: build
     runs-on: ubuntu-latest
     steps:
-      - id: ssh
-        uses: invi5H/ssh-action@v1
+      - name: executing remote ssh commands using key
+        uses: appleboy/ssh-action@master
         with:
-          SSH_HOST: ${{ secrets.HOST_SSH_DOKKU }}
-          SSH_PORT: ${{ secrets.SSH_PORT }}
-          SSH_USER: ${{ secrets.USER_SSH_DOKKU }}
-          SSH_KEY: ${{ secrets.SECRET_SSH }}
-      - run: ssh ${{ steps.ssh.outputs.SERVER }} pwd
+          host: ${{ secrets.HOST_SSH_DOKKU }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.USER_SSH_DOKKU }}
+          key: ${{ secrets.SECRET_SSH }}
+          script: whoami
