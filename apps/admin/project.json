@@ -6,7 +6,11 @@
     "deploy": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "commands": ["yarn nx build admin --prod"]
+        "commands": [
+          "yarn nx build admin --prod",
+          "cd dist/apps/admin && docker build -t leobar37/wellfront:latest",
+          "docker build -f ../../../docker/Dockerfile.wellfront -t leobar37/wellfront:latest ."
+        ]
       }
     },
     "build": {
