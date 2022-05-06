@@ -6,7 +6,7 @@ COPY package.json  ./
 
 RUN yarn install --frozen-lockfile
 
-RUN yarn add @emotion/react @emotion/styled 
+RUN yarn add @emotion/react@^11 @emotion/styled@^11 
 
 COPY . .
 
