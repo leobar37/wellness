@@ -3,6 +3,16 @@
   "sourceRoot": "apps/api/src",
   "projectType": "application",
   "targets": {
+    "prepare": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "yarn ts-node scripts/prepare-api.ts",
+          "cd dist/apps/api && docker build -f ../../../docker/Dockerfile.api -t leobar37/wellbackend:latest .",
+          "dokku git:from-image wellbackend leobar37/wellbackend:latest"
+        ]
+      }
+    },
     "build": {
       "executor": "@nrwl/node:build",
       "outputs": ["{options.outputPath}"],

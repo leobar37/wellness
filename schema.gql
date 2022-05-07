@@ -223,22 +223,22 @@ input FiContractsView {
 
 type Mutation {
   registerAdmin(input: RegisterAdminInput!): Administrator!
-  editAdministrator(input: RegisterAdminInput!, id: ID!): Administrator!
+  editAdministrator(id: ID!, input: RegisterAdminInput!): Administrator!
   resetPassword(input: ResetPasswordInput!): Administrator!
   registerClient(client: ClientInput!): Client!
-  updateCLient(input: ClientInput!, id: ID!): Client!
+  updateCLient(id: ID!, input: ClientInput!): Client!
   deleteCLient(id: ID!): Client!
   createAsistence(asistence: InputAsistence!): Asistence!
   deleteAsistence(id: ID!): Asistence!
-  updateAsistence(input: InputAsistence!, id: ID!): Asistence!
+  updateAsistence(id: ID!, input: InputAsistence!): Asistence!
   createPlan(input: PlanInput!): Plan!
   deletePlan(id: ID!): Plan!
   joinPlan(contract: ContractInput!): Contract!
-  updatePlan(input: PlanInput!, id: ID!): Plan!
+  updatePlan(id: ID!, input: PlanInput!): Plan!
   createActivity(input: ActivityInput!): Activity!
   deleteActivity(id: ID!): Activity!
   joinActivity(contract: ContractInput!): Contract!
-  updateActivity(input: ActivityInput!, id: ID!): Activity!
+  updateActivity(id: ID!, input: ActivityInput!): Activity!
   editContract(input: ContractEditInput!): ContractView!
   deleteContract(id: ID!): ContractView!
   signature(publicId: String): ResponseSignature!
@@ -246,7 +246,7 @@ type Mutation {
   createResource(resource: AssetInput!): ResourceUnion!
   editResource(resource: AssetEditInput!): ResourceUnion!
   openAndCloseFicha(input: FichaInput!): Ficha!
-  updateFicha(detailId: Int!, input: FichaInput!): Ficha!
+  updateFicha(input: FichaInput!, detailId: Int!): Ficha!
   deleteFicha(fichaId: Int!): Ficha!
   login(input: LoginAdminInput!): AccessTokenResponse!
 }

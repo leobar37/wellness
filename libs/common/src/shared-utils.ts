@@ -12,3 +12,5 @@ export function isClassInstance(item: SafeAny): boolean {
 export function isValid(source: SafeAny) {
   return source != null && source != undefined;
 }
+
+export const isDev = process.env.NODE_ENV === 'development';
