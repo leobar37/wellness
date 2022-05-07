@@ -7,6 +7,7 @@ import { useAdministratorController } from '../controllers';
 import { useAdministratorCrud } from '../data';
 import { CreateAdminT } from '../domain/schema';
 import { useChangePasswordModal } from '../data';
+
 const modeMapper = {
   edit: {
     button: 'Editar',
