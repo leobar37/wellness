@@ -8,5 +8,3 @@ export * from './common';
 export * from './icons';
 export * from './utils';
 export * from './auth';
-
-console.log('force reload');

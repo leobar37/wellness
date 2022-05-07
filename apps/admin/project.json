@@ -9,8 +9,10 @@
         "commands": [
           "yarn nx build admin --prod",
           "cd dist/apps/admin && docker build -f ../../../docker/Dockerfile.wellfront -t leobar37/wellfront:latest .",
-          "dokku git:from-image wellfront leobar37/wellfront:latest"
-        ]
+          "dokku git:from-image wellfront leobar37/wellfront:latest",
+          "dokku ps:rebuild wellfront"
+        ],
+        "parallel": false
       }
     },
     "build": {

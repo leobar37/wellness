@@ -13,6 +13,7 @@ import { isEqual } from 'lodash';
 import { AppProps } from 'next/app';
 import { PropsWithChildren, useEffect, useMemo, useState } from 'react';
 import { isServer } from '../utils';
+import { isDev } from '@wellness/common';
 
 const APOLLO_PROP_NAME = '__APOLLO__STATE';
 
@@ -49,7 +50,9 @@ const linkError = onError(({ graphQLErrors, networkError }) => {
 }) as unknown as ApolloLink;
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost:3500/graphql',
+  uri: isDev
+    ? 'http://localhost:3500/graphql'
+    : 'http://api.wellnesspro24.com/graphql',
 });
 
 export const createApolloClient = (

@@ -5,7 +5,6 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { RolGuard } from './common';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -13,6 +12,7 @@ async function bootstrap() {
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3500;
+  app.enableCors();
   await app.listen(port, () => {
     Logger.log('Listening at http://localhost:' + port + '/' + globalPrefix);
   });

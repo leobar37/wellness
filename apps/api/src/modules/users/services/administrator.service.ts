@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
-import { CRUD, ID } from '@wellness/common';
+import { CRUD, ID, Role } from '@wellness/common';
 import { Administrator, BussinessError } from '@wellness/core';
 import { AdministratorEvent, EventBus } from '@wellness/core/event-bus';
 import { EntityManager, Repository } from 'typeorm';
@@ -8,16 +8,34 @@ import { RegisterAdminInput } from '../dto/admin.input';
 import { ResetPasswordInput } from '../dto/ResetPassword.input';
 import { omit } from 'lodash';
 import { BycriptService } from '@wellness/core';
-
+import { WelnessLogger } from '@wellness/core';
 @Injectable()
-export class AdministratorService {
+export class AdministratorService implements OnModuleInit {
   constructor(
     @InjectEntityManager() private manager: EntityManager,
     @InjectRepository(Administrator)
     private administratorRepository: Repository<Administrator>,
     private eventBus: EventBus,
-    private readonly bcryptService: BycriptService
-  ) {}
+    private readonly bcryptService: BycriptService,
+    private wellnessLogger: WelnessLogger
+  ) {
+    console.log('AdministratorService constructor');
+  }
+  async onModuleInit() {
+    const adminsCount = await this.manager.count(Administrator);
+    if (adminsCount == 0) {
+      this.wellnessLogger.info('0 admins in bd, system create a default admin');
+      const admin = await this.registerAdmin({
+        dni: '12345678',
+        email: 'admin@gmail.com',
+        lastName: 'admin',
+        name: 'admin',
+        password: 'admin',
+        role: Role.ADMIN,
+      });
+      this.wellnessLogger.info(`admin created: ${admin.name}`, { admin });
+    }
+  }
 
   async registerAdmin(input: RegisterAdminInput) {
     const admin = await this.manager

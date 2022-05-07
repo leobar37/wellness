@@ -9,7 +9,8 @@
         "commands": [
           "yarn ts-node scripts/prepare-api.ts",
           "cd dist/apps/api && docker build -f ../../../docker/Dockerfile.api -t leobar37/wellbackend:latest .",
-          "dokku git:from-image wellbackend leobar37/wellbackend:latest"
+          "dokku git:from-image wellbackend leobar37/wellbackend:latest",
+          "dokku ps:rebuild wellbackend"
         ],
         "parallel": false
       }
