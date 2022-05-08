@@ -28,7 +28,6 @@ export enum DefaultFilters {
 export const convertChildrenToColumns = (children: React.ReactChildren) => {
   return toArray(children)
     .filter((node) => React.isValidElement(node))
-    .filter((node) => (node?.type as SafeAny).name === 'ColTable')
     .map(({ key, props, type }: React.ReactElement) => {
       const { children, ...restProps } = props;
       const column = {

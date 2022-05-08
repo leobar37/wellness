@@ -41,6 +41,8 @@ const _Table: FunctionComponent<TableProps> = ({
   onChangueTable,
   ...rest
 }) => {
+  console.log('hello table');
+
   // define columns
   const columns = React.useMemo(() => {
     const _columns: ColTableProps[] = [];
@@ -79,9 +81,16 @@ const _Table: FunctionComponent<TableProps> = ({
       ..._columns,
       ...convertChildrenToColumns(children as ReactChildren),
     ];
-  }, [children, isSelecteable]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSelecteable]);
 
   const memoizedData = useMemo(() => data ?? [], [data]);
+
+  console.log({
+    columns,
+    memoizedData,
+    children,
+  });
 
   const props = useTable(
     { data: memoizedData, columns: columns as SafeAny },
