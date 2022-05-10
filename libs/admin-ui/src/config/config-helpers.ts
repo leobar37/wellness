@@ -23,3 +23,7 @@ export const useConfigApi = () => {
 export const useConfig = <T extends unknown>(path?: string): T => {
   return getConfig(path) as unknown as T;
 };
+
+export const useConfigFormats = () => {
+  return activeConfig.formats;
+};

@@ -13,7 +13,7 @@ import {
   rolMapper,
   Table,
 } from '@wellness/admin-ui';
-import { ChangePasswordModal } from '../components';
+import { ChangePasswordModalFromAdmin } from '../components';
 import { SafeAny } from '@wellness/common';
 import { CreateAdminModal } from '../components';
 import { useAdministratorInit } from '../controllers';
@@ -65,7 +65,6 @@ export const ListAdmins: NextPageWithLayout = () => {
           Header={'Rol'}
           Cell={(props: SafeAny) => {
             const { original } = prepareCellProps<Administrator>(props);
-
             return <Badge>{rolMapper[original.rol]}</Badge>;
           }}
         />
@@ -76,9 +75,6 @@ export const ListAdmins: NextPageWithLayout = () => {
             const { original } = prepareCellProps<Administrator>(props);
             return (
               <HStack>
-                {/* <ButtonIcon bg="brown.300">
-                  <EyeIcon />
-                </ButtonIcon> */}
                 <ButtonIcon
                   bg="brown.300"
                   onClick={() => {
@@ -109,7 +105,7 @@ ListAdmins.getLayout = (page) => {
     <BaseLayout>
       {page}
       <CreateAdminModal />
-      <ChangePasswordModal />
+      <ChangePasswordModalFromAdmin />
     </BaseLayout>
   );
 };

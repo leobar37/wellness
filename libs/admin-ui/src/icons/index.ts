@@ -15,3 +15,4 @@ export * from './Printer';
 export * from './Settings';
 export * from './OutlineMore';
 export * from './Exit';
+export * from './CloseEye';

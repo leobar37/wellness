@@ -33,8 +33,8 @@ export type TableProps = {
   data: SafeAny[];
   rowProps?: TableRowProps | ((row: Row) => TableRowProps);
   onTable?: (table: TableInstanceProps) => void;
-  //
   isSelecteable?: boolean;
   onChangueTable?: (props: onChangueTableProps) => void;
+  isLoading?: boolean;
 } & CTableProps &
   ChakraTableProps;

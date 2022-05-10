@@ -10,7 +10,6 @@
   },
   "private": true,
   "dependencies": {
-    "-": "^0.0.1",
     "@apollo/client": "^3.4.17",
     "@chakra-ui/react": "^1.6.10",
     "@emotion/react": "^11",
@@ -29,7 +28,6 @@
     "@nrwl/next": "13.1.2",
     "@types/bcrypt": "^5.0.0",
     "@types/jsonwebtoken": "^8.5.8",
-    "D": "^1.0.0",
     "apollo-link-error": "^1.1.13",
     "apollo-server-express": "^3.4.0",
     "axios": "^0.24.0",
@@ -39,6 +37,7 @@
     "core-js": "^3.6.5",
     "cron-parser": "^4.1.0",
     "date-fns": "^2.25.0",
+    "deep-object-diff": "^1.1.7",
     "deepmerge": "^4.2.2",
     "faker": "^5.5.3",
     "formik": "^2.2.9",

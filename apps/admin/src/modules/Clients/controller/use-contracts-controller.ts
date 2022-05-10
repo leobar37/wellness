@@ -1,19 +1,19 @@
-import {
-  useJoinPlanMutation,
-  useJoinActivityMutation,
-  useGetPlansQuery,
-  Plan,
-  useGetActivitiesQuery,
-  Activity,
-  useGetViewContractsQuery,
-  ContractView,
-  useEditContractMutation,
-  useDeleteContractMutation,
-} from '@wellness/admin-ui/common';
 import { useSomeTruthy } from '@wellness/admin-ui';
-import { CreateContract } from '../domain';
-import { useClientsStore, useContractsFeature } from '../data';
+import {
+  Activity,
+  ContractView,
+  Plan,
+  useDeleteContractMutation,
+  useEditContractMutation,
+  useGetActivitiesQuery,
+  useGetPlansQuery,
+  useGetViewContractsQuery,
+  useJoinActivityMutation,
+  useJoinPlanMutation,
+} from '@wellness/admin-ui/common';
 import { useEffect } from 'react';
+import { useClientsStore, useContractsFeature } from '../data';
+import { CreateContract } from '../domain';
 
 type InitOptions = {
   clientId: string;
@@ -62,6 +62,7 @@ export const useSubContracts = () => {
           active: true,
         },
       },
+      fetchPolicy: 'cache-and-network',
     });
   const isLoading = useSomeTruthy(loadingPlan, loadingActivity);
   const joinPlan = async (values: CreateContract) => {

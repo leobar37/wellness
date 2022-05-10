@@ -1,36 +1,34 @@
 import { FC } from 'react';
-import { ModalCrud } from '@wellness/admin-ui';
-import { HStack, Button, useToast } from '@chakra-ui/react';
+import { ModalCrud, useWellnessToast } from '@wellness/admin-ui';
+import { HStack, Button } from '@chakra-ui/react';
 import { useChangePasswordModal } from '../data';
 import { Formik, FormikErrors } from 'formik';
 import { InputControl } from 'formik-chakra-ui';
 import { ChangePasswordSchema, changePasswordSchema } from '../domain';
 import { useAdministratorController } from '../controllers';
+import { PasswordInput } from '@wellness/admin-ui';
 
 export const ChangePasswordModal: FC = () => {
   const { isOpen, closeModal, idUser } = useChangePasswordModal();
   const { resetPassword } = useAdministratorController();
 
-  const toast = useToast();
+  const toast = useWellnessToast();
 
   return (
     <Formik<ChangePasswordSchema>
       initialValues={{
+        prevPassword: '',
         password: '',
         repeatPassword: '',
       }}
       onSubmit={async (values) => {
-        /**
-         * TODO:
-         * - hAPPY PATH
-         */
         await resetPassword({
           ...values,
           userId: idUser,
         });
         toast({
           status: 'success',
-          description: 'Contraseña cambiada con éxito',
+          description: 'Contraseña actualizada con éxito',
         });
         closeModal();
       }}
@@ -51,33 +49,17 @@ export const ChangePasswordModal: FC = () => {
           isOpen={isOpen}
           textHeader="Cambiar contraseña"
           footer={
-            <>
-              <HStack>
-                <Button variant={'ghost'}>Cancelar</Button>
-                <Button
-                  onClick={submitForm}
-                  disabled={isSubmitting || !isValid}
-                >
-                  Cambiar contraseña
-                </Button>
-              </HStack>
-            </>
+            <HStack>
+              <Button variant={'ghost'}>Cancelar</Button>
+              <Button onClick={submitForm} disabled={isSubmitting || !isValid}>
+                Cambiar contraseña
+              </Button>
+            </HStack>
           }
         >
-          <InputControl
-            inputProps={{
-              type: 'password',
-            }}
-            name="password"
-            label="Contraseña"
-          />
-          <InputControl
-            inputProps={{
-              type: 'password',
-            }}
-            name="repeatPassword"
-            label="Repetir Contraseña"
-          />
+          <PasswordInput name="prevPassword" label="Contraseña actual" />
+          <PasswordInput name="password" label="Nueva contraseña" />
+          <PasswordInput name="repeatPassword" label="Repetir contraseña" />
         </ModalCrud>
       )}
     </Formik>

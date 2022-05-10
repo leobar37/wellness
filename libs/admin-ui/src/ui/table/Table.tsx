@@ -7,10 +7,15 @@ import {
   Th,
   Thead,
   Tr,
+  Spinner,
+  Stack,
+  Text,
+  Box,
 } from '@chakra-ui/react';
 import { SafeAny } from '@wellness/common';
 import { get, isFunction } from 'lodash';
 import React, {
+  Fragment,
   FunctionComponent,
   ReactChildren,
   useEffect,
@@ -27,11 +32,7 @@ import { ColTableProps } from './Column';
 import { TableInstanceProps, TableProps } from './internals';
 import { convertChildrenToColumns } from './utils';
 import { memo } from 'react';
-/**
- * TOOD:
- * - add the way how to get the id
- *  https://react-table.tanstack.com/docs/api/useTable
- */
+
 const _Table: FunctionComponent<TableProps> = ({
   data,
   children,
@@ -39,10 +40,9 @@ const _Table: FunctionComponent<TableProps> = ({
   rowProps,
   isSelecteable,
   onChangueTable,
+  isLoading,
   ...rest
 }) => {
-  console.log('hello table');
-
   // define columns
   const columns = React.useMemo(() => {
     const _columns: ColTableProps[] = [];
@@ -85,12 +85,6 @@ const _Table: FunctionComponent<TableProps> = ({
   }, [isSelecteable]);
 
   const memoizedData = useMemo(() => data ?? [], [data]);
-
-  console.log({
-    columns,
-    memoizedData,
-    children,
-  });
 
   const props = useTable(
     { data: memoizedData, columns: columns as SafeAny },
@@ -135,52 +129,67 @@ const _Table: FunctionComponent<TableProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFlatRows.length]);
 
-  return (
-    <ChacrakTable {...getTableProps()} {...rest}>
-      <Thead>
-        {headerGroups.map((headerGroup, i) => {
-          return (
-            <Tr {...headerGroup.getHeaderGroupProps()} key={i}>
-              {headerGroup.headers.map((column, j) => {
-                return (
-                  <Th {...column.getHeaderProps()} key={j}>
-                    {column.render('Header')}
-                  </Th>
-                );
-              })}
-            </Tr>
-          );
-        })}
-      </Thead>
-      <Tbody {...getTableBodyProps()}>
-        {rows.map((row) => {
-          prepareRow(row);
-          const trProps = isFunction(rowProps) ? rowProps(row) : rowProps;
-          return (
-            <Tr {...row.getRowProps()} {...trProps}>
-              {row.cells.map((cell, j) => {
-                const cellStyles = get(
-                  cell.column,
-                  'cellStyles',
-                  {}
-                ) as SystemStyleObject;
+  const loadingElement = isLoading && (
+    <Box w={'full'} display="flex" justifyContent="center">
+      <Stack justifyContent="center" alignItems="center">
+        <Spinner size="lg" />
+        <Text>Cargando...</Text>
+      </Stack>
+    </Box>
+  );
 
-                return (
-                  <Td {...cell.getCellProps()} sx={cellStyles}>
-                    {cell.render('Cell')}
-                  </Td>
-                );
-              })}
-            </Tr>
-          );
-        })}
-      </Tbody>
-    </ChacrakTable>
+  return (
+    <Fragment>
+      <ChacrakTable {...getTableProps()} {...rest}>
+        <Thead>
+          {headerGroups.map((headerGroup, i) => {
+            return (
+              <Tr {...headerGroup.getHeaderGroupProps()} key={i}>
+                {headerGroup.headers.map((column, j) => {
+                  return (
+                    <Th {...column.getHeaderProps()} key={j}>
+                      {column.render('Header')}
+                    </Th>
+                  );
+                })}
+              </Tr>
+            );
+          })}
+        </Thead>
+        {!isLoading && (
+          <Tbody {...getTableBodyProps()}>
+            {rows.map((row) => {
+              prepareRow(row);
+              const trProps = isFunction(rowProps) ? rowProps(row) : rowProps;
+              return (
+                <Tr {...row.getRowProps()} {...trProps}>
+                  {row.cells.map((cell, j) => {
+                    const cellStyles = get(
+                      cell.column,
+                      'cellStyles',
+                      {}
+                    ) as SystemStyleObject;
+
+                    return (
+                      <Td {...cell.getCellProps()} sx={cellStyles}>
+                        {cell.render('Cell')}
+                      </Td>
+                    );
+                  })}
+                </Tr>
+              );
+            })}
+          </Tbody>
+        )}
+      </ChacrakTable>
+      {isLoading && loadingElement}
+    </Fragment>
   );
 };
 
 _Table.defaultProps = {
   isSelecteable: true,
+  isLoading: false,
 };
 
 export const Table = memo(_Table);

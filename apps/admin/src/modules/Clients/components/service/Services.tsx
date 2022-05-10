@@ -46,11 +46,6 @@ export const ServicesSection = () => {
       },
     });
   };
-  if (isloading) {
-    return null;
-  }
-
-  console.log(contracts);
 
   return (
     <Box width={'750px'}>
@@ -73,16 +68,16 @@ export const ServicesSection = () => {
           variant={'simple'}
           size={'md'}
           isSelecteable={false}
+          isLoading={!!isloading}
         >
           <ColTable
             Header={'Contrato'}
             id="Contract"
             Cell={(props: SafeAny) => {
               const { original } = prepareCellProps<ContractView>(props);
-
               return (
                 <Text fontSize="sm" color={'gray.500'}>
-                  <Time>{original?.createdAt}</Time>-
+                  <Time>{original?.createdAt}</Time> {' - '}
                   <Time>{original?.finishedAt}</Time>
                 </Text>
               );

@@ -28,7 +28,7 @@ import {
 import { FC, useEffect, useState } from 'react';
 import { useSubContracts } from '../../controller';
 import { useContractModal } from '../../data';
-import { CreateContract } from '../../domain';
+import { CreateContract, createContractSchema } from '../../domain';
 enum EnumService {
   ACTIVITY,
   PLAN,
@@ -184,12 +184,16 @@ export const CreateContractForm = () => {
         serviceId: -1,
         typeService: EnumService.PLAN,
       }}
+      validationSchema={createContractSchema}
       onSubmit={async (values, { resetForm }) => {
         if (state == 'edit') {
           await editContract(contract.contractId, values);
           toast({
             title: 'Plan editado correctamente',
           });
+          resetForm();
+          onClose();
+
           return;
         }
         switch (Number(values.typeService)) {

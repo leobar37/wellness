@@ -16,7 +16,8 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { useFichaController } from '../../controller';
 import { useClientsStore } from '../../data/client-store';
-import { DetailFichaT } from '../../domain/schemas';
+import { DetailFichaT, detailFichaSchema } from '../../domain/schemas';
+
 type CreateFichaProps = {
   mode: 'open' | 'close';
 };
@@ -69,7 +70,14 @@ const FichaForm: React.FC<{
 }> = ({ isOpen, onClose }) => {
   const { ficha, modeModalFicha, stateModalFicha, currentDetail } =
     useClientsStore();
-  const { handleSubmit, submitForm, setValues } = useFormikContext();
+  const {
+    handleSubmit,
+    submitForm,
+    setValues,
+    resetForm,
+    isSubmitting,
+    isValid,
+  } = useFormikContext();
 
   const detail = currentDetail();
 
@@ -85,8 +93,14 @@ const FichaForm: React.FC<{
         weight: detail.weight,
       });
     }
+    if (modeModalFicha == 'close') {
+      resetForm();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ficha, stateModalFicha]);
+  }, [ficha, stateModalFicha, modeModalFicha]);
+
+  const isButtonInvalid = isSubmitting || !isValid;
+
   return (
     <ModalCrud
       isOpen={isOpen}
@@ -97,7 +111,11 @@ const FichaForm: React.FC<{
           <Button variant="ghost" onClick={() => onClose()}>
             {propertiesState?.buttonLeft}
           </Button>
-          <SubmitButton type="submit" onClick={submitForm}>
+          <SubmitButton
+            disabled={isButtonInvalid}
+            type="submit"
+            onClick={submitForm}
+          >
             {propertiesState?.buttonRight}
           </SubmitButton>
         </HStack>
@@ -106,7 +124,7 @@ const FichaForm: React.FC<{
       <ChackraForm submit={handleSubmit}>
         <UploadMultiple name="files" />
         <NumberInputControl name="weight" placeholder="" label="Peso" />
-        <TextareaControl name="note" label="Objetivo" />
+        <TextareaControl name="note" label="Nota" />
       </ChackraForm>
     </ModalCrud>
   );
@@ -129,7 +147,9 @@ export const CreateFicha: React.FunctionComponent<CreateFichaProps> = () => {
         note: '',
         weight: 0,
       }}
-      onSubmit={async (values) => {
+      validationSchema={detailFichaSchema}
+      onSubmit={async (values, { setSubmitting }) => {
+        setSubmitting(true);
         if (modeModalFicha === 'open') {
           if (stateModalFicha == 'edit') {
             await editFicha(values);
@@ -150,6 +170,7 @@ export const CreateFicha: React.FunctionComponent<CreateFichaProps> = () => {
           });
         }
         onClose();
+        setSubmitting(false);
       }}
     >
       <FichaForm isOpen={isOpen} onClose={onClose} />

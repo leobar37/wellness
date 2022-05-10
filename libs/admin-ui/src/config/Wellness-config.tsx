@@ -24,11 +24,16 @@ export type CloudinaryConfig = {
   apiKey: string;
 };
 
+export type FormatsConfig = {
+  onlyDate: string;
+  whenNotFoundInTable: string;
+};
 export interface WellnessConfig {
   sidebar: SidebarConfig;
   cloudinary: CloudinaryConfig;
   uploadImage: UploadImageConfig;
   tableConfig: TableConfig;
+  formats: FormatsConfig;
 }
 
 export type PartialWellnessConfig = DeepPartialSimple<WellnessConfig>;

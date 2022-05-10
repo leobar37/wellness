@@ -17,6 +17,10 @@ const initialState = {
     isOpen: false,
     idUser: null as ID,
   },
+  changePasswordModalFromAdmin: {
+    isOpen: false,
+    idUser: null as ID,
+  },
 };
 
 export type AdministratorState = typeof initialState;
@@ -73,4 +77,24 @@ export const useChangePasswordModal = () => {
   };
 
   return { openModal, closeModal, ...changePasswordModal };
+};
+
+export const useChangePasswordModalFromAdmin = () => {
+  const { patch, changePasswordModalFromAdmin } = useAdministratorStore();
+
+  const openModal = (id: ID) => {
+    patch(({ changePasswordModalFromAdmin }) => {
+      changePasswordModalFromAdmin.isOpen = true;
+      changePasswordModalFromAdmin.idUser = id;
+    });
+  };
+
+  const closeModal = () => {
+    patch(({ changePasswordModalFromAdmin }) => {
+      changePasswordModalFromAdmin.isOpen = false;
+      changePasswordModalFromAdmin.idUser = null;
+    });
+  };
+
+  return { openModal, closeModal, ...changePasswordModalFromAdmin };
 };

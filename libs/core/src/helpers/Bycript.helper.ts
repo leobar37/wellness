@@ -7,7 +7,6 @@ export class BycriptService {
   salts!: number;
   constructor(private readonly configService: ConfigService) {
     this.salts = Number(this.configService.get<number>('BCRYPT_SALTS') || 11);
-    console.log('salts', this.salts);
   }
   async hash(password: string): Promise<string> {
     const salt = await bcrypt.genSalt(this.salts);

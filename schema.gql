@@ -195,6 +195,7 @@ type AccessTokenResponse {
 type Query {
   ping: String!
   getAdministrators: [Administrator!]!
+  getAdministrator(id: ID!): Administrator!
   clients: [Client!]!
   client(id: ID!): Client!
   finAsistences(cliendId: ID!): [Asistence!]!
@@ -225,6 +226,7 @@ type Mutation {
   registerAdmin(input: RegisterAdminInput!): Administrator!
   editAdministrator(id: ID!, input: RegisterAdminInput!): Administrator!
   resetPassword(input: ResetPasswordInput!): Administrator!
+  resetPasswordFromAdmin(input: ResetPasswordInputFromAdmin!): Administrator!
   registerClient(client: ClientInput!): Client!
   updateCLient(id: ID!, input: ClientInput!): Client!
   deleteCLient(id: ID!): Client!
@@ -263,6 +265,18 @@ input RegisterAdminInput {
 input ResetPasswordInput {
   """Administratror id"""
   id: ID!
+
+  """Prev password of the user"""
+  prevPassword: String!
+  newPassword: String!
+}
+
+input ResetPasswordInputFromAdmin {
+  """User id"""
+  userId: ID!
+
+  """Prev password of the user"""
+  adminPassword: String!
   newPassword: String!
 }
 

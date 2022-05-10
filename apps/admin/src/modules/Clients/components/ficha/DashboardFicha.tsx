@@ -26,7 +26,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { useClientsStore } from '../../data/client-store';
 import { CreateFicha } from './CreateFicha';
 import { ViewFichaModal } from './ViewFicha';
-
+import { useConfigFormats } from '@wellness/admin-ui/config';
 SwiperCore.use([Autoplay]);
 
 const { patch, selectFicha } = useClientsStore.getState();
@@ -38,6 +38,7 @@ const FichaPreview = ({ ficha }: { ficha: Ficha }) => {
   };
 
   const detail = ficha.details.find((detail) => detail.open);
+  console.log(detail);
 
   const renderAssets = () => {
     const assets = detail.asset.assets;
@@ -56,7 +57,6 @@ const FichaPreview = ({ ficha }: { ficha: Ficha }) => {
 
   return (
     <VStack zIndex={50} align="start" maxWidth="450px">
-      {/* actions */}
       <HStack spacing={4}>
         <Link
           sx={linkStyles}
@@ -127,6 +127,7 @@ const NonFichaPreview = () => {
 
 const _ListFichas = () => {
   const { fichas } = useClientsStore();
+  const formats = useConfigFormats();
 
   return (
     <Box>
@@ -154,10 +155,9 @@ const _ListFichas = () => {
             accessor="createdAt"
             Cell={(props: SafeAny) => {
               const { original } = prepareCellProps<Ficha>(props);
-              return original.createdAt
-                ? // ? format(new Date(original.createdAt), 'dd/MM/yyyy:HH:mm')
-                  '??'
-                : '----';
+              return original?.createdAt
+                ? format(new Date(original?.createdAt), formats.onlyDate)
+                : formats.whenNotFoundInTable;
             }}
           />
           <ColTable
@@ -165,10 +165,9 @@ const _ListFichas = () => {
             accessor="closedAt"
             Cell={(props: SafeAny) => {
               const { original } = prepareCellProps<Ficha>(props);
-              return original.closedAt
-                ? // ? format(new Date(original.closedAt), 'dd/MM/yyyy')
-                  '???'
-                : '----';
+              return original?.closedAt
+                ? format(new Date(original?.closedAt), formats.onlyDate)
+                : formats.whenNotFoundInTable;
             }}
           />
           <ColTable
@@ -215,7 +214,6 @@ export const DashboardFicha: React.FunctionComponent<DashboardFichaProps> =
                   <NonFichaPreview />
                 )}
               </TabContent>
-
               <TabContent>
                 <ListFichas />
               </TabContent>

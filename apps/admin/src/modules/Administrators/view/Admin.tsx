@@ -8,6 +8,7 @@ import {
   useAuth,
   TokenUser,
   useWellnessToast,
+  useGetAdministratorQuery,
 } from '@wellness/admin-ui';
 import { Formik, useFormikContext } from 'formik';
 import { InputControl } from 'formik-chakra-ui';
@@ -17,10 +18,9 @@ import { useChangePasswordModal } from '../data';
 import { ChangePasswordModal } from '../components';
 import { useAdministratorController } from '../controllers';
 import { FC } from 'react';
-
+import { useChangues } from '@wellness/admin-ui';
 const Form: FC<{ user: TokenUser }> = ({ user }) => {
   const changePasswordModal = useChangePasswordModal();
-
   const [reset, setReset] = useState(false);
   const {
     handleSubmit,
@@ -30,22 +30,24 @@ const Form: FC<{ user: TokenUser }> = ({ user }) => {
     setTouched,
     dirty,
     submitForm,
+    values,
+    isSubmitting,
   } = useFormikContext<UpdateAdminT>();
+  const changesApi = useChangues(values);
 
-  const buttonIsValid =
-    Object.entries(touched).some(([, value]) => value) && isValid && dirty;
+  const buttonIsInValid = !isValid || isSubmitting || !changesApi.hasChanges;
 
   useEffect(() => {
-    setValues({
-      name: user.name,
-      lastName: user.lastName,
-      email: user.email,
-    });
-    setTouched({
-      name: false,
-      lastName: false,
-      email: false,
-    });
+    if (user) {
+      const values = {
+        name: user.name,
+        lastName: user.lastName,
+        email: user.email,
+      };
+      setValues(values);
+      changesApi.toCompare(values);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setValues, user, setTouched, reset]);
 
   return (
@@ -73,7 +75,7 @@ const Form: FC<{ user: TokenUser }> = ({ user }) => {
         >
           Descartar cambios
         </Button>
-        <Button onClick={submitForm} disabled={!buttonIsValid}>
+        <Button onClick={submitForm} disabled={buttonIsInValid}>
           Guardar cambios
         </Button>
       </Stack>
@@ -85,11 +87,15 @@ export const AdminProfile: NextPageWithLayout = () => {
   const { user } = useAuth();
   const { editAdminstratorSelf } = useAdministratorController();
   const toast = useWellnessToast();
-
-  if (!user) {
+  const { data: userData, loading } = useGetAdministratorQuery({
+    skip: !user,
+    variables: {
+      id: user?.id,
+    },
+  });
+  if (loading || !userData || !user) {
     return null;
   }
-
   return (
     <Layout backText="Perfil de usuario">
       <Formik<UpdateAdminT>
@@ -112,7 +118,7 @@ export const AdminProfile: NextPageWithLayout = () => {
           });
         }}
       >
-        <Form user={user} />
+        <Form user={userData?.getAdministrator} />
       </Formik>
     </Layout>
   );

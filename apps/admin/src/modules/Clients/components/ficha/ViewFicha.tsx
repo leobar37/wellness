@@ -25,6 +25,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Autoplay } from 'swiper';
 SwiperCore.use([Autoplay]);
 import format from 'date-fns/format';
+
 const { patch } = useClientsStore.getState();
 
 const Side = ({ detail }: { detail: Ficha['details'][0] }) => {
@@ -59,6 +60,7 @@ const Side = ({ detail }: { detail: Ficha['details'][0] }) => {
     </VStack>
   );
 };
+
 export const ViewFichaModal: React.FunctionComponent = () => {
   const { modalShowFicha, toggleModalShowFicha, selectedFicha, selectClient } =
     useClientsStore();
@@ -93,7 +95,12 @@ export const ViewFichaModal: React.FunctionComponent = () => {
           <Heading size={'lg'} textAlign={'center'}>
             {selectClient.name}
           </Heading>
-          <HStack spacing={2} mt={5} position={'relative'}>
+          <HStack
+            spacing={2}
+            mt={5}
+            position={'relative'}
+            justifyContent="space-between"
+          >
             <Side detail={left} />
             <Box width={'5px'} bg="gray.400" h={'300px'} />
             <Side detail={right} />

@@ -8,10 +8,14 @@ import {
 } from '@nestjs/graphql';
 import { Administrator } from '@wellness/core';
 import { RegisterAdminInput } from '../dto/admin.input';
-import { ResetPasswordInput } from '../dto/ResetPassword.input';
+import {
+  ResetPasswordInputFromAdmin,
+  ResetPasswordInput,
+} from '../dto/ResetPassword.input';
 import { AdministratorService } from '../services';
 import { Auth } from '../../../common';
 import { Role } from '@wellness/common';
+import { CurrentUser } from '../../../common/decorators';
 @Resolver(() => Administrator)
 export class AdminstratorResolver {
   constructor(private administratorService: AdministratorService) {}
@@ -46,6 +50,21 @@ export class AdminstratorResolver {
     @Args('input', { type: () => ResetPasswordInput }) input: ResetPasswordInput
   ) {
     return this.administratorService.resetPassword(input);
+  }
+  @Auth(Role.ADMIN)
+  @Mutation((type) => Administrator)
+  async resetPasswordFromAdmin(
+    @CurrentUser() user: Administrator,
+    @Args('input', { type: () => ResetPasswordInputFromAdmin })
+    input: ResetPasswordInputFromAdmin
+  ) {
+    return this.administratorService.resetPasswordFromAdmin(user, input);
+  }
+
+  @Query((type) => Administrator)
+  @Auth()
+  async getAdministrator(@Args('id', { type: () => ID }) id: string) {
+    return this.administratorService.getAdministrator(id);
   }
 
   @ResolveField((type) => String)

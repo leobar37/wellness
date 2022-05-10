@@ -291,6 +291,7 @@ export type Mutation = {
   registerAdmin: Administrator;
   registerClient: Client;
   resetPassword: Administrator;
+  resetPasswordFromAdmin: Administrator;
   signature: ResponseSignature;
   updateActivity: Activity;
   updateAsistence: Asistence;
@@ -406,6 +407,11 @@ export type MutationResetPasswordArgs = {
 };
 
 
+export type MutationResetPasswordFromAdminArgs = {
+  input: ResetPasswordInputFromAdmin;
+};
+
+
 export type MutationSignatureArgs = {
   publicId?: InputMaybe<Scalars['String']>;
 };
@@ -466,6 +472,7 @@ export type Query = {
   finAsistences: Array<Asistence>;
   getActivities: Array<Activity>;
   getActivity: Activity;
+  getAdministrator: Administrator;
   getAdministrators: Array<Administrator>;
   getFicha?: Maybe<Ficha>;
   getFichas?: Maybe<Array<Ficha>>;
@@ -492,6 +499,11 @@ export type QueryGetActivitiesArgs = {
 
 
 export type QueryGetActivityArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryGetAdministratorArgs = {
   id: Scalars['ID'];
 };
 
@@ -533,6 +545,16 @@ export type ResetPasswordInput = {
   /** Administratror id */
   id: Scalars['ID'];
   newPassword: Scalars['String'];
+  /** Prev password of the user */
+  prevPassword: Scalars['String'];
+};
+
+export type ResetPasswordInputFromAdmin = {
+  /** Prev password of the user */
+  adminPassword: Scalars['String'];
+  newPassword: Scalars['String'];
+  /** User id */
+  userId: Scalars['ID'];
 };
 
 export type ResourceUnion = Asset | AssetBoot;
@@ -596,6 +618,20 @@ export type ResetPasswordMutationVariables = Exact<{
 
 
 export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string | null | undefined } };
+
+export type ResetPasswordFromAdminMutationVariables = Exact<{
+  input: ResetPasswordInputFromAdmin;
+}>;
+
+
+export type ResetPasswordFromAdminMutation = { __typename?: 'Mutation', resetPasswordFromAdmin: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string | null | undefined } };
+
+export type GetAdministratorQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetAdministratorQuery = { __typename?: 'Query', getAdministrator: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string | null | undefined } };
 
 export type CreateAsistenceMutationVariables = Exact<{
   asistence: InputAsistence;
@@ -1129,6 +1165,74 @@ export function useResetPasswordMutation(baseOptions?: Apollo.MutationHookOption
 export type ResetPasswordMutationHookResult = ReturnType<typeof useResetPasswordMutation>;
 export type ResetPasswordMutationResult = Apollo.MutationResult<ResetPasswordMutation>;
 export type ResetPasswordMutationOptions = Apollo.BaseMutationOptions<ResetPasswordMutation, ResetPasswordMutationVariables>;
+export const ResetPasswordFromAdminDocument = gql`
+    mutation resetPasswordFromAdmin($input: ResetPasswordInputFromAdmin!) {
+  resetPasswordFromAdmin(input: $input) {
+    ...administratorFragment
+  }
+}
+    ${AdministratorFragmentFragmentDoc}`;
+export type ResetPasswordFromAdminMutationFn = Apollo.MutationFunction<ResetPasswordFromAdminMutation, ResetPasswordFromAdminMutationVariables>;
+
+/**
+ * __useResetPasswordFromAdminMutation__
+ *
+ * To run a mutation, you first call `useResetPasswordFromAdminMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useResetPasswordFromAdminMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [resetPasswordFromAdminMutation, { data, loading, error }] = useResetPasswordFromAdminMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useResetPasswordFromAdminMutation(baseOptions?: Apollo.MutationHookOptions<ResetPasswordFromAdminMutation, ResetPasswordFromAdminMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ResetPasswordFromAdminMutation, ResetPasswordFromAdminMutationVariables>(ResetPasswordFromAdminDocument, options);
+      }
+export type ResetPasswordFromAdminMutationHookResult = ReturnType<typeof useResetPasswordFromAdminMutation>;
+export type ResetPasswordFromAdminMutationResult = Apollo.MutationResult<ResetPasswordFromAdminMutation>;
+export type ResetPasswordFromAdminMutationOptions = Apollo.BaseMutationOptions<ResetPasswordFromAdminMutation, ResetPasswordFromAdminMutationVariables>;
+export const GetAdministratorDocument = gql`
+    query getAdministrator($id: ID!) {
+  getAdministrator(id: $id) {
+    ...administratorFragment
+  }
+}
+    ${AdministratorFragmentFragmentDoc}`;
+
+/**
+ * __useGetAdministratorQuery__
+ *
+ * To run a query within a React component, call `useGetAdministratorQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAdministratorQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAdministratorQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetAdministratorQuery(baseOptions: Apollo.QueryHookOptions<GetAdministratorQuery, GetAdministratorQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAdministratorQuery, GetAdministratorQueryVariables>(GetAdministratorDocument, options);
+      }
+export function useGetAdministratorLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAdministratorQuery, GetAdministratorQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAdministratorQuery, GetAdministratorQueryVariables>(GetAdministratorDocument, options);
+        }
+export type GetAdministratorQueryHookResult = ReturnType<typeof useGetAdministratorQuery>;
+export type GetAdministratorLazyQueryHookResult = ReturnType<typeof useGetAdministratorLazyQuery>;
+export type GetAdministratorQueryResult = Apollo.QueryResult<GetAdministratorQuery, GetAdministratorQueryVariables>;
 export const CreateAsistenceDocument = gql`
     mutation createAsistence($asistence: InputAsistence!) {
   createAsistence(asistence: $asistence) {
@@ -2335,6 +2439,10 @@ export type EditAdministratorVariables = EditAdministratorMutationVariables;
 export type EditAdministratorEditAdministrator = (NonNullable<EditAdministratorMutation['editAdministrator']>);
 export type ResetPasswordVariables = ResetPasswordMutationVariables;
 export type ResetPasswordResetPassword = (NonNullable<ResetPasswordMutation['resetPassword']>);
+export type ResetPasswordFromAdminVariables = ResetPasswordFromAdminMutationVariables;
+export type ResetPasswordFromAdminResetPasswordFromAdmin = (NonNullable<ResetPasswordFromAdminMutation['resetPasswordFromAdmin']>);
+export type GetAdministratorVariables = GetAdministratorQueryVariables;
+export type GetAdministratorGetAdministrator = (NonNullable<GetAdministratorQuery['getAdministrator']>);
 export type CreateAsistenceVariables = CreateAsistenceMutationVariables;
 export type CreateAsistenceCreateAsistence = (NonNullable<CreateAsistenceMutation['createAsistence']>);
 export type UpdateAsistenceVariables = UpdateAsistenceMutationVariables;

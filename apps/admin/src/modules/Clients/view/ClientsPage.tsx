@@ -1,24 +1,22 @@
-import { Box, Button, HStack } from '@chakra-ui/react';
+import { Button, HStack } from '@chakra-ui/react';
+import { ButtonIcon, EyeIcon } from '@wellness/admin-ui';
 import type { Client, NextPageWithLayout } from '@wellness/admin-ui/common';
 import { BaseLayout, Layout } from '@wellness/admin-ui/components';
-import { DeleteIcon, DotsVertical, Filter } from '@wellness/admin-ui/icons';
+import { Filter } from '@wellness/admin-ui/icons';
 import { Badgebg, ColTable, Table } from '@wellness/admin-ui/ui';
-import { ButtonIcon } from '@wellness/admin-ui';
-import { EyeIcon } from '@wellness/admin-ui';
 import {
   GlobalFilter,
   prepareCellProps,
   TableInstanceProps,
 } from '@wellness/admin-ui/ui/table';
 import { SafeAny } from '@wellness/common';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { RegisterClientModal } from '../components';
 import { useInitClientsController } from '../controller';
-import { useClientsStore } from '../data/client-store';
-import { useRouter } from 'next/router';
 import { useClientCrudModal } from '../data';
 export const Page: NextPageWithLayout<SafeAny> = () => {
-  const { clients } = useInitClientsController();
+  const { clients, isLoading } = useInitClientsController();
   const [table, setTable] = useState<TableInstanceProps | null>();
   const { openModal } = useClientCrudModal();
   const router = useRouter();
@@ -54,6 +52,7 @@ export const Page: NextPageWithLayout<SafeAny> = () => {
         variant="simple"
         size="sm"
         my={8}
+        isLoading={isLoading}
       >
         <ColTable Header="Nombre" accessor="name" />
         <ColTable Header="Apellido" accessor="lastName" />

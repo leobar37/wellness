@@ -47,6 +47,10 @@ export const defaultConfig: WellnessConfig = {
     cloudName: 'wellnesspro',
     uploadPreset: 'ml_default',
   },
+  formats: {
+    onlyDate: 'dd/MM/yyyy',
+    whenNotFoundInTable: '---',
+  },
   uploadImage: {
     height: 150,
     width: 150,

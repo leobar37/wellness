@@ -16,7 +16,7 @@ import { SafeAny } from '@wellness/common';
 import { useAsistenceController } from '../../controller';
 import { useClientsStore } from '../../data/client-store';
 import { CreateAsistence } from '../asistence/CreateAsistence';
-
+import { Time } from '@wellness/admin-ui';
 const { toggleClientAsistenceModal } = useClientsStore.getState();
 
 type AsistenceItemProps = {
@@ -26,6 +26,7 @@ type AsistenceItemProps = {
 const AsistenceItem = ({ asistence, onDelete }: AsistenceItemProps) => {
   const [blackAlpha300] = useToken('colors', ['blackAlpha.300']);
   const onComfirm = useModalConfirm();
+
   return (
     <ListItem
       justifyContent="space-between"
@@ -39,7 +40,7 @@ const AsistenceItem = ({ asistence, onDelete }: AsistenceItemProps) => {
     >
       <VStack align="start">
         <Text fontSize="sm" color="blackAlpha.600">
-          {asistence.createdAt}
+          <Time>{asistence.createdAt}</Time>
         </Text>
         <Text>{asistence.note}</Text>
       </VStack>

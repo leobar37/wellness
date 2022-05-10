@@ -9,7 +9,12 @@ import {
   VStack,
   Button,
 } from '@chakra-ui/react';
-import { DatePicker, UploadOne, useWellnessToast } from '@wellness/admin-ui';
+import {
+  DatePicker,
+  UploadOne,
+  useWellnessToast,
+  useGetClientsQuery,
+} from '@wellness/admin-ui';
 import { Client, Sex } from '@wellness/admin-ui/common';
 import { ModalCrud } from '@wellness/admin-ui/components';
 import { ChackraForm } from '@wellness/admin-ui/components/crud';
@@ -24,7 +29,7 @@ import { useEffect } from 'react';
 import { useClientsController } from '../controller';
 import { useClientCrudModal } from '../data';
 import { SaveClientSchena } from '../domain/schemas';
-
+import { saveClientSchema } from '../domain/schemas';
 const ImagePlaceHolder = () => {
   return (
     <VStack spacing={'0'} textAlign="center">
@@ -93,6 +98,7 @@ const mapper = {
 
 export const RegisterClientModal = () => {
   const { registerClient, updateClient } = useClientsController();
+  const { refetch } = useGetClientsQuery();
   const {
     isOpen: isOpenModal,
     openModal,
@@ -108,9 +114,8 @@ export const RegisterClientModal = () => {
     onOpen: () => openModal(),
   });
 
-  console.log('in mode', mode);
-
   const properties = mapper[mode];
+
   return (
     <Formik<SaveClientSchena>
       initialValues={{
@@ -124,7 +129,11 @@ export const RegisterClientModal = () => {
         birth: null,
         imageProfile: null,
       }}
-      onSubmit={async (values, { setSubmitting, setValues }) => {
+      isInitialValid={false}
+      validateOnChange
+      validationSchema={saveClientSchema}
+      onSubmit={async (values, { setSubmitting }) => {
+        setSubmitting(true);
         switch (mode) {
           case 'edit': {
             await updateClient(values);
@@ -140,12 +149,15 @@ export const RegisterClientModal = () => {
               title: 'Cliente Registrado',
             });
             onClose();
+            // ref
+            refetch();
             break;
           }
         }
+        setSubmitting(false);
       }}
     >
-      {({ submitForm }) => (
+      {({ submitForm, isValid, isSubmitting }) => (
         <ModalCrud
           isOpen={isOpen}
           onClose={onClose}
@@ -153,7 +165,10 @@ export const RegisterClientModal = () => {
           footer={
             <HStack>
               <Button variant="ghost">Cancelar</Button>
-              <SubmitButton onClick={submitForm}>
+              <SubmitButton
+                disabled={!isValid || isSubmitting}
+                onClick={submitForm}
+              >
                 {properties.button}
               </SubmitButton>
             </HStack>

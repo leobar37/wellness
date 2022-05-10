@@ -5,7 +5,10 @@ import { Administrator, BussinessError } from '@wellness/core';
 import { AdministratorEvent, EventBus } from '@wellness/core/event-bus';
 import { EntityManager, Repository } from 'typeorm';
 import { RegisterAdminInput } from '../dto/admin.input';
-import { ResetPasswordInput } from '../dto/ResetPassword.input';
+import {
+  ResetPasswordInput,
+  ResetPasswordInputFromAdmin,
+} from '../dto/ResetPassword.input';
 import { omit } from 'lodash';
 import { BycriptService } from '@wellness/core';
 import { WelnessLogger } from '@wellness/core';
@@ -18,9 +21,8 @@ export class AdministratorService implements OnModuleInit {
     private eventBus: EventBus,
     private readonly bcryptService: BycriptService,
     private wellnessLogger: WelnessLogger
-  ) {
-    console.log('AdministratorService constructor');
-  }
+  ) {}
+
   async onModuleInit() {
     const adminsCount = await this.manager.count(Administrator);
     if (adminsCount == 0) {
@@ -45,9 +47,7 @@ export class AdministratorService implements OnModuleInit {
     if (admin) {
       throw new BussinessError('Este administrador ya existe');
     }
-
     // this password hashed
-
     const hash = await this.bcryptService.hash(input.password);
     const adminstratorData = await this.manager.save(
       Administrator,
@@ -63,8 +63,10 @@ export class AdministratorService implements OnModuleInit {
     return adminstratorData;
   }
 
-  // reset password
-
+  /**
+   * @description this method reset a password from the profile
+   * the administrator
+   */
   public async resetPassword(input: ResetPasswordInput) {
     const admin = await this.manager
       .getRepository(Administrator)
@@ -72,14 +74,57 @@ export class AdministratorService implements OnModuleInit {
     if (!admin) {
       throw new BussinessError('Este administador no existe');
     }
+    const passwordIsEqual = await this.bcryptService.compare(
+      input.prevPassword,
+      admin.password
+    );
+    if (!passwordIsEqual) {
+      throw new BussinessError('La contraseña anterior no es correcta');
+    }
     const hash = await this.bcryptService.hash(input.newPassword);
 
     const adminForUpdate = this.manager.merge(Administrator, admin, {
       password: hash,
     });
+
     await this.manager.update(Administrator, input.id, adminForUpdate);
 
     return adminForUpdate;
+  }
+
+  /**
+   * @description This method reset a password from  the administrator
+   * the administrato sends his password, to check  his aithenteticity
+   */
+
+  public async resetPasswordFromAdmin(
+    currentUser: Administrator,
+    input: ResetPasswordInputFromAdmin
+  ) {
+    const adminTarget = await this.manager
+      .getRepository(Administrator)
+      .findOne(input.userId);
+
+    if (!adminTarget) {
+      throw new BussinessError('Este administrador no existe');
+    }
+
+    const admin = await this.manager.findOne(Administrator, currentUser.id);
+    const passwordIsValid = await this.bcryptService.compare(
+      input.adminPassword,
+      admin.password
+    );
+
+    if (!passwordIsValid) {
+      throw new BussinessError(
+        'La contraseña enviada por el administrador no es valida'
+      );
+    }
+    const hash = await this.bcryptService.hash(input.newPassword);
+    await this.manager.update(Administrator, input.userId, {
+      password: hash,
+    });
+    return omit(adminTarget, ['password']);
   }
 
   public async updateAdmin(id: ID, input: RegisterAdminInput) {
@@ -109,5 +154,10 @@ export class AdministratorService implements OnModuleInit {
   // list administrators
   async getAdministrators() {
     return this.administratorRepository.find();
+  }
+
+  // list administrators
+  async getAdministrator(id: ID) {
+    return this.administratorRepository.findOne(id);
   }
 }

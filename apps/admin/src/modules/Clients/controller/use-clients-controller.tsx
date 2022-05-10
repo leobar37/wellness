@@ -19,7 +19,8 @@ import { SaveClientSchena } from '../domain/schemas';
 const { patch } = useClientsStore.getState();
 
 export const useInitClientsController = () => {
-  const { data: dataClients } = useGetClientsQuery();
+  const { data: dataClients, loading } = useGetClientsQuery();
+
   React.useEffect(() => {
     if (dataClients) {
       patch({
@@ -28,8 +29,11 @@ export const useInitClientsController = () => {
     }
   }, [dataClients]);
 
+  const isLoading = loading;
+
   return {
     clients: dataClients?.clients ?? [],
+    isLoading,
   };
 };
 

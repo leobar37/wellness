@@ -1,38 +1,62 @@
 import { Button, HStack, useDisclosure } from '@chakra-ui/react';
-import { ChackraForm, ModalCrud, Role } from '@wellness/admin-ui';
+import {
+  ChackraForm,
+  ModalCrud,
+  Role,
+  useChangues,
+  useWellnessToast,
+} from '@wellness/admin-ui';
 import { Formik, useFormikContext } from 'formik';
 import { InputControl, SelectControl } from 'formik-chakra-ui';
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { useAdministratorController } from '../controllers';
-import { useAdministratorCrud } from '../data';
+import { useAdministratorCrud, useChangePasswordModalFromAdmin } from '../data';
 import { CreateAdminT } from '../domain/schema';
-import { useChangePasswordModal } from '../data';
 
 const modeMapper = {
   edit: {
+    label: 'Editar Administrador',
     button: 'Editar',
   },
   create: {
+    label: 'Crear Administrador',
     button: 'Crear',
   },
 };
 
-const AdminForm = () => {
-  const { handleSubmit, setValues } = useFormikContext<CreateAdminT>();
+export type AdminFormProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  textHeader: string;
+  textButton: string;
+};
+const AdminForm: FC<AdminFormProps> = (props) => {
+  const {
+    handleSubmit,
+    setValues,
+    values,
+    resetForm,
+    isValid,
+    submitForm,
+    isSubmitting,
+  } = useFormikContext<CreateAdminT>();
   const adminCrudStore = useAdministratorCrud();
+  const passwordModal = useChangePasswordModalFromAdmin();
+  const changesApi = useChangues(values);
 
-  const passwordModal = useChangePasswordModal();
   useEffect(() => {
-    if (adminCrudStore.mode === 'edit' && adminCrudStore.temporal) {
+    if (adminCrudStore?.mode === 'edit' && adminCrudStore?.temporal) {
       const temporal = adminCrudStore.temporal;
-      setValues({
+      const values = {
         dni: temporal.dni || '',
         email: temporal.email,
         lastName: temporal.lastName,
         name: temporal.name,
         password: null,
         role: temporal.rol,
-      });
+      };
+      setValues(values);
+      changesApi.toCompare(values);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [adminCrudStore.mode, adminCrudStore.temporal]);
@@ -56,22 +80,45 @@ const AdminForm = () => {
     );
 
   return (
-    <ChackraForm submit={handleSubmit}>
-      <InputControl name="email" label="Email" />
-      <InputControl name="name" label="Nombre" />
-      <InputControl name="lastName" label="Apellido" />
-      <InputControl name="dni" label="DNI" />
-      <SelectControl name="role" label="Rol">
-        <option value={Role.STAFF}>Empleado</option>
-        <option value={Role.ADMIN}>Admin</option>
-      </SelectControl>
-      {passwordElement}
-    </ChackraForm>
+    <ModalCrud
+      isOpen={props.isOpen}
+      onClose={() => {
+        if (adminCrudStore.mode == 'edit') {
+          resetForm();
+        }
+        props.onClose();
+      }}
+      textHeader={props.textHeader}
+      footer={
+        <HStack>
+          <Button
+            isLoading={isSubmitting}
+            disabled={!isValid || !changesApi.hasChanges}
+            onClick={submitForm}
+          >
+            {props.textButton}
+          </Button>
+        </HStack>
+      }
+    >
+      <ChackraForm submit={handleSubmit}>
+        <InputControl name="email" label="Email" />
+        <InputControl name="name" label="Nombre" />
+        <InputControl name="lastName" label="Apellido" />
+        <InputControl name="dni" label="DNI" />
+        <SelectControl name="role" label="Rol">
+          <option value={Role.STAFF}>Empleado</option>
+          <option value={Role.ADMIN}>Admin</option>
+        </SelectControl>
+        {passwordElement}
+      </ChackraForm>
+    </ModalCrud>
   );
 };
 
 export const CreateAdminModal = () => {
   const adminCrudStore = useAdministratorCrud();
+
   const { isOpen, onClose } = useDisclosure({
     isOpen: adminCrudStore.isOpen,
     onOpen: adminCrudStore.openModal,
@@ -81,6 +128,8 @@ export const CreateAdminModal = () => {
   const { registerAdmin, editAdministrator } = useAdministratorController();
 
   const properties = modeMapper[adminCrudStore.mode];
+
+  const toast = useWellnessToast();
 
   return (
     <Formik<CreateAdminT>
@@ -92,43 +141,38 @@ export const CreateAdminModal = () => {
         dni: '',
         role: Role.STAFF,
       }}
-      onSubmit={async (values) => {
+      isInitialValid={false}
+      onSubmit={async (values, { setSubmitting }) => {
+        setSubmitting(true);
         switch (adminCrudStore.mode) {
           case 'create': {
             await registerAdmin(values);
+            toast({
+              status: 'success',
+              description: 'Administrador creado correctamente',
+            });
             break;
           }
           case 'edit': {
             await editAdministrator(values);
+            toast({
+              status: 'success',
+              description: 'Administrador editado correctamente',
+            });
             break;
           }
         }
+
         adminCrudStore.closeModal();
+        setSubmitting(false);
       }}
     >
-      {({ submitForm, resetForm }) => {
-        return (
-          <ModalCrud
-            isOpen={isOpen}
-            onClose={() => {
-              if (adminCrudStore.mode == 'edit') {
-                resetForm();
-              }
-              onClose();
-            }}
-            textHeader="Crear Administrador"
-            footer={
-              <>
-                <HStack>
-                  <Button onClick={submitForm}>{properties.button}</Button>
-                </HStack>
-              </>
-            }
-          >
-            <AdminForm />
-          </ModalCrud>
-        );
-      }}
+      <AdminForm
+        isOpen={isOpen}
+        onClose={onClose}
+        textButton={properties.button}
+        textHeader={properties.label}
+      />
     </Formik>
   );
 };

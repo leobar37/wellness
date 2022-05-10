@@ -25,3 +25,19 @@ export const resetPassword = gql`
     }
   }
 `;
+
+export const resetPasswordFromAdmin = gql`
+  mutation resetPasswordFromAdmin($input: ResetPasswordInputFromAdmin!) {
+    resetPasswordFromAdmin(input: $input) {
+      ...administratorFragment
+    }
+  }
+`;
+
+export const getAdministrator = gql`
+  query getAdministrator($id: ID!) {
+    getAdministrator(id: $id) {
+      ...administratorFragment
+    }
+  }
+`;
