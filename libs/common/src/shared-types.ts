@@ -16,6 +16,7 @@ export type DeepPartial<T> = {
         : DeepPartial<T[P]>);
 };
 
+export type AnyFunction = (...args: SafeAny[])=> SafeAny
 /**
  * This partial include a coditional for verify a class
  */

@@ -197,6 +197,20 @@ type GrowthType {
   value: Float!
 }
 
+type AlertResult {
+  typeData: TypeDataAlertEnum!
+  label: String!
+  sublabel: String!
+  date: DateTime!
+  dateLabel: String!
+}
+
+"""The type of data for the Alert report"""
+enum TypeDataAlertEnum {
+  birthday
+  plans_to_overcome
+}
+
 type Query {
   ping: String!
   getAdministrators: [Administrator!]!
@@ -212,6 +226,7 @@ type Query {
   getFicha(userId: Int!): Ficha
   getFichas(userId: Int!): [Ficha!]
   growthReport(input: GrowthInput!): [GrowthType!]!
+  alertsReport(input: AlertInput!): [AlertResult!]!
 }
 
 input FiltersPlan {
@@ -229,15 +244,26 @@ input FiContractsView {
 }
 
 input GrowthInput {
-  interval: Intervatime!
-  typeData: String!
+  interval: IntervaltimeEnum!
+  typeData: TypeDataEnum!
 }
 
 """The time interval for the report"""
-enum Intervatime {
+enum IntervaltimeEnum {
   LAST_WEEK
   LAST_MONTH
   LAST_YEAR
+}
+
+"""The type of data for the report"""
+enum TypeDataEnum {
+  plans
+  asistences
+  register_clients
+}
+
+input AlertInput {
+  typeData: TypeDataAlertEnum!
 }
 
 type Mutation {

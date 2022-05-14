@@ -16,3 +16,4 @@ export * from './Settings';
 export * from './OutlineMore';
 export * from './Exit';
 export * from './CloseEye';
+export * from  "./DashboardIcon"

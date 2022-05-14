@@ -23,9 +23,6 @@ export const ListAdmins: NextPageWithLayout = () => {
   const { openModal, openEditModal } = useAdministratorCrud();
   const { administrators, isLoading } = useAdministratorInit();
 
-  if (isLoading) {
-    return <div>Cargando...</div>;
-  }
 
   return (
     <Layout
@@ -55,6 +52,7 @@ export const ListAdmins: NextPageWithLayout = () => {
         variant="simple"
         size="sm"
         mt={8}
+        isLoading={isLoading}
         isSelecteable={false}
       >
         <ColTable accessor="name" Header="Nombre" />

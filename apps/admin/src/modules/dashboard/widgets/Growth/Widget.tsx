@@ -1,4 +1,4 @@
-import { Box, HStack, useToken } from '@chakra-ui/react';
+import { Box, HStack, useToken , Skeleton } from '@chakra-ui/react';
 import {
   CategoryScale,
   Chart as ChartJs,
@@ -14,7 +14,7 @@ import { noop } from '@chakra-ui/utils';
 import { Line } from 'react-chartjs-2';
 import { Formik } from 'formik';
 import { SelectControl } from 'formik-chakra-ui';
-import { ChackraForm } from '@wellness/admin-ui';
+import { ChackraForm, TypeDataEnum } from '@wellness/admin-ui';
 import { useGrowthReportQuery, GrowthType } from '@wellness/admin-ui';
 import { IntervalTimeEnum, SafeAny } from '@wellness/common';
 import { useDashboardStore } from '../../data';
@@ -30,21 +30,39 @@ ChartJs.register(
   Tooltip,
   Legend
 );
-
+const GraphicSkeleton = () => {
+  return  <Skeleton height={200} borderRadius="5px" width="450px" mx="auto" /> 
+}
 export type GraphicProps = {
   results: GrowthType[];
 };
+
 const Graphic: FC<GraphicProps> = ({ results }) => {
   const [red100, blue200] = useToken('color', ['red.100', 'blue.600']);
-
   const labels = (results ?? []).map(({ label }) => label);
+  const { growthFilters } = useDashboardStore();
   const data = (results ?? []).map(({ value }) => value);
+
+  const mapper = {
+    [TypeDataEnum.asistences]: 'Asistencias',
+    [TypeDataEnum.plans]: 'Planes',
+    [TypeDataEnum.register_clients] : "Clientes registrados"
+  };
+  
   return (
     <Box mt={2}>
       <Line
         datasetIdKey="line"
         options={{
           responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks :{
+                precision : 0
+              }
+            },
+          },
           plugins: {
             legend: {
               position: 'top',
@@ -59,11 +77,11 @@ const Graphic: FC<GraphicProps> = ({ results }) => {
           labels: labels,
           datasets: [
             {
-              label: 'Planes',
+              label: mapper[growthFilters.typeData],
               data: data,
               fill: false,
               borderColor: red100,
-              tension: 0.1,
+              tension: 0.5,
             },
           ],
         }}
@@ -76,23 +94,26 @@ const WidgetForm: FC = () => {
   const { patch } = useDashboardStore();
   const { values } = useFormikContext<SafeAny>();
   useEffect(() => {
-    if (values.interval) {
+    if (values.interval && values.typeData) {
       patch((prevState) => {
         prevState.growthFilters.interval = values.interval;
+        prevState.growthFilters.typeData = values.typeData;
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values?.interval]);
+  }, [values?.interval, values?.typeData]);
   return (
     <ChackraForm>
       <HStack px={10} spacing={'16'}>
         <SelectControl name="interval" label="Intervalo:">
           <option value={IntervalTimeEnum.LAST_WEEK}>Última semana </option>
+          <option value={IntervalTimeEnum.LAST_MONTH}>Última mes </option>
           <option value={IntervalTimeEnum.LAST_YEAR}>Última año </option>
         </SelectControl>
-        <SelectControl name="name" label="Tipo de dato:">
-          <option value={'opcion'}>Todos</option>
-          <option value={'opcion'}>Planes vendidos</option>
+        <SelectControl name="typeData" label="Tipo de dato:">
+          <option value={TypeDataEnum.asistences}>Asistencias</option>
+          <option value={TypeDataEnum.plans}>Planes</option>
+          <option value={TypeDataEnum.register_clients}>Clientes registrados</option>
         </SelectControl>
       </HStack>
     </ChackraForm>
@@ -105,19 +126,22 @@ export const GrowthWidget: FC = () => {
     variables: {
       input: {
         interval: growthFilters.interval as SafeAny,
-        typeData: growthFilters.typeData,
+        typeData: growthFilters.typeData as SafeAny,
       },
     },
   });
 
-  if (loading) {
-    return <div>Loading</div>;
-  }
-
   return (
-    <Box flex={'45%'}>
-      <Graphic results={data?.growthReport} />
-      <Formik initialValues={{}} onSubmit={noop}>
+    <Box flex={'45%'} maxWidth="500px">
+      {!loading && !error && <Graphic results={data?.growthReport} />}
+      {loading && <GraphicSkeleton />}
+      <Formik
+        initialValues={{
+          interval: growthFilters.interval,
+          typeData: growthFilters.typeData,
+        }}
+        onSubmit={noop}
+      >
         <WidgetForm />
       </Formik>
     </Box>

@@ -1,9 +1,16 @@
 import { WellnessConfig } from './Wellness-config';
 import { Dumbell, UsersIcon, Settings } from '../icons';
 import { Role } from '../common';
+import { DashboardIcon } from "../icons";
 export const defaultConfig: WellnessConfig = {
   sidebar: {
     items: [
+      {
+        name : "Dashboard",
+        path : "/app",
+        rol : [Role.ADMIN , Role.STAFF],
+        icon : <DashboardIcon fontSize={"xl"} />
+      },
       {
         name: 'Clientes',
         path: '/app/clients',

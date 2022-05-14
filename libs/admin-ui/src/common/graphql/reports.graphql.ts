@@ -8,3 +8,15 @@ export const getGrowthReport = gql`
     }
   }
 `;
+
+export const alertsReport = gql`
+query AlertsReport($input: AlertInput!){
+  alertsReport(input : $input){
+    typeData
+    label
+    sublabel
+    date
+    dateLabel
+  }   
+}
+`

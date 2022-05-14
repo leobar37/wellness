@@ -57,6 +57,19 @@ export type Administrator = {
   updateAt: Scalars['DateTime'];
 };
 
+export type AlertInput = {
+  typeData: TypeDataAlertEnum;
+};
+
+export type AlertResult = {
+  __typename?: 'AlertResult';
+  date: Scalars['DateTime'];
+  dateLabel: Scalars['String'];
+  label: Scalars['String'];
+  sublabel: Scalars['String'];
+  typeData: TypeDataAlertEnum;
+};
+
 export type Asistence = {
   __typename?: 'Asistence';
   client?: Maybe<Client>;
@@ -248,8 +261,8 @@ export type FiltersPlan = {
 };
 
 export type GrowthInput = {
-  interval: Intervatime;
-  typeData: Scalars['String'];
+  interval: IntervaltimeEnum;
+  typeData: TypeDataEnum;
 };
 
 export type GrowthType = {
@@ -264,7 +277,7 @@ export type InputAsistence = {
 };
 
 /** The time interval for the report */
-export enum Intervatime {
+export enum IntervaltimeEnum {
   LAST_MONTH = 'LAST_MONTH',
   LAST_WEEK = 'LAST_WEEK',
   LAST_YEAR = 'LAST_YEAR'
@@ -485,6 +498,7 @@ export type PlanInput = {
 
 export type Query = {
   __typename?: 'Query';
+  alertsReport: Array<AlertResult>;
   client: Client;
   clients: Array<Client>;
   finAsistences: Array<Asistence>;
@@ -499,6 +513,11 @@ export type Query = {
   getViewContracts: Array<ContractView>;
   growthReport: Array<GrowthType>;
   ping: Scalars['String'];
+};
+
+
+export type QueryAlertsReportArgs = {
+  input: AlertInput;
 };
 
 
@@ -620,6 +639,19 @@ export type Suscription = {
   startAt?: Maybe<Scalars['DateTime']>;
   updateAt: Scalars['DateTime'];
 };
+
+/** The type of data for the Alert report */
+export enum TypeDataAlertEnum {
+  birthday = 'birthday',
+  plans_to_overcome = 'plans_to_overcome'
+}
+
+/** The type of data for the report */
+export enum TypeDataEnum {
+  asistences = 'asistences',
+  plans = 'plans',
+  register_clients = 'register_clients'
+}
 
 export type RegisterAdminMutationVariables = Exact<{
   input: RegisterAdminInput;
@@ -824,6 +856,13 @@ export type GrowthReportQueryVariables = Exact<{
 
 
 export type GrowthReportQuery = { __typename?: 'Query', growthReport: Array<{ __typename?: 'GrowthType', label: string, value: number }> };
+
+export type AlertsReportQueryVariables = Exact<{
+  input: AlertInput;
+}>;
+
+
+export type AlertsReportQuery = { __typename?: 'Query', alertsReport: Array<{ __typename?: 'AlertResult', typeData: TypeDataAlertEnum, label: string, sublabel: string, date: SafeAny, dateLabel: string }> };
 
 export type GetActivitiesQueryVariables = Exact<{
   filters?: Maybe<FiltersActivity>;
@@ -1991,6 +2030,45 @@ export function useGrowthReportLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type GrowthReportQueryHookResult = ReturnType<typeof useGrowthReportQuery>;
 export type GrowthReportLazyQueryHookResult = ReturnType<typeof useGrowthReportLazyQuery>;
 export type GrowthReportQueryResult = Apollo.QueryResult<GrowthReportQuery, GrowthReportQueryVariables>;
+export const AlertsReportDocument = gql`
+    query AlertsReport($input: AlertInput!) {
+  alertsReport(input: $input) {
+    typeData
+    label
+    sublabel
+    date
+    dateLabel
+  }
+}
+    `;
+
+/**
+ * __useAlertsReportQuery__
+ *
+ * To run a query within a React component, call `useAlertsReportQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAlertsReportQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAlertsReportQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAlertsReportQuery(baseOptions: Apollo.QueryHookOptions<AlertsReportQuery, AlertsReportQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AlertsReportQuery, AlertsReportQueryVariables>(AlertsReportDocument, options);
+      }
+export function useAlertsReportLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AlertsReportQuery, AlertsReportQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AlertsReportQuery, AlertsReportQueryVariables>(AlertsReportDocument, options);
+        }
+export type AlertsReportQueryHookResult = ReturnType<typeof useAlertsReportQuery>;
+export type AlertsReportLazyQueryHookResult = ReturnType<typeof useAlertsReportLazyQuery>;
+export type AlertsReportQueryResult = Apollo.QueryResult<AlertsReportQuery, AlertsReportQueryVariables>;
 export const GetActivitiesDocument = gql`
     query getActivities($filters: FiltersActivity) {
   getActivities(filters: $filters) {
@@ -2566,6 +2644,8 @@ export type ContractFragmentSuscription = (NonNullable<ContractFragmentFragment[
 export type PingQueryVariables = PingQueryQueryVariables;
 export type GrowthReportVariables = GrowthReportQueryVariables;
 export type GrowthReportGrowthReport = NonNullable<(NonNullable<GrowthReportQuery['growthReport']>)[number]>;
+export type AlertsReportVariables = AlertsReportQueryVariables;
+export type AlertsReportAlertsReport = NonNullable<(NonNullable<AlertsReportQuery['alertsReport']>)[number]>;
 export type GetActivitiesVariables = GetActivitiesQueryVariables;
 export type GetActivitiesGetActivities = NonNullable<(NonNullable<GetActivitiesQuery['getActivities']>)[number]>;
 export type CreateActivityVariables = CreateActivityMutationVariables;
