@@ -1,26 +1,24 @@
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { ModuleRef } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { isDev, SafeAny } from '@wellness/common';
 import { coreEntitiesMap } from '@wellness/core';
 import { EventBusModule } from '@wellness/core/event-bus';
 import { LoggerWellnessModule } from '@wellness/core/logger';
 import { resolve } from 'path';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { AuthModule } from './auth/auth.module';
 import { RequestContextService } from './common/context';
 import { AsistenceModule } from './modules/asistence';
-import { SuscriptionModule } from './modules/suscriptions';
-import { PingModule } from './modules/ping';
-import { UserModule } from './modules/users';
 import { AssetsModule } from './modules/assets';
 import { FichaModule } from './modules/ficha';
+import { PingModule } from './modules/ping';
+import { SuscriptionModule } from './modules/suscriptions';
+import { UserModule } from './modules/users';
+import { ReportsModule } from './modules/reports';
 
-import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from './auth/auth.module';
-import { APP_GUARD } from '@nestjs/core';
-import { RolGuard } from './common';
-import { SafeAny } from '@wellness/common';
-import { isDev } from '@wellness/common';
 const BUSINESS_MODULES = [
   PingModule,
   UserModule,
@@ -29,6 +27,7 @@ const BUSINESS_MODULES = [
   AssetsModule,
   FichaModule,
   AuthModule,
+  ReportsModule,
 ];
 
 const devDatabaseConfig = {

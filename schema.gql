@@ -183,13 +183,18 @@ enum ServiceType {
   activity
 }
 
+type AccessTokenResponse {
+  access_token: String!
+}
+
 type ResponseSignature {
   signature: String!
   timestamp: Float!
 }
 
-type AccessTokenResponse {
-  access_token: String!
+type GrowthType {
+  label: String!
+  value: Float!
 }
 
 type Query {
@@ -206,6 +211,7 @@ type Query {
   getViewContracts(filters: FiContractsView): [ContractView!]!
   getFicha(userId: Int!): Ficha
   getFichas(userId: Int!): [Ficha!]
+  growthReport(input: GrowthInput!): [GrowthType!]!
 }
 
 input FiltersPlan {
@@ -220,6 +226,18 @@ input FiContractsView {
   clientId: ID
   serviceId: ID
   type: ServiceType
+}
+
+input GrowthInput {
+  interval: Intervatime!
+  typeData: String!
+}
+
+"""The time interval for the report"""
+enum Intervatime {
+  LAST_WEEK
+  LAST_MONTH
+  LAST_YEAR
 }
 
 type Mutation {

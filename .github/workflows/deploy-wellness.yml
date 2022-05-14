@@ -31,21 +31,21 @@
 #       - name: deploy
 #         run: yarn nx affected:deploy
 
-name: Nx wellness Application
-on:
-  push:
-    branches: [develop]
+# name: Nx wellness Application
+# on:
+#   push:
+#     branches: [develop]
 
-jobs:
-  build:
-    name: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: executing remote ssh commands using key
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST_SSH_DOKKU }}
-          port: ${{ secrets.SSH_PORT }}
-          username: ${{ secrets.USER_SSH_DOKKU }}
-          key: ${{ secrets.SECRET_SSH }}
-          script: whoami
+# jobs:
+#   build:
+#     name: build
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: executing remote ssh commands using key
+#         uses: appleboy/ssh-action@master
+#         with:
+#           host: ${{ secrets.HOST_SSH_DOKKU }}
+#           port: ${{ secrets.SSH_PORT }}
+#           username: ${{ secrets.USER_SSH_DOKKU }}
+#           key: ${{ secrets.SECRET_SSH }}
+#           script: whoami

@@ -6,6 +6,7 @@
 - Usuarios con planes por vencer
 - Cumpleaños cerca : Se muestra al usuarios los cumpleaños que se acerca en el ultimo mes, semana+
 
+
 # User Report
 
 # Reportes por fecha

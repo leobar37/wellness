@@ -247,10 +247,28 @@ export type FiltersPlan = {
   active?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type GrowthInput = {
+  interval: Intervatime;
+  typeData: Scalars['String'];
+};
+
+export type GrowthType = {
+  __typename?: 'GrowthType';
+  label: Scalars['String'];
+  value: Scalars['Float'];
+};
+
 export type InputAsistence = {
   clientId: Scalars['ID'];
   note?: InputMaybe<Scalars['String']>;
 };
+
+/** The time interval for the report */
+export enum Intervatime {
+  LAST_MONTH = 'LAST_MONTH',
+  LAST_WEEK = 'LAST_WEEK',
+  LAST_YEAR = 'LAST_YEAR'
+}
 
 export type LoginAdminInput = {
   email: Scalars['String'];
@@ -479,6 +497,7 @@ export type Query = {
   getPlan: Plan;
   getPlans: Array<Plan>;
   getViewContracts: Array<ContractView>;
+  growthReport: Array<GrowthType>;
   ping: Scalars['String'];
 };
 
@@ -530,6 +549,11 @@ export type QueryGetPlansArgs = {
 
 export type QueryGetViewContractsArgs = {
   filters?: InputMaybe<FiContractsView>;
+};
+
+
+export type QueryGrowthReportArgs = {
+  input: GrowthInput;
 };
 
 export type RegisterAdminInput = {
@@ -793,6 +817,13 @@ export type PingQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type PingQueryQuery = { __typename?: 'Query', ping: string };
+
+export type GrowthReportQueryVariables = Exact<{
+  input: GrowthInput;
+}>;
+
+
+export type GrowthReportQuery = { __typename?: 'Query', growthReport: Array<{ __typename?: 'GrowthType', label: string, value: number }> };
 
 export type GetActivitiesQueryVariables = Exact<{
   filters?: Maybe<FiltersActivity>;
@@ -1924,6 +1955,42 @@ export function usePingQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type PingQueryQueryHookResult = ReturnType<typeof usePingQueryQuery>;
 export type PingQueryLazyQueryHookResult = ReturnType<typeof usePingQueryLazyQuery>;
 export type PingQueryQueryResult = Apollo.QueryResult<PingQueryQuery, PingQueryQueryVariables>;
+export const GrowthReportDocument = gql`
+    query growthReport($input: GrowthInput!) {
+  growthReport(input: $input) {
+    label
+    value
+  }
+}
+    `;
+
+/**
+ * __useGrowthReportQuery__
+ *
+ * To run a query within a React component, call `useGrowthReportQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGrowthReportQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGrowthReportQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGrowthReportQuery(baseOptions: Apollo.QueryHookOptions<GrowthReportQuery, GrowthReportQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GrowthReportQuery, GrowthReportQueryVariables>(GrowthReportDocument, options);
+      }
+export function useGrowthReportLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GrowthReportQuery, GrowthReportQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GrowthReportQuery, GrowthReportQueryVariables>(GrowthReportDocument, options);
+        }
+export type GrowthReportQueryHookResult = ReturnType<typeof useGrowthReportQuery>;
+export type GrowthReportLazyQueryHookResult = ReturnType<typeof useGrowthReportLazyQuery>;
+export type GrowthReportQueryResult = Apollo.QueryResult<GrowthReportQuery, GrowthReportQueryVariables>;
 export const GetActivitiesDocument = gql`
     query getActivities($filters: FiltersActivity) {
   getActivities(filters: $filters) {
@@ -2497,6 +2564,8 @@ export type ActivityFragmentDetail = (NonNullable<ActivityFragmentFragment['deta
 export type ActivityFragmentSuscription = (NonNullable<ActivityFragmentFragment['suscription']>);
 export type ContractFragmentSuscription = (NonNullable<ContractFragmentFragment['suscription']>);
 export type PingQueryVariables = PingQueryQueryVariables;
+export type GrowthReportVariables = GrowthReportQueryVariables;
+export type GrowthReportGrowthReport = NonNullable<(NonNullable<GrowthReportQuery['growthReport']>)[number]>;
 export type GetActivitiesVariables = GetActivitiesQueryVariables;
 export type GetActivitiesGetActivities = NonNullable<(NonNullable<GetActivitiesQuery['getActivities']>)[number]>;
 export type CreateActivityVariables = CreateActivityMutationVariables;

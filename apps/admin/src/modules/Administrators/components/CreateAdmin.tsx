@@ -110,6 +110,7 @@ const AdminForm: FC<AdminFormProps> = (props) => {
           <option value={Role.STAFF}>Empleado</option>
           <option value={Role.ADMIN}>Admin</option>
         </SelectControl>
+
         {passwordElement}
       </ChackraForm>
     </ModalCrud>

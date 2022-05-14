@@ -14,6 +14,16 @@ export function normalizeEmailAddress(input: string): string {
   return input.trim().toLowerCase();
 }
 
+export const range = (start: number, end: number): number[] => {
+  return new Array(end - start).fill(null).reduce(
+    (prev, _curr) => {
+      const last = prev[prev.length - 1];
+      return [...prev, last + 1];
+    },
+    [start]
+  );
+};
+
 export const pluck = <D extends unknown>(data: SafeAny, path: string): D => {
   return get(data, path) as D;
 };
