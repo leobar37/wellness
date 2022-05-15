@@ -10,7 +10,11 @@ import { Formik, useFormikContext } from 'formik';
 import { InputControl, SelectControl } from 'formik-chakra-ui';
 import { FC, useEffect } from 'react';
 import { useAdministratorController } from '../controllers';
-import { useAdministratorCrud, useChangePasswordModalFromAdmin } from '../data';
+import {
+  useAdministratorCrud,
+  useAdministratorStore,
+  useChangePasswordModalFromAdmin,
+} from '../data';
 import { CreateAdminT } from '../domain/schema';
 
 const modeMapper = {
@@ -41,12 +45,13 @@ const AdminForm: FC<AdminFormProps> = (props) => {
     isSubmitting,
   } = useFormikContext<CreateAdminT>();
   const adminCrudStore = useAdministratorCrud();
+  const adminStore = useAdministratorStore((state) => state.administratorModal);
   const passwordModal = useChangePasswordModalFromAdmin();
   const changesApi = useChangues(values);
 
   useEffect(() => {
-    if (adminCrudStore?.mode === 'edit' && adminCrudStore?.temporal) {
-      const temporal = adminCrudStore.temporal;
+    if (adminStore?.mode === 'edit' && adminStore?.temporal) {
+      const temporal = adminStore.temporal;
       const values = {
         dni: temporal.dni || '',
         email: temporal.email,
@@ -59,7 +64,7 @@ const AdminForm: FC<AdminFormProps> = (props) => {
       changesApi.toCompare(values);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [adminCrudStore.mode, adminCrudStore.temporal]);
+  }, [adminStore]);
 
   const passwordElement =
     adminCrudStore.mode === 'create' ? (
@@ -93,7 +98,7 @@ const AdminForm: FC<AdminFormProps> = (props) => {
         <HStack>
           <Button
             isLoading={isSubmitting}
-            disabled={!isValid || !changesApi.hasChanges}
+            disabled={!isValid || !changesApi.hasChanges || isSubmitting}
             onClick={submitForm}
           >
             {props.textButton}

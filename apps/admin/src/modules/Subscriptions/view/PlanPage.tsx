@@ -12,9 +12,10 @@ import { DeleteIcon, EditIcon } from '@wellness/admin-ui/icons';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { CrudPlanModal, DashBoardPlan } from '../components/plan';
+import { ListContracts, ShowContractModal } from '../components/shared';
 import { useInitPlanController, usePlansController } from '../controller';
 import { usePlanModal } from '../data';
-import { ListContracts, ShowContractModal } from '../components/shared';
+
 export const PlanPage: NextPageWithLayout = () => {
   const { query } = useRouter();
   const { planId } = query as { planId: string };
@@ -26,12 +27,9 @@ export const PlanPage: NextPageWithLayout = () => {
   });
   const { deletePlan } = usePlansController();
 
-  if (isLoading) {
-    return <div>loading ...</div>;
-  }
   return (
     <Layout
-      backText={plan.detail.name}
+      backText={plan?.detail?.name ?? ''}
       actions={
         <>
           <ButtonIcon
@@ -64,9 +62,7 @@ export const PlanPage: NextPageWithLayout = () => {
           <TabWellness>Contratos</TabWellness>
         </TabList>
         <TabPanels>
-          <TabContent>
-            <DashBoardPlan plan={plan} />
-          </TabContent>
+          <TabContent>{!isLoading && <DashBoardPlan plan={plan} />}</TabContent>
           <TabContent>
             <ListContracts />
           </TabContent>

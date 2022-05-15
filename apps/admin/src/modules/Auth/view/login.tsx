@@ -3,6 +3,7 @@ import { ChackraForm, NextPageWithLayout, useAuth } from '@wellness/admin-ui';
 import { Formik, useFormikContext } from 'formik';
 import { InputControl, SubmitButton } from 'formik-chakra-ui';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { Authlayout } from '../components';
 import { LoginInputType } from '../domain';
 const Form = () => {
@@ -32,10 +33,17 @@ const Form = () => {
   );
 };
 export const LoginPage: NextPageWithLayout = () => {
-  const { login, user, isLoggedIn } = useAuth();
+  const { login, currentUser, isLoggedIn } = useAuth();
   const toast = useToast();
   const router = useRouter();
 
+  useEffect(() => {
+    const user = currentUser();
+    if (user) {
+      router.push('/app');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <Formik<LoginInputType>
       initialValues={{
@@ -44,8 +52,6 @@ export const LoginPage: NextPageWithLayout = () => {
       }}
       onSubmit={async (values) => {
         try {
-          console.log(values);
-
           await login(values.email, values.password);
           router.push('/app');
         } catch (error) {

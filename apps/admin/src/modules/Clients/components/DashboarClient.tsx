@@ -1,4 +1,4 @@
-import { Button, HStack, Img, VStack } from '@chakra-ui/react';
+import { Button, HStack, Img, VStack, Skeleton } from '@chakra-ui/react';
 import {
   BadgeDisplay,
   ShowPlanProgress,
@@ -11,10 +11,12 @@ import { useClientsStore } from '../data/client-store';
 export const DashboardClient = () => {
   const { selectClient } = useClientsStore();
   const configFormats = useConfigFormats();
+  if (!selectClient) {
+    return <Skeleton h={'350px'} w="350px" />;
+  }
   return (
-    <HStack width="100%" align="start" justify="space-around" spacing={'120px'}>
+    <HStack width="100%" align="start" justify="start" spacing={'80px'}>
       <VStack spacing={5} align="start">
-        <Button>Ficha actual</Button>
         <BadgeDisplay title={'Última asistencia'} value={'Hace 2 dias'} />
         <BadgeDisplay
           title={'Nacimiento'}

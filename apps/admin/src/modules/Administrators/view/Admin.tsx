@@ -84,9 +84,10 @@ const Form: FC<{ user: TokenUser }> = ({ user }) => {
 };
 
 export const AdminProfile: NextPageWithLayout = () => {
-  const { user } = useAuth();
+  const { currentUser } = useAuth();
   const { editAdminstratorSelf } = useAdministratorController();
   const toast = useWellnessToast();
+  const user = currentUser();
   const { data: userData, loading } = useGetAdministratorQuery({
     skip: !user,
     variables: {

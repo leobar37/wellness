@@ -27,20 +27,21 @@ export const ClientPage: NextPageWithLayout<SafeAny> = () => {
   const { query } = useRouter();
   const confirm = useModalConfirm();
   const { openModal } = useClientCrudModal();
+
   const { client, isLoading } = useInitClientController({
     clientId: query.clientId as string,
   });
   const tab = query.tab;
+
   let defaulIndex = 0;
+
   if (isValid(tab)) {
     defaulIndex = Number(tab);
   }
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+
   return (
     <Layout
-      backText={client.name}
+      backText={client?.name || ''}
       actions={
         <>
           <ButtonIcon
@@ -63,28 +64,30 @@ export const ClientPage: NextPageWithLayout<SafeAny> = () => {
         </>
       }
     >
-      <Tabs defaultIndex={defaulIndex} variant="unstyled">
-        <TabList>
-          <TabWellness>Dashboard</TabWellness>
-          <TabWellness>Asistencias</TabWellness>
-          <TabWellness>Servicios</TabWellness>
-          <TabWellness>fichas</TabWellness>
-        </TabList>
-        <TabPanels overflowY="scroll" maxHeight="500px">
-          <TabContent>
-            <DashboardClient />
-          </TabContent>
-          <TabContent>
-            <AsistenceTab />
-          </TabContent>
-          <TabContent>
-            <ServicesSection />
-          </TabContent>
-          <TabContent>
-            <DashboardFicha />
-          </TabContent>
-        </TabPanels>
-      </Tabs>
+      {!isLoading && (
+        <Tabs defaultIndex={defaulIndex} variant="unstyled">
+          <TabList>
+            <TabWellness>Dashboard</TabWellness>
+            <TabWellness>Asistencias</TabWellness>
+            <TabWellness>Servicios</TabWellness>
+            <TabWellness>fichas</TabWellness>
+          </TabList>
+          <TabPanels overflowY="scroll" maxHeight="500px">
+            <TabContent>
+              <DashboardClient />
+            </TabContent>
+            <TabContent>
+              <AsistenceTab />
+            </TabContent>
+            <TabContent>
+              <ServicesSection />
+            </TabContent>
+            <TabContent>
+              <DashboardFicha />
+            </TabContent>
+          </TabPanels>
+        </Tabs>
+      )}
     </Layout>
   );
 };

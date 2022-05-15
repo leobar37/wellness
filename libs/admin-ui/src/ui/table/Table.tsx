@@ -119,21 +119,30 @@ const _Table: FunctionComponent<TableProps> = ({
       });
     }
   };
+
   useEffect(() => {
     if (onTable) {
       onTable(props as SafeAny as TableInstanceProps);
     }
   }, [onTable, props]);
+
   useEffect(() => {
     calculateOnChangue();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFlatRows.length]);
 
   const loadingElement = isLoading && (
-    <Box w={'full'} display="flex" justifyContent="center">
+    <Box w={'full'} mt={10} display="flex" justifyContent="center">
       <Stack justifyContent="center" alignItems="center">
         <Spinner size="lg" />
         <Text>Cargando...</Text>
+      </Stack>
+    </Box>
+  );
+  const noResults = memoizedData.length === 0 && (
+    <Box w={'full'} mt={10} display="flex" justifyContent="center">
+      <Stack justifyContent="center" alignItems="center">
+        <Text>No se encontraron resultados</Text>
       </Stack>
     </Box>
   );
@@ -183,6 +192,7 @@ const _Table: FunctionComponent<TableProps> = ({
         )}
       </ChacrakTable>
       {isLoading && loadingElement}
+      {!isLoading && noResults}
     </Fragment>
   );
 };

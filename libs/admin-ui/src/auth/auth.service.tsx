@@ -2,7 +2,10 @@ import { createContext } from '@chakra-ui/react-utils';
 import { FC, useEffect } from 'react';
 import { useJwt, isExpired, decodeToken } from 'react-jwt';
 import { useLoginMutation } from '../common';
-import { Administrator } from '../common/generated-types';
+import {
+  Administrator,
+  useGetAdministratorQuery,
+} from '../common/generated-types';
 import { isServer } from '../utils';
 import { useRouter } from 'next/router';
 
@@ -16,7 +19,7 @@ type AuthType = {
   logout: () => Promise<void>;
   isLoggedIn: boolean;
   isLoggedInFn: () => boolean;
-  user: TokenUser;
+  currentUser: () => Administrator | null;
   redirect: (path: string) => void;
 };
 
@@ -56,6 +59,19 @@ export const AuthProvider: FC = ({ children }) => {
   const [loginMutation] = useLoginMutation();
   const tokenManager = useManageToken();
   const router = useRouter();
+
+  const isAuthenticated = () => {
+    const token = tokenManager.get();
+    return !isExpired(token);
+  };
+
+  const { data: userQuery } = useGetAdministratorQuery({
+    variables: {
+      id: (tokenManager.decodedToken as TokenUser)?.id,
+    },
+    skip: !isAuthenticated(),
+  });
+
   const login = async (email: string, password: string) => {
     const result = await loginMutation({
       variables: {
@@ -81,9 +97,11 @@ export const AuthProvider: FC = ({ children }) => {
     router.push(path);
   };
 
-  const isAuthenticated = () => {
-    const token = tokenManager.get();
-    return !isExpired(token);
+  const currentUser = (): Administrator | null => {
+    if (userQuery?.getAdministrator) {
+      return userQuery.getAdministrator as Administrator;
+    }
+    return null;
   };
 
   return (
@@ -91,7 +109,7 @@ export const AuthProvider: FC = ({ children }) => {
       value={{
         login,
         isLoggedIn: tokenManager.isValid,
-        user: tokenManager.decodedToken as TokenUser,
+        currentUser: currentUser,
         logout,
         redirect,
         isLoggedInFn: isAuthenticated,

@@ -16,7 +16,7 @@ import { Exit, User } from '../../icons';
 import { useRouter } from 'next/router';
 
 export const SidebarFooter = () => {
-  const { user, logout, isLoggedIn } = useAuth();
+  const { currentUser, logout, isLoggedIn } = useAuth();
   const router = useRouter();
   const exitOption = () => {
     router.push('/auth/login');
@@ -27,7 +27,9 @@ export const SidebarFooter = () => {
     router.push('/app/admin/profile');
   };
 
-  if (!isLoggedIn) {
+  const user = currentUser();
+
+  if (!isLoggedIn || !user) {
     return null;
   }
 

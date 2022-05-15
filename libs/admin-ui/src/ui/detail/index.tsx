@@ -2,16 +2,14 @@ import { Box, SystemStyleObject, Text } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import { matVa } from '../../utils';
 import { ChildrenOrText, TextOrChild } from '../../components/children';
+import { SafeAny } from '@wellness/common';
 export type DetailProps = {
   /* Title */
   title: TextOrChild;
   value: TextOrChild;
   direction?: 'horizontal' | 'vertical';
 };
-/**
- *
- *
- */
+
 export const DetailInfo = ({
   title,
   value,
@@ -43,19 +41,23 @@ export const DetailInfo = ({
     horizontal: {},
   });
 
+  const isEmpty = (val: SafeAny) => !!val && val.length === 0;
+
   return (
     <Box fontSize="sm" sx={stylesDetail}>
       <Text as="b" fontWeight="bold">
         {title}:
       </Text>
       <ChildrenOrText
-        onText={(text) => (
-          <Text as="p" sx={{ ...stylesSubtitle }}>
-            {text}
-          </Text>
-        )}
+        onText={(text) =>
+          !isEmpty(text) ? (
+            <Text as="p" sx={{ ...stylesSubtitle }}>
+              {text}
+            </Text>
+          ) : null
+        }
       >
-        {value}
+        {isEmpty(value) ? null : value}
       </ChildrenOrText>
     </Box>
   );

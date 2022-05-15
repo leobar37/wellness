@@ -1,16 +1,9 @@
-import {
-  FormControl,
-  Input,
-  HStack,
-  InputGroup,
-  InputLeftElement,
-  Button,
-} from '@chakra-ui/react';
+import { HStack, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { SafeAny } from '@wellness/common';
 import React, { useState } from 'react';
-import { Search } from '../../icons';
 import { useAsyncDebounce } from 'react-table';
-import { useConfig, TableConfig } from '../../config';
+import { TableConfig, useConfig } from '../../config';
+import { Search } from '../../icons';
 import { TableInstanceProps } from './internals';
 
 export type GlobalFilterProps = {
@@ -41,7 +34,6 @@ export const GlobalFilter = ({ table }: GlobalFilterProps) => {
           placeholder={tableConfig.gloabalFilter.placeHolder(count)}
         />
       </InputGroup>
-      <Button>Buscar</Button>
     </HStack>
   );
 };

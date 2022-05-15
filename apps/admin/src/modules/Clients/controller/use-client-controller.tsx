@@ -15,6 +15,7 @@ export const useInitClientController = ({
     variables: {
       id: clientId as string,
     },
+    skip: !isValid(clientId),
   });
   const isLoading = useSomeTruthy(loading, !dataGetClient?.client);
 

@@ -13,7 +13,7 @@ export type TextOrChild = string | ReactNode;
 export type ChildrenOrTextProps = {
   children: TextOrChild;
   /** if children is a text */
-  onText?: (text: string) => JSX.Element;
+  onText?: (text: string) => ReactNode;
   /** if children is a element */
   onElement?: (children: ReactChildren) => JSX.Element;
 };
@@ -32,13 +32,15 @@ export const ChildrenOrText: FC<ChildrenOrTextProps> = ({
   if (!children) {
     return null;
   }
-  return !isReactElemet
-    ? onText
-      ? onText(children as string)
+  return (
+    !isReactElemet
+      ? onText
+        ? onText(children as string)
+        : null
+      : onElement
+      ? onElement(children as SafeAny)
       : null
-    : onElement
-    ? onElement(children as SafeAny)
-    : null;
+  ) as SafeAny;
 };
 
 ChildrenOrText.defaultProps = {

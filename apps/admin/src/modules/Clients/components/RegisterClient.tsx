@@ -1,19 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
+  Button,
   Flex,
   HStack,
   Radio,
   Text,
   useDisclosure,
-  useToast,
   VStack,
-  Button,
 } from '@chakra-ui/react';
 import {
   DatePicker,
   UploadOne,
-  useWellnessToast,
+  useChangues,
   useGetClientsQuery,
+  useWellnessToast,
 } from '@wellness/admin-ui';
 import { Client, Sex } from '@wellness/admin-ui/common';
 import { ModalCrud } from '@wellness/admin-ui/components';
@@ -28,8 +28,19 @@ import {
 import { useEffect } from 'react';
 import { useClientsController } from '../controller';
 import { useClientCrudModal } from '../data';
-import { SaveClientSchena } from '../domain/schemas';
-import { saveClientSchema } from '../domain/schemas';
+import { saveClientSchema, SaveClientSchena } from '../domain/schemas';
+
+const mapper = {
+  edit: {
+    title: (client?: Client) => client && `Editando: ${client.name}`,
+    button: 'Guardar Cambios',
+  },
+  create: {
+    title: (client?: Client) => `Registrar cliente`,
+    button: 'Guardar',
+  },
+};
+
 const ImagePlaceHolder = () => {
   return (
     <VStack spacing={'0'} textAlign="center">
@@ -45,12 +56,29 @@ const ImagePlaceHolder = () => {
 };
 
 const Form = () => {
-  const { handleSubmit, setValues } = useFormikContext<SaveClientSchena>();
-  const { mode, client } = useClientCrudModal();
+  const { handleSubmit, setValues, isValid, values, isSubmitting, submitForm } =
+    useFormikContext<SaveClientSchena>();
+
+  const changesApi = useChangues(values);
+  const {
+    isOpen: isOpenModal,
+    openModal,
+    closeModal,
+    mode,
+    client,
+  } = useClientCrudModal();
+
+  const { isOpen, onClose } = useDisclosure({
+    isOpen: isOpenModal,
+    onClose: () => closeModal(),
+    onOpen: () => openModal(),
+  });
+
+  const properties = mapper[mode];
 
   useEffect(() => {
     if (mode == 'edit' && client) {
-      setValues({
+      const newValues = {
         birth: new Date(client.birth),
         direction: client.direction,
         dni: client.dni,
@@ -60,40 +88,48 @@ const Form = () => {
         lastName: client.lastName,
         phone: client.phone,
         sex: client.sex,
-      });
+      };
+      changesApi.toCompare(newValues);
+      setValues(newValues);
     }
   }, [mode, client]);
 
   return (
-    <ChackraForm submit={handleSubmit}>
-      <Flex justifyContent="center" py="3">
-        <UploadOne placeHolderElment={ImagePlaceHolder} name="imageProfile" />
-      </Flex>
-      <InputControl name="name" label="Nombre" />
-      <InputControl name="lastName" label="Apellido" />
-      <InputControl name="direction" label="Dirección" />
-      <InputControl name="phone" label="Teléfono" />
-      <InputControl name="dni" label="Dni" />
-      <InputControl name="email" label="Email" />
-      <DatePicker name="birth" label="Fecha de nacimiento" />
-      <RadioGroupControl name="sex" label="Sexo">
-        <Radio value={Sex.MEN}>Hombre</Radio>
-        <Radio value={Sex.WOMEN}>Mujer</Radio>
-        <Radio value={Sex.OTHER}>Otro</Radio>
-      </RadioGroupControl>
-    </ChackraForm>
+    <ModalCrud
+      isOpen={isOpen}
+      onClose={onClose}
+      textHeader={properties.title(client)}
+      footer={
+        <HStack>
+          <Button variant="ghost">Cancelar</Button>
+          <SubmitButton
+            disabled={!isValid || isSubmitting || !changesApi.hasChanges}
+            onClick={submitForm}
+          >
+            {properties.button}
+          </SubmitButton>
+        </HStack>
+      }
+    >
+      <ChackraForm submit={handleSubmit}>
+        <Flex justifyContent="center" py="3">
+          <UploadOne placeHolderElment={ImagePlaceHolder} name="imageProfile" />
+        </Flex>
+        <InputControl name="name" label="Nombre" />
+        <InputControl name="lastName" label="Apellido" />
+        <InputControl name="direction" label="Dirección" />
+        <InputControl name="phone" label="Teléfono" />
+        <InputControl name="dni" label="Dni" />
+        <InputControl name="email" label="Email" />
+        <DatePicker name="birth" label="Fecha de nacimiento" />
+        <RadioGroupControl name="sex" label="Sexo">
+          <Radio value={Sex.MEN}>Hombre</Radio>
+          <Radio value={Sex.WOMEN}>Mujer</Radio>
+          <Radio value={Sex.OTHER}>Otro</Radio>
+        </RadioGroupControl>
+      </ChackraForm>
+    </ModalCrud>
   );
-};
-
-const mapper = {
-  edit: {
-    title: (client?: Client) => client && `Editando: ${client.name}`,
-    button: 'Guardar Cambios',
-  },
-  create: {
-    title: (client?: Client) => `Registrar cliente`,
-    button: 'Guardar',
-  },
 };
 
 export const RegisterClientModal = () => {
@@ -106,15 +142,8 @@ export const RegisterClientModal = () => {
     mode,
     client,
   } = useClientCrudModal();
+
   const toast = useWellnessToast();
-
-  const { isOpen, onClose } = useDisclosure({
-    isOpen: isOpenModal,
-    onClose: () => closeModal(),
-    onOpen: () => openModal(),
-  });
-
-  const properties = mapper[mode];
 
   return (
     <Formik<SaveClientSchena>
@@ -140,7 +169,7 @@ export const RegisterClientModal = () => {
             toast({
               title: 'Cliente Actualizado',
             });
-            onClose();
+            closeModal();
             break;
           }
           case 'create': {
@@ -148,7 +177,7 @@ export const RegisterClientModal = () => {
             toast({
               title: 'Cliente Registrado',
             });
-            onClose();
+            closeModal();
             // ref
             refetch();
             break;
@@ -157,26 +186,7 @@ export const RegisterClientModal = () => {
         setSubmitting(false);
       }}
     >
-      {({ submitForm, isValid, isSubmitting }) => (
-        <ModalCrud
-          isOpen={isOpen}
-          onClose={onClose}
-          textHeader={properties.title(client)}
-          footer={
-            <HStack>
-              <Button variant="ghost">Cancelar</Button>
-              <SubmitButton
-                disabled={!isValid || isSubmitting}
-                onClick={submitForm}
-              >
-                {properties.button}
-              </SubmitButton>
-            </HStack>
-          }
-        >
-          <Form />
-        </ModalCrud>
-      )}
+      <Form />
     </Formik>
   );
 };

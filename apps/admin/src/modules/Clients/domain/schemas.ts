@@ -6,12 +6,12 @@ export const saveClientSchema = yup.object({
   name: yup.string().min(10).required(),
   imageProfile: yup.mixed().required(),
   email: yup.string().email().required(),
-  birth: yup.date().nullable(),
+  birth: yup.date().required(),
   phone: yup.string().nullable(),
-  direction: yup.string().nullable(),
+  direction: yup.string().required(),
   dni: yup.string().required(),
   lastName: yup.string().min(10).required(),
-  sex: yup.mixed().oneOf([Sex.MEN, Sex.OTHER, Sex.WOMEN]),
+  sex: yup.mixed().required().oneOf([Sex.MEN, Sex.OTHER, Sex.WOMEN]),
 });
 
 export type SaveClientSchena = Asserts<typeof saveClientSchema>;

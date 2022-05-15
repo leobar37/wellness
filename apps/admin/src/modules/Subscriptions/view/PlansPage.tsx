@@ -22,7 +22,7 @@ import { SafeAny } from '@wellness/common';
 import { EyeIcon } from '@wellness/admin-ui/icons';
 
 export const PlansPage: NextPageWithLayout = () => {
-  const { plans } = useInitPlansController();
+  const { plans, isloading } = useInitPlansController();
   const { openModal } = usePlanModal();
   const [table, setTable] = useState<TableInstanceProps | null>();
   const router = useRouter();
@@ -47,6 +47,7 @@ export const PlansPage: NextPageWithLayout = () => {
         mt={8}
         isSelecteable={false}
         onTable={setTable}
+        isLoading={isloading}
         rowProps={({ original }) => ({
           sx: {
             _hover: {

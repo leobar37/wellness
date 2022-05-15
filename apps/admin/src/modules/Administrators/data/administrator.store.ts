@@ -43,6 +43,8 @@ export const useAdministratorCrud = () => {
   };
 
   const openEditModal = (administrator: Administrator) => {
+    console.log('click here', administrator);
+
     patch(({ administratorModal }) => {
       administratorModal.isOpen = true;
       administratorModal.mode = 'edit';

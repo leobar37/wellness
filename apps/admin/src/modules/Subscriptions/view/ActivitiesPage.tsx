@@ -27,9 +27,6 @@ export const ActivitiesPage: NextPageWithLayout = () => {
   const router = useRouter();
   const [table, setTable] = useState<TableInstanceProps | null>();
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
   const onSelectActivity = (activity: Activity) => {
     router.push(`./activities/${activity.id}`);
   };
@@ -51,6 +48,7 @@ export const ActivitiesPage: NextPageWithLayout = () => {
           data={activities}
           mt={8}
           onTable={setTable}
+          isLoading={isLoading}
           rowProps={({ original }) => ({
             sx: {
               _hover: {

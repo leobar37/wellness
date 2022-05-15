@@ -26,13 +26,9 @@ export const ActivitiePage: NextPageWithLayout = () => {
     activityId: activityId as string,
   });
 
-  if (isLoading) {
-    return null;
-  }
-
   return (
     <Layout
-      backText={activity.detail.name}
+      backText={activity?.detail?.name || ''}
       actions={
         <>
           <ButtonIcon
@@ -65,14 +61,16 @@ export const ActivitiePage: NextPageWithLayout = () => {
           <TabWellness>Dashboard</TabWellness>
           <TabWellness>Contratos</TabWellness>
         </TabList>
-        <TabPanels>
-          <TabContent>
-            <DashBoardActivity activity={activity} />
-          </TabContent>
-          <TabContent>
-            <ListContracts />
-          </TabContent>
-        </TabPanels>
+        {!isLoading && (
+          <TabPanels>
+            <TabContent>
+              <DashBoardActivity activity={activity} />
+            </TabContent>
+            <TabContent>
+              <ListContracts />
+            </TabContent>
+          </TabPanels>
+        )}
       </Tabs>
     </Layout>
   );

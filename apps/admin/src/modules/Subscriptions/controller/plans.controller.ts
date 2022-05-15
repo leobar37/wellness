@@ -11,7 +11,7 @@ import { CreatePlan } from '../domain/schemas';
 import { usePlanModal } from '../data';
 import { useRouter } from 'next/router';
 export const useInitPlansController = () => {
-  const { data: plansData } = useGetPlansQuery({
+  const { data: plansData, loading } = useGetPlansQuery({
     fetchPolicy: 'cache-and-network',
   });
   const [{ plans }, { setPlans }] = usePlansFeature();
@@ -23,6 +23,7 @@ export const useInitPlansController = () => {
   }, [plansData]);
   return {
     plans: plans,
+    isloading: loading,
   };
 };
 

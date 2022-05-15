@@ -39,7 +39,11 @@ export class ClientService {
   }
 
   public async findAll() {
-    return this.repository.find({});
+    return this.repository.find({
+      order: {
+        createdAt: 'ASC',
+      },
+    });
   }
 
   public async findOne(id: ID) {

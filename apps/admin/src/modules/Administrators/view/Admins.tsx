@@ -23,7 +23,6 @@ export const ListAdmins: NextPageWithLayout = () => {
   const { openModal, openEditModal } = useAdministratorCrud();
   const { administrators, isLoading } = useAdministratorInit();
 
-
   return (
     <Layout
       backText="Administradores"
@@ -81,7 +80,7 @@ export const ListAdmins: NextPageWithLayout = () => {
                 >
                   <EditIcon />
                 </ButtonIcon>
-                <ButtonIcon
+                {/* <ButtonIcon
                   bg="red"
                   onClick={() => {
                     openEditModal(original);
@@ -89,6 +88,7 @@ export const ListAdmins: NextPageWithLayout = () => {
                 >
                   <DeleteIcon />
                 </ButtonIcon>
+                 */}
               </HStack>
             );
           }}

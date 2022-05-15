@@ -5,7 +5,8 @@ export type ShowByRolProps = {
   roles?: Role[];
 };
 export const ShowByRol: FC<ShowByRolProps> = ({ roles, children }) => {
-  const { user, isLoggedIn } = useAuth();
+  const { currentUser, isLoggedIn } = useAuth();
+  const user = currentUser();
   if (!user || !isLoggedIn) {
     return null;
   }

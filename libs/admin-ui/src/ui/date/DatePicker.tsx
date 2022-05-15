@@ -1,29 +1,34 @@
-import ReactDatePicker, { registerLocale } from 'react-datepicker';
-import format from 'date-fns/format';
-import es from 'date-fns/locale/es';
-
 import {
-  useState,
-  forwardRef,
-  memo,
-  useCallback,
-  FunctionComponent,
-} from 'react';
-import { SafeAny } from '@wellness/common';
-import { CalendarIcon } from '../../icons';
-
-import {
+  Box,
   FormControl,
   FormLabel,
-  Button,
+  HStack,
   Input,
-  InputLeftElement,
   InputGroup,
-  Box,
-  Text,
+  InputLeftElement,
+  Select,
 } from '@chakra-ui/react';
 import { createContext } from '@chakra-ui/react-utils';
+import { MonthMapper, range, SafeAny } from '@wellness/common';
+import format from 'date-fns/format';
+import getMonth from 'date-fns/getMonth';
+import getYear from 'date-fns/getYear';
+import es from 'date-fns/locale/es';
 import { useField } from 'formik';
+import {
+  FC,
+  forwardRef,
+  FunctionComponent,
+  memo,
+  useCallback,
+  useState,
+} from 'react';
+import ReactDatePicker, {
+  ReactDatePickerCustomHeaderProps,
+  registerLocale,
+} from 'react-datepicker';
+import { ButtonIcon } from '../';
+import { CalendarIcon } from '../../icons';
 
 registerLocale('es', es);
 
@@ -77,6 +82,68 @@ export type DatePickerProps = {
  * - Allow user enter a date in input
  * - Implement custome header : https://reactdatepicker.com/#example-custom-header
  */
+
+const CustomHeader: FC<ReactDatePickerCustomHeaderProps> = ({
+  date,
+  changeYear,
+  changeMonth,
+  decreaseMonth,
+  increaseMonth,
+  prevMonthButtonDisabled,
+  nextMonthButtonDisabled,
+}) => {
+  const years = range(1900, getYear(new Date()) + 1);
+  const months = range(1, 12).map((m) => (MonthMapper as SafeAny)[m]);
+  return (
+    <HStack p={2}>
+      <Select
+        value={getYear(date)}
+        onChange={({ target }) => {
+          changeYear(Number(target.value));
+        }}
+        size={'sm'}
+        maxWidth={'100px'}
+      >
+        {years.map((year) => (
+          <option value={year} key={year}>
+            {year}
+          </option>
+        ))}
+      </Select>
+      <ButtonIcon
+        onClick={decreaseMonth}
+        disabled={prevMonthButtonDisabled}
+        colorScheme={'purple'}
+        size="sm"
+      >
+        {'<'}
+      </ButtonIcon>
+      <Select
+        value={(months as SafeAny)[getMonth(date)]}
+        size={'sm'}
+        maxWidth={'100px'}
+        onChange={({ target }) => {
+          changeMonth(months.indexOf(target.value));
+        }}
+      >
+        {months.map((month) => (
+          <option value={month} key={month}>
+            {month}
+          </option>
+        ))}
+      </Select>
+      <ButtonIcon
+        onClick={increaseMonth}
+        disabled={nextMonthButtonDisabled}
+        colorScheme={'purple'}
+        size="sm"
+      >
+        {'>'}
+      </ButtonIcon>
+    </HStack>
+  );
+};
+
 export const DatePicker: FunctionComponent<DatePickerProps> = ({
   name,
   label,
@@ -102,6 +169,7 @@ export const DatePicker: FunctionComponent<DatePickerProps> = ({
       <FormControl>
         <FormLabel>{label}</FormLabel>
         <ReactDatePicker
+          renderCustomHeader={CustomHeader}
           locale={'es'}
           startDate={starDate ?? new Date()}
           onChange={onChangue}

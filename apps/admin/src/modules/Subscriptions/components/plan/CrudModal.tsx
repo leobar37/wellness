@@ -1,9 +1,8 @@
-import { Button, HStack, Radio, useDisclosure } from '@chakra-ui/react';
-import { callAll } from '@chakra-ui/utils';
-import { ModeSuscription, Plan } from '@wellness/admin-ui';
+import { Button, HStack } from '@chakra-ui/react';
 import { isFunction as isFunc } from '@chakra-ui/utils';
+import { Plan } from '@wellness/admin-ui';
 import { ChackraForm, ModalCrud } from '@wellness/admin-ui/components';
-import { DatePicker } from '@wellness/admin-ui/ui';
+import { useChangues } from '@wellness/admin-ui/hooks';
 import { Formik, useFormikContext } from 'formik';
 import {
   CheckboxSingleControl,
@@ -15,40 +14,7 @@ import {
 import { useEffect } from 'react';
 import { usePlansController } from '../../controller';
 import { usePlanModal } from '../../data';
-import { CreatePlan } from '../../domain/schemas';
-
-const Form = () => {
-  const { handleSubmit, setValues } = useFormikContext<CreatePlan>();
-  const { plan, mode } = usePlanModal();
-  useEffect(() => {
-    if (mode == 'edit' && plan) {
-      setValues({
-        description: plan.detail.description,
-        price: plan.detail.price,
-        duration: plan.suscription.duration,
-        name: plan.detail.name,
-        visible: plan.visible,
-        active: plan.suscription.active,
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plan]);
-
-  return (
-    <ChackraForm submit={handleSubmit}>
-      <InputControl name="name" placeholder="Nombre" label="Nombre:" />
-      <TextareaControl name="description" label="Descripción:" />
-      <CheckboxSingleControl name="visible">Visible</CheckboxSingleControl>
-      <NumberInputControl
-        name="duration"
-        maxWidth="150px"
-        label="Duración(Días):"
-      />
-      <CheckboxSingleControl name="active">Activo</CheckboxSingleControl>
-      <NumberInputControl name="price" maxWidth="90px" label="Precio:" />
-    </ChackraForm>
-  );
-};
+import { CreatePlan, createPlanSchema } from '../../domain/schemas';
 
 const mapper = {
   mode: {
@@ -61,20 +27,79 @@ const mapper = {
   },
 };
 
-export const CrudPlanModal = () => {
-  const { createPlan, editPlan } = usePlansController();
-  const { plan, mode, closeModal, openModal, isOpen: _isOpen } = usePlanModal();
-  const { isOpen, onClose } = useDisclosure({
-    isOpen: _isOpen,
-    onClose: () => closeModal(),
-    onOpen: () => openModal(),
-  });
+const Form = () => {
+  const { handleSubmit, setValues, submitForm, values, isValid, resetForm } =
+    useFormikContext<CreatePlan>();
+  const { plan, mode, closeModal, openModal, isOpen } = usePlanModal();
+  const changesApi = useChangues(values);
 
+  useEffect(() => {
+    if (mode == 'edit' && plan) {
+      const newValues = {
+        description: plan.detail.description,
+        price: plan.detail.price,
+        duration: plan.suscription.duration,
+        name: plan.detail.name,
+        visible: plan.visible,
+        active: plan.suscription.active,
+      };
+
+      setValues(newValues);
+      changesApi.toCompare(newValues);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [plan]);
   const properties = mapper.mode[mode];
 
   const cancelOperation = () => {
-    onClose();
+    closeModal();
+    resetForm();
   };
+
+  const isDisabled = !changesApi.hasChanges || !isValid;
+
+  return (
+    <ModalCrud
+      textHeader={
+        isFunc(properties?.title) ? properties.title(plan) : properties.title
+      }
+      isOpen={isOpen}
+      onClose={cancelOperation}
+      footer={
+        <HStack>
+          <Button variant={'ghost'} onClick={() => cancelOperation()}>
+            Cancelar
+          </Button>
+          <SubmitButton disabled={isDisabled} onClick={submitForm}>
+            Guardar
+          </SubmitButton>
+        </HStack>
+      }
+    >
+      <ChackraForm submit={handleSubmit}>
+        <InputControl name="name" placeholder="Nombre" label="Nombre:" />
+        <TextareaControl name="description" label="Descripción:" />
+        <CheckboxSingleControl name="visible">Visible</CheckboxSingleControl>
+        <NumberInputControl
+          name="duration"
+          maxWidth="180px"
+          label="Duración(Días):"
+        />
+        <CheckboxSingleControl name="active">Activo</CheckboxSingleControl>
+        <NumberInputControl
+          name="price"
+          minWidth={'80px'}
+          maxWidth={'150px'}
+          label="Precio(soles):"
+        />
+      </ChackraForm>
+    </ModalCrud>
+  );
+};
+
+export const CrudPlanModal = () => {
+  const { createPlan, editPlan } = usePlansController();
+  const { mode, openModal, isOpen: _isOpen, closeModal } = usePlanModal();
 
   return (
     <Formik<CreatePlan>
@@ -86,6 +111,7 @@ export const CrudPlanModal = () => {
         visible: true,
         active: true,
       }}
+      validationSchema={createPlanSchema}
       onSubmit={async (values, { resetForm }) => {
         switch (mode) {
           case 'create': {
@@ -98,29 +124,10 @@ export const CrudPlanModal = () => {
             break;
           }
         }
+        closeModal();
       }}
     >
-      {({ submitForm }) => (
-        <ModalCrud
-          textHeader={
-            isFunc(properties?.title)
-              ? properties.title(plan)
-              : properties.title
-          }
-          isOpen={isOpen}
-          onClose={onClose}
-          footer={
-            <HStack>
-              <Button variant={'ghost'} onClick={() => cancelOperation()}>
-                Cancelar
-              </Button>
-              <SubmitButton onClick={submitForm}>Guardar</SubmitButton>
-            </HStack>
-          }
-        >
-          <Form />
-        </ModalCrud>
-      )}
+      <Form />
     </Formik>
   );
 };

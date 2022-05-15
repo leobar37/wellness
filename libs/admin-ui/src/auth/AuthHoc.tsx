@@ -1,13 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { SafeAny } from '@wellness/common';
+import { isNil } from 'lodash';
 import { useRouter } from 'next/router';
-import { ComponentType, useEffect } from 'react';
+import { ComponentType, useEffect, useRef, useState } from 'react';
 import { Role } from '../common';
 import { useAuth } from './auth.service';
-import { warn } from '@chakra-ui/utils';
-import { useState, FC, useRef } from 'react';
-import { useUpdateEffect } from '@chakra-ui/react';
-import { isNil } from 'lodash';
+
 export type AuthHocOptions = {
   roles?: Role[];
   refirect?: string;
@@ -19,14 +17,13 @@ export const WithAuth = <T extends ComponentType>(
   (({ ...props }) => {
     const { roles = [], refirect: redirectPath } = options || {};
     const [allow, setAllow] = useState<null | boolean>(null);
-    const { user, isLoggedIn, redirect, isLoggedInFn } = useAuth();
+    const { currentUser, isLoggedIn, redirect, isLoggedInFn } = useAuth();
     const cacheRef = useRef<Map<string, SafeAny>>(new Map());
     const router = useRouter();
-    useEffect(() => {
-      const isLogged = !!isLoggedIn;
+    const user = currentUser();
 
-      cacheRef.current.set('intendRoute', isLogged);
-      if (isLoggedInFn()) {
+    useEffect(() => {
+      if (isLoggedInFn() && user) {
         const isAllow =
           roles.length === 0 || roles?.some((r) => user.rol === r);
         const route = cacheRef.current.get('intendRoute');

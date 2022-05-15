@@ -1,37 +1,31 @@
-import { ModalCrud } from '@wellness/admin-ui/components';
-import { useDisclosure, HStack, Button, Radio } from '@chakra-ui/react';
-import { ChackraForm } from '@wellness/admin-ui/components';
-import { Formik, useFormikContext } from 'formik';
-import { useActivityModal } from '../../data';
-import {
-  NumberInputControl,
-  InputControl,
-  CheckboxSingleControl,
-  TextareaControl,
-  SubmitButton,
-  RadioGroupControl,
-} from 'formik-chakra-ui';
-import { CreateActivity } from '../../domain/schemas';
-import { useActivityController } from '../../controller/activities.controller';
-import { DatePicker } from '@wellness/admin-ui/ui';
+import { Button, HStack, Radio, useDisclosure } from '@chakra-ui/react';
 import { ModeSuscription } from '@wellness/admin-ui';
-import { useSubscriptionsStore } from '../../data';
+import { ChackraForm, ModalCrud } from '@wellness/admin-ui/components';
+import { DatePicker } from '@wellness/admin-ui/ui';
+import { Formik, useFormikContext } from 'formik';
+import {
+  CheckboxSingleControl,
+  InputControl,
+  NumberInputControl,
+  RadioGroupControl,
+  SubmitButton,
+  TextareaControl,
+} from 'formik-chakra-ui';
 import { useEffect } from 'react';
+import { useActivityController } from '../../controller/activities.controller';
+import { useActivityModal } from '../../data';
+import { CreateActivity, createActivitySchema } from '../../domain/schemas';
+import { useChangues, useWellnessToast } from '@wellness/admin-ui';
 
 const Form = () => {
-  const { handleSubmit, setValues } = useFormikContext<CreateActivity>();
-  const { activity, mode } = useActivityModal();
+  const { handleSubmit, setValues, submitForm, values, isValid, isSubmitting } =
+    useFormikContext<CreateActivity>();
+  const { activity, mode, isOpen, closeModal } = useActivityModal();
+  const changesApi = useChangues(values);
+
   useEffect(() => {
-    console.log('pass here');
-    console.log({
-      mode,
-      activity,
-    });
-
     if (mode == 'edit' && activity) {
-      console.log('pass here');
-
-      setValues({
+      const newValues = {
         description: activity.detail.description,
         price: activity.detail.price,
         duration: activity.suscription.duration,
@@ -39,45 +33,65 @@ const Form = () => {
         startAt: activity.suscription.startAt,
         name: activity.detail.name,
         visible: activity.suscription.active,
-      });
+      };
+      setValues(newValues);
+      changesApi.toCompare(newValues);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activity, mode, setValues]);
 
+  const onCloseModal = () => {
+    closeModal();
+  };
+  const buttonIsDisabled = !changesApi.hasChanges || !isValid || isSubmitting;
   return (
-    <ChackraForm submit={handleSubmit}>
-      <CheckboxSingleControl name="visible">Visible</CheckboxSingleControl>
-      <NumberInputControl
-        name="duration"
-        maxWidth="150px"
-        label="Duración(Días):"
-      />
-      <InputControl name="name" placeholder="Nombre" label="Nombre:" />
-      <NumberInputControl name="price" maxWidth="90px" label="Precio:" />
-      <TextareaControl name="description" label="Descripción:" />
-      <RadioGroupControl name="mode" label="Modo:">
-        <Radio value={ModeSuscription.FIXED}>Fijo</Radio>
-        <Radio value={ModeSuscription.DINAMIC}>Dinámico</Radio>
-      </RadioGroupControl>
-      <DatePicker name="startAt" label="Fecha de inicio" />
-    </ChackraForm>
+    <ModalCrud
+      textHeader={'Crear Actividad'}
+      isOpen={isOpen}
+      onClose={onCloseModal}
+      footer={
+        <HStack>
+          <Button variant={'ghost'} onClick={() => onCloseModal()}>
+            Cancelar
+          </Button>
+          <SubmitButton
+            colorScheme={'brown2'}
+            disabled={buttonIsDisabled}
+            onClick={submitForm}
+          >
+            Guardar
+          </SubmitButton>
+        </HStack>
+      }
+    >
+      <ChackraForm submit={handleSubmit}>
+        <NumberInputControl
+          name="duration"
+          maxWidth="250px"
+          label="Duración(Días):"
+        />
+        <InputControl name="name" placeholder="Nombre" label="Nombre:" />
+        <NumberInputControl
+          name="price"
+          maxWidth="250px"
+          label="Precio(Soles):"
+        />
+        <TextareaControl name="description" label="Descripción:" />
+        <CheckboxSingleControl name="visible">Visible</CheckboxSingleControl>
+        <RadioGroupControl name="mode" label="Modo:">
+          <Radio value={ModeSuscription.FIXED}>Fijo</Radio>
+          <Radio value={ModeSuscription.DINAMIC}>Dinámico</Radio>
+        </RadioGroupControl>
+        <DatePicker name="startAt" label="Fecha de inicio" />
+      </ChackraForm>
+    </ModalCrud>
   );
 };
 
 export const CreateActivityModal = () => {
   const { createActivity, updateActivity } = useActivityController();
-  const { activity, mode, closeModal, openModal } = useActivityModal();
-  const { activitiesCrudModal, toggleActivitiesCrudModal } =
-    useSubscriptionsStore();
-  const { isOpen, onClose } = useDisclosure({
-    isOpen: activitiesCrudModal.isOpen,
-    onClose: () => closeModal(),
-    onOpen: () => openModal(),
-  });
-
-  const cancelOperation = () => {
-    onClose();
-  };
-
+  const { mode, closeModal } = useActivityModal();
+  const toast = useWellnessToast();
   return (
     <Formik<CreateActivity>
       initialValues={{
@@ -89,36 +103,29 @@ export const CreateActivityModal = () => {
         startAt: null,
         visible: true,
       }}
-      onSubmit={async (values) => {
+      validationSchema={createActivitySchema}
+      onSubmit={async (values, { resetForm }) => {
         switch (mode) {
           case 'create': {
             await createActivity(values);
+            toast({
+              title: 'Actividad creada con éxito',
+            });
             break;
           }
           case 'edit': {
             await updateActivity(values);
+            toast({
+              title: 'Actividad editada con éxito',
+            });
             break;
           }
         }
+        resetForm();
+        closeModal();
       }}
     >
-      {({ submitForm }) => (
-        <ModalCrud
-          textHeader={'Crear Actividad'}
-          isOpen={isOpen}
-          onClose={onClose}
-          footer={
-            <HStack>
-              <Button variant={'ghost'} onClick={() => cancelOperation()}>
-                Cancelar
-              </Button>
-              <SubmitButton onClick={submitForm}>Guardar</SubmitButton>
-            </HStack>
-          }
-        >
-          <Form />
-        </ModalCrud>
-      )}
+      <Form />
     </Formik>
   );
 };

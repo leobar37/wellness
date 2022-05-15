@@ -8,7 +8,7 @@ import {
   useToken,
   VStack,
 } from '@chakra-ui/react';
-import { useModalConfirm } from '@wellness/admin-ui';
+import { Time, useModalConfirm } from '@wellness/admin-ui';
 import { Asistence } from '@wellness/admin-ui/common';
 import { DeleteIcon } from '@wellness/admin-ui/icons';
 import { Badgebg, ButtonIcon } from '@wellness/admin-ui/ui';
@@ -16,7 +16,6 @@ import { SafeAny } from '@wellness/common';
 import { useAsistenceController } from '../../controller';
 import { useClientsStore } from '../../data/client-store';
 import { CreateAsistence } from '../asistence/CreateAsistence';
-import { Time } from '@wellness/admin-ui';
 const { toggleClientAsistenceModal } = useClientsStore.getState();
 
 type AsistenceItemProps = {
@@ -66,7 +65,7 @@ export const AsistenceTab = () => {
   const { selectClient } = useClientsStore();
 
   const { createAsistence, deleteAsistence } = useAsistenceController({
-    clientId: selectClient.id,
+    clientId: selectClient?.id,
   });
 
   const { asistences } = useClientsStore();
