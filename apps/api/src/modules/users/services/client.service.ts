@@ -41,7 +41,7 @@ export class ClientService {
   public async findAll() {
     return this.repository.find({
       order: {
-        createdAt: 'ASC',
+        createdAt: 'DESC',
       },
     });
   }
@@ -82,4 +82,5 @@ export class ClientService {
     );
     return client;
   }
+  
 }

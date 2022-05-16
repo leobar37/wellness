@@ -123,7 +123,7 @@ const FichaForm: React.FC<{
     >
       <ChackraForm submit={handleSubmit}>
         <UploadMultiple name="files" />
-        <NumberInputControl name="weight" placeholder="" label="Peso" />
+        <NumberInputControl name="weight" placeholder="" label="Peso(kg):" />
         <TextareaControl name="note" label="Nota" />
       </ChackraForm>
     </ModalCrud>

@@ -85,7 +85,7 @@ export const Layout: FunctionComponent<
         overflowX="hidden"
         width="90%"
         bg="white"
-        height="90%"
+        height="95%"
         borderRadius="10px"
         sx={contentLayoutGrid}
       >

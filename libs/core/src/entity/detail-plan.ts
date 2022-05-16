@@ -4,6 +4,8 @@
  */
 import { Column } from 'typeorm';
 import { ObjectType, Field, Float } from '@nestjs/graphql';
+
+
 @ObjectType()
 export class Detail {
   @Column()

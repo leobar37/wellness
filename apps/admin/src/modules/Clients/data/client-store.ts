@@ -1,4 +1,4 @@
-import { Ficha } from '@wellness/admin-ui/common';
+import { Client, Ficha } from '@wellness/admin-ui/common';
 import { immer } from '@wellness/admin-ui/lib/zuztand';
 import { makeToggle, pipe } from '@wellness/admin-ui/utils';
 import { SafeAny } from '@wellness/common';
@@ -15,9 +15,15 @@ export const useClientsStore = create<IClientStore>((set, get) => {
       selectClient: null,
       mode: 'create',
     },
+    clientReport : null,
     selectDeleteClients: [],
     clients: [],
     selectClient: null,
+    // asistences
+    asistenceModal: {
+      client : null,
+      isOpen : false,
+    },
     // ficha
     modalCrudFicha: false,
     modeModalFicha: 'open',
@@ -80,7 +86,7 @@ export const useClientsStore = create<IClientStore>((set, get) => {
     // Modals
     toggleClientAsistenceModal: makeToggle('createAsistencesModal', set),
     toggleClientModal: makeToggle('clientModal', set),
-
+      
     // Business logic
     setDeleteClients: (value) => {
       set({ selectDeleteClients: value });
@@ -116,3 +122,30 @@ export const useClientCrudModal = () => {
     client: clientModal?.selectClient,
   };
 };
+const selectAsistence =  (store : IClientStore) => store.asistenceModal;
+
+export const useAsistencesModal = () => {
+  const { patch } = useClientsStore.getState();
+  const asistenceState = useClientsStore(selectAsistence);
+  
+  const openModal = (client : Client) => {
+    patch((state) => {
+      state.asistenceModal.isOpen = true;
+      state.asistenceModal.client = client;
+    });
+  }
+ 
+  const closeModal = () => {
+    patch((state) => {
+      state.asistenceModal.isOpen = false;
+      state.asistenceModal.client = null;
+    });
+  }
+
+  return {
+    isOpen: asistenceState.isOpen,
+    openModal,
+    closeModal,
+    client: asistenceState.client,
+  }
+}

@@ -1,5 +1,6 @@
 import { DeleteResult } from 'typeorm';
 import { Observable, Observer } from 'rxjs';
+import { DeepPartial , SafeAny } from "@wellness/common";
 export const parseDeleteResult = (result: DeleteResult) => {
   return result?.affected && result.affected >= 0;
 };
@@ -27,4 +28,15 @@ export function asyncObservable<T>(
       }
     })();
   });
+}
+
+
+export class Buildeable {
+  constructor(input ?: DeepPartial<Buildeable> ){
+    if (input) {
+      for (const [key, value] of Object.entries(input)) {
+        (this as SafeAny)[key] = value;
+      }
+    }
+  }
 }

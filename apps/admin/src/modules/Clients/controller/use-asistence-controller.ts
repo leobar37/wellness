@@ -25,30 +25,29 @@ export const useAsistenceController = ({
   } = useClientsStore();
   const { data: dataAsistences } = useFindAsistencesQuery({
     variables: { cliendId: String(clientId) },
+    skip : !clientId,
+    onCompleted : (data) => {
+      patch({
+        asistences: data.finAsistences as SafeAny,
+      });
+    },
+    fetchPolicy : "cache-and-network"
   });
   const asistences = dataAsistences?.finAsistences;
+
   const createAsistence = async (asistence: CreateAsistenceT) => {
     const data = await mutateAsistence({
       variables: {
         asistence: {
           clientId: String(clientId),
           note: asistence.note,
+          createdAt  : asistence.createdAt,
         },
       },
     });
     addAsistence(data.data.createAsistence as SafeAny);
   };
-
-  // const deleteAsistence = async (asistenceId: Asistence) => {};
-  useEffect(() => {
-    if (asistences) {
-      patch({
-        asistences: asistences as SafeAny,
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataAsistences]);
-
+ 
   const deleteAsistence = async (asistence: Asistence) => {
     const result = await mutateDeleteAsistence({
       variables: {

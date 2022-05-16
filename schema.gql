@@ -192,6 +192,20 @@ type ResponseSignature {
   timestamp: Float!
 }
 
+type PlanProgress {
+  progress: Int!
+  contractLabel: String!
+  price: Int!
+  finishedAt: DateTime!
+  createdAt: DateTime!
+  daysLeft: Int!
+}
+
+type ClientReport {
+  clientId: Int!
+  planProgress: PlanProgress
+}
+
 type GrowthType {
   label: String!
   value: Float!
@@ -223,6 +237,7 @@ type Query {
   getActivities(filters: FiltersActivity): [Activity!]!
   getActivity(id: ID!): Activity!
   getViewContracts(filters: FiContractsView): [ContractView!]!
+  clientReport(clientId: ID!): ClientReport!
   getFicha(userId: Int!): Ficha
   getFichas(userId: Int!): [Ficha!]
   growthReport(input: GrowthInput!): [GrowthType!]!
@@ -339,6 +354,7 @@ input ClientInput {
 }
 
 input InputAsistence {
+  createdAt: DateTime!
   note: String
   clientId: ID!
 }

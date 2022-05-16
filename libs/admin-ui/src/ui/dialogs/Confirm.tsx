@@ -6,7 +6,7 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
-  VStack,
+  VStack
 } from '@chakra-ui/react';
 import React from 'react';
 import { WarningIcon } from '../../icons';
@@ -20,7 +20,7 @@ export const ConfirmModal = () => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered id="confirmModal">
       <ModalOverlay />
-      <ModalContent minW={'550px'} py={'8'} px={'4'}>
+      <ModalContent minW={'350px'} py={'8'} px={'4'}>
         <VStack spacing={'5'}>
           <HStack spacing={'5'}>
             <WarningIcon color={'orange.400'} fontSize={'6xl'} />

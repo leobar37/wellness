@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Asistence } from '@wellness/core/entity';
-import { InputAsistence } from '../dto/asistence.input';
-import { Repository } from 'typeorm';
-import { parseDeleteResult } from '@wellness/core';
 import { EntityNotFoundError } from '@wellness/core/common/error';
+import { Asistence } from '@wellness/core/entity';
+import { Repository } from 'typeorm';
+import { InputAsistence } from '../dto/asistence.input';
 
 @Injectable()
 export class AsitenceService {
@@ -28,6 +27,9 @@ export class AsitenceService {
     const asistences = await this.repository.find({
       where: {
         clientId: idClient,
+      },
+      order: {
+        createdAt: 'ASC',
       },
     });
     return asistences;

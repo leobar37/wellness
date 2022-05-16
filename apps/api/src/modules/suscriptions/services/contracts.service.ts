@@ -29,10 +29,8 @@ export class ContractsViewService {
       }
     }
     const options = removeInvalids(findOptions);
-    console.log('with options', options);
 
     const result = await this.manager.find(ContractView, options);
-    console.log(result);
 
     return result;
   }

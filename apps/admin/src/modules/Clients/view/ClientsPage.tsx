@@ -1,4 +1,4 @@
-import { Button, HStack } from '@chakra-ui/react';
+import { Box, Button, HStack } from '@chakra-ui/react';
 import { ButtonIcon, EyeIcon } from '@wellness/admin-ui';
 import type { Client, NextPageWithLayout } from '@wellness/admin-ui/common';
 import { BaseLayout, Layout } from '@wellness/admin-ui/components';
@@ -15,12 +15,15 @@ import { useState } from 'react';
 import { RegisterClientModal } from '../components';
 import { useInitClientsController } from '../controller';
 import { useClientCrudModal } from '../data';
+import {CalendarIcon} from "@wellness/admin-ui/icons"
+import { CreateAsistence } from "../components/asistence";
+import { useAsistencesModal } from "../data";
 export const Page: NextPageWithLayout<SafeAny> = () => {
   const { clients, isLoading } = useInitClientsController();
   const [table, setTable] = useState<TableInstanceProps | null>();
   const { openModal } = useClientCrudModal();
   const router = useRouter();
-
+    const asistenceModalState = useAsistencesModal();
   const onSelectClient = (client: Client) => {
     router.push(`./clients/${client.id}`);
   };
@@ -77,6 +80,11 @@ export const Page: NextPageWithLayout<SafeAny> = () => {
                 >
                   <EyeIcon />
                 </ButtonIcon>
+                <ButtonIcon onClick={() => {
+                  asistenceModalState.openModal(original);
+                }}>
+                  <CalendarIcon  />
+                </ButtonIcon>
               </HStack>
             );
           }}
@@ -90,6 +98,7 @@ Page.getLayout = (page) => {
   return (
     <BaseLayout>
       {page}
+      <CreateAsistence />
       <RegisterClientModal />
     </BaseLayout>
   );

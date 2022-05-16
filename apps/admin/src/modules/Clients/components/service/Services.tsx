@@ -12,27 +12,29 @@ import {
   Table,
   Time,
   useModalConfirm,
-  useWellnessToast,
+  useWellnessToast
 } from '@wellness/admin-ui';
 import { SafeAny, ServiceType } from '@wellness/common';
 import { useInitSubContracts, useSubContracts } from '../../controller';
 import {
   useClientsStore,
   useContractModal,
-  useShowContractModal,
+  useShowContractModal
 } from '../../data';
-
+import { useConfigFormats } from "@wellness/admin-ui";
+import format from "date-fns/format";
 export const ServicesSection = () => {
   const { openModal } = useContractModal();
   const { openModal: openShowModal } = useShowContractModal();
-  const { selectClient } = useClientsStore();
+
+  const { selectClient ,  clientReport } = useClientsStore();
   const { contracts, isloading, refetchContracts } = useInitSubContracts({
     clientId: selectClient.id,
   });
   const toast = useWellnessToast();
   const { deleteContract } = useSubContracts();
   const confirm = useModalConfirm();
-
+  const configFormats = useConfigFormats();
   const onConfirm = (contract: ContractView) => {
     confirm({
       title: 'Desea eliminar este contrato',
@@ -47,19 +49,23 @@ export const ServicesSection = () => {
     });
   };
 
+  const planProgress  = clientReport?.planProgress;
+
+  console.log(planProgress);
+  
   return (
     <Box width={'750px'}>
       <HStack justify={'space-between'}>
-        <ProgressBadge
-          title="Plan"
-          progress={50}
-          subtitle={'10/50/50'}
+        {planProgress && <ProgressBadge
+          title={planProgress.contractLabel}
+          progress={planProgress.progress}
+          subtitle={`${format(new Date(planProgress.createdAt), configFormats.onlyDate)} - ${planProgress.progress}%`}
           value={
             <Text color={'white'}>
-              <Price>{10}</Price>
+              <Price>{planProgress.price}</Price>
             </Text>
           }
-        />
+        />}
         <ButtonIcon onClick={() => openModal()}>+</ButtonIcon>
       </HStack>
       <Box mt={8}>

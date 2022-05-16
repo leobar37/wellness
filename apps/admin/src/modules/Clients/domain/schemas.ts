@@ -17,6 +17,7 @@ export const saveClientSchema = yup.object({
 export type SaveClientSchena = Asserts<typeof saveClientSchema>;
 
 export const createAsistenceSchema = yup.object({
+  createdAt:  yup.date().required().default(() => new Date()),
   note: yup.string().required('Required'),
 });
 export type CreateAsistenceT = Asserts<typeof createAsistenceSchema>;

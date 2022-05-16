@@ -23,17 +23,20 @@ export const WithAuth = <T extends ComponentType>(
     const user = currentUser();
 
     useEffect(() => {
-      if (isLoggedInFn() && user) {
-        const isAllow =
-          roles.length === 0 || roles?.some((r) => user.rol === r);
-        const route = cacheRef.current.get('intendRoute');
-        setAllow(isAllow);
-        if (!isAllow) {
-          setAllow(false);
-          redirect(redirectPath || '/');
+      if (isLoggedInFn()) {
+        if (user) {
+          const isAllow =
+            roles.length === 0 || roles?.some((r) => user.rol === r);
+          const route = cacheRef.current.get('intendRoute');
+          setAllow(isAllow);
+          if (!isAllow) {
+            setAllow(false);
+            redirect(redirectPath || '/');
+          }
         }
       } else {
         setAllow(false);
+        console.log('user not authenticated');
         redirect(redirectPath || '/');
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps

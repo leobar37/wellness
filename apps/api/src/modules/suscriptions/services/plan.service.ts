@@ -130,7 +130,6 @@ export class PlanService {
         active: filter.active,
       });
     }
-
     return builder.getMany();
   }
 
@@ -143,7 +142,6 @@ export class PlanService {
       .where('contract.clientId = :clientId', {
         clientId: idClient,
       })
-      .printSql()
       .getMany();
     return plans;
   }

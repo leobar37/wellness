@@ -40,6 +40,7 @@ const devDatabaseConfig = {
   entities: [...Object.values(coreEntitiesMap)],
   synchronize: true,
 };
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -59,7 +60,6 @@ const devDatabaseConfig = {
       autoSchemaFile: resolve('./', 'schema.gql'),
       context: ({ req }) => ({ req }),
     } as SafeAny),
-
     EventBusModule,
     LoggerWellnessModule,
     ...BUSINESS_MODULES,

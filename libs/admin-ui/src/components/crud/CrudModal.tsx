@@ -102,7 +102,7 @@ export const ModalCrud: FunctionComponent<ModalCrudProps> = ({
       motionPreset={motionPreset || 'slideInBottom'}
     >
       {overlay && <ModalOverlay />}
-      <ModalContent position="relative" borderRadius="0" minWidth="650px">
+      <ModalContent position="relative" borderRadius="0" minWidth="700px">
         <ModalCloseButton />
         <ModalHeader borderBottom={`5px solid ${gray500}`}>
           <ChildrenOrText

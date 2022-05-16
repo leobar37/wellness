@@ -1,5 +1,5 @@
 import { TabList, TabPanels, Tabs } from '@chakra-ui/react';
-import type { NextPageWithLayout } from '@wellness/admin-ui/common';
+import { NextPageWithLayout, Role } from '@wellness/admin-ui/common';
 import {
   BaseLayout,
   Layout,
@@ -20,7 +20,7 @@ import { RegisterClientModal } from '../components';
 import { useModalConfirm } from '@wellness/admin-ui';
 import { useClientCrudModal } from '../data';
 import { ShowContractModal } from '../components/service';
-
+import { ShowByRol } from '@wellness/admin-ui/auth';
 const mapProperties = {};
 
 export const ClientPage: NextPageWithLayout<SafeAny> = () => {
@@ -44,16 +44,18 @@ export const ClientPage: NextPageWithLayout<SafeAny> = () => {
       backText={client?.name || ''}
       actions={
         <>
-          <ButtonIcon
-            variant="red"
-            onClick={() => {
-              confirm({
-                title: '¿Esta seguro de eliminar este cliente?',
-              });
-            }}
-          >
-            <DeleteIcon />
-          </ButtonIcon>
+          <ShowByRol roles={[Role.ADMIN]}>
+            <ButtonIcon
+              variant="red"
+              onClick={() => {
+                confirm({
+                  title: '¿Esta seguro de eliminar este cliente?',
+                });
+              }}
+            >
+              <DeleteIcon />
+            </ButtonIcon>
+          </ShowByRol>
           <ButtonIcon
             onClick={() => openModal(true)}
             bg="brown.300"

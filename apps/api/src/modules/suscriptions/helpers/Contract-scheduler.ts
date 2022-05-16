@@ -14,6 +14,7 @@ export class SuscriptionsScheduler {
     @InjectEntityManager() private manager: EntityManager,
     private logger: WelnessLogger
   ) {}
+  
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async verifyContracts() {
     this.logger.info(

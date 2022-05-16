@@ -4,7 +4,9 @@ import {
   Ficha,
   ModeAction,
   ContractView,
+  ClientReport
 } from '@wellness/admin-ui';
+
 import { SetState } from 'zustand';
 
 export interface IClientStore {
@@ -14,10 +16,16 @@ export interface IClientStore {
     selectClient: Client | null;
     mode: ModeAction;
   };
+  clientReport: ClientReport | null;
+
   selectDeleteClients: Client[];
 
   selectClient: Client | null;
-
+   // asistence 
+  asistenceModal : {
+    isOpen : boolean,
+    client : Client | null,  
+  }
   //  ficha
   modalCrudFicha: boolean;
   toggleModalFicha(value: boolean): void;

@@ -1,4 +1,4 @@
-import { chakra } from '@chakra-ui/react';
 import { AiFillCalendar } from 'react-icons/ai';
-export const CalendarIcon = chakra(AiFillCalendar);
+import { Wrapper } from './Wrapper';
 
+export const CalendarIcon = Wrapper(AiFillCalendar);

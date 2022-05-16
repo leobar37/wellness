@@ -69,7 +69,7 @@ const Graphic: FC<GraphicProps> = ({ results }) => {
             },
             title: {
               display: true,
-              text: 'Charts js Line Chart',
+              text: 'Gráfico de crecimiento',
             },
           },
         }}

@@ -1,65 +1,85 @@
 import { Button, HStack, useDisclosure } from '@chakra-ui/react';
 import { ChackraForm, ModalCrud } from '@wellness/admin-ui/components';
-import { Formik } from 'formik';
+import { DatePicker,useWellnessToast } from '@wellness/admin-ui/ui';
+import { Formik, useFormikContext } from 'formik';
 import { SubmitButton, TextareaControl } from 'formik-chakra-ui';
 import * as React from 'react';
-import {} from '../../controller';
-import { useClientsStore } from '../../data/client-store';
-import { CreateAsistenceT } from '../../domain/schemas';
 import { useAsistenceController } from '../../controller/use-asistence-controller';
+import { useAsistencesModal } from '../../data/client-store';
+import { CreateAsistenceT } from '../../domain/schemas';
 // eslint-disable-next-line @typescript-eslint/ban-types
 type CreateAsistenceProps = {};
 
-const { toggleClientAsistenceModal } = useClientsStore.getState();
+const Form = () => {
 
+  const asistenceModalStore = useAsistencesModal();
+  const { submitForm, handleSubmit, isValid, isSubmitting } =
+    useFormikContext<CreateAsistenceT>();
+  const { isOpen, onClose } = useDisclosure({
+    isOpen: asistenceModalStore.isOpen,
+    onClose: asistenceModalStore.closeModal,
+  });
+
+  const disabledButton = !isValid || isSubmitting;
+  return (
+    <ModalCrud
+      isOpen={isOpen}
+      onClose={onClose}
+      textHeader="Registrar asistencia"
+      footer={
+        <HStack>
+          <Button variant="ghost" onClick={() => onClose()}>
+            Cancelar
+          </Button>
+          <SubmitButton
+            disabled={disabledButton}
+            type="submit"
+            onClick={submitForm}
+          >
+            Guardar
+          </SubmitButton>
+        </HStack>
+      }
+    >
+      <ChackraForm sx={{
+        minHeight : "350px"
+      }} submit={handleSubmit}>
+        <DatePicker name="createdAt" label="Fecha" />
+        <TextareaControl label="Nota" name="note" />
+      </ChackraForm>
+    </ModalCrud>
+  );
+};
 export const CreateAsistence: React.FunctionComponent<CreateAsistenceProps> =
   () => {
-    const { createAsistencesModal, selectClient } = useClientsStore();
-
+    const asistenceModalStore = useAsistencesModal();
+    const toast = useWellnessToast();
     const { createAsistence } = useAsistenceController({
-      clientId: selectClient.id,
+      clientId: asistenceModalStore?.client?.id,
     });
 
-    const { isOpen, onClose } = useDisclosure({
-      isOpen: createAsistencesModal,
-      onClose: toggleClientAsistenceModal,
-      onOpen: toggleClientAsistenceModal,
+    const {  onClose } = useDisclosure({
+      isOpen: asistenceModalStore.isOpen,
+      onClose: asistenceModalStore.closeModal,
     });
 
     return (
       <Formik<CreateAsistenceT>
         initialValues={{
           note: '',
+          createdAt: new Date(),
         }}
         onSubmit={async (values, { resetForm }) => {
           await createAsistence(values);
           resetForm();
           onClose();
+          toast({
+            title : "Asistencia registrada",
+            status : "success"
+          })
         }}
       >
-        {({ handleSubmit, submitForm }) => {
-          return (
-            <ModalCrud
-              isOpen={isOpen}
-              onClose={onClose}
-              textHeader="Registrar asistencia"
-              footer={
-                <HStack>
-                  <Button variant="ghost" onClick={() => onClose()}>
-                    Cancelar
-                  </Button>
-                  <SubmitButton type="submit" onClick={submitForm}>
-                    Guardar
-                  </SubmitButton>
-                </HStack>
-              }
-            >
-              <ChackraForm submit={handleSubmit}>
-                <TextareaControl label="Nota" name="note" />
-              </ChackraForm>
-            </ModalCrud>
-          );
-        }}
+        <Form />
       </Formik>
     );
   };

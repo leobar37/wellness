@@ -1,6 +1,5 @@
 import { gql } from '@apollo/client';
 import { ClientFragment } from './fragments/client.graphql';
-
 export const registerClient = gql`
   ${ClientFragment}
   mutation registerClient($client: ClientInput!) {
@@ -35,3 +34,20 @@ export const updateClient = gql`
     }
   }
 `;
+
+
+export const getReporClientById= gql`
+query clientReport($clientId: ID!){ 
+   clientReport(clientId : $clientId){
+     planProgress {
+      progress
+      contractLabel
+      price
+      finishedAt
+      createdAt
+      daysLeft
+    } 
+   }
+}
+
+`

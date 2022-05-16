@@ -38,7 +38,6 @@ const FichaPreview = ({ ficha }: { ficha: Ficha }) => {
   };
 
   const detail = ficha.details.find((detail) => detail.open);
-  console.log(detail);
 
   const renderAssets = () => {
     const assets = detail.asset.assets;
@@ -84,7 +83,7 @@ const FichaPreview = ({ ficha }: { ficha: Ficha }) => {
           Editar ficha
         </Link>
         <Box height="16px" width="3px" bg="gray.400" />
-        <Link sx={linkStyles}>Eliminar ficha</Link>
+        <Link sx={linkStyles} >Eliminar ficha</Link>
       </HStack>
 
       <Box width={'250px'}>

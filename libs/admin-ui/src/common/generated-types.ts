@@ -143,6 +143,12 @@ export type ClientInput = {
   sex: Sex;
 };
 
+export type ClientReport = {
+  __typename?: 'ClientReport';
+  clientId: Scalars['Int'];
+  planProgress?: Maybe<PlanProgress>;
+};
+
 export type Contract = {
   __typename?: 'Contract';
   createdAt: Scalars['DateTime'];
@@ -273,6 +279,7 @@ export type GrowthType = {
 
 export type InputAsistence = {
   clientId: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
   note?: InputMaybe<Scalars['String']>;
 };
 
@@ -496,10 +503,21 @@ export type PlanInput = {
   visible: Scalars['Boolean'];
 };
 
+export type PlanProgress = {
+  __typename?: 'PlanProgress';
+  contractLabel: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  daysLeft: Scalars['Int'];
+  finishedAt: Scalars['DateTime'];
+  price: Scalars['Int'];
+  progress: Scalars['Int'];
+};
+
 export type Query = {
   __typename?: 'Query';
   alertsReport: Array<AlertResult>;
   client: Client;
+  clientReport: ClientReport;
   clients: Array<Client>;
   finAsistences: Array<Asistence>;
   getActivities: Array<Activity>;
@@ -523,6 +541,11 @@ export type QueryAlertsReportArgs = {
 
 export type QueryClientArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryClientReportArgs = {
+  clientId: Scalars['ID'];
 };
 
 
@@ -779,6 +802,13 @@ export type UpdateClientMutationVariables = Exact<{
 
 
 export type UpdateClientMutation = { __typename?: 'Mutation', updateCLient: { __typename?: 'Client', id: string, code: string, dni: string, createdAt: SafeAny, email: string, name: string, lastName: string, birth?: SafeAny | null | undefined, phone?: string | null | undefined, direction?: string | null | undefined, sex: Sex, mode: ModeRegiser, photo?: { __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined } };
+
+export type ClientReportQueryVariables = Exact<{
+  clientId: Scalars['ID'];
+}>;
+
+
+export type ClientReportQuery = { __typename?: 'Query', clientReport: { __typename?: 'ClientReport', planProgress?: { __typename?: 'PlanProgress', progress: number, contractLabel: string, price: number, finishedAt: SafeAny, createdAt: SafeAny, daysLeft: number } | null | undefined } };
 
 export type OpenAndCloseMutationVariables = Exact<{
   input: FichaInput;
@@ -1758,6 +1788,48 @@ export function useUpdateClientMutation(baseOptions?: Apollo.MutationHookOptions
 export type UpdateClientMutationHookResult = ReturnType<typeof useUpdateClientMutation>;
 export type UpdateClientMutationResult = Apollo.MutationResult<UpdateClientMutation>;
 export type UpdateClientMutationOptions = Apollo.BaseMutationOptions<UpdateClientMutation, UpdateClientMutationVariables>;
+export const ClientReportDocument = gql`
+    query clientReport($clientId: ID!) {
+  clientReport(clientId: $clientId) {
+    planProgress {
+      progress
+      contractLabel
+      price
+      finishedAt
+      createdAt
+      daysLeft
+    }
+  }
+}
+    `;
+
+/**
+ * __useClientReportQuery__
+ *
+ * To run a query within a React component, call `useClientReportQuery` and pass it any options that fit your needs.
+ * When your component renders, `useClientReportQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useClientReportQuery({
+ *   variables: {
+ *      clientId: // value for 'clientId'
+ *   },
+ * });
+ */
+export function useClientReportQuery(baseOptions: Apollo.QueryHookOptions<ClientReportQuery, ClientReportQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ClientReportQuery, ClientReportQueryVariables>(ClientReportDocument, options);
+      }
+export function useClientReportLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ClientReportQuery, ClientReportQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ClientReportQuery, ClientReportQueryVariables>(ClientReportDocument, options);
+        }
+export type ClientReportQueryHookResult = ReturnType<typeof useClientReportQuery>;
+export type ClientReportLazyQueryHookResult = ReturnType<typeof useClientReportLazyQuery>;
+export type ClientReportQueryResult = Apollo.QueryResult<ClientReportQuery, ClientReportQueryVariables>;
 export const OpenAndCloseDocument = gql`
     mutation openAndClose($input: FichaInput!) {
   openAndCloseFicha(input: $input) {
@@ -2620,6 +2692,9 @@ export type GetClientVariables = GetClientQueryVariables;
 export type GetClientClient = (NonNullable<GetClientQuery['client']>);
 export type UpdateClientVariables = UpdateClientMutationVariables;
 export type UpdateClientUpdateCLient = (NonNullable<UpdateClientMutation['updateCLient']>);
+export type ClientReportVariables = ClientReportQueryVariables;
+export type ClientReportClientReport = (NonNullable<ClientReportQuery['clientReport']>);
+export type ClientReportPlanProgress = (NonNullable<(NonNullable<ClientReportQuery['clientReport']>)['planProgress']>);
 export type OpenAndCloseVariables = OpenAndCloseMutationVariables;
 export type OpenAndCloseOpenAndCloseFicha = (NonNullable<OpenAndCloseMutation['openAndCloseFicha']>);
 export type GetFichaVariables = GetFichaQueryVariables;

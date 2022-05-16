@@ -25,21 +25,8 @@ export class DashboardService {
   }
 
   async alertsReport(input : AlertInput)  : Promise<AlertResult[]> {  
-      //  byrthday 
       return  this.alertsHelper.alertsReport(input.typeData);
-    
-     /**
-      * Input: {
-      *   typeData : "birthday" | "plans_to_overcome",
-      * }
-      * Output: {
-      *   typeData: "birthday" | "plans_to_overcome",
-      *   label :"",
-      *   sublabel: "",
-      *   date : Date,
-      *   dateLabel : ""
-      * }
-      */
   }
+  
 
 }

@@ -1,0 +1,28 @@
+{
+  "root": "apps/admin-ui-e2e",
+  "sourceRoot": "apps/admin-ui-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/admin-ui-e2e/cypress.json",
+        "devServerTarget": "admin-ui:storybook"
+      },
+      "configurations": {
+        "ci": {
+          "devServerTarget": "admin-ui:storybook:ci"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/admin-ui-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["admin-ui"]
+}
