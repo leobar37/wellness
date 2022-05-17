@@ -7,7 +7,8 @@ import { isValid, SafeAny, ServiceType } from '@wellness/common';
 import { ContractEditInput } from '../dto/contract.input';
 import { Contract, EntityNotFoundError } from '@wellness/core';
 import { removeInvalids } from '@wellness/common';
-Injectable();
+
+@Injectable();
 export class ContractsViewService {
   constructor(@InjectEntityManager() private manager: EntityManager) {}
   async getContractView(filters: FiContractsView) {
