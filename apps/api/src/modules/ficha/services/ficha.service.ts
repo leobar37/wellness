@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
-import { DetailFicha, Ficha, Client } from '@wellness/core';
+import { Client, DetailFicha, Ficha } from '@wellness/core';
 import { EntityNotFoundError } from '@wellness/core/common/error';
-import { isNull, isUndefined } from 'lodash';
 import { EntityManager } from 'typeorm';
 import { FichaInput } from '../dto/ficha.input';
 @Injectable()
@@ -117,7 +116,14 @@ export class FichaService {
     if (!ficha) {
       throw new EntityNotFoundError('Ficha', fichaId);
     }
-    await this.manager.delete(Ficha, fichaId);
+    await this.manager.transaction(async (manager) => {
+      await manager
+        .createQueryBuilder(DetailFicha, 'ficha')
+        .where('fichaId = :fichaId', { fichaId })
+        .delete()
+        .execute();
+      await manager.delete(Ficha, fichaId);
+    });
     return ficha;
   }
 }

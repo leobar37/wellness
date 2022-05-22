@@ -1,16 +1,21 @@
-import { EntityManager, FindConditions, FindManyOptions } from 'typeorm';
-import { InjectEntityManager } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
-import { ContractView } from '../view';
-import { FiContractsView } from '../dto/filters.input';
-import { isValid, SafeAny, ServiceType } from '@wellness/common';
-import { ContractEditInput } from '../dto/contract.input';
+import { InjectEntityManager } from '@nestjs/typeorm';
+import {
+  isValid,
+  removeInvalids,
+  SafeAny,
+  ServiceType,
+} from '@wellness/common';
 import { Contract, EntityNotFoundError } from '@wellness/core';
-import { removeInvalids } from '@wellness/common';
+import { EntityManager, FindConditions, FindManyOptions } from 'typeorm';
+import { ContractEditInput } from '../dto/contract.input';
+import { FiContractsView } from '../dto/filters.input';
+import { ContractView } from '../view';
 
-@Injectable();
+@Injectable()
 export class ContractsViewService {
   constructor(@InjectEntityManager() private manager: EntityManager) {}
+
   async getContractView(filters: FiContractsView) {
     const findOptions = {} as FindManyOptions;
     if (isValid(filters?.clientId)) {
@@ -35,8 +40,6 @@ export class ContractsViewService {
 
     return result;
   }
-  // delete a contract
-
   // update a contract
   async editContract(input: ContractEditInput) {
     const contract = await this.manager.findOne(Contract, input.contractId);

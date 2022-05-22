@@ -143,6 +143,11 @@ export const useFichaController = () => {
         fichaId: fichaId,
       },
     });
+    console.log(resp);
+
+    patch({
+      selectedFicha: null,
+    });
     return resp.data.deleteFicha as Ficha;
   };
 

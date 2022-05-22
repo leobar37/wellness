@@ -16,6 +16,7 @@ import { SafeAny } from '@wellness/common';
 import { useAsistenceController } from '../../controller';
 import { useAsistencesModal, useClientsStore } from '../../data/client-store';
 import { CreateAsistence } from '../asistence/CreateAsistence';
+
 const { toggleClientAsistenceModal } = useClientsStore.getState();
 
 type AsistenceItemProps = {
@@ -42,7 +43,9 @@ const AsistenceItem = ({ asistence, onDelete }: AsistenceItemProps) => {
         <Text fontSize="sm" color="blackAlpha.600">
           <Time>{asistence.createdAt}</Time>
         </Text>
-        <Text>{asistence.note.length === 0 ? "Sin descripción" : asistence.note }</Text>
+        <Text>
+          {asistence.note.length === 0 ? 'Sin descripción' : asistence.note}
+        </Text>
       </VStack>
       <ButtonIcon
         variant="red"
@@ -85,8 +88,15 @@ export const AsistenceTab = () => {
           Nuevo
         </Button>
       </HStack>
-      <Flex width="100%" justify="center" mt={'35px'}>
-        <List spacing={5} width="750px">
+      <Flex width="100%" justify="start" mt={'35px'}>
+        <List
+          maxHeight={'500px'}
+          overflowY="scroll"
+          py="5"
+          my="5"
+          spacing={5}
+          width="650px"
+        >
           {asistences.map((asistence, index) => (
             <AsistenceItem
               onDelete={deleteAsistence}

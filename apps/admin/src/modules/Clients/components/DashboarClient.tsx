@@ -8,11 +8,13 @@ import format from 'date-fns/format';
 import { get } from 'lodash';
 import { useClientsStore } from '../data/client-store';
 import formatDistance from 'date-fns/formatDistance';
-import es from "date-fns/locale/es";
+import es from 'date-fns/locale/es';
+
 export const DashboardClient = () => {
   const { selectClient, clientReport } = useClientsStore();
   const configFormats = useConfigFormats();
   const { asistences } = useClientsStore();
+
   if (!selectClient) {
     return <Skeleton h={'350px'} w="350px" />;
   }
@@ -25,7 +27,11 @@ export const DashboardClient = () => {
         {lastAsistence && (
           <BadgeDisplay
             title={'Última asistencia'}
-            value={`Hace ${formatDistance(new Date(lastAsistence.createdAt), new Date() ,{ locale : es})}`}
+            value={`Hace ${formatDistance(
+              new Date(lastAsistence.createdAt),
+              new Date(),
+              { locale: es }
+            )}`}
           />
         )}
         <BadgeDisplay

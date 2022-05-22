@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { TabContent } from '@wellness/admin-ui';
 import { Ficha } from '@wellness/admin-ui/common';
+import { useConfigFormats } from '@wellness/admin-ui/config';
 import { DetailInfo } from '@wellness/admin-ui/ui';
 import { ColTable, prepareCellProps, Table } from '@wellness/admin-ui/ui/table';
 import { SafeAny } from '@wellness/common';
@@ -26,7 +27,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { useClientsStore } from '../../data/client-store';
 import { CreateFicha } from './CreateFicha';
 import { ViewFichaModal } from './ViewFicha';
-import { useConfigFormats } from '@wellness/admin-ui/config';
+import { useFichaController } from '../../controller';
+import { useModalConfirm } from '@wellness/admin-ui';
 SwiperCore.use([Autoplay]);
 
 const { patch, selectFicha } = useClientsStore.getState();
@@ -37,10 +39,14 @@ const FichaPreview = ({ ficha }: { ficha: Ficha }) => {
     fontSize: 'sm',
   };
 
+  const { deleteFicha } = useFichaController();
   const detail = ficha.details.find((detail) => detail.open);
-
+  const confirm = useModalConfirm();
+  if (!ficha) {
+    return null;
+  }
   const renderAssets = () => {
-    const assets = detail.asset.assets;
+    const assets = detail?.asset.assets;
     if (!assets) return [];
     return assets.map((asset) => (
       <SwiperSlide key={asset.id}>
@@ -83,7 +89,18 @@ const FichaPreview = ({ ficha }: { ficha: Ficha }) => {
           Editar ficha
         </Link>
         <Box height="16px" width="3px" bg="gray.400" />
-        <Link sx={linkStyles} >Eliminar ficha</Link>
+        <Link
+          onClick={() => {
+            confirm({
+              onConfirm: () => {
+                deleteFicha(Number(ficha.id));
+              },
+            });
+          }}
+          sx={linkStyles}
+        >
+          Eliminar ficha
+        </Link>
       </HStack>
 
       <Box width={'250px'}>
@@ -105,6 +122,7 @@ const FichaPreview = ({ ficha }: { ficha: Ficha }) => {
     </VStack>
   );
 };
+
 const NonFichaPreview = () => {
   return (
     <Center flexDirection="column" m="10" width="100%">
@@ -194,32 +212,31 @@ const ListFichas = React.memo(_ListFichas);
 // eslint-disable-next-line @typescript-eslint/ban-types
 type DashboardFichaProps = {};
 
-export const DashboardFicha: React.FunctionComponent<DashboardFichaProps> =
-  () => {
-    const { ficha, fichas } = useClientsStore();
-    return (
-      <>
-        <Box display="flex" justifyContent="space-between">
-          <Tabs maxW="800px">
-            <TabList>
-              <Tab>Ficha</Tab>
-              <Tab>Listado de fichas</Tab>
-            </TabList>
-            <TabPanels>
-              <TabContent>
-                {ficha !== null ? (
-                  <FichaPreview ficha={ficha} />
-                ) : (
-                  <NonFichaPreview />
-                )}
-              </TabContent>
-              <TabContent>
-                <ListFichas />
-              </TabContent>
-            </TabPanels>
-          </Tabs>
-        </Box>
-        <CreateFicha mode="open" />
-      </>
-    );
-  };
+export const DashboardFicha: React.FC<DashboardFichaProps> = () => {
+  const { ficha, fichas } = useClientsStore();
+  return (
+    <>
+      <Box display="flex" justifyContent="space-between">
+        <Tabs maxW="800px">
+          <TabList>
+            <Tab>Ficha</Tab>
+            <Tab>Listado de fichas</Tab>
+          </TabList>
+          <TabPanels>
+            <TabContent>
+              {ficha !== null ? (
+                <FichaPreview ficha={ficha} />
+              ) : (
+                <NonFichaPreview />
+              )}
+            </TabContent>
+            <TabContent>
+              <ListFichas />
+            </TabContent>
+          </TabPanels>
+        </Tabs>
+      </Box>
+      <CreateFicha mode="open" />
+    </>
+  );
+};

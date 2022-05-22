@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 import { setLocale } from 'yup';
 
 export const applyYupLocale = () => {
@@ -5,8 +6,15 @@ export const applyYupLocale = () => {
     mixed: {
       required: 'Este campo es requerido',
     },
+    string: {
+      email: 'Ingrese un email valido',
+      length: 'Este campo debe tener ${length} caracteres',
+      min: 'Este campo debe tener al menos ${min} caracteres',
+      max: 'Este campo debe tener como maximo ${max} caracteres',
+    },
     number: {
-      min: ({ min }) => `El valor debe ser mayor o igual a ${min}`,
+      min: 'Este campo debe tener como minimo ${min}',
+      max: 'Este campo debe tener como maximo ${max}',
     },
   });
 };

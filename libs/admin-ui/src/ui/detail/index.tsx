@@ -1,8 +1,8 @@
 import { Box, SystemStyleObject, Text } from '@chakra-ui/react';
-import { ReactNode } from 'react';
-import { matVa } from '../../utils';
+import { SafeAny, isValid } from '@wellness/common';
+
 import { ChildrenOrText, TextOrChild } from '../../components/children';
-import { SafeAny } from '@wellness/common';
+import { matVa } from '../../utils';
 export type DetailProps = {
   /* Title */
   title: TextOrChild;
@@ -41,13 +41,16 @@ export const DetailInfo = ({
     horizontal: {},
   });
 
-  const isEmpty = (val: SafeAny) => !!val && val.length === 0;
+  const isEmpty = (val: SafeAny) =>
+    !isValid(val) || (isValid(val) && val.length === 0);
 
   return (
     <Box fontSize="sm" sx={stylesDetail}>
-      <Text as="b" fontWeight="bold">
-        {title}:
-      </Text>
+      {!isEmpty(value) && (
+        <Text as="b" fontWeight="bold">
+          {title}:
+        </Text>
+      )}
       <ChildrenOrText
         onText={(text) =>
           !isEmpty(text) ? (

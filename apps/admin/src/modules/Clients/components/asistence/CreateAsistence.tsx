@@ -1,17 +1,18 @@
 import { Button, HStack, useDisclosure } from '@chakra-ui/react';
 import { ChackraForm, ModalCrud } from '@wellness/admin-ui/components';
-import { DatePicker,useWellnessToast } from '@wellness/admin-ui/ui';
+import { DatePicker, useWellnessToast } from '@wellness/admin-ui/ui';
 import { Formik, useFormikContext } from 'formik';
 import { SubmitButton, TextareaControl } from 'formik-chakra-ui';
 import * as React from 'react';
 import { useAsistenceController } from '../../controller/use-asistence-controller';
 import { useAsistencesModal } from '../../data/client-store';
-import { CreateAsistenceT } from '../../domain/schemas';
+import { FormikErrors } from 'formik';
+import { CreateAsistenceT, createAsistenceSchema } from '../../domain/schemas';
+
 // eslint-disable-next-line @typescript-eslint/ban-types
 type CreateAsistenceProps = {};
 
 const Form = () => {
-
   const asistenceModalStore = useAsistencesModal();
   const { submitForm, handleSubmit, isValid, isSubmitting } =
     useFormikContext<CreateAsistenceT>();
@@ -21,6 +22,7 @@ const Form = () => {
   });
 
   const disabledButton = !isValid || isSubmitting;
+
   return (
     <ModalCrud
       isOpen={isOpen}
@@ -41,9 +43,12 @@ const Form = () => {
         </HStack>
       }
     >
-      <ChackraForm sx={{
-        minHeight : "350px"
-      }} submit={handleSubmit}>
+      <ChackraForm
+        sx={{
+          minHeight: '350px',
+        }}
+        submit={handleSubmit}
+      >
         <DatePicker name="createdAt" label="Fecha" />
         <TextareaControl label="Nota" name="note" />
       </ChackraForm>
@@ -58,7 +63,7 @@ export const CreateAsistence: React.FunctionComponent<CreateAsistenceProps> =
       clientId: asistenceModalStore?.client?.id,
     });
 
-    const {  onClose } = useDisclosure({
+    const { onClose } = useDisclosure({
       isOpen: asistenceModalStore.isOpen,
       onClose: asistenceModalStore.closeModal,
     });
@@ -69,14 +74,24 @@ export const CreateAsistence: React.FunctionComponent<CreateAsistenceProps> =
           note: '',
           createdAt: new Date(),
         }}
+        validate={(values) => {
+          const errors: FormikErrors<CreateAsistenceT> = {};
+          const now = new Date();
+          if (values.createdAt > now) {
+            errors.createdAt =
+              'La fecha debe ser menor o igual a la fecha actual';
+          }
+          return errors;
+        }}
+        validationSchema={createAsistenceSchema}
         onSubmit={async (values, { resetForm }) => {
           await createAsistence(values);
           resetForm();
           onClose();
           toast({
-            title : "Asistencia registrada",
-            status : "success"
-          })
+            title: 'Asistencia registrada',
+            status: 'success',
+          });
         }}
       >
         <Form />

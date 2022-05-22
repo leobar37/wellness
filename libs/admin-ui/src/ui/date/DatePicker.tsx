@@ -7,6 +7,7 @@ import {
   InputGroup,
   InputLeftElement,
   Select,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 import { createContext } from '@chakra-ui/react-utils';
 import { MonthMapper, range, SafeAny } from '@wellness/common';
@@ -15,6 +16,7 @@ import getMonth from 'date-fns/getMonth';
 import getYear from 'date-fns/getYear';
 import es from 'date-fns/locale/es';
 import { useField } from 'formik';
+
 import {
   FC,
   forwardRef,
@@ -156,6 +158,7 @@ export const DatePicker: FunctionComponent<DatePickerProps> = ({
     (date: Date) => {
       setDate(date);
       meta.setValue(date);
+      meta.setTouched(true);
     },
     [meta]
   );
@@ -166,7 +169,7 @@ export const DatePicker: FunctionComponent<DatePickerProps> = ({
         value: date,
       }}
     >
-      <FormControl>
+      <FormControl isInvalid={!!(helpers?.error && helpers?.touched)}>
         <FormLabel>{label}</FormLabel>
         <ReactDatePicker
           renderCustomHeader={CustomHeader}
@@ -177,6 +180,9 @@ export const DatePicker: FunctionComponent<DatePickerProps> = ({
           showYearDropdown
           showMonthDropdown
         />
+        {helpers?.error && helpers?.touched && (
+          <FormErrorMessage>{helpers.error}</FormErrorMessage>
+        )}
       </FormControl>
     </DatePickerProvider>
   );

@@ -20,12 +20,7 @@ const APOLLO_PROP_NAME = '__APOLLO__STATE';
 // authorization
 
 const authLink = setContext((_, { headers }) => {
-  /**
-   * TODO:
-   * - The "token" should be a constant
-   */
   const token = localStorage.getItem('token');
-
   return {
     headers: {
       ...headers,
@@ -36,18 +31,32 @@ const authLink = setContext((_, { headers }) => {
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
-/**
- * see: https://www.npmjs.com/package/apollo-link-error
- */
-const linkError = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
-    graphQLErrors.forEach(({ message, locations, path }) =>
-      console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-      )
-    );
-  if (networkError) console.log(`[Network error]: ${networkError}`);
-}) as unknown as ApolloLink;
+const linkError = onError(
+  ({ operation, graphQLErrors, networkError, response }) => {
+    const ignoreErrors = () => {
+      if (response?.errors) {
+        delete response.errors;
+      }
+    };
+    if (graphQLErrors) {
+      const [firtError] = graphQLErrors.slice(0, 1);
+      if (firtError) {
+        const CODE = firtError.extensions?.code;
+
+        switch (CODE) {
+          case 'BUSINESS_ERROR': {
+            const message = firtError.message;
+            console.log('Ha a error');
+            console.log(message);
+          }
+        }
+      }
+    }
+    if (networkError) {
+      console.log(`[Network error]: ${networkError}`);
+    }
+  }
+) as unknown as ApolloLink;
 
 const httpLink = new HttpLink({
   uri: isDev

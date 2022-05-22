@@ -11,12 +11,14 @@ import {
 import React from 'react';
 import { WarningIcon } from '../../icons';
 import { useDialogs } from './use-dialog-store';
+
 export const ConfirmModal = () => {
   const { confirmModal } = useDialogs();
   const { isOpen, onClose } = useDisclosure({
     isOpen: confirmModal.isOpen,
     onClose: confirmModal.onClose,
   });
+  
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered id="confirmModal">
       <ModalOverlay />

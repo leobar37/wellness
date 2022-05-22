@@ -21,6 +21,7 @@ import { useModalConfirm } from '@wellness/admin-ui';
 import { useClientCrudModal } from '../data';
 import { ShowContractModal } from '../components/service';
 import { ShowByRol } from '@wellness/admin-ui/auth';
+
 const mapProperties = {};
 
 export const ClientPage: NextPageWithLayout<SafeAny> = () => {
