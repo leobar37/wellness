@@ -1,4 +1,3 @@
-
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Activity, Plan } from '@wellness/core';
@@ -10,9 +9,9 @@ import { PlanHelper } from './helpers/plan.helper';
 import { SuscriptionsScheduler } from './helpers/Contract-scheduler';
 import { ContractViewResolver } from './resolvers/contract-view.resolver';
 import { ContractsViewService } from './services/contracts.service';
-import { ClientReportService } from "./services/client-report.service";
-import { ClientReportResolver } from "./resolvers/client-report.resolver";
-
+import { ClientReportService } from './services/client-report.service';
+import { ClientReportResolver } from './resolvers/client-report.resolver';
+import { ActivityHelper } from './helpers/activity.helper';
 @Module({
   providers: [
     ActivityService,
@@ -24,7 +23,8 @@ import { ClientReportResolver } from "./resolvers/client-report.resolver";
     ContractViewResolver,
     ContractsViewService,
     ClientReportService,
-    ClientReportResolver
+    ClientReportResolver,
+    ActivityHelper,
   ],
   imports: [TypeOrmModule.forFeature([Activity, Plan])],
 })

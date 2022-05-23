@@ -14,7 +14,7 @@ import { AppProps } from 'next/app';
 import { PropsWithChildren, useEffect, useMemo, useState } from 'react';
 import { isServer } from '../utils';
 import { isDev } from '@wellness/common';
-
+import { useDialogs } from '../ui/dialogs';
 const APOLLO_PROP_NAME = '__APOLLO__STATE';
 
 // authorization
@@ -31,6 +31,7 @@ const authLink = setContext((_, { headers }) => {
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
+const { setErrorState } = useDialogs.getState();
 const linkError = onError(
   ({ operation, graphQLErrors, networkError, response }) => {
     const ignoreErrors = () => {
@@ -42,12 +43,15 @@ const linkError = onError(
       const [firtError] = graphQLErrors.slice(0, 1);
       if (firtError) {
         const CODE = firtError.extensions?.code;
-
         switch (CODE) {
           case 'BUSINESS_ERROR': {
             const message = firtError.message;
-            console.log('Ha a error');
-            console.log(message);
+            setErrorState((state) => {
+              state.info.description = message;
+              state.info.title = 'Error';
+              state.isOpen = true;
+            });
+            return;
           }
         }
       }

@@ -186,34 +186,36 @@ export const CreateContractForm = () => {
       }}
       validationSchema={createContractSchema}
       onSubmit={async (values, { resetForm }) => {
-        if (state == 'edit') {
-          await editContract(contract.contractId, values);
-          toast({
-            title: 'Plan editado correctamente',
-          });
+        try {
+          if (state == 'edit') {
+            await editContract(contract.contractId, values);
+            toast({
+              title: 'Plan editado correctamente',
+            });
+            resetForm();
+            onClose();
+
+            return;
+          }
+          switch (Number(values.typeService)) {
+            case EnumService.PLAN: {
+              await joinPlan(values);
+              toast({
+                title: 'Plan correctamente creado',
+              });
+              break;
+            }
+            case EnumService.ACTIVITY: {
+              await joinActivity(values);
+              toast({
+                title: 'Actividad correctamente creada',
+              });
+              break;
+            }
+          }
           resetForm();
           onClose();
-
-          return;
-        }
-        switch (Number(values.typeService)) {
-          case EnumService.PLAN: {
-            await joinPlan(values);
-            toast({
-              title: 'Plan correctamente creado',
-            });
-            break;
-          }
-          case EnumService.ACTIVITY: {
-            await joinActivity(values);
-            toast({
-              title: 'Actividad correctamente creada',
-            });
-            break;
-          }
-        }
-        resetForm();
-        onClose();
+        } catch (error) {}
       }}
     >
       {({ submitForm, resetForm }) => (

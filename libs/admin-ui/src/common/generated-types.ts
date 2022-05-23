@@ -8,7 +8,7 @@ export type InputMaybe<T> = T;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions =  {}
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -681,7 +681,7 @@ export type RegisterAdminMutationVariables = Exact<{
 }>;
 
 
-export type RegisterAdminMutation = { __typename?: 'Mutation', registerAdmin: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string | null | undefined } };
+export type RegisterAdminMutation = { __typename?: 'Mutation', registerAdmin: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string } };
 
 export type EditAdministratorMutationVariables = Exact<{
   input: RegisterAdminInput;
@@ -689,28 +689,28 @@ export type EditAdministratorMutationVariables = Exact<{
 }>;
 
 
-export type EditAdministratorMutation = { __typename?: 'Mutation', editAdministrator: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string | null | undefined } };
+export type EditAdministratorMutation = { __typename?: 'Mutation', editAdministrator: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string } };
 
 export type ResetPasswordMutationVariables = Exact<{
   input: ResetPasswordInput;
 }>;
 
 
-export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string | null | undefined } };
+export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string } };
 
 export type ResetPasswordFromAdminMutationVariables = Exact<{
   input: ResetPasswordInputFromAdmin;
 }>;
 
 
-export type ResetPasswordFromAdminMutation = { __typename?: 'Mutation', resetPasswordFromAdmin: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string | null | undefined } };
+export type ResetPasswordFromAdminMutation = { __typename?: 'Mutation', resetPasswordFromAdmin: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string } };
 
 export type GetAdministratorQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetAdministratorQuery = { __typename?: 'Query', getAdministrator: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string | null | undefined } };
+export type GetAdministratorQuery = { __typename?: 'Query', getAdministrator: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string } };
 
 export type CreateAsistenceMutationVariables = Exact<{
   asistence: InputAsistence;
@@ -742,7 +742,7 @@ export type FindAsistencesQueryVariables = Exact<{
 export type FindAsistencesQuery = { __typename?: 'Query', finAsistences: Array<{ __typename?: 'Asistence', id: string, createdAt: SafeAny, updateAt: SafeAny, note: string }> };
 
 export type GenerateSignatureMutationVariables = Exact<{
-  publicId?: Maybe<Scalars['String']>;
+  publicId?: InputMaybe<Scalars['String']>;
 }>;
 
 
@@ -753,21 +753,21 @@ export type DeleteResourceMutationVariables = Exact<{
 }>;
 
 
-export type DeleteResourceMutation = { __typename?: 'Mutation', deleteResource: { __typename: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | { __typename: 'AssetBoot', id: string, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } };
+export type DeleteResourceMutation = { __typename?: 'Mutation', deleteResource: { __typename: 'Asset', name: string, size?: number, previewUrl?: string, id: string, createdAt: SafeAny, updateAt: SafeAny } | { __typename: 'AssetBoot', id: string, assets: Array<{ __typename?: 'Asset', name: string, size?: number, previewUrl?: string, id: string, createdAt: SafeAny, updateAt: SafeAny }> } };
 
 export type CreateResourceMutationVariables = Exact<{
   resource: AssetInput;
 }>;
 
 
-export type CreateResourceMutation = { __typename?: 'Mutation', createResource: { __typename: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | { __typename: 'AssetBoot', id: string, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } };
+export type CreateResourceMutation = { __typename?: 'Mutation', createResource: { __typename: 'Asset', name: string, size?: number, previewUrl?: string, id: string, createdAt: SafeAny, updateAt: SafeAny } | { __typename: 'AssetBoot', id: string, assets: Array<{ __typename?: 'Asset', name: string, size?: number, previewUrl?: string, id: string, createdAt: SafeAny, updateAt: SafeAny }> } };
 
 export type EditResourceMutationVariables = Exact<{
   resource: AssetEditInput;
 }>;
 
 
-export type EditResourceMutation = { __typename?: 'Mutation', editResource: { __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | { __typename?: 'AssetBoot' } };
+export type EditResourceMutation = { __typename?: 'Mutation', editResource: { __typename?: 'Asset', name: string, size?: number, previewUrl?: string, id: string, createdAt: SafeAny, updateAt: SafeAny } | { __typename?: 'AssetBoot' } };
 
 export type LoginMutationVariables = Exact<{
   input: LoginAdminInput;
@@ -781,19 +781,19 @@ export type RegisterClientMutationVariables = Exact<{
 }>;
 
 
-export type RegisterClientMutation = { __typename?: 'Mutation', registerClient: { __typename?: 'Client', id: string, code: string, dni: string, createdAt: SafeAny, email: string, name: string, lastName: string, birth?: SafeAny | null | undefined, phone?: string | null | undefined, direction?: string | null | undefined, sex: Sex, mode: ModeRegiser, photo?: { __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined } };
+export type RegisterClientMutation = { __typename?: 'Mutation', registerClient: { __typename?: 'Client', id: string, code: string, dni: string, createdAt: SafeAny, email: string, name: string, lastName: string, birth?: SafeAny, phone?: string, direction?: string, sex: Sex, mode: ModeRegiser, photo?: { __typename?: 'Asset', name: string, size?: number, previewUrl?: string, id: string, createdAt: SafeAny, updateAt: SafeAny } } };
 
 export type GetClientsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetClientsQuery = { __typename?: 'Query', clients: Array<{ __typename?: 'Client', id: string, code: string, dni: string, createdAt: SafeAny, email: string, name: string, lastName: string, birth?: SafeAny | null | undefined, phone?: string | null | undefined, direction?: string | null | undefined, sex: Sex, mode: ModeRegiser, photo?: { __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined }> };
+export type GetClientsQuery = { __typename?: 'Query', clients: Array<{ __typename?: 'Client', id: string, code: string, dni: string, createdAt: SafeAny, email: string, name: string, lastName: string, birth?: SafeAny, phone?: string, direction?: string, sex: Sex, mode: ModeRegiser, photo?: { __typename?: 'Asset', name: string, size?: number, previewUrl?: string, id: string, createdAt: SafeAny, updateAt: SafeAny } }> };
 
 export type GetClientQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetClientQuery = { __typename?: 'Query', client: { __typename?: 'Client', id: string, code: string, dni: string, createdAt: SafeAny, email: string, name: string, lastName: string, birth?: SafeAny | null | undefined, phone?: string | null | undefined, direction?: string | null | undefined, sex: Sex, mode: ModeRegiser, photo?: { __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined } };
+export type GetClientQuery = { __typename?: 'Query', client: { __typename?: 'Client', id: string, code: string, dni: string, createdAt: SafeAny, email: string, name: string, lastName: string, birth?: SafeAny, phone?: string, direction?: string, sex: Sex, mode: ModeRegiser, photo?: { __typename?: 'Asset', name: string, size?: number, previewUrl?: string, id: string, createdAt: SafeAny, updateAt: SafeAny } } };
 
 export type UpdateClientMutationVariables = Exact<{
   input: ClientInput;
@@ -801,35 +801,35 @@ export type UpdateClientMutationVariables = Exact<{
 }>;
 
 
-export type UpdateClientMutation = { __typename?: 'Mutation', updateCLient: { __typename?: 'Client', id: string, code: string, dni: string, createdAt: SafeAny, email: string, name: string, lastName: string, birth?: SafeAny | null | undefined, phone?: string | null | undefined, direction?: string | null | undefined, sex: Sex, mode: ModeRegiser, photo?: { __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined } };
+export type UpdateClientMutation = { __typename?: 'Mutation', updateCLient: { __typename?: 'Client', id: string, code: string, dni: string, createdAt: SafeAny, email: string, name: string, lastName: string, birth?: SafeAny, phone?: string, direction?: string, sex: Sex, mode: ModeRegiser, photo?: { __typename?: 'Asset', name: string, size?: number, previewUrl?: string, id: string, createdAt: SafeAny, updateAt: SafeAny } } };
 
 export type ClientReportQueryVariables = Exact<{
   clientId: Scalars['ID'];
 }>;
 
 
-export type ClientReportQuery = { __typename?: 'Query', clientReport: { __typename?: 'ClientReport', planProgress?: { __typename?: 'PlanProgress', progress: number, contractLabel: string, price: number, finishedAt: SafeAny, createdAt: SafeAny, daysLeft: number } | null | undefined } };
+export type ClientReportQuery = { __typename?: 'Query', clientReport: { __typename?: 'ClientReport', planProgress?: { __typename?: 'PlanProgress', progress: number, contractLabel: string, price: number, finishedAt: SafeAny, createdAt: SafeAny, daysLeft: number } } };
 
 export type OpenAndCloseMutationVariables = Exact<{
   input: FichaInput;
 }>;
 
 
-export type OpenAndCloseMutation = { __typename?: 'Mutation', openAndCloseFicha: { __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny | null | undefined, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string | null | undefined, note?: string | null | undefined, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } | null | undefined }> } };
+export type OpenAndCloseMutation = { __typename?: 'Mutation', openAndCloseFicha: { __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string, note?: string, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number, previewUrl?: string, id: string, createdAt: SafeAny, updateAt: SafeAny }> } }> } };
 
 export type GetFichaQueryVariables = Exact<{
   userId: Scalars['Int'];
 }>;
 
 
-export type GetFichaQuery = { __typename?: 'Query', getFicha?: { __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny | null | undefined, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string | null | undefined, note?: string | null | undefined, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } | null | undefined }> } | null | undefined };
+export type GetFichaQuery = { __typename?: 'Query', getFicha?: { __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string, note?: string, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number, previewUrl?: string, id: string, createdAt: SafeAny, updateAt: SafeAny }> } }> } };
 
 export type GetFichasQueryVariables = Exact<{
   userId: Scalars['Int'];
 }>;
 
 
-export type GetFichasQuery = { __typename?: 'Query', getFichas?: Array<{ __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny | null | undefined, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string | null | undefined, note?: string | null | undefined, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } | null | undefined }> }> | null | undefined };
+export type GetFichasQuery = { __typename?: 'Query', getFichas?: Array<{ __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string, note?: string, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number, previewUrl?: string, id: string, createdAt: SafeAny, updateAt: SafeAny }> } }> }> };
 
 export type UpdateFichaMutationVariables = Exact<{
   input: FichaInput;
@@ -837,43 +837,43 @@ export type UpdateFichaMutationVariables = Exact<{
 }>;
 
 
-export type UpdateFichaMutation = { __typename?: 'Mutation', updateFicha: { __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny | null | undefined, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string | null | undefined, note?: string | null | undefined, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } | null | undefined }> } };
+export type UpdateFichaMutation = { __typename?: 'Mutation', updateFicha: { __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string, note?: string, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number, previewUrl?: string, id: string, createdAt: SafeAny, updateAt: SafeAny }> } }> } };
 
 export type DeleteFichaMutationVariables = Exact<{
   fichaId: Scalars['Int'];
 }>;
 
 
-export type DeleteFichaMutation = { __typename?: 'Mutation', deleteFicha: { __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny | null | undefined, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string | null | undefined, note?: string | null | undefined, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } | null | undefined }> } };
+export type DeleteFichaMutation = { __typename?: 'Mutation', deleteFicha: { __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string, note?: string, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number, previewUrl?: string, id: string, createdAt: SafeAny, updateAt: SafeAny }> } }> } };
 
-export type AdministratorFragmentFragment = { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string | null | undefined };
+export type AdministratorFragmentFragment = { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string };
 
 export type GetAdministratorsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAdministratorsQuery = { __typename?: 'Query', getAdministrators: Array<{ __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string | null | undefined }> };
+export type GetAdministratorsQuery = { __typename?: 'Query', getAdministrators: Array<{ __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string }> };
 
 export type AsistenceFragmentFragment = { __typename?: 'Asistence', id: string, createdAt: SafeAny, updateAt: SafeAny, note: string };
 
-export type AssetFragmentFragment = { __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny };
+export type AssetFragmentFragment = { __typename?: 'Asset', name: string, size?: number, previewUrl?: string, id: string, createdAt: SafeAny, updateAt: SafeAny };
 
-export type AssetBootFragment = { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> };
+export type AssetBootFragment = { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number, previewUrl?: string, id: string, createdAt: SafeAny, updateAt: SafeAny }> };
 
-export type ClientFragmentFragment = { __typename?: 'Client', id: string, code: string, dni: string, createdAt: SafeAny, email: string, name: string, lastName: string, birth?: SafeAny | null | undefined, phone?: string | null | undefined, direction?: string | null | undefined, sex: Sex, mode: ModeRegiser, photo?: { __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined };
+export type ClientFragmentFragment = { __typename?: 'Client', id: string, code: string, dni: string, createdAt: SafeAny, email: string, name: string, lastName: string, birth?: SafeAny, phone?: string, direction?: string, sex: Sex, mode: ModeRegiser, photo?: { __typename?: 'Asset', name: string, size?: number, previewUrl?: string, id: string, createdAt: SafeAny, updateAt: SafeAny } };
 
-export type FichaFragmentFragment = { __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny | null | undefined, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string | null | undefined, note?: string | null | undefined, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number | null | undefined, previewUrl?: string | null | undefined, id: string, createdAt: SafeAny, updateAt: SafeAny } | null | undefined> } | null | undefined }> };
+export type FichaFragmentFragment = { __typename?: 'Ficha', id: string, createdAt: SafeAny, closedAt?: SafeAny, closed: boolean, updateAt: SafeAny, details: Array<{ __typename?: 'DetailFicha', id: string, open: boolean, createdAt: SafeAny, updateAt: SafeAny, weight: number, objective?: string, note?: string, asset?: { __typename?: 'AssetBoot', id: string, createdAt: SafeAny, updateAt: SafeAny, assets: Array<{ __typename?: 'Asset', name: string, size?: number, previewUrl?: string, id: string, createdAt: SafeAny, updateAt: SafeAny }> } }> };
 
-export type ContractViewFragmentFragment = { __typename?: 'ContractView', name?: string | null | undefined, serviceId?: string | null | undefined, price?: number | null | undefined, type?: ServiceType | null | undefined, clientId: string, suscriptionId: string, finished: boolean, note: string, createdAt: SafeAny, finishedAt: SafeAny, contractId: string, clientName: string, description?: string | null | undefined, realPrice: number, clientLastName: string, paid: boolean };
+export type ContractViewFragmentFragment = { __typename?: 'ContractView', name?: string, serviceId?: string, price?: number, type?: ServiceType, clientId: string, suscriptionId: string, finished: boolean, note: string, createdAt: SafeAny, finishedAt: SafeAny, contractId: string, clientName: string, description?: string, realPrice: number, clientLastName: string, paid: boolean };
 
 export type DetailFragmentFragment = { __typename?: 'Detail', name: string, description: string, price: number };
 
-export type PlanFragmentFragment = { __typename?: 'Plan', id: string, createdAt: SafeAny, updateAt: SafeAny, visible: boolean, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } };
+export type PlanFragmentFragment = { __typename?: 'Plan', id: string, createdAt: SafeAny, updateAt: SafeAny, visible: boolean, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny, finishedAt?: SafeAny } };
 
-export type SubscriptionFragmentFragment = { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined };
+export type SubscriptionFragmentFragment = { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny, finishedAt?: SafeAny };
 
-export type ActivityFragmentFragment = { __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } };
+export type ActivityFragmentFragment = { __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny, finishedAt?: SafeAny } };
 
-export type ContractFragmentFragment = { __typename?: 'Contract', id: string, createdAt: SafeAny, updateAt: SafeAny, note?: string | null | undefined, paid: boolean, price: number, finishedAt: SafeAny, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } };
+export type ContractFragmentFragment = { __typename?: 'Contract', id: string, createdAt: SafeAny, updateAt: SafeAny, note?: string, paid: boolean, price: number, finishedAt: SafeAny, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny, finishedAt?: SafeAny } };
 
 export type PingQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -895,25 +895,25 @@ export type AlertsReportQueryVariables = Exact<{
 export type AlertsReportQuery = { __typename?: 'Query', alertsReport: Array<{ __typename?: 'AlertResult', typeData: TypeDataAlertEnum, label: string, sublabel: string, date: SafeAny, dateLabel: string }> };
 
 export type GetActivitiesQueryVariables = Exact<{
-  filters?: Maybe<FiltersActivity>;
+  filters?: InputMaybe<FiltersActivity>;
 }>;
 
 
-export type GetActivitiesQuery = { __typename?: 'Query', getActivities: Array<{ __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } }> };
+export type GetActivitiesQuery = { __typename?: 'Query', getActivities: Array<{ __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny, finishedAt?: SafeAny } }> };
 
 export type CreateActivityMutationVariables = Exact<{
   input: ActivityInput;
 }>;
 
 
-export type CreateActivityMutation = { __typename?: 'Mutation', createActivity: { __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } } };
+export type CreateActivityMutation = { __typename?: 'Mutation', createActivity: { __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny, finishedAt?: SafeAny } } };
 
 export type GetActivityQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetActivityQuery = { __typename?: 'Query', getActivity: { __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } } };
+export type GetActivityQuery = { __typename?: 'Query', getActivity: { __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny, finishedAt?: SafeAny } } };
 
 export type UpdateActivityMutationVariables = Exact<{
   input: ActivityInput;
@@ -921,35 +921,35 @@ export type UpdateActivityMutationVariables = Exact<{
 }>;
 
 
-export type UpdateActivityMutation = { __typename?: 'Mutation', updateActivity: { __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } } };
+export type UpdateActivityMutation = { __typename?: 'Mutation', updateActivity: { __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny, finishedAt?: SafeAny } } };
 
 export type DeleteActivityMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type DeleteActivityMutation = { __typename?: 'Mutation', deleteActivity: { __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } } };
+export type DeleteActivityMutation = { __typename?: 'Mutation', deleteActivity: { __typename?: 'Activity', id: string, createdAt: SafeAny, updateAt: SafeAny, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny, finishedAt?: SafeAny } } };
 
 export type GetPlansQueryVariables = Exact<{
-  filters?: Maybe<FiltersPlan>;
+  filters?: InputMaybe<FiltersPlan>;
 }>;
 
 
-export type GetPlansQuery = { __typename?: 'Query', getPlans: Array<{ __typename?: 'Plan', id: string, createdAt: SafeAny, updateAt: SafeAny, visible: boolean, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } }> };
+export type GetPlansQuery = { __typename?: 'Query', getPlans: Array<{ __typename?: 'Plan', id: string, createdAt: SafeAny, updateAt: SafeAny, visible: boolean, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny, finishedAt?: SafeAny } }> };
 
 export type GetPlanQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetPlanQuery = { __typename?: 'Query', getPlan: { __typename?: 'Plan', id: string, createdAt: SafeAny, updateAt: SafeAny, visible: boolean, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } } };
+export type GetPlanQuery = { __typename?: 'Query', getPlan: { __typename?: 'Plan', id: string, createdAt: SafeAny, updateAt: SafeAny, visible: boolean, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny, finishedAt?: SafeAny } } };
 
 export type DeletePlanMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type DeletePlanMutation = { __typename?: 'Mutation', deletePlan: { __typename?: 'Plan', id: string, createdAt: SafeAny, updateAt: SafeAny, visible: boolean, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } } };
+export type DeletePlanMutation = { __typename?: 'Mutation', deletePlan: { __typename?: 'Plan', id: string, createdAt: SafeAny, updateAt: SafeAny, visible: boolean, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny, finishedAt?: SafeAny } } };
 
 export type UpdatePlanMutationVariables = Exact<{
   input: PlanInput;
@@ -957,49 +957,49 @@ export type UpdatePlanMutationVariables = Exact<{
 }>;
 
 
-export type UpdatePlanMutation = { __typename?: 'Mutation', updatePlan: { __typename?: 'Plan', id: string, createdAt: SafeAny, updateAt: SafeAny, visible: boolean, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } } };
+export type UpdatePlanMutation = { __typename?: 'Mutation', updatePlan: { __typename?: 'Plan', id: string, createdAt: SafeAny, updateAt: SafeAny, visible: boolean, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny, finishedAt?: SafeAny } } };
 
 export type CreatePlanMutationVariables = Exact<{
   input: PlanInput;
 }>;
 
 
-export type CreatePlanMutation = { __typename?: 'Mutation', createPlan: { __typename?: 'Plan', id: string, createdAt: SafeAny, updateAt: SafeAny, visible: boolean, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } } };
+export type CreatePlanMutation = { __typename?: 'Mutation', createPlan: { __typename?: 'Plan', id: string, createdAt: SafeAny, updateAt: SafeAny, visible: boolean, detail: { __typename?: 'Detail', name: string, description: string, price: number }, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny, finishedAt?: SafeAny } } };
 
 export type JoinPlanMutationVariables = Exact<{
   contract: ContractInput;
 }>;
 
 
-export type JoinPlanMutation = { __typename?: 'Mutation', joinPlan: { __typename?: 'Contract', id: string, createdAt: SafeAny, updateAt: SafeAny, note?: string | null | undefined, paid: boolean, price: number, finishedAt: SafeAny, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } } };
+export type JoinPlanMutation = { __typename?: 'Mutation', joinPlan: { __typename?: 'Contract', id: string, createdAt: SafeAny, updateAt: SafeAny, note?: string, paid: boolean, price: number, finishedAt: SafeAny, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny, finishedAt?: SafeAny } } };
 
 export type JoinActivityMutationVariables = Exact<{
   contract: ContractInput;
 }>;
 
 
-export type JoinActivityMutation = { __typename?: 'Mutation', joinActivity: { __typename?: 'Contract', id: string, createdAt: SafeAny, updateAt: SafeAny, note?: string | null | undefined, paid: boolean, price: number, finishedAt: SafeAny, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny | null | undefined, finishedAt?: SafeAny | null | undefined } } };
+export type JoinActivityMutation = { __typename?: 'Mutation', joinActivity: { __typename?: 'Contract', id: string, createdAt: SafeAny, updateAt: SafeAny, note?: string, paid: boolean, price: number, finishedAt: SafeAny, suscription: { __typename?: 'Suscription', id: string, createdAt: SafeAny, updateAt: SafeAny, duration: number, active: boolean, mode: ModeSuscription, startAt?: SafeAny, finishedAt?: SafeAny } } };
 
 export type GetViewContractsQueryVariables = Exact<{
-  filters?: Maybe<FiContractsView>;
+  filters?: InputMaybe<FiContractsView>;
 }>;
 
 
-export type GetViewContractsQuery = { __typename?: 'Query', getViewContracts: Array<{ __typename?: 'ContractView', name?: string | null | undefined, serviceId?: string | null | undefined, price?: number | null | undefined, type?: ServiceType | null | undefined, clientId: string, suscriptionId: string, finished: boolean, note: string, createdAt: SafeAny, finishedAt: SafeAny, contractId: string, clientName: string, description?: string | null | undefined, realPrice: number, clientLastName: string, paid: boolean }> };
+export type GetViewContractsQuery = { __typename?: 'Query', getViewContracts: Array<{ __typename?: 'ContractView', name?: string, serviceId?: string, price?: number, type?: ServiceType, clientId: string, suscriptionId: string, finished: boolean, note: string, createdAt: SafeAny, finishedAt: SafeAny, contractId: string, clientName: string, description?: string, realPrice: number, clientLastName: string, paid: boolean }> };
 
 export type EditContractMutationVariables = Exact<{
   input: ContractEditInput;
 }>;
 
 
-export type EditContractMutation = { __typename?: 'Mutation', editContract: { __typename?: 'ContractView', name?: string | null | undefined, serviceId?: string | null | undefined, price?: number | null | undefined, type?: ServiceType | null | undefined, clientId: string, suscriptionId: string, finished: boolean, note: string, createdAt: SafeAny, finishedAt: SafeAny, contractId: string, clientName: string, description?: string | null | undefined, realPrice: number, clientLastName: string, paid: boolean } };
+export type EditContractMutation = { __typename?: 'Mutation', editContract: { __typename?: 'ContractView', name?: string, serviceId?: string, price?: number, type?: ServiceType, clientId: string, suscriptionId: string, finished: boolean, note: string, createdAt: SafeAny, finishedAt: SafeAny, contractId: string, clientName: string, description?: string, realPrice: number, clientLastName: string, paid: boolean } };
 
 export type DeleteContractMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type DeleteContractMutation = { __typename?: 'Mutation', deleteContract: { __typename?: 'ContractView', name?: string | null | undefined, serviceId?: string | null | undefined, price?: number | null | undefined, type?: ServiceType | null | undefined, clientId: string, suscriptionId: string, finished: boolean, note: string, createdAt: SafeAny, finishedAt: SafeAny, contractId: string, clientName: string, description?: string | null | undefined, realPrice: number, clientLastName: string, paid: boolean } };
+export type DeleteContractMutation = { __typename?: 'Mutation', deleteContract: { __typename?: 'ContractView', name?: string, serviceId?: string, price?: number, type?: ServiceType, clientId: string, suscriptionId: string, finished: boolean, note: string, createdAt: SafeAny, finishedAt: SafeAny, contractId: string, clientName: string, description?: string, realPrice: number, clientLastName: string, paid: boolean } };
 
 export const AdministratorFragmentFragmentDoc = gql`
     fragment administratorFragment on Administrator {

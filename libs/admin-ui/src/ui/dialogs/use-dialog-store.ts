@@ -1,9 +1,10 @@
 import { noop, pipe } from '@chakra-ui/utils';
-import { SafeAny } from '@wellness/common';
 import _create from 'zustand';
+import { SafeAny } from '@wellness/common';
+import produce from 'immer';
+import { DraftFunction } from 'use-immer';
 import { combine } from 'zustand/middleware';
-import { immer } from '../../lib';
-
+import { immer } from '../../lib/zuztand/Immer';
 import { FunctionOrPromise } from './types';
 const create = pipe(immer as SafeAny, _create) as typeof _create;
 
@@ -25,10 +26,36 @@ export const initialState = {
       description: '' as string,
     },
   },
+  errorsModal: {
+    isOpen: false,
+    info: {
+      title: '',
+      description: '',
+      onClose: noop,
+    },
+  },
 };
 
+type State = typeof initialState;
+
 export const useDialogs = create(
-  combine(initialState, (set) => ({
+  combine(initialState, (set, get) => ({
     patch: set,
+    setErrorState: (info: DraftFunction<State['errorsModal']>) => {
+      const state = get().errorsModal;
+      const newState = produce(state, (draft) => {
+        draft.info.onClose = () => {
+          set((prev) => {
+            return produce(prev, (dr) => {
+              dr.errorsModal.isOpen = false;
+            });
+          });
+        };
+        Object.assign(draft, info(draft));
+      });
+      set({
+        errorsModal: newState,
+      });
+    },
   }))
 );

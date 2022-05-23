@@ -74,7 +74,7 @@ const _Table: FunctionComponent<TableProps> = ({
           );
         },
       };
-      _columns.push(selectColumn);
+      _columns.push(selectColumn as SafeAny);
     }
 
     return [

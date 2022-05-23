@@ -123,7 +123,8 @@ export class PlanService {
   public async findPlans(filter: FiltersPlan) {
     let builder = this.repository
       .createQueryBuilder('plan')
-      .innerJoin('plan.suscription', 'sub');
+      .innerJoin('plan.suscription', 'sub')
+      .addOrderBy('plan.createdAt', 'DESC');
 
     if (filter?.active) {
       builder = builder.where('sub.active = :active', {
@@ -133,7 +134,6 @@ export class PlanService {
     return builder.getMany();
   }
 
-  // TODO: add date filter
   public async findPlansByClient(idClient: number) {
     const plans = await this.repository
       .createQueryBuilder('plan')

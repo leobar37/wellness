@@ -21,13 +21,15 @@ import { ContractInput } from '../dto/contract.input';
 import addDays from 'date-fns/addDays';
 import { FiltersActivity } from '../dto/filters.input';
 import { isValid } from '@wellness/common';
+import { ActivityHelper } from '../helpers/activity.helper';
 @Injectable()
 export class ActivityService {
   constructor(
     @InjectRepository(Activity) private repository: Repository<Activity>,
     @InjectEntityManager() private manager: EntityManager,
     private eventBus: EventBus,
-    private logger: WelnessLogger
+    private logger: WelnessLogger,
+    private activityHelper: ActivityHelper
   ) {}
   async createActivity(input: ActivityInput) {
     const activity = new Activity(omit(input, ['startAt', 'mode', 'duration']));
@@ -88,13 +90,26 @@ export class ActivityService {
   }
   async joinActivity(contractInput: ContractInput) {
     const activity = await this.existActivity(contractInput.activityId);
+    // verify if the client exist in a  activity
+    const userIsAlreadyRegistered =
+      await this.activityHelper.clientHaveAActivityActive(
+        contractInput.clientId,
+        contractInput.activityId
+      );
+    if (userIsAlreadyRegistered) {
+      throw new BussinessError(
+        'El usuario ya esta registrado en esta actividad'
+      );
+    }
     const sub = await activity.suscription;
     let finishedAt = null;
+
     if (sub.mode == ModeSuscription.FIXED) {
       finishedAt = new Date(sub.finishedAt);
     } else {
       finishedAt = addDays(new Date(), sub.duration);
     }
+
     const contract = await this.manager.save(
       Contract,
       new Contract({
@@ -113,7 +128,6 @@ export class ActivityService {
         planOrActivity: activity,
       })
     );
-    console.log(contract);
 
     return contract;
   }
@@ -121,7 +135,8 @@ export class ActivityService {
   async findActivities(filter: FiltersActivity) {
     let builder = this.repository
       .createQueryBuilder('act')
-      .innerJoin('act.suscription', 'sub');
+      .innerJoin('act.suscription', 'sub')
+      .addOrderBy('act.createdAt', 'DESC');
 
     if (filter?.active) {
       builder = builder.where('sub.active = :active', {
