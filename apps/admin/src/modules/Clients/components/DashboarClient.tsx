@@ -3,11 +3,14 @@ import {
   BadgeDisplay,
   ShowPlanProgress,
   useConfigFormats,
+  Card,
+  DetailInfo,
 } from '@wellness/admin-ui';
 import format from 'date-fns/format';
 import { get } from 'lodash';
 import { useClientsStore } from '../data/client-store';
 import formatDistance from 'date-fns/formatDistance';
+
 import es from 'date-fns/locale/es';
 
 export const DashboardClient = () => {
@@ -21,9 +24,18 @@ export const DashboardClient = () => {
   const lastAsistence = asistences.length > 0 ? asistences[0] : null;
 
   const planProgress = clientReport?.planProgress;
+
   return (
     <HStack width="100%" align="start" justify="start" spacing={'80px'}>
-      <VStack spacing={5} align="start">
+      <VStack spacing={3} align="start">
+        <Card includeBorder={false}>
+          <DetailInfo title="Dni" value={selectClient.dni} />
+          <DetailInfo title="Codigo" value={selectClient.code} />
+          <DetailInfo title="Email" value={selectClient.email} />
+          <DetailInfo title="Dirección" value={selectClient.direction} />
+          <DetailInfo title="Teléfono" value={selectClient.phone} />
+          <DetailInfo title="Sexo" value={selectClient.sex} />
+        </Card>
         {lastAsistence && (
           <BadgeDisplay
             title={'Última asistencia'}

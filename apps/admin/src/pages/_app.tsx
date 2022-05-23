@@ -11,18 +11,19 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { applyYupLocale } from '@wellness/admin-ui/yupLocale';
 import { useTitleApi } from '@wellness/admin-ui';
+import { SafeAny } from '@wellness/common';
 applyYupLocale();
 
 function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
   const apolloClient = useApollo(pageProps);
   const getLayout = Component.getLayout ?? ((page) => page);
   useTitleApi('App');
-
+  const Comp: SafeAny = Component as SafeAny;
   return (
     <ApolloProvider client={apolloClient}>
       <ChakraProvider theme={theme}>
         <DialogsProvider>
-          <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
+          <AuthProvider>{getLayout(<Comp {...pageProps} />)}</AuthProvider>
         </DialogsProvider>
       </ChakraProvider>
     </ApolloProvider>

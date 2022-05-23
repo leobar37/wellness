@@ -24,10 +24,8 @@ export class ClientService {
     if (!input.code) {
       input.code = temporalId();
     }
-
     const client = new Client(input);
     client.birth = input.birthday;
-    // client has been saved
     const createdClient = await this.repository.save(client);
     this.eventBus.publish(
       new ClientEvent({
@@ -82,5 +80,4 @@ export class ClientService {
     );
     return client;
   }
-  
 }

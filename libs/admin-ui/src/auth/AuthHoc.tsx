@@ -45,6 +45,6 @@ export const WithAuth = <T extends ComponentType>(
     if (isNil(allow)) {
       return null;
     }
-
-    return allow ? <Component {...(props as SafeAny)} /> : (null as SafeAny);
+    const Comp: SafeAny = Component;
+    return allow ? <Comp {...(props as SafeAny)} /> : (null as SafeAny);
   }) as SafeAny as T;

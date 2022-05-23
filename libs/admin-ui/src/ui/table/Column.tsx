@@ -5,7 +5,7 @@ import { SystemStyleObject } from '@chakra-ui/react';
 export type ColTableProps = Omit<Column, 'Cell'> &
   UseFiltersColumnOptions<SafeAny> & {
     cellStyles?: SystemStyleObject;
-  } & { Cell: (props: SafeAny) => SafeAny };
+  } & { Cell?: (props: SafeAny) => SafeAny };
 
 /**
  * This is a syntatic sugar for 'columns' prop

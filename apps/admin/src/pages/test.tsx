@@ -1,5 +1,9 @@
 import { Button, useToast, Wrap, WrapItem } from '@chakra-ui/react';
-import { useModalConfirm, useNoticeModal } from '@wellness/admin-ui/ui/dialogs';
+import {
+  useModalConfirm,
+  useNoticeModal,
+  ErrorContentModal,
+} from '@wellness/admin-ui/ui/dialogs';
 import React from 'react';
 import {
   Modal,
@@ -41,6 +45,7 @@ function Test() {
   const showNotice = useNoticeModal();
   return (
     <div>
+      <ErrorContentModal />
       <Button
         onClick={() => {
           showNotice({
