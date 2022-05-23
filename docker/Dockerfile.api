@@ -4,7 +4,9 @@ WORKDIR /my-project
 
 COPY package.json  ./
 
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile 
+
+RUN yarn add pg@^8.7.1
 
 COPY . .
 
