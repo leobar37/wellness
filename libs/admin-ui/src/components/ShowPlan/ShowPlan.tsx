@@ -12,7 +12,7 @@ export const ShowPlanProgress: FC<ShowPlanProgressProps> = ({
   startPlan,
   price,
   percent,
-  name
+  name,
 }) => {
   return (
     <Box
@@ -37,10 +37,15 @@ export const ShowPlanProgress: FC<ShowPlanProgressProps> = ({
         alignItems="center"
       >
         <Box color="white">
-          <Text fontWeight="semibold" sx={{
-            maxWidth : "200px",
-            textOverflow : "ellipsis",
-          }}>{name}</Text>
+          <Text
+            fontWeight="semibold"
+            sx={{
+              maxWidth: '200px',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {name}
+          </Text>
           <Text fontSize="small">
             <Time>{startPlan}</Time>
           </Text>

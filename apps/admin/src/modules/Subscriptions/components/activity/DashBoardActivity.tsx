@@ -1,12 +1,5 @@
 import { HStack, VStack } from '@chakra-ui/react';
-import {
-  Activity,
-  BadgeDisplay,
-  Card,
-  DetailInfo,
-  Price,
-  Badgebg,
-} from '@wellness/admin-ui';
+import { Activity, Badgebg, Card, DetailInfo, Price } from '@wellness/admin-ui';
 import { FC } from 'react';
 
 type DashBoardActivityProps = {
@@ -22,7 +15,10 @@ export const DashBoardActivity: FC<DashBoardActivityProps> = ({ activity }) => {
       </HStack>
       <Card>
         <DetailInfo title="Nombre" value={activity.detail.name} />
-        <DetailInfo title="Precio" value={<Price>50</Price>} />
+        <DetailInfo
+          title="Precio"
+          value={<Price>{activity.detail.price}</Price>}
+        />
         <DetailInfo
           title="Descripción"
           value={activity.detail.description}

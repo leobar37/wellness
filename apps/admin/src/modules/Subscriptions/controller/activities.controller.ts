@@ -13,18 +13,17 @@ import { useEffect } from 'react';
 const { patch } = useSubscriptionsStore.getState();
 
 export const useInitActivitiesController = () => {
-  const { data, loading } = useGetActivitiesQuery({
-    fetchPolicy: 'network-only',
-  });
+  const { data, loading, refetch } = useGetActivitiesQuery();
   const { activities } = useSubscriptionsStore();
   const isLoading = someBoolean(loading, !data);
   useEffect(() => {
     if (data?.getActivities) {
       patch((state) => {
         state.activities = data.getActivities as Activity[];
+        state.refetchActivities = refetch;
       });
     }
-  }, [data]);
+  }, [data, refetch]);
   return {
     activities: activities,
     isLoading,
@@ -46,20 +45,17 @@ const mapActivity = (input: CreateActivity) => {
 };
 
 export const useActivityController = () => {
-  const { closeModal } = useActivityModal();
   const [createActivityMutation] = useCreateActivityMutation();
   const [updateActivityMutation] = useUpdateActivityMutation();
   const [deleteActivityMutation] = useDeleteActivityMutation();
-  const { addActivity, activity } = useSubscriptionsStore();
+  const { refetchActivities, activity } = useSubscriptionsStore();
   const createActivity = async (input: CreateActivity) => {
     const data = await createActivityMutation({
       variables: {
         input: mapActivity(input),
       },
     });
-
-    addActivity(data.data.createActivity as SafeAny);
-    closeModal();
+    refetchActivities();
     return data.data.createActivity;
   };
 
@@ -70,8 +66,7 @@ export const useActivityController = () => {
         input: mapActivity(input),
       },
     });
-
-    closeModal();
+    refetchActivities();
     return data.data.updateActivity as Activity;
   };
   const deleteActivity = async () => {
@@ -80,7 +75,7 @@ export const useActivityController = () => {
         id: activity.id,
       },
     });
-
+    refetchActivities();
     return result.data.deleteActivity as Activity;
   };
 

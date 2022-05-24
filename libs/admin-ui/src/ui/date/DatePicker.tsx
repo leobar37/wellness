@@ -1,13 +1,13 @@
 import {
   Box,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   HStack,
   Input,
   InputGroup,
   InputLeftElement,
   Select,
-  FormErrorMessage,
 } from '@chakra-ui/react';
 import { createContext } from '@chakra-ui/react-utils';
 import { MonthMapper, range, SafeAny } from '@wellness/common';
@@ -16,7 +16,6 @@ import getMonth from 'date-fns/getMonth';
 import getYear from 'date-fns/getYear';
 import es from 'date-fns/locale/es';
 import { useField } from 'formik';
-
 import {
   FC,
   forwardRef,
@@ -31,7 +30,7 @@ import ReactDatePicker, {
 } from 'react-datepicker';
 import { ButtonIcon } from '../';
 import { CalendarIcon } from '../../icons';
-
+import { isDate, startOfDay, isValid } from 'date-fns';
 registerLocale('es', es);
 
 type DatePickerContext = {
@@ -65,7 +64,7 @@ const CustomInput = memo(
             <CalendarIcon />
           </Box>
         </InputLeftElement>
-        <Input value={format(value, 'yyyy-MM-d')} />
+        <Input readOnly value={format(value, 'yyyy-MM-d')} />
       </InputGroup>
     );
   })
@@ -154,19 +153,20 @@ export const DatePicker: FunctionComponent<DatePickerProps> = ({
 }) => {
   const [date, setDate] = useState(value ?? new Date());
   const [field, helpers, meta] = useField(name);
+
   const onChangue = useCallback(
-    (date: Date) => {
-      setDate(date);
-      meta.setValue(date);
-      meta.setTouched(true);
+    (resultDate: Date) => {
+      meta.setValue(resultDate);
+      meta.setTouched(true, true);
+      setDate(resultDate);
     },
-    [meta]
+    [meta, setDate]
   );
 
   return (
     <DatePickerProvider
       value={{
-        value: date,
+        value: field.value ?? new Date(),
       }}
     >
       <FormControl isInvalid={!!(helpers?.error && helpers?.touched)}>
@@ -174,7 +174,8 @@ export const DatePicker: FunctionComponent<DatePickerProps> = ({
         <ReactDatePicker
           renderCustomHeader={CustomHeader}
           locale={'es'}
-          startDate={starDate ?? new Date()}
+          selected={field.value ?? new Date()}
+          startDate={isValid(starDate) ? starDate : new Date()}
           onChange={onChangue}
           customInput={<CustomInput />}
           showYearDropdown

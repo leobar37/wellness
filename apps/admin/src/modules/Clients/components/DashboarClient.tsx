@@ -1,17 +1,17 @@
-import { Button, HStack, Img, VStack, Skeleton } from '@chakra-ui/react';
+import { HStack, Img, Skeleton, Text, VStack } from '@chakra-ui/react';
 import {
   BadgeDisplay,
-  ShowPlanProgress,
-  useConfigFormats,
   Card,
   DetailInfo,
+  Price,
+  ProgressBadge,
+  useConfigFormats,
 } from '@wellness/admin-ui';
 import format from 'date-fns/format';
+import formatDistance from 'date-fns/formatDistance';
+import es from 'date-fns/locale/es';
 import { get } from 'lodash';
 import { useClientsStore } from '../data/client-store';
-import formatDistance from 'date-fns/formatDistance';
-
-import es from 'date-fns/locale/es';
 
 export const DashboardClient = () => {
   const { selectClient, clientReport } = useClientsStore();
@@ -68,11 +68,18 @@ export const DashboardClient = () => {
           borderRadius="2xl"
         />
         {planProgress && (
-          <ShowPlanProgress
-            name={planProgress.contractLabel}
-            percent={planProgress.progress}
-            price={planProgress.price}
-            startPlan={planProgress.createdAt}
+          <ProgressBadge
+            title={planProgress.contractLabel}
+            progress={planProgress.progress}
+            subtitle={`${format(
+              new Date(planProgress.finishedAt),
+              configFormats.onlyDate
+            )}  ${planProgress.progress}%`}
+            value={
+              <Text color={'white'}>
+                <Price>{planProgress.price}</Price>
+              </Text>
+            }
           />
         )}
       </VStack>

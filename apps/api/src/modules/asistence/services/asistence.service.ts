@@ -29,7 +29,7 @@ export class AsitenceService {
         clientId: idClient,
       },
       order: {
-        createdAt: 'ASC',
+        createdAt: 'DESC',
       },
     });
     return asistences;

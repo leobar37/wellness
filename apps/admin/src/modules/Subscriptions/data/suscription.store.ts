@@ -4,6 +4,7 @@ import { Activity } from '@wellness/admin-ui/common';
 import _create from 'zustand';
 import { combine } from 'zustand/middleware';
 import { ModeAction, Plan, ContractView } from '@wellness/admin-ui';
+import { noop } from 'lodash';
 const create = pipe(immer, _create) as typeof _create;
 
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
   activity: null as Activity | null,
   activities: [] as Activity[],
   selectDeleteActivities: [] as Activity[],
+  refetchActivities: noop,
   plansStore: {
     plans: [] as Plan[],
     crudModal: {
@@ -28,6 +30,7 @@ const initialState = {
     },
     // selected plan
     plan: null as Plan | null,
+    refetchPlans: noop,
     selectPlansForDelete: [] as Plan[],
   },
 };
@@ -37,11 +40,6 @@ export type SubscriptionsState = typeof initialState;
 export const useSubscriptionsStore = create(
   combine(initialState, (set) => ({
     toggleActivitiesCrudModal: makeToggle('activitiesCrudModal', set),
-    addActivity: (activity: Activity) => {
-      set((state) => {
-        state.activities.push(activity);
-      });
-    },
     patch: set,
   }))
 );

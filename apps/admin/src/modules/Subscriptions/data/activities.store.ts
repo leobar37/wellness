@@ -4,19 +4,15 @@ import { Activity } from '@wellness/admin-ui';
 
 export const useActivityModal = () => {
   const { patch, activitiesCrudModal, activity } = useSubscriptionsStore();
-  const [act, setAct] = useState<Activity | null>(activity);
 
   const openModal = useCallback(
-    (clean = false) => {
+    (activity?: Activity) => {
       patch((state) => {
-        if (clean) {
-          state.activity = null;
-          setAct(null);
-        }
         state.activitiesCrudModal = {
           isOpen: true,
-          mode: clean ? 'create' : 'edit',
+          mode: activity ? 'edit' : 'create',
         };
+        state.activity = activity;
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -30,5 +26,5 @@ export const useActivityModal = () => {
     });
   }, [patch]);
 
-  return { closeModal, openModal, ...activitiesCrudModal, activity: act };
+  return { closeModal, openModal, ...activitiesCrudModal, activity };
 };

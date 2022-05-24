@@ -25,17 +25,14 @@ export const usePlansFeature = () => {
       });
     }
   };
+
   const setPlans = (plans: Plan[]) => {
     patchPlansStore((state) => {
       state.plans = plans;
     });
   };
-  const addPlan = (plan: Plan) => {
-    patchPlansStore((state) => {
-      state.plans.push(plan);
-    });
-  };
-  return [plansStore, { patchPlansStore, setPlans, addPlan }] as const;
+
+  return [plansStore, { patchPlansStore, setPlans }] as const;
 };
 
 export const usePlanModal = () => {

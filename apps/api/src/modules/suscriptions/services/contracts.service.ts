@@ -34,6 +34,9 @@ export class ContractsViewService {
         } as FindConditions<ContractView>;
       }
     }
+    findOptions.order = {
+      createdAt: 'DESC',
+    };
     const options = removeInvalids(findOptions);
 
     const result = await this.manager.find(ContractView, options);

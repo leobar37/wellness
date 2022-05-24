@@ -1,6 +1,6 @@
 import { TabList, TabPanels, Tabs } from '@chakra-ui/react';
 import { ButtonIcon, useModalConfirm } from '@wellness/admin-ui';
-import { NextPageWithLayout } from '@wellness/admin-ui/common';
+import { NextPageWithLayout, Role } from '@wellness/admin-ui/common';
 import {
   BaseLayout,
   Layout,
@@ -14,6 +14,7 @@ import { ListContracts } from '../components';
 import { CreateActivityModal, DashBoardActivity } from '../components/activity';
 import { useActivityController, useInitActivyController } from '../controller';
 import { useActivityModal } from '../data';
+import { ShowByRol } from '@wellness/admin-ui';
 import { ShowContractModal } from '../components';
 export const ActivitiePage: NextPageWithLayout = () => {
   const router = useRouter();
@@ -31,24 +32,26 @@ export const ActivitiePage: NextPageWithLayout = () => {
       backText={activity?.detail?.name || ''}
       actions={
         <>
-          <ButtonIcon
-            variant="red"
-            onClick={() => {
-              confirm({
-                onConfirm: async () => {
-                  await deleteActivity();
-                  router.push('./');
-                },
-              });
-            }}
-          >
-            <DeleteIcon />
-          </ButtonIcon>
+          <ShowByRol roles={[Role.ADMIN]}>
+            <ButtonIcon
+              variant="red"
+              onClick={() => {
+                confirm({
+                  onConfirm: async () => {
+                    await deleteActivity();
+                    router.push('./');
+                  },
+                });
+              }}
+            >
+              <DeleteIcon />
+            </ButtonIcon>
+          </ShowByRol>
           <ButtonIcon
             bg="brown.300"
             variant="link"
             onClick={() => {
-              openModal();
+              openModal(activity);
             }}
           >
             <EditIcon color="white" />

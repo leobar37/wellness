@@ -9,7 +9,11 @@ export const createActivitySchema = yup.object({
   price: yup.number().required(),
   duration: yup.number().min(5).required(),
   mode: yup.mixed().oneOf([ModeSuscription.DINAMIC, ModeSuscription.FIXED]),
-  startAt: yup.date().required(),
+  startAt: yup
+    .date()
+    .transform((curr, orig) => (orig === '' ? null : curr))
+    .required('Campo requerido')
+    .min(new Date(), 'La fecha debe ser mayor o igual a la actual'),
 });
 
 export type CreateActivity = Asserts<typeof createActivitySchema>;

@@ -5,6 +5,14 @@ import * as fsExtra from 'fs-extra';
 import * as path from 'path';
 import * as rimraf from 'rimraf';
 
+export const routeApp = (app: string, dist?: boolean) => {
+  if (dist) {
+    return path.resolve('.', 'dist', 'apps', app);
+  } else {
+    return path.resolve('.', 'apps', app);
+  }
+};
+
 export type BaseFn = (command: string) => string;
 
 export function copy(target: string, destination: string): Promise<void> {

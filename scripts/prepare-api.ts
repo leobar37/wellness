@@ -2,14 +2,7 @@
 import * as path from 'path';
 import * as fsExtra from 'fs-extra';
 import { exec, runTask } from './util';
-
-const routeApp = (app: string, dist?: boolean) => {
-  if (dist) {
-    return path.resolve('.', 'dist', 'apps', app);
-  } else {
-    return path.resolve('.', 'apps', app);
-  }
-};
+import { routeApp } from './util';
 
 export const makeEnv = async (app: string) => {
   const route = path.resolve(routeApp(app), '.env');

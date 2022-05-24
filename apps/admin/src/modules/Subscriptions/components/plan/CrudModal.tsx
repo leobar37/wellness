@@ -76,7 +76,7 @@ const Form = () => {
         </HStack>
       }
     >
-      <ChackraForm submit={handleSubmit}>
+      <ChackraForm>
         <InputControl name="name" placeholder="Nombre" label="Nombre:" />
         <TextareaControl name="description" label="Descripción:" />
         <CheckboxSingleControl name="visible">Visible</CheckboxSingleControl>
@@ -99,7 +99,7 @@ const Form = () => {
 
 export const CrudPlanModal = () => {
   const { createPlan, editPlan } = usePlansController();
-  const { mode, openModal, isOpen: _isOpen, closeModal } = usePlanModal();
+  const { mode, isOpen: _isOpen, closeModal } = usePlanModal();
 
   return (
     <Formik<CreatePlan>
@@ -113,18 +113,24 @@ export const CrudPlanModal = () => {
       }}
       validationSchema={createPlanSchema}
       onSubmit={async (values, { resetForm }) => {
-        switch (mode) {
-          case 'create': {
-            await createPlan(values);
-            resetForm();
-            break;
+        try {
+          switch (mode) {
+            case 'create': {
+              console.log('create here');
+
+              await createPlan(values);
+              break;
+            }
+            case 'edit': {
+              await editPlan(values);
+              break;
+            }
           }
-          case 'edit': {
-            await editPlan(values);
-            break;
-          }
+          closeModal();
+          resetForm();
+        } catch (err) {
+          console.log(err);
         }
-        closeModal();
       }}
     >
       <Form />
