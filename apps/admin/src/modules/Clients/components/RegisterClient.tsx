@@ -162,28 +162,33 @@ export const RegisterClientModal = () => {
       validateOnChange
       validationSchema={saveClientSchema}
       onSubmit={async (values, { setSubmitting }) => {
-        setSubmitting(true);
-        switch (mode) {
-          case 'edit': {
-            await updateClient(values);
-            toast({
-              title: 'Cliente Actualizado',
-            });
-            closeModal();
-            break;
+        try {
+          setSubmitting(true);
+          switch (mode) {
+            case 'edit': {
+              await updateClient(values);
+              toast({
+                title: 'Cliente Actualizado',
+              });
+              closeModal();
+              break;
+            }
+            case 'create': {
+              await registerClient(values);
+              toast({
+                title: 'Cliente Registrado',
+              });
+              closeModal();
+              // ref
+              refetch();
+              break;
+            }
           }
-          case 'create': {
-            await registerClient(values);
-            toast({
-              title: 'Cliente Registrado',
-            });
-            closeModal();
-            // ref
-            refetch();
-            break;
-          }
+          setSubmitting(false);
+        } catch (error) {
+          console.log(error);
+          setSubmitting(false);
         }
-        setSubmitting(false);
       }}
     >
       <Form />

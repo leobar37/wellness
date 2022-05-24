@@ -12,22 +12,25 @@ import {
   Table,
   Time,
   useModalConfirm,
-  useWellnessToast
+  useWellnessToast,
+  Role,
 } from '@wellness/admin-ui';
 import { SafeAny, ServiceType } from '@wellness/common';
 import { useInitSubContracts, useSubContracts } from '../../controller';
 import {
   useClientsStore,
   useContractModal,
-  useShowContractModal
+  useShowContractModal,
 } from '../../data';
-import { useConfigFormats } from "@wellness/admin-ui";
-import format from "date-fns/format";
+import { useConfigFormats } from '@wellness/admin-ui';
+import format from 'date-fns/format';
+import { ShowByRol } from '@wellness/admin-ui';
+
 export const ServicesSection = () => {
   const { openModal } = useContractModal();
   const { openModal: openShowModal } = useShowContractModal();
 
-  const { selectClient ,  clientReport } = useClientsStore();
+  const { selectClient, clientReport } = useClientsStore();
   const { contracts, isloading, refetchContracts } = useInitSubContracts({
     clientId: selectClient.id,
   });
@@ -49,23 +52,26 @@ export const ServicesSection = () => {
     });
   };
 
-  const planProgress  = clientReport?.planProgress;
+  const planProgress = clientReport?.planProgress;
 
-  console.log(planProgress);
-  
   return (
     <Box width={'750px'}>
       <HStack justify={'space-between'}>
-        {planProgress && <ProgressBadge
-          title={planProgress.contractLabel}
-          progress={planProgress.progress}
-          subtitle={`${format(new Date(planProgress.createdAt), configFormats.onlyDate)} - ${planProgress.progress}%`}
-          value={
-            <Text color={'white'}>
-              <Price>{planProgress.price}</Price>
-            </Text>
-          }
-        />}
+        {planProgress && (
+          <ProgressBadge
+            title={planProgress.contractLabel}
+            progress={planProgress.progress}
+            subtitle={`${format(
+              new Date(planProgress.finishedAt),
+              configFormats.onlyDate
+            )}  ${planProgress.progress}%`}
+            value={
+              <Text color={'white'}>
+                <Price>{planProgress.price}</Price>
+              </Text>
+            }
+          />
+        )}
         <ButtonIcon onClick={() => openModal()}>+</ButtonIcon>
       </HStack>
       <Box mt={8}>
@@ -154,16 +160,20 @@ export const ServicesSection = () => {
                     >
                       <EditIcon />
                     </ButtonIcon>
+
+                    <ShowByRol roles={[Role.ADMIN]}>
+                      <ButtonIcon
+                        bg={'blue.600'}
+                        onClick={() => {
+                          onConfirm(original);
+                        }}
+                      >
+                        <DeleteIcon />
+                      </ButtonIcon>
+                    </ShowByRol>
+
                     <ButtonIcon
-                      bg={'red'}
-                      onClick={() => {
-                        onConfirm(original);
-                      }}
-                    >
-                      <DeleteIcon />
-                    </ButtonIcon>
-                    <ButtonIcon
-                      bg={'green.300'}
+                      bg={'green.700'}
                       onClick={() => {
                         openShowModal(original);
                       }}

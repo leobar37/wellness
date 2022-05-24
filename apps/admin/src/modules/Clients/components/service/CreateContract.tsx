@@ -67,13 +67,10 @@ const formMapper = {
 };
 const Form: FC<FormProps> = ({ plans, activities }) => {
   const [typeService, setTypeService] = useState<EnumService>(EnumService.PLAN);
-  const {
-    isOpen: modalIsOpen,
-    closeModal,
-    contract,
-    state,
-  } = useContractModal();
+  const { isOpen: modalIsOpen, contract, state } = useContractModal();
+
   const [, , { setValue }] = useField<EnumService>('typeService');
+
   const { handleSubmit, setValues, resetForm, values, setFieldValue } =
     useFormikContext<CreateContract>();
 
@@ -190,32 +187,33 @@ export const CreateContractForm = () => {
           if (state == 'edit') {
             await editContract(contract.contractId, values);
             toast({
-              title: 'Plan editado correctamente',
+              title: 'Contrato editado correctamente',
             });
             resetForm();
             onClose();
-
             return;
           }
           switch (Number(values.typeService)) {
             case EnumService.PLAN: {
               await joinPlan(values);
               toast({
-                title: 'Plan correctamente creado',
+                title: 'Contrato correctamente creado',
               });
               break;
             }
             case EnumService.ACTIVITY: {
               await joinActivity(values);
               toast({
-                title: 'Actividad correctamente creada',
+                title: 'Contrato correctamente creada',
               });
               break;
             }
           }
           resetForm();
           onClose();
-        } catch (error) {}
+        } catch (error) {
+          console.log(error);
+        }
       }}
     >
       {({ submitForm, resetForm }) => (

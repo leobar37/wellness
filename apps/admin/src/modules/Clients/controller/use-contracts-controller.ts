@@ -48,6 +48,7 @@ export const useSubContracts = () => {
   const [deleteContractMutation] = useDeleteContractMutation();
   const { selectClient } = useClientsStore();
   const [{ refetch }] = useContractsFeature();
+
   const { data: dataPlans, loading: loadingPlan } = useGetPlansQuery({
     variables: {
       filters: {
@@ -55,6 +56,7 @@ export const useSubContracts = () => {
       },
     },
   });
+
   const { data: dataActivities, loading: loadingActivity } =
     useGetActivitiesQuery({
       variables: {
@@ -105,6 +107,7 @@ export const useSubContracts = () => {
         },
       },
     });
+    refetch();
     return result.data.editContract as ContractView;
   };
 

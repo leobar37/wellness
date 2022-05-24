@@ -1,26 +1,38 @@
 import {
-  useGetPlansQuery,
   Plan,
   useCreatePlanMutation,
-  useUpdatePlanMutation,
   useDeletePlanMutation,
+  useGetPlansQuery,
+  useUpdatePlanMutation,
 } from '@wellness/admin-ui';
-import { usePlansFeature } from '../data';
-import { useEffect } from 'react';
-import { CreatePlan } from '../domain/schemas';
-import { usePlanModal } from '../data';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { usePlansFeature } from '../data';
+import { CreatePlan } from '../domain/schemas';
+
 export const useInitPlansController = () => {
-  const { data: plansData, loading } = useGetPlansQuery({
+  const {
+    data: plansData,
+    loading,
+    refetch,
+  } = useGetPlansQuery({
     fetchPolicy: 'cache-and-network',
   });
-  const [{ plans }, { setPlans }] = usePlansFeature();
+  const [{ plans }, { setPlans, patchPlansStore }] = usePlansFeature();
   useEffect(() => {
     if (plansData?.getPlans) {
       setPlans(plansData?.getPlans as Plan[]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [plansData]);
+
+  useEffect(() => {
+    patchPlansStore((state) => {
+      state.refetchPlans = refetch;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refetch]);
+
   return {
     plans: plans,
     isloading: loading,
@@ -44,9 +56,8 @@ export const usePlansController = () => {
   const [createPlanMutation] = useCreatePlanMutation();
   const [updateMutation] = useUpdatePlanMutation();
   const [deleteMutation] = useDeletePlanMutation();
-  const { closeModal } = usePlanModal();
   const router = useRouter();
-  const [{ plan }, { addPlan, patchPlansStore }] = usePlansFeature();
+  const [{ plan, refetchPlans }, { patchPlansStore }] = usePlansFeature();
 
   /** Create a plan */
   const createPlan = async (input: CreatePlan) => {
@@ -55,8 +66,7 @@ export const usePlansController = () => {
         input: mapInputPlan(input),
       },
     });
-    closeModal();
-    addPlan(result.data.createPlan as Plan);
+    refetchPlans();
     return result.data.createPlan;
   };
 
@@ -71,7 +81,7 @@ export const usePlansController = () => {
     patchPlansStore((state) => {
       state.plan = result.data.updatePlan as Plan;
     });
-    closeModal();
+    refetchPlans();
     return result.data.updatePlan;
   };
 
@@ -82,6 +92,7 @@ export const usePlansController = () => {
         id: plan.id,
       },
     });
+    refetchPlans();
     router.push('./');
     return result.data.deletePlan as Plan;
   };

@@ -35,7 +35,7 @@ export const ActivitiesPage: NextPageWithLayout = () => {
     <>
       <Layout
         backText="Actividades"
-        actions={<Button onClick={() => openModal(true)}>Crear</Button>}
+        actions={<Button onClick={() => openModal()}>Crear</Button>}
       >
         <HStack>
           <Badgebg name="Total de actividades" value={activities.length} />

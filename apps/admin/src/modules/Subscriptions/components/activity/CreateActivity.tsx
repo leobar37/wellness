@@ -13,14 +13,14 @@ import {
 } from 'formik-chakra-ui';
 import { useEffect } from 'react';
 import { useActivityController } from '../../controller/activities.controller';
-import { useActivityModal } from '../../data';
+import { useActivityModal, useSubscriptionsStore } from '../../data';
 import { CreateActivity, createActivitySchema } from '../../domain/schemas';
 import { useChangues, useWellnessToast } from '@wellness/admin-ui';
 
 const Form = () => {
-  const { handleSubmit, setValues, submitForm, values, isValid, isSubmitting } =
+  const { setValues, submitForm, values, isValid, isSubmitting, errors } =
     useFormikContext<CreateActivity>();
-  const { activity, mode, isOpen, closeModal } = useActivityModal();
+  const { mode, isOpen, closeModal, activity } = useActivityModal();
   const changesApi = useChangues(values);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const Form = () => {
         price: activity.detail.price,
         duration: activity.suscription.duration,
         mode: activity.suscription.mode,
-        startAt: activity.suscription.startAt,
+        startAt: new Date(activity.suscription.startAt),
         name: activity.detail.name,
         visible: activity.suscription.active,
       };
@@ -44,6 +44,10 @@ const Form = () => {
     closeModal();
   };
   const buttonIsDisabled = !changesApi.hasChanges || !isValid || isSubmitting;
+
+  const activityIsRunning =
+    activity?.suscription?.startAt &&
+    new Date(activity.suscription.startAt) < new Date();
   return (
     <ModalCrud
       textHeader={'Crear Actividad'}
@@ -64,25 +68,27 @@ const Form = () => {
         </HStack>
       }
     >
-      <ChackraForm submit={handleSubmit}>
+      <ChackraForm>
+        <InputControl name="name" placeholder="Nombre" label="Nombre:" />
         <NumberInputControl
           name="duration"
           maxWidth="250px"
           label="Duración(Días):"
         />
-        <InputControl name="name" placeholder="Nombre" label="Nombre:" />
+        <TextareaControl name="description" label="Descripción:" />
         <NumberInputControl
           name="price"
           maxWidth="250px"
           label="Precio(Soles):"
         />
-        <TextareaControl name="description" label="Descripción:" />
         <CheckboxSingleControl name="visible">Visible</CheckboxSingleControl>
         <RadioGroupControl name="mode" label="Modo:">
           <Radio value={ModeSuscription.FIXED}>Fijo</Radio>
           <Radio value={ModeSuscription.DINAMIC}>Dinámico</Radio>
         </RadioGroupControl>
-        <DatePicker name="startAt" label="Fecha de inicio" />
+        {!activityIsRunning && (
+          <DatePicker name="startAt" label="Fecha de inicio" />
+        )}
       </ChackraForm>
     </ModalCrud>
   );
@@ -105,24 +111,28 @@ export const CreateActivityModal = () => {
       }}
       validationSchema={createActivitySchema}
       onSubmit={async (values, { resetForm }) => {
-        switch (mode) {
-          case 'create': {
-            await createActivity(values);
-            toast({
-              title: 'Actividad creada con éxito',
-            });
-            break;
+        try {
+          switch (mode) {
+            case 'create': {
+              await createActivity(values);
+              toast({
+                title: 'Actividad creada con éxito',
+              });
+              break;
+            }
+            case 'edit': {
+              await updateActivity(values);
+              toast({
+                title: 'Actividad editada con éxito',
+              });
+              break;
+            }
           }
-          case 'edit': {
-            await updateActivity(values);
-            toast({
-              title: 'Actividad editada con éxito',
-            });
-            break;
-          }
+          resetForm();
+          closeModal();
+        } catch (error) {
+          console.log(error);
         }
-        resetForm();
-        closeModal();
       }}
     >
       <Form />

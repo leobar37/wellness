@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
+import { InjectEntityManager } from '@nestjs/typeorm';
 import { Client, Contract } from '@wellness/core';
 import addDays from 'date-fns/addDays';
-import differenceInDays from 'date-fns/differenceInDays';
-import { Between } from 'typeorm';
-import { TypeDataAlert  } from '../dto/alert.dto';
-import { AlertResult } from "../types/Alert.type";
-import { InjectEntityManager } from '@nestjs/typeorm';
-import { EntityManager } from 'typeorm';
+import differenceInDays from 'date-fns/differenceInCalendarDays';
+import { EntityManager, Raw } from 'typeorm';
+import { TypeDataAlert } from '../dto/alert.dto';
+import setYear from 'date-fns/setYear';
+import { AlertResult } from '../types/Alert.type';
+import pluralize from 'pluralize';
 @Injectable()
 export class AlertsHelper {
   constructor(@InjectEntityManager() private manager: EntityManager) {}
@@ -19,43 +20,48 @@ export class AlertsHelper {
     }
   }
 
-  async plansToOvercomeAlert() : Promise<AlertResult[]> {
+  async plansToOvercomeAlert(): Promise<AlertResult[]> {
     const now = new Date();
     const [start, end] = [now, addDays(now, 10)];
     const contracts = await this.manager
       .createQueryBuilder()
       .from(Contract, 'contract')
       .leftJoin('contract.client', 'client')
-      .addSelect('client.name' , "name")
-      .addSelect("client.phone" , "phone")
-      .addSelect("contract.finishedAt" , "finishedAt")
-      .where("contract.finishedAt BETWEEN :start AND :end" , {start : start , end : end})
+      .addSelect('client.name', 'name')
+      .addSelect('client.phone', 'phone')
+      .addSelect('contract.finishedAt', 'finishedAt')
+      .where('contract.finishedAt BETWEEN :start AND :end', {
+        start: start,
+        end: end,
+      })
       .getRawMany();
 
-    return contracts.map(contract => {
-        const days = differenceInDays( now,contract.finishedAt);
-        return {
-            typeData: TypeDataAlert.plans_to_overcome,
-            label: contract.name,
-            sublabel: contract.phone,
-            date: contract.finishedAt,
-            dateLabel: `Su plan termina en ${-days} días`,
-        };
+    return contracts.map((contract) => {
+      const days = differenceInDays(now, contract.finishedAt);
+      return {
+        typeData: TypeDataAlert.plans_to_overcome,
+        label: contract.name,
+        sublabel: contract.phone,
+        date: contract.finishedAt,
+        dateLabel: `Su plan termina en ${-days} ${pluralize('dia', days)}`,
+      };
     });
   }
 
   async birthdayAlert() {
     const now = new Date();
-    const [start, end] = [now, addDays(now, 10)];
 
     const clients = await this.manager.find(Client, {
       where: {
-        birth: Between(start, end),
+        birth: Raw(
+          (alias) =>
+            `EXTRACT (MONTH FROM ${alias}) = EXTRACT(MONTH FROM CURRENT_DATE)`
+        ),
       },
     });
 
     const getDaysToFinish = (date: Date) => {
-      return differenceInDays(date, now);
+      return differenceInDays(setYear(date, now.getFullYear()), now);
     };
 
     return clients.map((client) => {
@@ -65,7 +71,7 @@ export class AlertsHelper {
         label: client.name.split(' ')[0] + ' ' + client.lastName.split(' ')[0],
         sublabel: client.phone,
         date: new Date(client.birth),
-        dateLabel: `Su cumpleaños es en ${days} días`,
+        dateLabel: `Su cumpleaños es en ${days} ${pluralize('dia', days)}`,
       };
     });
   }

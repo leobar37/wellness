@@ -60,12 +60,9 @@ const SlideImage = ({
             },
           }}
           bg="white"
+          onClick={() => onDelete(file)}
         >
-          <DeleteIcon
-            color={'brown.300'}
-            onClick={() => onDelete(file)}
-            className="icon"
-          />
+          <DeleteIcon color={'brown.300'} className="icon" />
         </ButtonIcon>
       </Center>
     </Box>

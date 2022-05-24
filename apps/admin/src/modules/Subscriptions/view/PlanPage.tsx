@@ -7,6 +7,7 @@ import {
   TabContent,
   TabWellness,
   useModalConfirm,
+  Role,
 } from '@wellness/admin-ui';
 import { DeleteIcon, EditIcon } from '@wellness/admin-ui/icons';
 import { useRouter } from 'next/router';
@@ -15,7 +16,7 @@ import { CrudPlanModal, DashBoardPlan } from '../components/plan';
 import { ListContracts, ShowContractModal } from '../components/shared';
 import { useInitPlanController, usePlansController } from '../controller';
 import { usePlanModal } from '../data';
-
+import { ShowByRol } from '@wellness/admin-ui/auth';
 export const PlanPage: NextPageWithLayout = () => {
   const { query } = useRouter();
   const { planId } = query as { planId: string };
@@ -32,18 +33,20 @@ export const PlanPage: NextPageWithLayout = () => {
       backText={plan?.detail?.name ?? ''}
       actions={
         <>
-          <ButtonIcon
-            variant="red"
-            onClick={() => {
-              confirm({
-                onConfirm: async () => {
-                  await deletePlan();
-                },
-              });
-            }}
-          >
-            <DeleteIcon />
-          </ButtonIcon>
+          <ShowByRol roles={[Role.ADMIN]}>
+            <ButtonIcon
+              variant="red"
+              onClick={() => {
+                confirm({
+                  onConfirm: async () => {
+                    await deletePlan();
+                  },
+                });
+              }}
+            >
+              <DeleteIcon />
+            </ButtonIcon>
+          </ShowByRol>
           <ButtonIcon
             bg="brown.300"
             variant="link"
