@@ -12,12 +12,12 @@ import formatDistance from 'date-fns/formatDistance';
 import es from 'date-fns/locale/es';
 import { get } from 'lodash';
 import { useClientsStore } from '../data/client-store';
-
+import { useEnviroment } from '@wellness/admin-ui';
 export const DashboardClient = () => {
   const { selectClient, clientReport } = useClientsStore();
   const configFormats = useConfigFormats();
   const { asistences } = useClientsStore();
-
+  const enviroment = useEnviroment();
   if (!selectClient) {
     return <Skeleton h={'350px'} w="350px" />;
   }
@@ -29,6 +29,8 @@ export const DashboardClient = () => {
     <HStack width="100%" align="start" justify="start" spacing={'80px'}>
       <VStack spacing={3} align="start">
         <Card includeBorder={false}>
+          <DetailInfo title="Nombre" value={selectClient.name} />
+          <DetailInfo title="Apellidos" value={selectClient.lastName} />
           <DetailInfo title="Dni" value={selectClient.dni} />
           <DetailInfo title="Codigo" value={selectClient.code} />
           <DetailInfo title="Email" value={selectClient.email} />
@@ -63,7 +65,11 @@ export const DashboardClient = () => {
       </VStack>
       <VStack>
         <Img
-          src={selectClient.photo.previewUrl}
+          src={selectClient?.photo?.previewUrl || ''}
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = enviroment.notFoundImage.profile;
+          }}
           width="250px"
           borderRadius="2xl"
         />

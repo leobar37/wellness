@@ -4,6 +4,7 @@ import { makeToggle, pipe } from '@wellness/admin-ui/utils';
 import { SafeAny } from '@wellness/common';
 import _create from 'zustand';
 import { IClientStore } from '../domain/client.store';
+import { noop } from 'lodash';
 const create = pipe(immer, _create) as typeof _create;
 
 export const useClientsStore = create<IClientStore>((set, get) => {
@@ -15,14 +16,15 @@ export const useClientsStore = create<IClientStore>((set, get) => {
       selectClient: null,
       mode: 'create',
     },
-    clientReport : null,
+    clientReport: null,
+    refetchClientReport: noop,
     selectDeleteClients: [],
     clients: [],
     selectClient: null,
     // asistences
     asistenceModal: {
-      client : null,
-      isOpen : false,
+      client: null,
+      isOpen: false,
     },
     // ficha
     modalCrudFicha: false,
@@ -86,7 +88,7 @@ export const useClientsStore = create<IClientStore>((set, get) => {
     // Modals
     toggleClientAsistenceModal: makeToggle('createAsistencesModal', set),
     toggleClientModal: makeToggle('clientModal', set),
-      
+
     // Business logic
     setDeleteClients: (value) => {
       set({ selectDeleteClients: value });
@@ -122,30 +124,30 @@ export const useClientCrudModal = () => {
     client: clientModal?.selectClient,
   };
 };
-const selectAsistence =  (store : IClientStore) => store.asistenceModal;
+const selectAsistence = (store: IClientStore) => store.asistenceModal;
 
 export const useAsistencesModal = () => {
   const { patch } = useClientsStore.getState();
   const asistenceState = useClientsStore(selectAsistence);
-  
-  const openModal = (client : Client) => {
+
+  const openModal = (client: Client) => {
     patch((state) => {
       state.asistenceModal.isOpen = true;
       state.asistenceModal.client = client;
     });
-  }
- 
+  };
+
   const closeModal = () => {
     patch((state) => {
       state.asistenceModal.isOpen = false;
       state.asistenceModal.client = null;
     });
-  }
+  };
 
   return {
     isOpen: asistenceState.isOpen,
     openModal,
     closeModal,
     client: asistenceState.client,
-  }
-}
+  };
+};

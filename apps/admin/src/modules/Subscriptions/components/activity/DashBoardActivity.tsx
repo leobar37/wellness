@@ -9,10 +9,6 @@ type DashBoardActivityProps = {
 export const DashBoardActivity: FC<DashBoardActivityProps> = ({ activity }) => {
   return (
     <VStack spacing={4} align={'self-start'}>
-      <HStack spacing={2}>
-        <Badgebg name="Vendidos" value="150" />
-        <Badgebg name="Usuarios activos" value="150" />
-      </HStack>
       <Card>
         <DetailInfo title="Nombre" value={activity.detail.name} />
         <DetailInfo

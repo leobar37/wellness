@@ -23,7 +23,7 @@ export const createPlanSchema = yup.object({
   name: yup.string().required(),
   description: yup.string().required(),
   price: yup.number().required(),
-  duration: yup.number().min(5).required(),
+  duration: yup.number().min(1).required(),
   active: yup.boolean().required().default(true),
 });
 

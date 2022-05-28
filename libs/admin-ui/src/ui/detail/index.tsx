@@ -45,23 +45,23 @@ export const DetailInfo = ({
     !isValid(val) || (isValid(val) && val.length === 0);
 
   return (
-    <Box fontSize="sm" sx={stylesDetail}>
-      {!isEmpty(value) && (
+    !isEmpty(value) && (
+      <Box fontSize="sm" sx={stylesDetail}>
         <Text as="b" fontWeight="bold">
           {title}:
         </Text>
-      )}
-      <ChildrenOrText
-        onText={(text) =>
-          !isEmpty(text) ? (
-            <Text as="p" sx={{ ...stylesSubtitle }}>
-              {text}
-            </Text>
-          ) : null
-        }
-      >
-        {isEmpty(value) ? null : value}
-      </ChildrenOrText>
-    </Box>
+        <ChildrenOrText
+          onText={(text) =>
+            !isEmpty(text) ? (
+              <Text as="p" sx={{ ...stylesSubtitle }}>
+                {text}
+              </Text>
+            ) : null
+          }
+        >
+          {isEmpty(value) ? null : value}
+        </ChildrenOrText>
+      </Box>
+    )
   );
 };

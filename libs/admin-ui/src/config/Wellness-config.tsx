@@ -28,12 +28,20 @@ export type FormatsConfig = {
   onlyDate: string;
   whenNotFoundInTable: string;
 };
+
+export type EnviromentConfig = {
+  notFoundImage: {
+    profile: string;
+  };
+};
+
 export interface WellnessConfig {
   sidebar: SidebarConfig;
   cloudinary: CloudinaryConfig;
   uploadImage: UploadImageConfig;
   tableConfig: TableConfig;
   formats: FormatsConfig;
+  enviroment: EnviromentConfig;
 }
 
 export type PartialWellnessConfig = DeepPartialSimple<WellnessConfig>;

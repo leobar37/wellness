@@ -3,14 +3,14 @@ import { Asserts } from 'yup';
 import { Sex } from '@wellness/admin-ui/common';
 
 export const saveClientSchema = yup.object({
-  name: yup.string().min(5).required(),
-  imageProfile: yup.mixed().required(),
+  name: yup.string().min(1).required(),
+  imageProfile: yup.mixed().optional(),
   email: yup.string().email().required(),
   birth: yup.date().required(),
   phone: yup.string().nullable(),
-  direction: yup.string().required(),
-  dni: yup.string().required(),
-  lastName: yup.string().min(10).required(),
+  direction: yup.string().nullable(),
+  dni: yup.string().nullable(),
+  lastName: yup.string().min(1).required(),
   sex: yup.mixed().required().oneOf([Sex.MEN, Sex.OTHER, Sex.WOMEN]),
 });
 

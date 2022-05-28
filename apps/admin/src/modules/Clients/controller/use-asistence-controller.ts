@@ -1,14 +1,12 @@
 import {
-  useCreateAsistenceMutation,
-  InputAsistence,
-  useFindAsistencesQuery,
   Asistence,
+  useCreateAsistenceMutation,
   useDeleteAsistenceMutation,
+  useFindAsistencesQuery,
 } from '@wellness/admin-ui/common';
 import { ID, SafeAny } from '@wellness/common';
-import { CreateAsistenceT } from '../domain/schemas';
 import { useClientsStore } from '../data/client-store';
-import { useEffect } from 'react';
+import { CreateAsistenceT } from '../domain/schemas';
 
 export type useAsistenceControllerOptions = {
   clientId: ID;
@@ -16,23 +14,25 @@ export type useAsistenceControllerOptions = {
 export const useAsistenceController = ({
   clientId,
 }: useAsistenceControllerOptions) => {
-  const [mutateAsistence, { data }] = useCreateAsistenceMutation();
+  const [mutateAsistence] = useCreateAsistenceMutation();
   const [mutateDeleteAsistence] = useDeleteAsistenceMutation();
   const {
     patch,
     addAsistence,
     deleteAsistence: deleteAction,
   } = useClientsStore();
+
   const { data: dataAsistences } = useFindAsistencesQuery({
     variables: { cliendId: String(clientId) },
-    skip : !clientId,
-    onCompleted : (data) => {
+    skip: !clientId,
+    onCompleted: (data) => {
       patch({
         asistences: data.finAsistences as SafeAny,
       });
     },
-    fetchPolicy : "cache-and-network"
+    fetchPolicy: 'cache-and-network',
   });
+
   const asistences = dataAsistences?.finAsistences;
 
   const createAsistence = async (asistence: CreateAsistenceT) => {
@@ -41,13 +41,13 @@ export const useAsistenceController = ({
         asistence: {
           clientId: String(clientId),
           note: asistence.note,
-          createdAt  : asistence.createdAt,
+          createdAt: asistence.createdAt,
         },
       },
     });
     addAsistence(data.data.createAsistence as SafeAny);
   };
- 
+
   const deleteAsistence = async (asistence: Asistence) => {
     const result = await mutateDeleteAsistence({
       variables: {

@@ -5,6 +5,7 @@ import {
   useEditAdministratorMutation,
   useResetPasswordMutation,
   useResetPasswordFromAdminMutation,
+  useDeleteAdministratorMutation,
 } from '@wellness/admin-ui/common';
 import { useSomeTruthy } from '@wellness/admin-ui/hooks';
 import {
@@ -14,6 +15,7 @@ import {
 } from '../domain';
 import { useAdministratorCrud } from '../data';
 import { ID } from '@wellness/common';
+import { useAuth } from '@wellness/admin-ui';
 
 export const useAdministratorInit = () => {
   const { data: administratorsData, loading } = useGetAdministratorsQuery();
@@ -30,9 +32,10 @@ export const useAdministratorController = () => {
   const [editAdministratorMutation] = useEditAdministratorMutation();
   const [resetPasswordMutation] = useResetPasswordMutation();
   const [resetPasswordFromAdminMutation] = useResetPasswordFromAdminMutation();
-
+  const [deleteAdministrator] = useDeleteAdministratorMutation();
   const { refetch } = useGetAdministratorsQuery();
   const { temporal } = useAdministratorCrud();
+  const auth = useAuth();
 
   const registerAdmin = async (input: CreateAdminT) => {
     const result = await registerAdminMutation({
@@ -49,6 +52,25 @@ export const useAdministratorController = () => {
     });
     refetch({});
     return result.data.registerAdmin;
+  };
+
+  const deleteAdministrador = async (id: string) => {
+    const user = auth.currentUser();
+    if (user) {
+      const isSelf = user.id === id;
+      if (isSelf) {
+        console.log('called conditional');
+
+        throw new Error('No puedes eliminarte a ti mismo');
+      }
+    }
+    const result = await deleteAdministrator({
+      variables: {
+        id: id,
+      },
+    });
+    refetch({});
+    return result;
   };
 
   const editAdministrator = async (input: Partial<CreateAdminT>) => {
@@ -125,5 +147,6 @@ export const useAdministratorController = () => {
     resetPassword,
     editAdminstratorSelf,
     resetPasswordFromAdmin,
+    deleteAdministrador,
   };
 };

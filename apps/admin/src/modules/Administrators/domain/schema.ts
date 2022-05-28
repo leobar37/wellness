@@ -6,7 +6,7 @@ export const createAdminSchem = yup.object({
   name: yup.string().required(),
   lastName: yup.string().required(),
   email: yup.string().email().required(),
-  dni: yup.string().required(),
+  dni: yup.string().nullable(),
   password: yup.string().required(),
   role: yup.string().oneOf([Role.ADMIN, Role.STAFF]),
 });

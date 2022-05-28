@@ -83,7 +83,7 @@ const Form = () => {
         direction: client.direction,
         dni: client.dni,
         email: client.email,
-        imageProfile: client.photo.previewUrl,
+        imageProfile: client?.photo?.previewUrl,
         name: client.name,
         lastName: client.lastName,
         phone: client.phone,
@@ -161,7 +161,7 @@ export const RegisterClientModal = () => {
       isInitialValid={false}
       validateOnChange
       validationSchema={saveClientSchema}
-      onSubmit={async (values, { setSubmitting }) => {
+      onSubmit={async (values, { setSubmitting, resetForm }) => {
         try {
           setSubmitting(true);
           switch (mode) {
@@ -170,7 +170,6 @@ export const RegisterClientModal = () => {
               toast({
                 title: 'Cliente Actualizado',
               });
-              closeModal();
               break;
             }
             case 'create': {
@@ -178,12 +177,13 @@ export const RegisterClientModal = () => {
               toast({
                 title: 'Cliente Registrado',
               });
-              closeModal();
               // ref
-              refetch();
               break;
             }
           }
+          closeModal();
+          refetch();
+          resetForm();
           setSubmitting(false);
         } catch (error) {
           console.log(error);

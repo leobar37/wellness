@@ -12,17 +12,25 @@ import {
   prepareCellProps,
   rolMapper,
   Table,
+  useModalConfirm,
+  useAuth,
+  useWellnessToast,
 } from '@wellness/admin-ui';
 import { ChangePasswordModalFromAdmin } from '../components';
 import { SafeAny } from '@wellness/common';
 import { CreateAdminModal } from '../components';
-import { useAdministratorInit } from '../controllers';
+import {
+  useAdministratorInit,
+  useAdministratorController,
+} from '../controllers';
 import { useAdministratorCrud } from '../data';
 
 export const ListAdmins: NextPageWithLayout = () => {
   const { openModal, openEditModal } = useAdministratorCrud();
   const { administrators, isLoading } = useAdministratorInit();
-
+  const { deleteAdministrador } = useAdministratorController();
+  const confirm = useModalConfirm();
+  const toast = useWellnessToast();
   return (
     <Layout
       backText="Administradores"
@@ -80,15 +88,25 @@ export const ListAdmins: NextPageWithLayout = () => {
                 >
                   <EditIcon />
                 </ButtonIcon>
-                {/* <ButtonIcon
+                <ButtonIcon
                   bg="red"
                   onClick={() => {
-                    openEditModal(original);
+                    confirm({
+                      onConfirm: async () => {
+                        try {
+                          await deleteAdministrador(original.id);
+                        } catch (error) {
+                          toast({
+                            description: error.message,
+                            status: 'error',
+                          });
+                        }
+                      },
+                    });
                   }}
                 >
                   <DeleteIcon />
                 </ButtonIcon>
-                 */}
               </HStack>
             );
           }}

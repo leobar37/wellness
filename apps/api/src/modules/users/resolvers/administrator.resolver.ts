@@ -31,6 +31,11 @@ export class AdminstratorResolver {
 
   @Mutation((type) => Administrator)
   @Auth(Role.ADMIN)
+  async deleteAdministrator(@Args('id', { type: () => ID }) id: string) {
+    return this.administratorService.deleteAdministrator(id);
+  }
+  @Mutation((type) => Administrator)
+  @Auth(Role.ADMIN)
   async editAdministrator(
     @Args('id', { type: () => ID }) id: string,
     @Args('input', { type: () => RegisterAdminInput }) input: RegisterAdminInput

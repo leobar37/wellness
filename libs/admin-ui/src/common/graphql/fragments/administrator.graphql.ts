@@ -21,3 +21,11 @@ export const listAdministratorsQuery = gql`
     }
   }
 `;
+
+export const deleteAdministrator = gql`
+  mutation deleteAdministrator($id: ID!) {
+    deleteAdministrator(id: $id) {
+      ...administratorFragment
+    }
+  }
+`;

@@ -1,15 +1,16 @@
 import { WellnessConfig } from './Wellness-config';
 import { Dumbell, UsersIcon, Settings } from '../icons';
 import { Role } from '../common';
-import { DashboardIcon } from "../icons";
+import { DashboardIcon } from '../icons';
+
 export const defaultConfig: WellnessConfig = {
   sidebar: {
     items: [
       {
-        name : "Dashboard",
-        path : "/app",
-        rol : [Role.ADMIN , Role.STAFF],
-        icon : <DashboardIcon fontSize={"xl"} />
+        name: 'Dashboard',
+        path: '/app',
+        rol: [Role.ADMIN, Role.STAFF],
+        icon: <DashboardIcon fontSize={'xl'} />,
       },
       {
         name: 'Clientes',
@@ -67,6 +68,11 @@ export const defaultConfig: WellnessConfig = {
     gloabalFilter: {
       debounce: 250,
       placeHolder: (count) => `Buscar en ${count} resultados`,
+    },
+  },
+  enviroment: {
+    notFoundImage: {
+      profile: '/img/not_found_image_profile.png',
     },
   },
 };

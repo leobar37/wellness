@@ -8,13 +8,18 @@ import {
 import { HStack, Button } from '@chakra-ui/react';
 import { useChangePasswordModalFromAdmin } from '../data';
 import { Formik, FormikErrors, useFormikContext } from 'formik';
-import { ChangePasswordSchemaFromAdmin, changePasswordSchema } from '../domain';
+import {
+  ChangePasswordSchemaFromAdmin,
+  changePasswordSchemaFromAdmin,
+} from '../domain';
 import { useAdministratorController } from '../controllers';
 import { InputControl } from 'formik-chakra-ui';
 import { ID } from '@wellness/common';
 
 const Form: FC<{ userId: ID }> = ({ userId }) => {
-  const { submitForm, resetForm } = useFormikContext();
+  const { submitForm, resetForm, errors } = useFormikContext();
+
+  console.log(errors);
 
   useEffect(() => {
     if (userId) {
@@ -55,7 +60,7 @@ export const ChangePasswordModalFromAdmin: FC = () => {
         });
         closeModal();
       }}
-      validationSchema={changePasswordSchema}
+      validationSchema={changePasswordSchemaFromAdmin}
       isInitialValid={false}
       validateOnBlur
       validate={(values) => {

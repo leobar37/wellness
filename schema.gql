@@ -283,6 +283,7 @@ input AlertInput {
 
 type Mutation {
   registerAdmin(input: RegisterAdminInput!): Administrator!
+  deleteAdministrator(id: ID!): Administrator!
   editAdministrator(id: ID!, input: RegisterAdminInput!): Administrator!
   resetPassword(input: ResetPasswordInput!): Administrator!
   resetPasswordFromAdmin(input: ResetPasswordInputFromAdmin!): Administrator!

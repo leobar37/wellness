@@ -1,18 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityNotFoundError } from '@wellness/core/common/error';
+import {
+  EntityNotFoundError,
+  BussinessError,
+} from '@wellness/core/common/error';
 import { Asistence } from '@wellness/core/entity';
 import { Repository } from 'typeorm';
 import { InputAsistence } from '../dto/asistence.input';
-
+import { PlanHelper } from '../helper/plan.helper';
 @Injectable()
 export class AsitenceService {
   constructor(
-    @InjectRepository(Asistence) private repository: Repository<Asistence>
+    @InjectRepository(Asistence) private repository: Repository<Asistence>,
+    private planHelper: PlanHelper
   ) {}
   // create asistence
   async createAsistence(input: InputAsistence) {
     const asistence = new Asistence(input);
+    const userHaveAPlanActive = await this.planHelper.clientHaveAPlanActive(
+      input.clientId
+    );
+    if (!userHaveAPlanActive) {
+      throw new BussinessError('El cliente no tiene un plan activo');
+    }
     const asistenceSave = await this.repository.save(asistence);
     return asistenceSave;
   }

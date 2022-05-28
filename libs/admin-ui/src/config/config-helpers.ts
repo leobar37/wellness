@@ -27,3 +27,8 @@ export const useConfig = <T extends unknown>(path?: string): T => {
 export const useConfigFormats = () => {
   return activeConfig.formats;
 };
+
+// selector
+export const useEnviroment = () => {
+  return activeConfig.enviroment;
+};

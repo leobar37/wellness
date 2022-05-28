@@ -37,13 +37,20 @@ export class AlertsHelper {
       .getRawMany();
 
     return contracts.map((contract) => {
-      const days = differenceInDays(now, contract.finishedAt);
+      const days = differenceInDays(contract.finishedAt, now);
+      let message = `Su plan termina en ${days} ${pluralize('dia', days)}`;
+      if (days == 1) {
+        message = `Su plan termina mañana`;
+      }
+      if (days == 0) {
+        message = `Su plan termina hoy`;
+      }
       return {
         typeData: TypeDataAlert.plans_to_overcome,
         label: contract.name,
         sublabel: contract.phone,
         date: contract.finishedAt,
-        dateLabel: `Su plan termina en ${-days} ${pluralize('dia', days)}`,
+        dateLabel: message,
       };
     });
   }
@@ -55,7 +62,7 @@ export class AlertsHelper {
       where: {
         birth: Raw(
           (alias) =>
-            `EXTRACT (MONTH FROM ${alias}) = EXTRACT(MONTH FROM CURRENT_DATE)`
+            `EXTRACT (MONTH FROM ${alias}) = EXTRACT(MONTH FROM CURRENT_DATE) AND EXTRACT (DAY FROM ${alias}) >= EXTRACT(DAY FROM CURRENT_DATE)`
         ),
       },
     });
@@ -65,13 +72,20 @@ export class AlertsHelper {
     };
 
     return clients.map((client) => {
-      const days = getDaysToFinish(new Date(client.birth));
+      const days = getDaysToFinish(new Date(client.birth)) + 1;
+      let message = `Su cumpleaños es en ${days} ${pluralize('dia', days)}`;
+      if (days == 1) {
+        message = `Su cumpleaños es mañana`;
+      }
+      if (days == 0) {
+        message = `Su cumpleaños es hoy`;
+      }
       return {
         typeData: TypeDataAlert.birthday,
         label: client.name.split(' ')[0] + ' ' + client.lastName.split(' ')[0],
         sublabel: client.phone,
         date: new Date(client.birth),
-        dateLabel: `Su cumpleaños es en ${days} ${pluralize('dia', days)}`,
+        dateLabel: message,
       };
     });
   }

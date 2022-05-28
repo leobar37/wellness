@@ -1,17 +1,20 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import { CRUD, ID, Role } from '@wellness/common';
-import { Administrator, BussinessError } from '@wellness/core';
+import {
+  Administrator,
+  BussinessError,
+  BycriptService,
+  WelnessLogger,
+} from '@wellness/core';
 import { AdministratorEvent, EventBus } from '@wellness/core/event-bus';
+import { omit } from 'lodash';
 import { EntityManager, Repository } from 'typeorm';
 import { RegisterAdminInput } from '../dto/admin.input';
 import {
   ResetPasswordInput,
   ResetPasswordInputFromAdmin,
 } from '../dto/ResetPassword.input';
-import { omit } from 'lodash';
-import { BycriptService } from '@wellness/core';
-import { WelnessLogger } from '@wellness/core';
 @Injectable()
 export class AdministratorService implements OnModuleInit {
   constructor(
@@ -149,6 +152,25 @@ export class AdministratorService implements OnModuleInit {
     );
 
     return adminForUpdate;
+  }
+
+  public async deleteAdministrator(id: ID) {
+    const admin = await this.manager.getRepository(Administrator).findOne(id);
+
+    if (!admin) {
+      throw new BussinessError('Este administrador no existe');
+    }
+
+    await this.manager.delete(Administrator, id);
+
+    this.eventBus.publish(
+      new AdministratorEvent({
+        source: admin,
+        operation: CRUD.DELETE,
+      })
+    );
+
+    return admin;
   }
 
   // list administrators

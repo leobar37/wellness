@@ -87,8 +87,9 @@ export const useClientsController = () => {
       typeof values.imageProfile !== 'string'
     ) {
       asset = await createAsset(values.imageProfile);
+    } else {
+      asset = await updateAsset(client.photo, values.imageProfile);
     }
-    asset = await updateAsset(client.photo, values.imageProfile);
     const result = await mutUpdateClient({
       variables: {
         id: client.id,
@@ -100,6 +101,8 @@ export const useClientsController = () => {
     });
 
     const clientUpdated = result.data.updateCLient as Client;
+    console.log(clientUpdated);
+
     patch((state) => {
       state.selectClient = clientUpdated;
     });

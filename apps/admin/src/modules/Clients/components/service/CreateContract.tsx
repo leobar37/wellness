@@ -220,7 +220,7 @@ export const CreateContractForm = () => {
         <ModalCrud
           isOpen={isOpen}
           onClose={async () => {
-            refetch();
+            refetch?.();
             resetForm();
             onClose();
           }}

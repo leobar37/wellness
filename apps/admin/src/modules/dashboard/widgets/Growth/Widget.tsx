@@ -1,4 +1,4 @@
-import { Box, HStack, useToken , Skeleton } from '@chakra-ui/react';
+import { Box, HStack, useToken, Skeleton, useInterval } from '@chakra-ui/react';
 import {
   CategoryScale,
   Chart as ChartJs,
@@ -31,8 +31,8 @@ ChartJs.register(
   Legend
 );
 const GraphicSkeleton = () => {
-  return  <Skeleton height={200} borderRadius="5px" width="450px" mx="auto" /> 
-}
+  return <Skeleton height={200} borderRadius="5px" width="450px" mx="auto" />;
+};
 export type GraphicProps = {
   results: GrowthType[];
 };
@@ -46,9 +46,9 @@ const Graphic: FC<GraphicProps> = ({ results }) => {
   const mapper = {
     [TypeDataEnum.asistences]: 'Asistencias',
     [TypeDataEnum.plans]: 'Planes',
-    [TypeDataEnum.register_clients] : "Clientes registrados"
+    [TypeDataEnum.register_clients]: 'Clientes registrados',
   };
-  
+
   return (
     <Box mt={2}>
       <Line
@@ -58,9 +58,9 @@ const Graphic: FC<GraphicProps> = ({ results }) => {
           scales: {
             y: {
               beginAtZero: true,
-              ticks :{
-                precision : 0
-              }
+              ticks: {
+                precision: 0,
+              },
             },
           },
           plugins: {
@@ -113,7 +113,9 @@ const WidgetForm: FC = () => {
         <SelectControl name="typeData" label="Tipo de dato:">
           <option value={TypeDataEnum.asistences}>Asistencias</option>
           <option value={TypeDataEnum.plans}>Planes</option>
-          <option value={TypeDataEnum.register_clients}>Clientes registrados</option>
+          <option value={TypeDataEnum.register_clients}>
+            Clientes registrados
+          </option>
         </SelectControl>
       </HStack>
     </ChackraForm>
@@ -122,7 +124,7 @@ const WidgetForm: FC = () => {
 
 export const GrowthWidget: FC = () => {
   const { growthFilters } = useDashboardStore();
-  const { data, loading, error } = useGrowthReportQuery({
+  const { data, loading, error, refetch } = useGrowthReportQuery({
     variables: {
       input: {
         interval: growthFilters.interval as SafeAny,
@@ -130,6 +132,10 @@ export const GrowthWidget: FC = () => {
       },
     },
   });
+
+  useInterval(() => {
+    refetch();
+  }, 1000 * 60 * 5);
 
   return (
     <Box flex={'45%'} maxWidth="500px">

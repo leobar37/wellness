@@ -313,6 +313,7 @@ export type Mutation = {
   createPlan: Plan;
   createResource: ResourceUnion;
   deleteActivity: Activity;
+  deleteAdministrator: Administrator;
   deleteAsistence: Asistence;
   deleteCLient: Client;
   deleteContract: ContractView;
@@ -360,6 +361,11 @@ export type MutationCreateResourceArgs = {
 
 
 export type MutationDeleteActivityArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteAdministratorArgs = {
   id: Scalars['ID'];
 };
 
@@ -852,6 +858,13 @@ export type GetAdministratorsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAdministratorsQuery = { __typename?: 'Query', getAdministrators: Array<{ __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string }> };
+
+export type DeleteAdministratorMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteAdministratorMutation = { __typename?: 'Mutation', deleteAdministrator: { __typename?: 'Administrator', id: string, createdAt: SafeAny, updateAt: SafeAny, name: string, lastName: string, email: string, rol: Role, dni: string, password?: string } };
 
 export type AsistenceFragmentFragment = { __typename?: 'Asistence', id: string, createdAt: SafeAny, updateAt: SafeAny, note: string };
 
@@ -2034,6 +2047,39 @@ export function useGetAdministratorsLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetAdministratorsQueryHookResult = ReturnType<typeof useGetAdministratorsQuery>;
 export type GetAdministratorsLazyQueryHookResult = ReturnType<typeof useGetAdministratorsLazyQuery>;
 export type GetAdministratorsQueryResult = Apollo.QueryResult<GetAdministratorsQuery, GetAdministratorsQueryVariables>;
+export const DeleteAdministratorDocument = gql`
+    mutation deleteAdministrator($id: ID!) {
+  deleteAdministrator(id: $id) {
+    ...administratorFragment
+  }
+}
+    ${AdministratorFragmentFragmentDoc}`;
+export type DeleteAdministratorMutationFn = Apollo.MutationFunction<DeleteAdministratorMutation, DeleteAdministratorMutationVariables>;
+
+/**
+ * __useDeleteAdministratorMutation__
+ *
+ * To run a mutation, you first call `useDeleteAdministratorMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteAdministratorMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteAdministratorMutation, { data, loading, error }] = useDeleteAdministratorMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteAdministratorMutation(baseOptions?: Apollo.MutationHookOptions<DeleteAdministratorMutation, DeleteAdministratorMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteAdministratorMutation, DeleteAdministratorMutationVariables>(DeleteAdministratorDocument, options);
+      }
+export type DeleteAdministratorMutationHookResult = ReturnType<typeof useDeleteAdministratorMutation>;
+export type DeleteAdministratorMutationResult = Apollo.MutationResult<DeleteAdministratorMutation>;
+export type DeleteAdministratorMutationOptions = Apollo.BaseMutationOptions<DeleteAdministratorMutation, DeleteAdministratorMutationVariables>;
 export const PingQueryDocument = gql`
     query pingQuery {
   ping
@@ -2707,6 +2753,8 @@ export type DeleteFichaVariables = DeleteFichaMutationVariables;
 export type DeleteFichaDeleteFicha = (NonNullable<DeleteFichaMutation['deleteFicha']>);
 export type GetAdministratorsVariables = GetAdministratorsQueryVariables;
 export type GetAdministratorsGetAdministrators = NonNullable<(NonNullable<GetAdministratorsQuery['getAdministrators']>)[number]>;
+export type DeleteAdministratorVariables = DeleteAdministratorMutationVariables;
+export type DeleteAdministratorDeleteAdministrator = (NonNullable<DeleteAdministratorMutation['deleteAdministrator']>);
 export type AssetBootAssets = NonNullable<(NonNullable<AssetBootFragment['assets']>)[number]>;
 export type ClientFragmentPhoto = (NonNullable<ClientFragmentFragment['photo']>);
 export type FichaFragmentDetails = NonNullable<(NonNullable<FichaFragmentFragment['details']>)[number]>;

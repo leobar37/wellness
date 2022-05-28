@@ -5,6 +5,7 @@ import {
   Role,
   useChangues,
   useWellnessToast,
+  PasswordInput,
 } from '@wellness/admin-ui';
 import { Formik, useFormikContext } from 'formik';
 import { InputControl, SelectControl } from 'formik-chakra-ui';
@@ -34,6 +35,7 @@ export type AdminFormProps = {
   textHeader: string;
   textButton: string;
 };
+
 const AdminForm: FC<AdminFormProps> = (props) => {
   const {
     handleSubmit,
@@ -68,13 +70,7 @@ const AdminForm: FC<AdminFormProps> = (props) => {
 
   const passwordElement =
     adminCrudStore.mode === 'create' ? (
-      <InputControl
-        inputProps={{
-          type: 'password',
-        }}
-        name="password"
-        label="Contraseña"
-      />
+      <PasswordInput name="password" label="Contraseña" />
     ) : (
       <Button
         colorScheme={'teal'}

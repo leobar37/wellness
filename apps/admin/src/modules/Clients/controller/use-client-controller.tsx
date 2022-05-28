@@ -1,4 +1,8 @@
-import { useGetClientQuery, useClientReportQuery , Client } from '@wellness/admin-ui/common';
+import {
+  useGetClientQuery,
+  useClientReportQuery,
+  Client,
+} from '@wellness/admin-ui/common';
 import { ID, isValid, SafeAny } from '@wellness/common';
 import { useClientsStore } from '../data/client-store';
 import { useSomeTruthy } from '@wellness/admin-ui';
@@ -12,32 +16,45 @@ const { patch } = useClientsStore.getState();
 export const useInitClientController = ({
   clientId,
 }: useClientControllerProps) => {
-
   const { data: dataGetClient, loading } = useGetClientQuery({
     variables: {
       id: clientId as string,
     },
     skip: !isValid(clientId),
-    onCompleted : (data) => {
+    onCompleted: (data) => {
       patch({
         selectClient: data.client as Client,
       });
-    }
-  });
-  
-  const { data: dataReport ,loading : loadingReport} =useClientReportQuery({
-    variables : {
-      clientId : clientId as string
     },
-    skip : !isValid(clientId),
-    onCompleted : (data) => {
+  });
+
+  const {
+    data: dataReport,
+    loading: loadingReport,
+    refetch: refetchReports,
+  } = useClientReportQuery({
+    variables: {
+      clientId: clientId as string,
+    },
+    skip: !isValid(clientId),
+    onCompleted: (data) => {
       patch({
-        clientReport : data.clientReport as SafeAny
-      }) 
-    }
-  })
-  
-  const isLoading = useSomeTruthy(loading,loadingReport ,!dataGetClient?.client);
+        clientReport: data.clientReport as SafeAny,
+      });
+    },
+  });
+
+  useEffect(() => {
+    patch({
+      refetchClientReport: refetchReports,
+    });
+  }, [refetchReports]);
+
+  const isLoading = useSomeTruthy(
+    loading,
+    loadingReport,
+    !dataGetClient?.client
+  );
 
   return {
     client: dataGetClient?.client,

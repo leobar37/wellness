@@ -11,10 +11,11 @@ import {
   FormHelperText,
 } from '@chakra-ui/react';
 import { InputControlProps } from 'formik-chakra-ui';
-import { EyeIcon, EyeCloseIcon } from '@wellness/admin-ui';
+import { EyeIcon, EyeCloseIcon } from '../../icons';
 import { useField } from 'formik';
+
 export const PasswordInput: FC<InputControlProps> = ({ ...props }) => {
-  const [show, actions] = useBoolean(false);
+  const [show, actions] = useBoolean(true);
   const [field, { error, touched }] = useField(props?.name);
   return (
     <Box>

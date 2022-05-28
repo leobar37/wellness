@@ -46,7 +46,7 @@ export const useSubContracts = () => {
   const [joinActivityMutation] = useJoinActivityMutation();
   const [editContractMutation] = useEditContractMutation();
   const [deleteContractMutation] = useDeleteContractMutation();
-  const { selectClient } = useClientsStore();
+  const { selectClient, refetchClientReport } = useClientsStore();
   const [{ refetch }] = useContractsFeature();
 
   const { data: dataPlans, loading: loadingPlan } = useGetPlansQuery({
@@ -66,7 +66,9 @@ export const useSubContracts = () => {
       },
       fetchPolicy: 'cache-and-network',
     });
+
   const isLoading = useSomeTruthy(loadingPlan, loadingActivity);
+
   const joinPlan = async (values: CreateContract) => {
     const result = await joinPlanMutation({
       variables: {
@@ -79,8 +81,10 @@ export const useSubContracts = () => {
         },
       },
     });
-    refetch();
+    refetch?.();
+    refetchClientReport();
   };
+
   const joinActivity = async (values: CreateContract) => {
     const result = await joinActivityMutation({
       variables: {
@@ -93,7 +97,7 @@ export const useSubContracts = () => {
         },
       },
     });
-    refetch();
+    refetch?.();
   };
 
   const editContract = async (id: string, values: CreateContract) => {
@@ -107,7 +111,8 @@ export const useSubContracts = () => {
         },
       },
     });
-    refetch();
+    refetchClientReport();
+    refetch?.();
     return result.data.editContract as ContractView;
   };
 
@@ -117,6 +122,7 @@ export const useSubContracts = () => {
         id: id,
       },
     });
+    refetchClientReport();
     return result.data.deleteContract as ContractView;
   };
 

@@ -55,36 +55,38 @@ const Form = () => {
     </ModalCrud>
   );
 };
-export const CreateAsistence: React.FunctionComponent<CreateAsistenceProps> =
-  () => {
-    const asistenceModalStore = useAsistencesModal();
-    const toast = useWellnessToast();
-    const { createAsistence } = useAsistenceController({
-      clientId: asistenceModalStore?.client?.id,
-    });
+export const CreateAsistence: React.FunctionComponent<
+  CreateAsistenceProps
+> = () => {
+  const asistenceModalStore = useAsistencesModal();
+  const toast = useWellnessToast();
+  const { createAsistence } = useAsistenceController({
+    clientId: asistenceModalStore?.client?.id,
+  });
 
-    const { onClose } = useDisclosure({
-      isOpen: asistenceModalStore.isOpen,
-      onClose: asistenceModalStore.closeModal,
-    });
+  const { onClose } = useDisclosure({
+    isOpen: asistenceModalStore.isOpen,
+    onClose: asistenceModalStore.closeModal,
+  });
 
-    return (
-      <Formik<CreateAsistenceT>
-        initialValues={{
-          note: '',
-          createdAt: new Date(),
-        }}
-        validate={(values) => {
-          const errors: FormikErrors<CreateAsistenceT> = {};
-          const now = new Date();
-          if (values.createdAt > now) {
-            errors.createdAt =
-              'La fecha debe ser menor o igual a la fecha actual';
-          }
-          return errors;
-        }}
-        validationSchema={createAsistenceSchema}
-        onSubmit={async (values, { resetForm }) => {
+  return (
+    <Formik<CreateAsistenceT>
+      initialValues={{
+        note: '',
+        createdAt: new Date(),
+      }}
+      validate={(values) => {
+        const errors: FormikErrors<CreateAsistenceT> = {};
+        const now = new Date();
+        if (values.createdAt > now) {
+          errors.createdAt =
+            'La fecha debe ser menor o igual a la fecha actual';
+        }
+        return errors;
+      }}
+      validationSchema={createAsistenceSchema}
+      onSubmit={async (values, { resetForm }) => {
+        try {
           await createAsistence(values);
           resetForm();
           onClose();
@@ -92,9 +94,12 @@ export const CreateAsistence: React.FunctionComponent<CreateAsistenceProps> =
             title: 'Asistencia registrada',
             status: 'success',
           });
-        }}
-      >
-        <Form />
-      </Formik>
-    );
-  };
+        } catch (error) {
+          console.log(error);
+        }
+      }}
+    >
+      <Form />
+    </Formik>
+  );
+};
