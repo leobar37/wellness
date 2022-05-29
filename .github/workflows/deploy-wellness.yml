@@ -1,51 +1,17 @@
-# name: Nx wellness Application
-# on:
-#   push:
-#     branches: [develop]
-
-# jobs:
-#   setup:
-#     runs-on: ubuntu-20.04
-
-#     steps:
-#       - name: Checkout repo
-#         uses: actions/checkout@v3
-
-#       - name: Install Node.js, NPM and yarn
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: 14
-
-#       - name: Yarn cache
-#         uses: actions/cache@v2
-#         id: yarn-cache
-#         with:
-#           path: |
-#             .yarn/cache
-#           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-#           restore-keys: |
-#             ${{ runner.os }}-yarn-
-
-#       - name: Install dependeces
-#         run: yarn install
-#       - name: deploy
-#         run: yarn nx affected:deploy
-
-# name: Nx wellness Application
-# on:
-#   push:
-#     branches: [develop]
-
-# jobs:
-#   build:
-#     name: build
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: executing remote ssh commands using key
-#         uses: appleboy/ssh-action@master
-#         with:
-#           host: ${{ secrets.HOST_SSH_DOKKU }}
-#           port: ${{ secrets.SSH_PORT }}
-#           username: ${{ secrets.USER_SSH_DOKKU }}
-#           key: ${{ secrets.SECRET_SSH }}
-#           script: whoami
+name: Nx wellness Application
+on:
+  push:
+    branches: [develop]
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: executing remote ssh commands using key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_SSH_DOKKU }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.USER_SSH_DOKKU }}
+          key: ${{ secrets.SECRET_SSH }}
+          script: whoami

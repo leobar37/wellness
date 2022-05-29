@@ -4,6 +4,7 @@ import { v2 } from 'cloudinary';
 import { SafeAny } from '@wellness/common';
 export const CLOUDINARY = 'Cloudinary';
 export type Cloudinary = typeof v2;
+
 export const CloudinaryProvider = {
   provide: CLOUDINARY,
   useFactory: (configService: ConfigService) => {

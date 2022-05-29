@@ -1,13 +1,19 @@
 import { IntervalTimeEnum } from '@wellness/common';
-import { range, SafeAny, DaysMapper , AnyFunction , MonthMapper } from '@wellness/common';
+import {
+  range,
+  SafeAny,
+  DaysMapper,
+  AnyFunction,
+  MonthMapper,
+} from '@wellness/common';
 import differenceInDays from 'date-fns/differenceInDays';
-import differenceInMonths from "date-fns/differenceInMonths";
-import differenceInWeeks from "date-fns/differenceInWeeks";
+import differenceInMonths from 'date-fns/differenceInMonths';
+import differenceInWeeks from 'date-fns/differenceInWeeks';
 import getDay from 'date-fns/getDay';
 import getMonth from 'date-fns/getMonth';
 import getWeek from 'date-fns/getWeek';
-import { get , isFunction } from 'lodash';
-import {  Injectable } from "@nestjs/common";
+import { get, isFunction } from 'lodash';
+import { Injectable } from '@nestjs/common';
 
 type Options = {
   property: string;
@@ -24,22 +30,22 @@ export class ReportGrowthBuilder {
     data: SafeAny[],
     options?: Options
   ) {
-    this.options = Object.assign({ property: 'createdAt' }, (options ?? {}));
+    this.options = Object.assign({ property: 'createdAt' }, options ?? {});
     this.edges = edges;
     this.data = data;
     switch (interval) {
       case IntervalTimeEnum.LAST_WEEK: {
-        return this.lastWeek()
+        return this.lastWeek();
       }
       case IntervalTimeEnum.LAST_YEAR: {
-        return this.lastYear()
+        return this.lastYear();
       }
       case IntervalTimeEnum.LAST_MONTH: {
-        return this.lastMonth()
+        return this.lastMonth();
       }
     }
   }
-  
+
   lastMonth() {
     const [start, end] = this.edges;
     const weeks = differenceInWeeks(start, end);
@@ -48,10 +54,9 @@ export class ReportGrowthBuilder {
     const b = getWeek(start);
     const growth = this.makeGrowths(weeksCounter, (date) => {
       const a = getWeek(date);
-      return (a - b) + 1;
+      return a - b + 1;
     });
-    return this.makeResults(growth, (key : string) => `Semana ${key}`);
-    
+    return this.makeResults(growth, (key: string) => `Semana ${key}`);
   }
 
   lastWeek() {
@@ -62,7 +67,7 @@ export class ReportGrowthBuilder {
     const growth = this.makeGrowths(daysCounter, getDay);
     return this.makeResults(growth, DaysMapper);
   }
-  lastYear(){
+  lastYear() {
     const [start, end] = this.edges;
     const months = differenceInMonths(start, end);
     const monthsRange = range(1, -months);
@@ -70,14 +75,11 @@ export class ReportGrowthBuilder {
     const growth = this.makeGrowths(monthsCounter, getMonth);
     return this.makeResults(growth, MonthMapper);
   }
-  
 
-  private  makeGrowths(counter : Record<string , SafeAny> , fn:AnyFunction ){
+  private makeGrowths(counter: Record<string, SafeAny>, fn: AnyFunction) {
     const growth = this.data.reduce((prev, curr) => {
       const result = fn(curr[this.options.property]);
-      console.log("result of the server");
-      console.log(result);
-      if ( result in prev) {
+      if (result in prev) {
         prev[result] += 1;
         return prev;
       }
@@ -85,9 +87,12 @@ export class ReportGrowthBuilder {
     }, counter);
     return growth;
   }
-  private makeResults(obj: Record<string, SafeAny>, mapper: SafeAny | AnyFunction) {
+  private makeResults(
+    obj: Record<string, SafeAny>,
+    mapper: SafeAny | AnyFunction
+  ) {
     return Object.keys(obj).map((key) => {
-      const label = isFunction(mapper) ? mapper(key) :  get(mapper, key) || '';
+      const label = isFunction(mapper) ? mapper(key) : get(mapper, key) || '';
       return {
         label,
         value: obj[key],
@@ -102,5 +107,4 @@ export class ReportGrowthBuilder {
       };
     }, {});
   }
-
 }

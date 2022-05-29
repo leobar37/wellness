@@ -1,6 +1,6 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ModuleRef } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -30,28 +30,22 @@ const BUSINESS_MODULES = [
   ReportsModule,
 ];
 
-const devDatabaseConfig = {
-  password: 'alfk3458',
-  username: 'postgres',
-  type: 'postgres',
-  host: 'localhost',
-  database: 'wellness',
-  port: 5432,
-  entities: [...Object.values(coreEntitiesMap)],
-  synchronize: true,
-};
-
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      username: 'postgres',
-      password: '182457Almeas45',
-      type: 'postgres',
-      host: 'database-1.cofmqlq6md3c.us-east-1.rds.amazonaws.com',
-      port: 5432,
-      database: 'wellnessprobd',
-      entities: [...Object.values(coreEntitiesMap)],
-      synchronize: true,
+    TypeOrmModule.forRootAsync({
+      useFactory: (configService: ConfigService) => {
+        return {
+          username: configService.get('BD_USER'),
+          password: configService.get('BD_PASS'),
+          type: 'postgres',
+          host: configService.get('BD_HOST'),
+          port: configService.get('BD_PORT'),
+          database: configService.get('BD_DATABASE'),
+          entities: [...Object.values(coreEntitiesMap)],
+          synchronize: isDev,
+        };
+      },
+      inject: [ConfigService],
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       playground: true,
