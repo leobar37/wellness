@@ -8,10 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: executing remote ssh commands using key
-        uses: appleboy/ssh-action@master
+        uses: fifsky/ssh-action@master
         with:
+          command: whoami
           host: ${{ secrets.HOST_SSH_DOKKU }}
-          port: ${{ secrets.SSH_PORT }}
-          username: ${{ secrets.USER_SSH_DOKKU }}
+          user: ${{ secrets.USER_SSH_DOKKU }}
           key: ${{ secrets.SECRET_SSH }}
-          script: whoami
