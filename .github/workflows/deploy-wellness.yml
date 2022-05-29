@@ -4,13 +4,35 @@ on:
     branches: [develop, main]
 jobs:
   build:
-    name: build
+    name: Prepare Application
     runs-on: ubuntu-latest
     steps:
       - name: executing remote ssh commands using key
         uses: fifsky/ssh-action@master
         with:
-          command: whoami
+          command: cd repo && git pull
+          host: ${{ secrets.HOST_SSH_DOKKU }}
+          user: ${{ secrets.USER_SSH_DOKKU }}
+          key: ${{ secrets.SECRET_SSH }}
+  deploy-api:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: executing commands for deploy api
+        uses: fifsky/ssh-action@master
+        with:
+          command: cd repo && yarn nx deploy api
+          host: ${{ secrets.HOST_SSH_DOKKU }}
+          user: ${{ secrets.USER_SSH_DOKKU }}
+          key: ${{ secrets.SECRET_SSH }}
+  deploy-admin:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: executing commands for deploy admin
+        uses: fifsky/ssh-action@master
+        with:
+          command: cd repo && yarn nx deploy admin
           host: ${{ secrets.HOST_SSH_DOKKU }}
           user: ${{ secrets.USER_SSH_DOKKU }}
           key: ${{ secrets.SECRET_SSH }}
