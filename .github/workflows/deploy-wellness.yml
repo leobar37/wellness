@@ -36,7 +36,7 @@ jobs:
       - name: executing commands for deploy admin
         uses: fifsky/ssh-action@master
         with:
-          command: cd repo && yarn nx deploy admin
+          command: cd repo && yarn ts-node ./scripts/prepare-admin.ts
           args: '-tt'
           host: ${{ secrets.HOST_SSH_DOKKU }}
           user: ${{ secrets.USER_SSH_DOKKU }}
