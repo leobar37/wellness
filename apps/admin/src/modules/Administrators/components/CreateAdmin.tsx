@@ -16,7 +16,7 @@ import {
   useAdministratorStore,
   useChangePasswordModalFromAdmin,
 } from '../data';
-import { CreateAdminT } from '../domain/schema';
+import { CreateAdminT, createAdminSchem } from '../domain/schema';
 
 const modeMapper = {
   edit: {
@@ -143,7 +143,7 @@ export const CreateAdminModal = () => {
         dni: '',
         role: Role.STAFF,
       }}
-      isInitialValid={false}
+      validationSchema={createAdminSchem}
       onSubmit={async (values, { setSubmitting }) => {
         setSubmitting(true);
         switch (adminCrudStore.mode) {
