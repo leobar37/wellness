@@ -75,11 +75,13 @@ export function exec(
   base: BaseFn = fromNpm
 ): Promise<string> {
   return new Promise((resolve, reject) => {
+    console.log('executing command', command + ' ' + args.join(' '));
+
     cp.exec(base(command) + ' ' + args.join(' '), (err, stdout) => {
       if (err) {
         return reject(err);
       }
-
+      console.log(stdout);
       resolve(stdout.toString());
     });
   });

@@ -1,43 +1,43 @@
-name: Nx wellness Application
-on:
-  push:
-    branches: [develop, main]
-jobs:
-  build:
-    name: Prepare Application
-    runs-on: ubuntu-latest
-    steps:
-      - name: executing remote ssh commands using key
-        uses: fifsky/ssh-action@master
-        with:
-          command: cd repo && git pull && yarn
-          host: ${{ secrets.HOST_SSH_DOKKU }}
-          args: '-tt'
-          user: ${{ secrets.USER_SSH_DOKKU }}
-          key: ${{ secrets.SECRET_SSH }}
+# name: Nx wellness Application
+# on:
+#   push:
+#     branches: [develop, main]
+# jobs:
+#   build:
+#     name: Prepare Application
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: executing remote ssh commands using key
+#         uses: fifsky/ssh-action@master
+#         with:
+#           command: cd repo && git pull && yarn
+#           host: ${{ secrets.HOST_SSH_DOKKU }}
+#           args: '-tt'
+#           user: ${{ secrets.USER_SSH_DOKKU }}
+#           key: ${{ secrets.SECRET_SSH }}
 
-  # deploy-api:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: executing commands for deploy api
-  #       uses: fifsky/ssh-action@master
-  #       with:
-  #         command: cd repo && yarn nx deploy api
-  #         args: '-tt'
-  #         host: ${{ secrets.HOST_SSH_DOKKU }}
-  #         user: ${{ secrets.USER_SSH_DOKKU }}
-  #         key: ${{ secrets.SECRET_SSH }}
+# deploy-api:
+#   needs: build
+#   runs-on: ubuntu-latest
+#   steps:
+#     - name: executing commands for deploy api
+#       uses: fifsky/ssh-action@master
+#       with:
+#         command: cd repo && yarn nx deploy api
+#         args: '-tt'
+#         host: ${{ secrets.HOST_SSH_DOKKU }}
+#         user: ${{ secrets.USER_SSH_DOKKU }}
+#         key: ${{ secrets.SECRET_SSH }}
 
-  deploy-admin:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: executing commands for deploy admin
-        uses: fifsky/ssh-action@master
-        with:
-          command: cd repo && yarn ts-node ./scripts/prepare-admin.ts
-          args: '-tt'
-          host: ${{ secrets.HOST_SSH_DOKKU }}
-          user: ${{ secrets.USER_SSH_DOKKU }}
-          key: ${{ secrets.SECRET_SSH }}
+# deploy-admin:
+#   needs: build
+#   runs-on: ubuntu-latest
+#   steps:
+#     - name: executing commands for deploy admin
+#       uses: fifsky/ssh-action@master
+#       with:
+#         command: cd repo && yarn ts-node ./scripts/prepare-admin.ts
+#         args: '-tt'
+#         host: ${{ secrets.HOST_SSH_DOKKU }}
+#         user: ${{ secrets.USER_SSH_DOKKU }}
+#         key: ${{ secrets.SECRET_SSH }}

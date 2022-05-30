@@ -2,7 +2,9 @@
 import { exec, cmd, runTask } from './util';
 
 const main = async () => {
-  await exec('nx', ['build', 'admin', '--production']);
+  console.log('prepare build');
+  await cmd('yarn', ['nx', 'build', 'admin', '--production']);
+  console.log('build success');
   await cmd(
     'cd dist/apps/admin && docker build -f ../../../docker/Dockerfile.wellfront -t leobar37/wellfront:latest .',
     []
