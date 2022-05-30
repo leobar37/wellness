@@ -12,7 +12,7 @@ jobs:
         with:
           command: cd repo && git pull && yarn
           host: ${{ secrets.HOST_SSH_DOKKU }}
-          args: '-tt'
+          args: '-tt -vvv'
           user: ${{ secrets.USER_SSH_DOKKU }}
           key: ${{ secrets.SECRET_SSH }}
 
@@ -24,7 +24,7 @@ jobs:
         uses: fifsky/ssh-action@master
         with:
           command: cd repo && yarn nx deploy api
-          args: '-tt'
+          args: '-tt -vvv'
           host: ${{ secrets.HOST_SSH_DOKKU }}
           user: ${{ secrets.USER_SSH_DOKKU }}
           key: ${{ secrets.SECRET_SSH }}
@@ -36,7 +36,7 @@ jobs:
       - name: executing commands for deploy admin
         uses: fifsky/ssh-action@master
         with:
-          args: '-tt'
+          args: '-tt -vvv'
           command: |
             cd repo &&
             yarn nx build admin --production &&
