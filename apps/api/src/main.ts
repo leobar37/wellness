@@ -3,6 +3,14 @@
  * This is only a minimal backend to get started.
  */
 
+import { environment } from './environments/environment';
+
+if (environment.production) {
+  process.env.NODE_ENV = 'production';
+} else {
+  process.env.NODE_ENV = 'development';
+}
+
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
