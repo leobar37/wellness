@@ -58,7 +58,7 @@ const BUSINESS_MODULES = [
     LoggerWellnessModule,
     ...BUSINESS_MODULES,
     ConfigModule.forRoot({
-      envFilePath: isDev ? '.env' : resolve('../', '.env'),
+      envFilePath: isDev ? '.env' : resolve('../', 'local.env'),
       isGlobal: true,
     }),
   ],
