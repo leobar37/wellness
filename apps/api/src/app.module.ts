@@ -44,11 +44,14 @@ console.log(resolve('apps/api', 'local.env'));
     LoggerWellnessModule,
     ...BUSINESS_MODULES,
     ConfigModule.forRoot({
-      envFilePath: !isDev ? '.env' : resolve('apps/api', 'local.env'),
+      envFilePath: !isDev
+        ? resolve('./.env')
+        : resolve('apps/api', 'local.env'),
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
       useFactory: (configService: ConfigService) => {
+        console.log('database config');
         const config = {
           username: configService.get('BD_USER') as string,
           password: configService.get('BD_PASS') as string,
@@ -62,6 +65,7 @@ console.log(resolve('apps/api', 'local.env'));
             ca: configService.get('BD_SSL'),
           },
         } as TypeOrmModuleOptions;
+        console.log(config);
         return config as SafeAny;
       },
       inject: [ConfigService],
