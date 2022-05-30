@@ -12,7 +12,7 @@ jobs:
         with:
           command: cd repo && git pull && yarn
           host: ${{ secrets.HOST_SSH_DOKKU }}
-          args: -t
+          args: '-tt'
           user: ${{ secrets.USER_SSH_DOKKU }}
           key: ${{ secrets.SECRET_SSH }}
   # deploy-api:
