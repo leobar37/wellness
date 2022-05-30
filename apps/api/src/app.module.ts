@@ -18,7 +18,7 @@ import { PingModule } from './modules/ping';
 import { SuscriptionModule } from './modules/suscriptions';
 import { UserModule } from './modules/users';
 import { ReportsModule } from './modules/reports';
-
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 const BUSINESS_MODULES = [
   PingModule,
   UserModule,
@@ -29,24 +29,10 @@ const BUSINESS_MODULES = [
   AuthModule,
   ReportsModule,
 ];
+console.log(resolve('apps/api', 'local.env'));
 
 @Module({
   imports: [
-    TypeOrmModule.forRootAsync({
-      useFactory: (configService: ConfigService) => {
-        return {
-          username: configService.get('BD_USER'),
-          password: configService.get('BD_PASS'),
-          type: 'postgres',
-          host: configService.get('BD_HOST'),
-          port: configService.get('BD_PORT'),
-          database: configService.get('BD_DATABASE'),
-          entities: [...Object.values(coreEntitiesMap)],
-          synchronize: isDev,
-        };
-      },
-      inject: [ConfigService],
-    }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       playground: true,
       debug: true,
@@ -58,8 +44,27 @@ const BUSINESS_MODULES = [
     LoggerWellnessModule,
     ...BUSINESS_MODULES,
     ConfigModule.forRoot({
-      envFilePath: isDev ? '.env' : resolve('../', 'local.env'),
+      envFilePath: !isDev ? '.env' : resolve('apps/api', 'local.env'),
       isGlobal: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      useFactory: (configService: ConfigService) => {
+        const config = {
+          username: configService.get('BD_USER') as string,
+          password: configService.get('BD_PASS') as string,
+          type: 'postgres',
+          host: configService.get('BD_HOST'),
+          port: configService.get('BD_PORT'),
+          database: configService.get('BD_DATABASE'),
+          entities: [...Object.values(coreEntitiesMap)],
+          synchronize: isDev,
+          ssl: {
+            ca: configService.get('BD_SSL'),
+          },
+        } as TypeOrmModuleOptions;
+        return config as SafeAny;
+      },
+      inject: [ConfigService],
     }),
   ],
   controllers: [],
