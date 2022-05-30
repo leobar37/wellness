@@ -9,6 +9,7 @@ if (environment.production) {
   Object.assign(process.env, {
     NODE_ENV: 'production',
   });
+  console.log('process enter in production');
 } else {
   Object.assign(process.env, {
     NODE_ENV: 'development',
