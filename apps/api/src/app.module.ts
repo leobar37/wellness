@@ -20,6 +20,9 @@ import { UserModule } from './modules/users';
 import { ReportsModule } from './modules/reports';
 import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
+console.log(process.env.NODE_ENV);
+console.log(!isDev ? './.env' : resolve('apps/api', 'local.env'));
+
 const BUSINESS_MODULES = [
   PingModule,
   UserModule,
