@@ -18,7 +18,12 @@ import { PingModule } from './modules/ping';
 import { SuscriptionModule } from './modules/suscriptions';
 import { UserModule } from './modules/users';
 import { ReportsModule } from './modules/reports';
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
+console.log('env config');
+console.log(!isDev ? './.env' : resolve('apps/api', 'local.env'));
+
+console.log(resolve('./.env'));
+
 const BUSINESS_MODULES = [
   PingModule,
   UserModule,
@@ -29,7 +34,6 @@ const BUSINESS_MODULES = [
   AuthModule,
   ReportsModule,
 ];
-console.log(resolve('apps/api', 'local.env'));
 
 @Module({
   imports: [
@@ -44,9 +48,7 @@ console.log(resolve('apps/api', 'local.env'));
     LoggerWellnessModule,
     ...BUSINESS_MODULES,
     ConfigModule.forRoot({
-      envFilePath: !isDev
-        ? resolve('./.env')
-        : resolve('apps/api', 'local.env'),
+      envFilePath: !isDev ? './.env' : resolve('apps/api', 'local.env'),
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
