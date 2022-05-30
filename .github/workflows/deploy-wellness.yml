@@ -10,8 +10,9 @@ jobs:
       - name: executing remote ssh commands using key
         uses: fifsky/ssh-action@master
         with:
-          command: cd repo && git pull && export PATH=/.nvm/versions/node/v16.13.1/bin:/usr/bin:/bin; yarn
+          command: cd repo && git pull && yarn
           host: ${{ secrets.HOST_SSH_DOKKU }}
+          args: -t
           user: ${{ secrets.USER_SSH_DOKKU }}
           key: ${{ secrets.SECRET_SSH }}
   # deploy-api:
