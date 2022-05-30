@@ -37,11 +37,12 @@ jobs:
         uses: fifsky/ssh-action@master
         with:
           args: '-tt'
-          command: cd repo && \
-            yarn nx build admin --production && \
-            cd dist/apps/admin && \
-            docker build -f ../../../docker/Dockerfile.wellfront -t leobar37/wellfront:latest . && \
-            dokku git:from-image wellfront leobar37/wellfront:latest && \
+          command: |
+            cd repo
+            yarn nx build admin --production
+            cd dist/apps/admin
+            docker build -f ../../../docker/Dockerfile.wellfront -t leobar37/wellfront:latest .
+            dokku git:from-image wellfront leobar37/wellfront:latest
             dokku ps:rebuild wellfront
           host: ${{ secrets.HOST_SSH_DOKKU }}
           user: ${{ secrets.USER_SSH_DOKKU }}
