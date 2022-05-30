@@ -1,7 +1,7 @@
 name: Nx wellness Application
 on:
   push:
-    branches: [develop, main]
+    branches: [main]
 jobs:
   build:
     name: Prepare Application
