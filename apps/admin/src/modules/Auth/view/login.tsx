@@ -6,20 +6,15 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { Authlayout } from '../components';
 import { LoginInputType } from '../domain';
+import { PasswordInput } from '@wellness/admin-ui';
 const Form = () => {
   const { handleSubmit } = useFormikContext();
-
   return (
     <ChackraForm submit={handleSubmit}>
       <InputControl label="Correo" name="email" />
       <FormControl>
         <FormLabel>Contraseña</FormLabel>
-        <InputControl
-          inputProps={{
-            type: 'password',
-          }}
-          name="password"
-        />
+        <PasswordInput name="password" />
       </FormControl>
       <Flex w={'full'} direction={'column'} alignItems={'center'} gridGap={'4'}>
         <Link as="a" color={'blackAlpha.700'}>

@@ -12,12 +12,22 @@ import 'swiper/css/pagination';
 import { applyYupLocale } from '@wellness/admin-ui/yupLocale';
 import { useTitleApi } from '@wellness/admin-ui';
 import { SafeAny } from '@wellness/common';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 applyYupLocale();
 
 function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
   const apolloClient = useApollo(pageProps);
   const getLayout = Component.getLayout ?? ((page) => page);
   useTitleApi('App');
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.pathname === '/') {
+      router.push('/auth/login');
+    }
+  }, [router]);
+
   const Comp: SafeAny = Component as SafeAny;
   return (
     <ApolloProvider client={apolloClient}>
