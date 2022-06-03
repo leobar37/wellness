@@ -3,9 +3,9 @@ import { Asserts } from 'yup';
 import { Role } from '@wellness/admin-ui/common';
 
 export const createAdminSchem = yup.object({
+  email: yup.string().email().required(),
   name: yup.string().required(),
   lastName: yup.string().required(),
-  email: yup.string().email().required(),
   dni: yup.string().nullable(),
   password: yup.string().required(),
   role: yup.string().oneOf([Role.ADMIN, Role.STAFF]),

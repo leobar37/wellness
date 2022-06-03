@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { SafeAny } from '@wellness/common';
 import { isNil } from 'lodash';
-import { useRouter } from 'next/router';
-import { ComponentType, useEffect, useRef, useState } from 'react';
+import { ComponentType, useEffect, useState } from 'react';
 import { Role } from '../common';
 import { useAuth } from './auth.service';
 
@@ -17,27 +16,21 @@ export const WithAuth = <T extends ComponentType>(
   (({ ...props }) => {
     const { roles = [], refirect: redirectPath } = options || {};
     const [allow, setAllow] = useState<null | boolean>(null);
-    const { currentUser, isLoggedIn, redirect, isLoggedInFn } = useAuth();
-    const cacheRef = useRef<Map<string, SafeAny>>(new Map());
-    const router = useRouter();
-    const user = currentUser();
+    const { isLoggedIn, user, redirect, isLoggedInFn } = useAuth();
 
     useEffect(() => {
-      if (isLoggedInFn()) {
-        if (user) {
-          const isAllow =
-            roles.length === 0 || roles?.some((r) => user.rol === r);
-          const route = cacheRef.current.get('intendRoute');
-          setAllow(isAllow);
-          if (!isAllow) {
-            setAllow(false);
-            redirect(redirectPath || '/');
-          }
-        }
-      } else {
+      if (!isLoggedInFn()) {
         setAllow(false);
-        console.log('user not authenticated');
-        redirect(redirectPath || '/');
+        redirect(redirectPath || '/auth/login');
+      }
+      if (isLoggedInFn() && user) {
+        const isAllow =
+          roles.length === 0 || roles?.some((r) => user.rol === r);
+        setAllow(isAllow);
+        if (!isAllow) {
+          setAllow(false);
+          redirect(redirectPath || '/');
+        }
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user, isLoggedIn]);
@@ -45,6 +38,7 @@ export const WithAuth = <T extends ComponentType>(
     if (isNil(allow)) {
       return null;
     }
+
     const Comp: SafeAny = Component;
     return allow ? <Comp {...(props as SafeAny)} /> : (null as SafeAny);
   }) as SafeAny as T;

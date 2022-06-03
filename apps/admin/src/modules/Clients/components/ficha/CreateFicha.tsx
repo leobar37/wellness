@@ -17,7 +17,7 @@ import { useEffect } from 'react';
 import { useFichaController } from '../../controller';
 import { useClientsStore } from '../../data/client-store';
 import { DetailFichaT, detailFichaSchema } from '../../domain/schemas';
-
+import { useGetFicha } from '../../controller';
 type CreateFichaProps = {
   mode: 'open' | 'close';
 };
@@ -68,8 +68,8 @@ const FichaForm: React.FC<{
   isOpen: boolean;
   onClose: () => void;
 }> = ({ isOpen, onClose }) => {
-  const { ficha, modeModalFicha, stateModalFicha, currentDetail } =
-    useClientsStore();
+  const { ficha, modeModalFicha, stateModalFicha } = useClientsStore();
+  const { currentDetail } = useGetFicha();
   const {
     handleSubmit,
     submitForm,
@@ -93,11 +93,12 @@ const FichaForm: React.FC<{
         weight: detail.weight,
       });
     }
-    if (modeModalFicha == 'close') {
+
+    if (modeModalFicha == 'close' || (detail && modeModalFicha === 'open')) {
       resetForm();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ficha, stateModalFicha, modeModalFicha]);
+  }, [ficha, stateModalFicha, modeModalFicha, detail]);
 
   const isButtonInvalid = isSubmitting || !isValid;
 
@@ -149,28 +150,35 @@ export const CreateFicha: React.FunctionComponent<CreateFichaProps> = () => {
       }}
       validationSchema={detailFichaSchema}
       onSubmit={async (values, { setSubmitting }) => {
-        setSubmitting(true);
-        if (modeModalFicha === 'open') {
-          if (stateModalFicha == 'edit') {
-            await editFicha(values);
+        try {
+          setSubmitting(true);
+          if (modeModalFicha === 'open') {
+            if (stateModalFicha == 'edit') {
+              await editFicha(values);
+              toast({
+                title: 'Ficha editada correctamente',
+              });
+            }
+            if (stateModalFicha == 'create') {
+              await createFicha(values);
+              toast({
+                title: 'Ficha creada correctamente',
+              });
+            }
+          } else {
+            await closeFicha(values);
             toast({
-              title: 'Ficha editada correctamente',
+              title: 'La ficha se ha cerrado correctamente',
             });
           }
-          if (stateModalFicha == 'create') {
-            await createFicha(values);
-            toast({
-              title: 'Ficha creada correctamente',
-            });
-          }
-        } else {
-          await closeFicha(values);
-          toast({
-            title: 'La ficha se ha cerrado correctamente',
-          });
+          onClose();
+          setSubmitting(false);
+        } catch (error) {
+          console.log(error);
+
+          onClose();
+          setSubmitting(false);
         }
-        onClose();
-        setSubmitting(false);
       }}
     >
       <FichaForm isOpen={isOpen} onClose={onClose} />

@@ -45,7 +45,8 @@ export class ClientService {
   }
 
   public async findOne(id: ID) {
-    return this.repository.findOne(id);
+    const client = await this.repository.findOne(id);
+    return client;
   }
 
   public async delete(id: ID) {
@@ -70,7 +71,10 @@ export class ClientService {
 
   public async update(id: ID, input: ClientInput) {
     const user = await this.existCLient(id);
-    const client = this.repository.merge(user, input);
+    const client = this.repository.merge(user, {
+      ...input,
+      birth: input.birthday,
+    });
     await this.repository.update(id, client);
     this.eventBus.publish(
       new ClientEvent({

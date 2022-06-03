@@ -22,6 +22,9 @@ export const useInitClientController = ({
     },
     skip: !isValid(clientId),
     onCompleted: (data) => {
+      console.log('data');
+      console.log(data);
+
       patch({
         selectClient: data.client as Client,
       });

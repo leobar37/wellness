@@ -6,54 +6,57 @@ import {
   useGetFichasQuery,
   useOpenAndCloseMutation,
   useUpdateFichaMutation,
+  DetailFicha,
 } from '@wellness/admin-ui/common';
 import { useAssetService } from '@wellness/admin-ui/services';
-import { difference } from '@wellness/common';
+import { difference, ID, SafeAny } from '@wellness/common';
 import { useCallback, useEffect } from 'react';
 import { useClientsStore } from '../data/client-store';
+import { get } from 'lodash';
 import { DetailFichaT } from '../domain/schemas';
+const { patch } = useClientsStore.getState();
+export const useGetFichas = () => {
+  const { selectClient } = useClientsStore();
+  const result = useGetFichasQuery({
+    variables: {
+      userId: Number(selectClient.id),
+    },
+    skip: !selectClient.id,
+    fetchPolicy: 'network-only',
+  });
+  return {
+    ...result,
+    data: get(result, 'data.getFichas', null) as Ficha[],
+  };
+};
 
-const { patch, addFicha } = useClientsStore.getState();
+export const useGetFicha = () => {
+  const { selectClient } = useClientsStore();
 
+  const result = useGetFichaQuery({
+    variables: {
+      userId: Number(selectClient.id),
+    },
+  });
+  const currentDetail = () => {
+    return get(result, 'data.getFicha.details[0]', null) as DetailFicha;
+  };
+  return {
+    ...result,
+    data: get(result?.data, 'getFicha', null) as Ficha,
+    currentDetail,
+  };
+};
 export const useFichaController = () => {
   const [openAndCloseFicha] = useOpenAndCloseMutation();
   const { createAssetBoot, deleteAsset, createAsset } = useAssetService();
-  const { selectClient, ficha, currentDetail } = useClientsStore();
+  const { selectClient } = useClientsStore();
   const [updateFichaMutation] = useUpdateFichaMutation();
   const [deleteFichaMutation] = useDeleteFichaMutation();
-  const {
-    data: fichasData,
-    loading,
-    refetch,
-  } = useGetFichasQuery({
-    variables: {
-      userId: Number(selectClient.id),
-    },
-    fetchPolicy: 'network-only',
-  });
+  const { currentDetail, data: ficha } = useGetFicha();
+  const fichasQuery = useGetFichas();
 
-  const { data: fichaData } = useGetFichaQuery({
-    variables: {
-      userId: Number(selectClient.id),
-    },
-  });
-
-  useEffect(() => {
-    if (fichaData?.getFicha) {
-      patch({
-        ficha: fichaData.getFicha as Ficha,
-      });
-    }
-  }, [fichaData]);
-
-  useEffect(() => {
-    if (fichasData?.getFichas) {
-      console.log(fichasData.getFichas);
-      patch({
-        fichas: fichasData.getFichas as Ficha[],
-      });
-    }
-  }, [fichasData]);
+  const fichaQuery = useGetFicha();
 
   const createFicha = useCallback(
     async ({ note, weight, files }: DetailFichaT) => {
@@ -69,11 +72,7 @@ export const useFichaController = () => {
           },
         },
       });
-      const rficha = result.data.openAndCloseFicha as Ficha;
-      addFicha(rficha);
-      patch({
-        ficha: rficha,
-      });
+      fichaQuery.refetch();
       return ficha;
     },
     [selectClient.id]
@@ -93,10 +92,10 @@ export const useFichaController = () => {
         },
       },
     });
+
     const fichaResult = data.openAndCloseFicha as Ficha;
-    patch({
-      ficha: null,
-    });
+    fichaQuery.refetch();
+    fichasQuery.refetch();
     return fichaResult;
   };
 
@@ -134,20 +133,22 @@ export const useFichaController = () => {
       },
     });
 
+    fichasQuery.refetch();
     return data.data.updateFicha as Ficha;
   };
 
-  const deleteFicha = async (fichaId: number) => {
+  const deleteFicha = async (fichaId: ID) => {
     const resp = await deleteFichaMutation({
       variables: {
-        fichaId: fichaId,
+        fichaId: Number(fichaId) as SafeAny,
       },
     });
-    console.log(resp);
-
     patch({
-      selectedFicha: null,
+      ficha: null,
     });
+
+    fichaQuery.refetch();
+    fichasQuery.refetch();
     return resp.data.deleteFicha as Ficha;
   };
 

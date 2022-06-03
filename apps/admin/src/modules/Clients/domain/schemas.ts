@@ -26,7 +26,7 @@ export const createAsistenceSchema = yup.object({
 export type CreateAsistenceT = Asserts<typeof createAsistenceSchema>;
 
 export const detailFichaSchema = yup.object({
-  files: yup.array().of(yup.mixed()).required().min(0).max(5),
+  files: yup.array().of(yup.mixed()).required().min(1).max(5),
   weight: yup.number().required(),
   note: yup.string().nullable(),
 });

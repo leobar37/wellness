@@ -8,6 +8,7 @@
     "api": "apps/api",
     "common": "libs/common",
     "core": "libs/core",
+    "front-test": "libs/front-test",
     "testing": "libs/testing"
   }
 }

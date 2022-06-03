@@ -87,7 +87,7 @@ export const UploadMultiple: FC<UploadMultipleProps> = ({
 
   const mapFiles = (file: MFile, idx: number) => {
     return (
-      <SwiperSlide>
+      <SwiperSlide key={idx}>
         <SlideImage onDelete={onDelete} key={idx} file={file} />;
       </SwiperSlide>
     );
@@ -99,7 +99,7 @@ export const UploadMultiple: FC<UploadMultipleProps> = ({
       <ImageUpload
         width="90px"
         height="90px"
-        multiples={true}
+        multiples
         onFile={({ source, isArray }) => {
           if (isArray) {
             filesRef.current = [...filesRef.current, ...(source as MFile[])];

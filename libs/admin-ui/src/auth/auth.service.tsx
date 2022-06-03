@@ -1,6 +1,6 @@
 import { createContext } from '@chakra-ui/react-utils';
 import { FC, useEffect } from 'react';
-import { useJwt, isExpired, decodeToken } from 'react-jwt';
+import { useJwt, isExpired } from 'react-jwt';
 import { useLoginMutation } from '../common';
 import {
   Administrator,
@@ -21,6 +21,7 @@ type AuthType = {
   isLoggedInFn: () => boolean;
   currentUser: () => Administrator | null;
   redirect: (path: string) => void;
+  user: Administrator | null;
 };
 
 const [Provider, useAuthContext] = createContext<AuthType>({
@@ -65,7 +66,11 @@ export const AuthProvider: FC = ({ children }) => {
     return !isExpired(token);
   };
 
-  const { data: userQuery } = useGetAdministratorQuery({
+  const {
+    data: userQuery,
+    loading,
+    error,
+  } = useGetAdministratorQuery({
     variables: {
       id: (tokenManager.decodedToken as TokenUser)?.id,
     },
@@ -87,6 +92,13 @@ export const AuthProvider: FC = ({ children }) => {
     }
     return token;
   };
+
+  useEffect(() => {
+    if (error) {
+      tokenManager.remove();
+      router.push('/auth/login');
+    }
+  }, [error, router, tokenManager]);
 
   const logout = async () => {
     if (tokenManager.isValid) {
@@ -112,6 +124,7 @@ export const AuthProvider: FC = ({ children }) => {
         currentUser: currentUser,
         logout,
         redirect,
+        user: currentUser(),
         isLoggedInFn: isAuthenticated,
       }}
     >

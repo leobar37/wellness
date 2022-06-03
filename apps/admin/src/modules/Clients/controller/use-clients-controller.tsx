@@ -101,8 +101,6 @@ export const useClientsController = () => {
     });
 
     const clientUpdated = result.data.updateCLient as Client;
-    console.log(clientUpdated);
-
     patch((state) => {
       state.selectClient = clientUpdated;
     });

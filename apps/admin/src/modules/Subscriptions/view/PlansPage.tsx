@@ -2,9 +2,9 @@ import * as React from 'react';
 import { useState } from 'react';
 import { BaseLayout, Layout } from '@wellness/admin-ui/components';
 import type { NextPageWithLayout } from '@wellness/admin-ui/common';
-import { Button, HStack } from '@chakra-ui/react';
+import { Button, HStack, Badge, SystemStyleObject } from '@chakra-ui/react';
 import { ButtonIcon } from '@wellness/admin-ui';
-import { useInitPlansController, usePlansController } from '../controller';
+import { useInitPlansController } from '../controller';
 import { usePlanModal } from '../data';
 import { CrudPlanModal } from '../components/plan';
 import {
@@ -58,7 +58,28 @@ export const PlansPage: NextPageWithLayout = () => {
         })}
       >
         <ColTable accessor="detail.name" Header="Nombre" />
-        <ColTable accessor="detail.description" Header="Descripción" />
+        <ColTable
+          accessor="suscription.active"
+          Header="Activo"
+          Cell={(props: SafeAny) => {
+            const { original } = prepareCellProps<Plan>(props);
+            const styles: Record<0 | 1, SystemStyleObject> = {
+              '1': {
+                bg: 'primary',
+              },
+              '0': {
+                bg: 'brown.300',
+                color: 'white',
+              },
+            };
+            const isActive = original.suscription.active;
+            return (
+              <Badge sx={styles[Number(original.suscription.active)]}>
+                {isActive ? 'Activo' : 'Inactivo'}
+              </Badge>
+            );
+          }}
+        />
         <ColTable
           accessor="detail.price"
           Header="Precio"

@@ -20,8 +20,10 @@
       "@wellness/common": ["libs/common/src/index.ts"],
       "@wellness/core": ["libs/core/src/index.ts"],
       "@wellness/core/*": ["libs/core/src/*"],
+      "@wellness/front-test": ["libs/front-test/src/index.ts"],
       "@wellness/testing": ["libs/testing/src/index.ts"]
     }
   },
+  "include": ["./jest-setup-dom.ts"],
   "exclude": ["node_modules", "tmp"]
 }

@@ -143,30 +143,34 @@ export const CreateAdminModal = () => {
         dni: '',
         role: Role.STAFF,
       }}
+      isInitialValid={false}
       validationSchema={createAdminSchem}
       onSubmit={async (values, { setSubmitting }) => {
         setSubmitting(true);
-        switch (adminCrudStore.mode) {
-          case 'create': {
-            await registerAdmin(values);
-            toast({
-              status: 'success',
-              description: 'Administrador creado correctamente',
-            });
-            break;
+        try {
+          switch (adminCrudStore.mode) {
+            case 'create': {
+              await registerAdmin(values);
+              toast({
+                status: 'success',
+                description: 'Administrador creado correctamente',
+              });
+              break;
+            }
+            case 'edit': {
+              await editAdministrator(values);
+              toast({
+                status: 'success',
+                description: 'Administrador editado correctamente',
+              });
+              break;
+            }
           }
-          case 'edit': {
-            await editAdministrator(values);
-            toast({
-              status: 'success',
-              description: 'Administrador editado correctamente',
-            });
-            break;
-          }
+          adminCrudStore.closeModal();
+          setSubmitting(false);
+        } catch (error) {
+          setSubmitting(false);
         }
-
-        adminCrudStore.closeModal();
-        setSubmitting(false);
       }}
     >
       <AdminForm

@@ -1,7 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { theme } from '@wellness/admin-ui';
-import { ApolloProvider } from '@apollo/client';
-import { useApollo } from '@wellness/admin-ui/lib';
+import { ApolloProvider } from '@wellness/admin-ui/lib';
 import { AppPropsWithLayout } from '@wellness/admin-ui/common';
 import { DialogsProvider } from '@wellness/admin-ui/ui';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -17,7 +16,6 @@ import { useEffect } from 'react';
 applyYupLocale();
 
 function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
-  const apolloClient = useApollo(pageProps);
   const getLayout = Component.getLayout ?? ((page) => page);
   useTitleApi('App');
   const router = useRouter();
@@ -30,7 +28,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
 
   const Comp: SafeAny = Component as SafeAny;
   return (
-    <ApolloProvider client={apolloClient}>
+    <ApolloProvider pageProps={pageProps}>
       <ChakraProvider theme={theme}>
         <DialogsProvider>
           <AuthProvider>{getLayout(<Comp {...pageProps} />)}</AuthProvider>

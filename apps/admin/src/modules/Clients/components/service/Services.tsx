@@ -1,6 +1,12 @@
-import { Badge, Box, HStack, SystemStyleObject, Text } from '@chakra-ui/react';
 import {
-  ButtonIcon,
+  Badge,
+  Box,
+  HStack,
+  SystemStyleObject,
+  Text,
+  Button,
+} from '@chakra-ui/react';
+import {
   ColTable,
   ContractView,
   DeleteIcon,
@@ -14,6 +20,7 @@ import {
   useModalConfirm,
   useWellnessToast,
   Role,
+  ButtonIcon,
 } from '@wellness/admin-ui';
 import { SafeAny, ServiceType } from '@wellness/common';
 import { useInitSubContracts, useSubContracts } from '../../controller';
@@ -38,6 +45,7 @@ export const ServicesSection = () => {
   const { deleteContract } = useSubContracts();
   const confirm = useModalConfirm();
   const configFormats = useConfigFormats();
+
   const onConfirm = (contract: ContractView) => {
     confirm({
       title: 'Desea eliminar este contrato',
@@ -72,7 +80,7 @@ export const ServicesSection = () => {
             }
           />
         )}
-        <ButtonIcon onClick={() => openModal()}>+</ButtonIcon>
+        <Button onClick={() => openModal()}>Agregar contrato</Button>
       </HStack>
       <Box mt={8}>
         <Table
@@ -142,6 +150,7 @@ export const ServicesSection = () => {
               );
             }}
           />
+
           <ColTable
             id="selection"
             Header="Acción"

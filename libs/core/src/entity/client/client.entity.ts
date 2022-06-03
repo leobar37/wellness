@@ -54,7 +54,7 @@ export class Client extends WellnessEntity implements HasNote {
   @Field()
   lastName: string;
 
-  @Column('date', { nullable: true })
+  @Column('timestamp', { nullable: true })
   @Field((type) => Date, { nullable: true })
   birth: Date;
 

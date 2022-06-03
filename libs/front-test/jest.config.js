@@ -1,10 +1,10 @@
 module.exports = {
-  displayName: 'admin-ui',
+  displayName: 'front-test',
   preset: '../../jest.preset.js',
   transform: {
     '^.+\\.[tj]sx?$': 'babel-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/libs/admin-ui',
+  coverageDirectory: '../../coverage/libs/front-test',
   setupFilesAfterEnv: ['../../jest-setup-dom.ts'],
 };

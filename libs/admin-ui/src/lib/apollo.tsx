@@ -4,6 +4,7 @@ import {
   HttpLink,
   InMemoryCache,
   NormalizedCacheObject,
+  ApolloProvider as LocalApolloProvider,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from 'apollo-link-error';
@@ -11,10 +12,18 @@ import merge from 'deepmerge';
 import { IncomingHttpHeaders } from 'http';
 import { isEqual } from 'lodash';
 import { AppProps } from 'next/app';
-import { PropsWithChildren, useEffect, useMemo, useState } from 'react';
+import {
+  FC,
+  PropsWithChildren,
+  ReactElement,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { isServer } from '../utils';
 import { isDev } from '@wellness/common';
 import { useDialogs } from '../ui/dialogs';
+import nodeFetch from 'node-fetch';
 const APOLLO_PROP_NAME = '__APOLLO__STATE';
 
 // authorization
@@ -146,6 +155,7 @@ PropsWithChildren<{}>) {
 
   useEffect(() => {
     setHasMounted(true);
+    //  a
   }, []);
 
   if (!hasMounted) {
@@ -155,3 +165,16 @@ PropsWithChildren<{}>) {
   // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{children}</>;
 }
+
+// add apollo provider
+
+export const ApolloProvider: FC<{
+  pageProps: SVGAElement;
+  children: ReactElement;
+}> = ({ pageProps, children }) => {
+  const apolloClient = useApollo(pageProps);
+
+  return (
+    <LocalApolloProvider client={apolloClient}>{children}</LocalApolloProvider>
+  );
+};

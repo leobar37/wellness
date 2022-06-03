@@ -55,6 +55,7 @@ export const useSubContracts = () => {
         active: true,
       },
     },
+    fetchPolicy: 'cache-and-network',
   });
 
   const { data: dataActivities, loading: loadingActivity } =

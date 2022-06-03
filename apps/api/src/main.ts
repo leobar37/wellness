@@ -5,17 +5,6 @@
 
 import { environment } from './environments/environment';
 
-if (environment.production) {
-  Object.assign(process.env, {
-    NODE_ENV: 'production',
-  });
-  console.log('process enter in production');
-} else {
-  Object.assign(process.env, {
-    NODE_ENV: 'development',
-  });
-}
-
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';

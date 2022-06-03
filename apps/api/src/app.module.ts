@@ -19,7 +19,7 @@ import { SuscriptionModule } from './modules/suscriptions';
 import { UserModule } from './modules/users';
 import { ReportsModule } from './modules/reports';
 import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { readFile} from "fs-extra";
+import { readFile } from 'fs-extra';
 
 const BUSINESS_MODULES = [
   PingModule,
@@ -45,12 +45,11 @@ const BUSINESS_MODULES = [
     LoggerWellnessModule,
     ...BUSINESS_MODULES,
     ConfigModule.forRoot({
-      ignoreEnvFile : true,
+      ignoreEnvFile: true,
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
-      useFactory: async(configService: ConfigService) => {
-        const certiticate = await readFile(resolve("./certificate.cra") , { encoding : "utf-8"});
+      useFactory: async (configService: ConfigService) => {
         const config = {
           username: configService.get('BD_USER') as string,
           password: configService.get('BD_PASS') as string,
@@ -61,10 +60,10 @@ const BUSINESS_MODULES = [
           entities: [...Object.values(coreEntitiesMap)],
           synchronize: isDev,
           ssl: {
-            ca: certiticate,
+            ca: configService.get('BD_SSL') as string,
           },
         } as TypeOrmModuleOptions;
-        console.log(config)
+        console.log(config);
         return config as SafeAny;
       },
       inject: [ConfigService],
