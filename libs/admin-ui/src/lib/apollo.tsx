@@ -74,7 +74,7 @@ const linkError = onError(
 const httpLink = new HttpLink({
   uri: isDev
     ? 'http://localhost:3500/graphql'
-    : 'http://api.wellnesspro24.com/graphql',
+    : 'https://api.wellnesspro24.com/graphql',
 });
 
 export const createApolloClient = (
