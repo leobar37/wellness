@@ -45,7 +45,7 @@ jobs:
           args: '-tt -vvv'
           command: |
             cd repo &&
-            yarn nx build admin --production &&
+            yarn nx build admin --production --verbose &&
             cd dist/apps/admin && 
             docker build -f ../../../docker/Dockerfile.wellfront -t leobar37/wellfront:latest . &&
             dokku git:from-image wellfront leobar37/wellfront:latest &&
