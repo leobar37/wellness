@@ -23,7 +23,14 @@ jobs:
       - name: executing commands for deploy api
         uses: fifsky/ssh-action@master
         with:
-          command: cd repo && yarn nx deploy api
+          command: |
+            cd repo &&
+            yarn nx build api --production  &&
+            cd dist/apps/api &&
+            docker build -f ../../../docker/Dockerfile.api -t leobar37/wellbackend:latest . &&
+            dokku config:set wellbackend DOPPLER_TOKEN=${{ secrets.DOPPLER_TOKEN_API }} &&
+            dokku git:from-image wellbackend leobar37/wellbackend:latest &&
+            dokku ps:rebuild wellbackend
           args: '-tt -vvv'
           host: ${{ secrets.HOST_SSH_DOKKU }}
           user: ${{ secrets.USER_SSH_DOKKU }}
