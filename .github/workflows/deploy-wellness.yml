@@ -28,7 +28,6 @@ jobs:
             yarn nx build api --production  &&
             cd dist/apps/api &&
             docker build -f ../../../docker/Dockerfile.api -t leobar37/wellbackend:latest . &&
-            dokku config:set wellbackend DOPPLER_TOKEN=${{ secrets.DOPPLER_TOKEN_API }} &&
             dokku git:from-image wellbackend leobar37/wellbackend:latest &&
             dokku ps:rebuild wellbackend
           args: '-tt -vvv'
