@@ -22,6 +22,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
 
   useEffect(() => {
     if (router.pathname === '/') {
+      console.log('redirect');
       router.push('/auth/login');
     }
   }, [router]);
